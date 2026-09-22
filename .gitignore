@@ -44,3 +44,12 @@ next-env.d.ts
 .vscode
 *.swp
 *.swo
+
+# Source maps & generated files
+*.map
+*.mjs.map
+**/*.map
+
+# Next.js generated files
+.next/
+out/
