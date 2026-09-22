@@ -4,6 +4,10 @@ export const photos = {
 };
 
 export const panels = {
+  Consultation: {
+    title: "Что входит в консультацию?",
+    text: "Практические рекомендации от специалиста с международным опытом: подготовка CV, портфолио и интервью по международным стандартам, а также индивидуальная стратегия поиска работы с учётом вашего опыта и целей.",
+  },
   Jobs: { title: "Вакансии", text: "Здесь появятся вакансии международных школ. Раздел готовится к запуску." },
   About: { title: "A world of learning, made for you.", text: "Global Teacher Hub brings curious minds together. Explore new interests, build practical skills, and find inspiration for your next chapter." },
   Courses: { title: "What will you learn next?", text: "Explore a preview of our learning categories. Course enrollment is coming soon." },

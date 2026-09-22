@@ -14,7 +14,7 @@ export default function LearningGallery({ openPanel }: PanelProps) {
           <svg viewBox="0 0 24 28" className="ml-1 h-7 w-6" fill="currentColor" aria-hidden="true"><path d="M3 1 23 14 3 27V1Z" /></svg>
         </button>
       </div>
-      <EducatorCard />
+      <EducatorCard openPanel={openPanel} />
     </section>
   );
 }
