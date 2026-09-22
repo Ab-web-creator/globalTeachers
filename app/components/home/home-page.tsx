@@ -6,6 +6,10 @@ import SiteHeader from "./site-header";
 import HeroSection from "./hero-section";
 import PartnersSection from "./partners-section";
 import PreviewDialog from "./preview-dialog";
+import AboutSection from "./about/about-section";
+import StatisticsSection from "./statistics-section";
+import CategoriesSection from "./categories/categories-section";
+import ProgramsSection from "./categories/programs-section";
 
 export default function HomePage() {
   const [panel, setPanel] = useState<Panel>("Courses");
@@ -22,6 +26,10 @@ export default function HomePage() {
       <main>
         <HeroSection openPanel={openPanel} />
         <PartnersSection />
+        <AboutSection openPanel={openPanel} />
+        <StatisticsSection />
+        <CategoriesSection openPanel={openPanel} />
+        <ProgramsSection />
       </main>
       <PreviewDialog dialog={dialog} panel={panel} />
     </>
