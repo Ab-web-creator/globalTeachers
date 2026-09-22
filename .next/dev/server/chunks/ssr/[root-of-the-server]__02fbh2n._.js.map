@@ -3,5 +3,5 @@
   "sources": [],
   "sections": [
     {"offset": {"line": 13, "column": 0}, "map": {"version":3,"sources":["file:///Users/m214/Documents/github_projects/globalTeachers/app/favicon.ico.mjs%20(structured%20image%20object)"],"sourcesContent":["import src from \"IMAGE\";\nexport default { src, width: 256, height: 256 }\n"],"names":["src","width","height"],"mappings":";;;;AAAA;;uCACe;IAAEA,KAAAA,mIAAG;IAAEC,OAAO;IAAKC,QAAQ;AAAI"}},
-    {"offset": {"line": 28, "column": 0}, "map": {"version":3,"sources":["file:///Users/m214/Documents/github_projects/globalTeachers/app/page.tsx"],"sourcesContent":["import Image from \"next/image\";\n\nexport default function Home() {\n  return (\n    <section>\n      NOTHING\n    </section>\n  );\n}\n"],"names":["Home"],"mappings":";;;;;;AAEe,SAASA;IACtB,qBACE,8OAAC;kBAAQ;;;;;;AAIb"}}]
+    {"offset": {"line": 28, "column": 0}, "map": {"version":3,"sources":["file:///Users/m214/Documents/github_projects/globalTeachers/app/page.tsx"],"sourcesContent":["export default function Home() {\n  return (\n    <section>\n      <p>NOTHING at the moment</p>\n    </section>\n  );\n}\n"],"names":["Home"],"mappings":";;;;;;AAAe,SAASA;IACtB,qBACE,8OAAC;kBACC,cAAA,8OAAC;sBAAE;;;;;;;;;;;AAGT"}}]
 }
