@@ -5,6 +5,20 @@
   --foreground: #171717;
 }
 
+@theme {
+  --color-brand-50: #edf5f7;
+  --color-brand-100: #d5ebf0;
+  --color-brand-200: #acd2dc;
+  --color-brand-300: #89aab5;
+  --color-brand-400: #4b8d9c;
+  --color-brand-500: #00566b;
+  --color-brand-600: #003e4d;
+  --color-brand-700: #002e3b;
+  --color-brand-800: #00232d;
+  --color-brand-900: #001820;
+  --color-brand-950: #000d12;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -26,11 +40,11 @@ button {
 }
 
 :focus-visible {
-  outline: 3px solid #5496a6;
+  outline: 3px solid var(--color-brand-400);
   outline-offset: 5px;
 }
 
 ::selection {
-  background: #d5ebf0;
-  color: #00566b;
+  background: var(--color-brand-100);
+  color: var(--color-brand-500);
 }

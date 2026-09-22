@@ -15,7 +15,7 @@ export default function PartnersSection() {
       <h2 id="partners-title" className="text-center text-base font-normal text-neutral-600 sm:text-lg">
         Collaborated with over 800+ trusted worldwide partners
       </h2>
-      <ul className="mt-12 grid grid-cols-2 items-center gap-x-6 gap-y-10 text-[#89aab5] sm:mt-16 sm:grid-cols-3 lg:grid-cols-6 lg:gap-x-8">
+      <ul className="mt-12 grid grid-cols-2 items-center gap-x-6 gap-y-10 text-brand-300 sm:mt-16 sm:grid-cols-3 lg:grid-cols-6 lg:gap-x-8">
         {partners.map(({ name, Logo }) => (
           <li key={name} className="flex min-h-16 items-center justify-center">
             <span className="sr-only">{name}</span>

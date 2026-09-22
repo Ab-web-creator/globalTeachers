@@ -16,5 +16,6 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Tailwind CSS
 
+- Use the `brand-50` through `brand-950` color scale defined in `app/globals.css` for brand colors. Primary teal is `brand-500`; prefer utilities such as `bg-brand-500` and `hover:bg-brand-600` over hardcoded teal values.
 - Always prefer standard Tailwind utilities over arbitrary values, such as `rounded-3xl` instead of `rounded-[24px]` and `leading-normal` instead of `leading-[1.5]`.
 - Use the built-in typography and spacing scales wherever possible; reserve arbitrary values for custom colors or layouts without a suitable standard utility.

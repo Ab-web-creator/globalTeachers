@@ -1,5 +1,5 @@
 export const photos = {
-  study: "https://images.pexels.com/photos/5940838/pexels-photo-5940838.jpeg?auto=compress&cs=tinysrgb&w=1000",
+  portrait: "/images/myOwnImage.jpeg",
   student: "https://images.pexels.com/photos/5940841/pexels-photo-5940841.jpeg?auto=compress&cs=tinysrgb&w=1000",
 };
 
