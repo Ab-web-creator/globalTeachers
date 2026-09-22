@@ -1,6 +1,10 @@
 const benefits = [
-  <><strong className="font-semibold">100+ qualified teachers</strong> from all over the world</>,
-  <>Courses designed with <strong className="font-semibold">landing job</strong> in mind</>,
+  <><strong className="font-semibold">
+    100+ qualified teachers</strong> from all over the world
+  </>,
+  <>
+  Courses designed with <strong className="font-semibold">landing job</strong> in mind
+  </>,
   <>More than <strong className="font-semibold">50.000 happy students</strong> worldwide</>,
 ];
 

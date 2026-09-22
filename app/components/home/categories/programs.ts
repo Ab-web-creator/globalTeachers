@@ -14,7 +14,7 @@ export const programs = [
     icons: ["document", "folder", "profile", "support"],
   },
   {
-    tier: "VIP", title: "Сопровождение до оффера", image: "/images/myOwnImage.jpeg",
+    tier: "VIP", title: "Сопровождение до оффера", image: "/images/VIPpackage.jpeg",
     alt: "Портрет специалиста",
     description: "Персональная работа с вами на всём пути — от определения стратегии до получения предложения от международной школы.",
     features: ["Индивидуальная стратегия", "Личное сопровождение", "Поддержка до оффера", "Уверенный старт"],
