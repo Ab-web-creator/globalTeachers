@@ -1,8 +1,5 @@
+import HomePage from "./components/home/home-page";
+
 export default function Home() {
-  return (
-    <section>
-      <p>NOTHING at the moment</p>
-      <p>a second text</p>
-    </section>
-  );
+  return <HomePage />;
 }

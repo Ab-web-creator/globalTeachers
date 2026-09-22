@@ -7,3 +7,14 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Component structure
+
+- Always keep files short by extracting cohesive UI sections and reusable elements into focused components wherever possible.
+- Keep page files focused on composing components; put supporting content and interaction logic in small, dedicated modules or components.
+- Reduce file length through component extraction, not by compressing readable code onto fewer lines.
+
+## Tailwind CSS
+
+- Always prefer standard Tailwind utilities over arbitrary values, such as `rounded-3xl` instead of `rounded-[24px]` and `leading-normal` instead of `leading-[1.5]`.
+- Use the built-in typography and spacing scales wherever possible; reserve arbitrary values for custom colors or layouts without a suitable standard utility.
