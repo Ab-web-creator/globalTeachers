@@ -17,10 +17,9 @@ export default function ProgramsSection() {
       <div className="mx-auto max-w-400 px-6 py-16 sm:px-10 lg:px-16 xl:px-20">
         <header className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
           <div>
-            <p className="mb-5 text-sm font-semibold tracking-widest text-brand-500">НАШИ ПРОГРАММЫ</p>
-            <h2 id="programs-title" className="max-w-3xl text-3xl leading-tight font-semibold tracking-tight sm:text-4xl xl:text-5xl">Выберите свой путь<br className="hidden sm:block" /> к международной карьере</h2>
+            <p className="mb-5 text-sm font-semibold tracking-widest text-brand-500 uppercase">НАШИ ПРОГРАММЫ</p>
+            <h2 id="programs-title" className="max-w-3xl text-5xl leading-tight font-semibold tracking-tight 2xl:text-6xl">Выберите свой путь<br className="hidden sm:block" /> к международной карьере</h2>
           </div>
-          <button onClick={() => showDetails(null)} className="shrink-0 rounded-full bg-brand-100 px-6 py-3 text-sm font-medium text-brand-500 hover:bg-brand-200">Все программы <span aria-hidden="true">→</span></button>
         </header>
         <ul className="mt-8 grid gap-5 lg:grid-cols-3">
           {programs.map((program) => <CategoryCard key={program.tier} program={program} onDetails={() => showDetails(program)} />)}

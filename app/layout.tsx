@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Educine | Learn Something New",
-  description: "Explore your interests and discover a world of learning with Educine.",
+  title: "Global Teacher Hub",
+  description: "Build your international teaching career with Global Teacher Hub.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

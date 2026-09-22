@@ -1,11 +1,7 @@
 const benefits = [
-  <><strong className="font-semibold">
-    100+ qualified teachers</strong> from all over the world
-  </>,
-  <>
-  Courses designed with <strong className="font-semibold">landing job</strong> in mind
-  </>,
-  <>More than <strong className="font-semibold">50.000 happy students</strong> worldwide</>,
+  "Практические рекомендации от специалиста с международным опытом",
+  "Подготовка CV, портфолио и интервью по международным стандартам",
+  "Индивидуальная стратегия поиска с учётом вашего опыта и целей",
 ];
 
 export default function AboutBenefits() {
