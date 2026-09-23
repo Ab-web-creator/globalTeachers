@@ -5,10 +5,12 @@ import { useState } from "react";
 import Logo from "../Logo";
 import DesktopNavigation from "./desktop-navigation";
 import MobileNavigation from "./mobile-navigation";
+import useCompactHeader from "./use-compact-header";
 import type { Panel, PanelProps } from "./content";
 
 export default function SiteHeader({ openPanel }: PanelProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const compact = useCompactHeader();
 
   function navigate(panel: Panel) {
     setMenuOpen(false);
@@ -16,10 +18,10 @@ export default function SiteHeader({ openPanel }: PanelProps) {
   }
 
   return (
-    <header className="border-b border-black/5 bg-white">
-      <div className="mx-auto flex min-h-22 max-w-400 items-center justify-between gap-6 px-6 lg:min-h-25 lg:px-9">
+    <header className={`sticky top-0 z-40 border-b border-black/5 bg-white ${compact ? "shadow-sm" : ""}`}>
+      <div className={`mx-auto flex max-w-400 items-center justify-between gap-6 px-6 transition-[min-height] duration-200 motion-reduce:transition-none lg:px-9 ${compact ? "min-h-16 lg:min-h-18" : "min-h-22 lg:min-h-25"}`}>
         <Link href="/" aria-label="Global Teacher Hub home" className="shrink-0 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-500">
-          <Logo className="w-32 lg:w-40" aria-hidden="true" />
+          <Logo className={`transition-[width] duration-200 motion-reduce:transition-none ${compact ? "w-28 lg:w-32" : "w-32 lg:w-40"}`} aria-hidden="true" />
         </Link>
         <DesktopNavigation openPanel={navigate} />
         <button type="button" aria-expanded={menuOpen} aria-controls="mobile-menu" aria-label={menuOpen ? "Закрыть меню" : "Открыть меню"} onClick={() => setMenuOpen(!menuOpen)} className="rounded-xl p-3 text-brand-500 xl:hidden">

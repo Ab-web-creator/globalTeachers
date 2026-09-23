@@ -1,3 +1,5 @@
+import FeatureText from "./feature-text";
+
 const paths: Record<string, string> = {
   profile: "M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM4 22v-3a8 8 0 0 1 16 0v3",
   chat: "M21 11a9 9 0 0 1-9 9H3l2-5a9 9 0 1 1 16-4ZM8 10h.01M12 10h.01M16 10h.01",
@@ -14,7 +16,7 @@ export default function ProgramFeatures({ features, icons }: { features: string[
       {features.map((feature, index) => (
         <li key={feature} className="flex items-start gap-3">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="size-5 mt-1 shrink-0 text-brand-500" aria-hidden="true"><path d={paths[icons[index]]} /></svg>
-          <span className="min-w-0 font-semibold wrap-break-word text-sm leading-6 text-neutral-800">{feature}</span>
+          <span className="min-w-0 wrap-break-word text-sm leading-6 text-neutral-900"><FeatureText text={feature} /></span>
         </li>
       ))}
     </ul>

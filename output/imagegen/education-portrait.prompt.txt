@@ -1,0 +1,5 @@
+Tool: built-in image_gen
+Input: public/images/myOwnImage.webp
+Output: public/images/myOwnImage-education.webp
+
+Use case: identity-preserve. Edit target: supplied portrait for an international teacher career website. Replace ONLY the plain gray background with a tasteful photorealistic modern school library: softly defocused bookshelves, light warm wood, daylight, subtle muted teal accents. Calm professional educational atmosphere, no other people, no added lettering. Preserve the man exactly: same facial identity, expression, hair, tuxedo, hands, conductor baton, pose, placement and framing; preserve existing photograph details and signature. Portrait 2:3 composition. Background should be understated and softly blurred to keep attention on the person. Match the existing soft portrait lighting. Create a finished composite portrait with the education-themed scene behind him.
