@@ -4,7 +4,7 @@ import EducatorCard from "./educator-card";
 
 export default function LearningGallery({ openPanel }: PanelProps) {
   return (
-    <section aria-label="Learn together with Global Teacher Hub" className="grid grid-cols-2 grid-rows-[1.58fr_1fr] gap-4 sm:gap-6 lg:gap-7">
+    <section aria-label="Learn together with Global Teacher Hub" className="grid auto-rows-min grid-cols-2 gap-4 sm:gap-6 lg:gap-7">
       <div className="relative aspect-5/6 overflow-hidden rounded-3xl">
         <Image src={photos.portrait} alt="Portrait of a man in a tuxedo holding a conductor’s baton" fill preload sizes="(max-width: 1024px) 45vw, 25vw" className="object-cover object-top" />
       </div>

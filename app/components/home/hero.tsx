@@ -7,7 +7,7 @@ export default function Hero({ openPanel }: PanelProps) {
   return (
     <section className="py-2 lg:py-8" aria-labelledby="hero-title">
       <p className="mb-7 text-xs font-semibold tracking-wide text-brand-500 uppercase sm:mb-9 sm:text-base">Добро пожаловать в Globalteacherhub</p>
-      <h1 id="hero-title" className="max-w-2xl text-5xl xl:text-5xl 2xl:text-6xl leading-tight font-semibold tracking-wide">
+      <h1 id="hero-title" className="max-w-2xl text-4xl sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl leading-tight font-semibold tracking-wide">
         Ваша педагогическая карьера — без границ
       </h1>
       <p className="mt-7 max-w-xl text-base leading-loose text-[#616161] sm:mt-8 sm:text-lg">

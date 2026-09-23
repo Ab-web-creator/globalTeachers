@@ -5,7 +5,7 @@ export default function AboutCopy({ openPanel }: PanelProps) {
   return (
     <div className="py-4 lg:py-8">
       <p className="mb-7 text-sm font-semibold tracking-widest text-brand-500 sm:text-base uppercase">О нас</p>
-      <h2 id="about-title" className="text-5xl leading-tight font-semibold tracking-tight 2xl:text-6xl">
+      <h2 id="about-title" className="text-4xl sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl leading-tight font-semibold tracking-tight">
         Помогаем педагогам строить международную карьеру
       </h2>
       <p className="mt-7 text-base leading-loose text-neutral-600 sm:text-lg">

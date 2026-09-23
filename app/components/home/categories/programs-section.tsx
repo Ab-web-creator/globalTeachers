@@ -18,7 +18,7 @@ export default function ProgramsSection() {
         <header className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
           <div>
             <p className="mb-5 text-sm font-semibold tracking-widest text-brand-500 uppercase">НАШИ ПРОГРАММЫ</p>
-            <h2 id="programs-title" className="max-w-3xl text-5xl leading-tight font-semibold tracking-tight 2xl:text-6xl">Выберите свой путь<br className="hidden sm:block" /> к международной карьере</h2>
+            <h2 id="programs-title" className="max-w-3xl text-4xl sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl leading-tight font-semibold tracking-tight">Выберите свой путь<br className="hidden sm:block" /> к международной карьере</h2>
           </div>
         </header>
         <ul className="mt-8 grid gap-5 lg:grid-cols-3">
