@@ -10,11 +10,11 @@ const paths: Record<string, string> = {
 
 export default function ProgramFeatures({ features, icons }: { features: string[]; icons: string[] }) {
   return (
-    <ul className="grid grid-cols-2 gap-4 py-6 sm:grid-cols-4 lg:gap-2">
+    <ul className="grid grid-cols-2 auto-rows-fr gap-3 py-6">
       {features.map((feature, index) => (
-        <li key={feature} className="flex flex-col items-center gap-2 text-center">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="size-7 text-brand-500" aria-hidden="true"><path d={paths[icons[index]]} /></svg>
-          <span className="text-xs leading-relaxed text-neutral-600">{feature}</span>
+        <li key={feature} className="flex h-40 min-w-0 flex-col items-center justify-center gap-3 rounded-2xl border border-brand-100 px-3 py-4 text-center">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="size-7 shrink-0 text-brand-500" aria-hidden="true"><path d={paths[icons[index]]} /></svg>
+          <span className="w-full wrap-break-word text-xs leading-relaxed text-neutral-600">{feature}</span>
         </li>
       ))}
     </ul>
