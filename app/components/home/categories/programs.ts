@@ -14,6 +14,7 @@ const proServices = [
 export const programs = [
   {
     tier: "START", title: "Начните правильно", image: "/images/startPackage.jpeg",
+    price: 99,
     alt: "Педагог планирует международную карьеру за ноутбуком",
     description: "Для педагогов, которые готовы искать работу самостоятельно, но хотят понимать, с чего начать и как избежать типичных ошибок.",
     inclusionLabel: "В программу входит:",
@@ -24,6 +25,7 @@ export const programs = [
   },
   {
     tier: "PRO", title: "Увеличьте свои шансы", image: "/images/proPackage.jpeg",
+    price: 299,
     alt: "Специалист за рабочим столом",
     description: "Комплексная подготовка к поиску работы: профессиональное CV, портфолио, LinkedIn, подготовка к интервью и помощь с откликами.",
     inclusionLabel: "Всё из START, плюс:",
@@ -34,6 +36,7 @@ export const programs = [
   },
   {
     tier: "VIP", title: "Сопровождение до оффера", image: "/images/VIPpackage.jpeg",
+    price: null,
     alt: "Портрет специалиста",
     description: "Персональная работа с вами на всём пути — от определения стратегии до получения предложения от международной школы.",
     inclusionLabel: "Всё из START и PRO, плюс:",
