@@ -21,7 +21,7 @@ export default function CourseCategoryCard({ title, description, imageBounds, op
         >
           <image href="/images/course-categories.png" width="1254" height="1254" />
         </svg>
-        <span className="text-xl font-medium tracking-tight group-hover:text-brand-500 xl:text-2xl">{title}</span>
+        <span className="text-xl font-medium tracking-tight group-hover:text-brand-500 xl:text-xl">{title}</span>
         <span className="mt-3 text-base leading-relaxed text-neutral-600">{description}</span>
       </button>
     </li>

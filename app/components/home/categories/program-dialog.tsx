@@ -1,6 +1,7 @@
 import type { RefObject } from "react";
 import { programs, type Program } from "./programs";
 import ProgramFeatures from "./program-features";
+import ProgramInclusions from "./program-inclusions";
 
 export default function ProgramDialog({ dialog, program }: { dialog: RefObject<HTMLDialogElement | null>; program: Program | null }) {
   return (
@@ -11,6 +12,7 @@ export default function ProgramDialog({ dialog, program }: { dialog: RefObject<H
         <article key={item.tier} className="mt-6 border-t border-brand-100 pt-5">
           <h3 className="text-lg font-medium">{item.tier} — {item.title}</h3>
           <p className="mt-3 text-sm leading-relaxed text-neutral-600">{item.description}</p>
+          <ProgramInclusions program={item} detailed />
           <ProgramFeatures features={item.features} icons={item.icons} />
         </article>
       ))}
