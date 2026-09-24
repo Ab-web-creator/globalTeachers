@@ -7,6 +7,7 @@ import HeroSection from "./hero-section";
 import PartnersSection from "./partners-section";
 import PreviewDialog from "./preview-dialog";
 import AboutSection from "./about/about-section";
+import Benefits from "./Benefits";
 import StatisticsSection from "./statistics-section";
 import CategoriesSection from "./categories/categories-section";
 import ProgramsSection from "./categories/programs-section";
@@ -26,6 +27,7 @@ export default function HomePage() {
       <main>
         <HeroSection openPanel={openPanel} />
         <PartnersSection />
+        <Benefits />
         <AboutSection openPanel={openPanel} />
         <StatisticsSection />
         <CategoriesSection openPanel={openPanel} />

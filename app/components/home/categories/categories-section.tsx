@@ -37,6 +37,9 @@ export default function CategoriesSection({ openPanel }: PanelProps) {
         <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:mt-20 lg:grid-cols-4">
           {categories.map((category) => <CourseCategoryCard key={category.title} {...category} openPanel={openPanel} />)}
         </ul>
+        <p className="mx-auto mt-10 max-w-3xl text-center text-base leading-relaxed text-neutral-600 sm:text-lg">
+          Мы сопровождаем педагогов от поиска подходящей вакансии до успешного переезда и начала работы за рубежом. Все необходимые услуги — в одном месте.
+        </p>
       </div>
     </section>
   );
