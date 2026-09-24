@@ -1,4 +1,4 @@
-import BookIcon from "./book-icon";
+import Logo from "../Logo";
 import type { PanelProps } from "./content";
 import FooterBanner from "./footer/footer-banner";
 import FooterContact from "./footer/footer-contact";
@@ -12,12 +12,11 @@ export default function SiteFooter({ openPanel }: PanelProps) {
         <div className="grid items-start gap-8 py-8 sm:grid-cols-2 sm:py-10 xl:grid-cols-[1.5fr_0.7fr_0.9fr_1.4fr] xl:gap-10">
           <div>
             <a href="#home" aria-label="GlobalTeacherHub — на главную" className="inline-flex items-center gap-3 rounded-sm">
-              <BookIcon className="h-10 w-11 shrink-0 text-brand-200" />
-              <span className="text-xl font-medium tracking-tight sm:text-2xl">GlobalTeacher<span className="text-brand-200">Hub</span></span>
+              <Logo className="w-32 brightness-0 invert sm:w-40" aria-hidden="true" />
             </a>
             <p className="mt-4 max-w-sm text-base leading-normal text-brand-100">
               Ваша работа мечты может быть<br className="hidden sm:block" /> в любой точке мира.<br />
-              Найдите её вместе с GlobalTeacherHub.
+              Найдите её вместе с нами, <br /> с GlobalTeacherHub.
             </p>
           </div>
           <FooterLinks openPanel={openPanel} />

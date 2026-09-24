@@ -10,7 +10,6 @@ const groups: { title: string; links: FooterLink[] }[] = [
       { label: "Программы", href: "#programs" },
       { label: "Вакансии", panel: "Jobs" },
       { label: "Полезное", href: "#categories" },
-      { label: "Контакты", href: "#footer-contact" },
     ],
   },
   {
