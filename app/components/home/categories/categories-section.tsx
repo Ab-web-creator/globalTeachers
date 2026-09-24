@@ -33,13 +33,13 @@ export default function CategoriesSection({ openPanel }: PanelProps) {
           <h2 id="categories-title" className="text-4xl sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl leading-none font-semibold tracking-tight">Всё для вашей международной 
             <br />
             карьеры</h2>
+          <p className="mx-auto mt-5 max-w-3xl text-base leading-normal text-neutral-600 sm:text-lg">
+            Мы сопровождаем педагогов от поиска подходящей вакансии до успешного переезда и начала работы за рубежом. Все необходимые услуги — в одном месте.
+          </p>
         </header>
         <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:mt-10 lg:grid-cols-4">
           {categories.map((category) => <CourseCategoryCard key={category.title} {...category} openPanel={openPanel} />)}
         </ul>
-        <p className="mx-auto mt-6 max-w-3xl text-center text-base leading-normal text-neutral-600 sm:text-lg">
-          Мы сопровождаем педагогов от поиска подходящей вакансии до успешного переезда и начала работы за рубежом. Все необходимые услуги — в одном месте.
-        </p>
       </div>
     </section>
   );
