@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import type { Panel } from "./content";
 import SiteHeader from "./site-header";
+import SiteFooter from "./site-footer";
 import HeroSection from "./hero-section";
 import PartnersSection from "./partners-section";
 import PreviewDialog from "./preview-dialog";
@@ -24,7 +25,7 @@ export default function HomePage() {
   return (
     <>
       <SiteHeader openPanel={openPanel} />
-      <main>
+      <main id="home">
         <HeroSection openPanel={openPanel} />
         <PartnersSection />
         <Benefits />
@@ -33,6 +34,7 @@ export default function HomePage() {
         <CategoriesSection openPanel={openPanel} />
         <ProgramsSection />
       </main>
+      <SiteFooter openPanel={openPanel} />
       <PreviewDialog dialog={dialog} panel={panel} />
     </>
   );
