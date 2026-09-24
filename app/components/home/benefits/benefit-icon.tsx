@@ -17,6 +17,13 @@ export default function BenefitIcon({ name }: { name: BenefitIconName }) {
         </>
       )}
       {name === "insurance" && <path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6V3Z" />}
+      {name === "visa" && (
+        <>
+          <rect x="5" y="2" width="14" height="20" rx="2" />
+          <circle cx="12" cy="10" r="4" />
+          <path d="M8 10h8M12 6c-2 2-2 6 0 8 2-2 2-6 0-8ZM9 18h6" />
+        </>
+      )}
     </svg>
   );
 }

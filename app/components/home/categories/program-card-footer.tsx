@@ -9,7 +9,10 @@ export default function ProgramCardFooter({ program, onDetails }: ProgramCardFoo
         {program.price === null ? (
           <span className="text-xs leading-snug font-medium">Стоимость рассчитывается индивидуально</span>
         ) : (
-          <span className="text-3xl font-semibold tracking-tight">${program.price}</span>
+          <span className="flex flex-col">
+            <span className="text-3xl font-semibold tracking-tight">${program.price}</span>
+            <span className="text-xs leading-normal text-neutral-600">единоразовая</span>
+          </span>
         )}
       </p>
       <button onClick={onDetails} className="shrink-0 rounded-full bg-brand-100 px-5 py-3 text-sm font-medium whitespace-nowrap text-brand-900 transition hover:bg-brand-200" aria-label={`Подробнее о программе ${program.tier}`}>

@@ -23,7 +23,7 @@ export default function Benefits() {
             Международные школы предлагают комплексный пакет, который может включать гораздо больше.
           </p>
         </header>
-        <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <ul className="mt-8 grid gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-y-12">
           {benefits.map((benefit) => (
             <BenefitCard key={benefit.id} benefit={benefit} />
           ))}

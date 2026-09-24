@@ -1,9 +1,9 @@
-export type BenefitIconName = "salary" | "housing" | "flights" | "education" | "insurance";
+export type BenefitIconName = "salary" | "housing" | "flights" | "education" | "insurance" | "visa";
 
 export type Benefit = {
   id: BenefitIconName;
   title: string;
-  subtitle: string;
+  subtitle?: string;
   description: string;
   color: string;
   iconColor: string;
@@ -49,5 +49,12 @@ export const benefits: Benefit[] = [
     description: "Страховка может распространяться на сотрудника и семью, включая международное покрытие.",
     color: "bg-rose-50",
     iconColor: "bg-rose-100 text-rose-700",
+  },
+  {
+    id: "visa",
+    title: "Виза и переезд",
+    description: "Многие международные школы берут на себя оформление рабочей визы и документов для переезда и оплачивают связанные расходы.",
+    color: "bg-violet-50",
+    iconColor: "bg-violet-100 text-violet-700",
   },
 ];
