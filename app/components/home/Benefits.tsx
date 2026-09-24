@@ -17,7 +17,7 @@ export default function Benefits() {
             id="benefits-title"
             className="mt-4 text-4xl leading-tight font-semibold tracking-tight text-brand-950 sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl"
           >
-            $4,000 — это ещё<br className="hidden sm:block" /> не весь доход.
+            $4,000 — это ещё<br className="hidden sm:block" /> не весь доход
           </h2>
           <p className="mx-auto mt-5 max-w-3xl text-base leading-loose text-neutral-600 sm:text-lg">
             Международные школы предлагают комплексный пакет, который может включать гораздо больше.

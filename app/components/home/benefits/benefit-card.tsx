@@ -18,18 +18,20 @@ export default function BenefitCard({ benefit }: { benefit: Benefit }) {
         <div className={`relative mx-auto -mt-10 mb-3 flex size-20 items-center justify-center rounded-full ${benefit.iconColor}`}>
           <BenefitIcon name={benefit.id} />
         </div>
-        <h3 className={`leading-tight tracking-tight text-brand-950 ${benefit.subtitle ? "text-3xl font-semibold" : "text-xl font-medium"}`}>
+        <h3 className="text-3xl leading-tight font-semibold tracking-tight text-brand-950">
           {benefit.title}
         </h3>
         {benefit.subtitle && (
-          <p className="mt-1 text-base font-medium text-brand-950">{benefit.subtitle}</p>
+          <p className={`mt-1 text-brand-950 ${benefit.id === "education" ? "text-3xl leading-tight font-semibold tracking-tight" : "text-base font-medium"}`}>
+            {benefit.subtitle}
+          </p>
         )}
         {benefit.label && (
           <p className="mt-4 text-lg leading-tight font-medium text-brand-950">{benefit.label}</p>
         )}
-        <p className="mt-4 text-base leading-relaxed text-neutral-700">{benefit.description}</p>
+        <p className="mt-4 text-left text-base leading-relaxed text-neutral-700">{benefit.description}</p>
         {benefit.detail && (
-          <p className="mt-3 text-base leading-relaxed text-neutral-700">{benefit.detail}</p>
+          <p className="mt-3 text-left text-base leading-relaxed text-neutral-700">{benefit.detail}</p>
         )}
       </div>
     </li>
