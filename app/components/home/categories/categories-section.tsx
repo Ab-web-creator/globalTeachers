@@ -27,17 +27,17 @@ const categories = [
 export default function CategoriesSection({ openPanel }: PanelProps) {
   return (
     <section id="categories" aria-labelledby="categories-title" className="bg-brand-50">
-      <div className="mx-auto max-w-400 px-6 py-16 sm:px-10 sm:py-20 lg:px-16 lg:py-24 xl:px-20">
+      <div className="mx-auto max-w-400 px-6 py-10 sm:px-10 sm:py-12 lg:px-16 lg:py-16 xl:px-20">
         <header className="text-center">
-          <p className="mb-6 text-sm font-semibold tracking-widest text-brand-500 uppercase sm:text-base">КАК МЫ ПОМОГАЕМ</p>
-          <h2 id="categories-title" className="text-4xl sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl leading-tight font-semibold tracking-tight">Всё для вашей международной 
+          <p className="mb-3 text-sm font-semibold tracking-widest text-brand-500 uppercase sm:mb-4 sm:text-base">КАК МЫ ПОМОГАЕМ</p>
+          <h2 id="categories-title" className="text-4xl sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl leading-none font-semibold tracking-tight">Всё для вашей международной 
             <br />
             карьеры</h2>
         </header>
-        <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:mt-20 lg:grid-cols-4">
+        <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:mt-10 lg:grid-cols-4">
           {categories.map((category) => <CourseCategoryCard key={category.title} {...category} openPanel={openPanel} />)}
         </ul>
-        <p className="mx-auto mt-10 max-w-3xl text-center text-base leading-relaxed text-neutral-600 sm:text-lg">
+        <p className="mx-auto mt-6 max-w-3xl text-center text-base leading-normal text-neutral-600 sm:text-lg">
           Мы сопровождаем педагогов от поиска подходящей вакансии до успешного переезда и начала работы за рубежом. Все необходимые услуги — в одном месте.
         </p>
       </div>

@@ -12,11 +12,11 @@ const paths: Record<string, string> = {
 
 export default function ProgramFeatures({ features, icons }: { features: string[]; icons: string[] }) {
   return (
-    <ul className="space-y-4 py-6">
+    <ul className="space-y-3 py-4">
       {features.map((feature, index) => (
         <li key={feature} className="flex items-start gap-3">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="size-5 mt-1 shrink-0 text-brand-500" aria-hidden="true"><path d={paths[icons[index]]} /></svg>
-          <span className="min-w-0 wrap-break-word text-sm leading-6 text-neutral-900"><FeatureText text={feature} /></span>
+          <span className="min-w-0 wrap-break-word text-sm leading-normal text-neutral-900"><FeatureText text={feature} /></span>
         </li>
       ))}
     </ul>

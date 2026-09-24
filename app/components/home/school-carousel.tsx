@@ -45,7 +45,7 @@ export default function SchoolCarousel() {
   );
 
   return (
-    <div className="mt-8 sm:mt-12" role="region" aria-roledescription="карусель" aria-labelledby="partners-title">
+    <div className="mt-5 sm:mt-6" role="region" aria-roledescription="карусель" aria-labelledby="partners-title">
       <ul
         ref={track}
         id="school-carousel"
@@ -65,7 +65,7 @@ export default function SchoolCarousel() {
           touchStart.current = null;
         }}
         onTouchCancel={() => { touchStart.current = null; }}
-        className="flex touch-pan-y items-center justify-between gap-6 rounded-xl py-4"
+        className="flex touch-pan-y items-center justify-between gap-6 rounded-xl py-2"
       >
         {visiblePartners.map(({ name, image }) => (
           <li key={image} className="flex w-28 max-w-full shrink-0 items-center justify-center sm:w-32 lg:w-40">

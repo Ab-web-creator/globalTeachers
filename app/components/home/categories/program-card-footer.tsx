@@ -4,7 +4,7 @@ type ProgramCardFooterProps = { program: Program; onDetails: () => void };
 
 export default function ProgramCardFooter({ program, onDetails }: ProgramCardFooterProps) {
   return (
-    <div className="mx-3 flex flex-wrap items-center justify-between gap-4 border-t border-brand-100 pt-5 pb-3">
+    <div className="mx-3 flex flex-wrap items-center justify-between gap-4 border-t border-brand-100 pt-3 pb-2">
       <p className={`flex min-h-14 shrink-0 items-center text-brand-500 ${program.price === null ? "basis-48" : "basis-32"}`}>
         {program.price === null ? (
           <span className="text-xs leading-snug font-medium">Стоимость рассчитывается индивидуально</span>

@@ -4,7 +4,7 @@ const flags = ["uk", "uae", "singapore", "thailand"];
 
 export default function StudentTrust() {
   return (
-    <div className="@container mt-12 flex items-center gap-3 sm:mt-14">
+    <div className="@container mt-6 flex items-center gap-3 sm:mt-8">
       <div className="flex shrink-0 -space-x-1" aria-hidden="true">
         {flags.map((flag) => (
           <Image key={flag} src={`/images/flags/${flag}.svg`} alt="" width={40} height={40} className="size-7 rounded-full border-2 border-white object-cover shadow-sm @sm:size-8 @xl:size-10" />

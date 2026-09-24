@@ -21,12 +21,12 @@ export default function CategoryCard({ program, onDetails }: CategoryCardProps) 
         {imageFailed ? <p className="flex h-full items-center justify-center text-brand-500">Фото программы {program.tier}</p> :
           <Image src={program.image} alt={program.alt} fill sizes="(max-width: 1024px) 90vw, 30vw" className="object-cover object-top" onError={() => setImageFailed(true)} />}
       </div>
-      <div className="flex flex-col px-3 pt-7">
+      <div className="flex flex-col px-3 pt-4">
         <div className="flex items-start justify-between gap-3">
           <h3 className="min-w-0 text-2xl leading-tight font-medium tracking-tight">{program.title}</h3>
           <span className={`mt-1 w-20 shrink-0 rounded-full px-4 py-1 text-center text-xs font-semibold text-white shadow-sm ${badgeColors[program.tier]}`}>{program.tier}</span>
         </div>
-        <p className="mt-3 text-sm leading-relaxed text-neutral-600">{program.description}</p>
+        <p className="mt-2 text-sm leading-normal text-neutral-600">{program.description}</p>
       </div>
       <div className="px-3">
         <ProgramInclusions program={program} />
