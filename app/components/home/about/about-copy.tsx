@@ -9,7 +9,7 @@ export default function AboutCopy({ openPanel }: PanelProps) {
         Помогаем педагогам строить международную карьеру
       </h2>
       <p className="mt-7 text-base leading-loose text-neutral-600 sm:text-lg">
-        Поиск работы за рубежом может казаться сложным: с чего начать, где искать вакансии, как составить резюме и подготовиться к интервью. GlobalTeacherHub помогает пройти этот путь уверенно и последовательно — от первого шага до получения оффера.
+      Международная карьера начинается не с отправки сотен резюме, а с понимания своих возможностей. Мы помогаем определить вашу точку старта, выбрать направление и выстроить понятный путь к международному офферу.
       </p>
       <AboutBenefits />
       <button onClick={() => openPanel("Courses")} className="mt-9 rounded-full bg-brand-100 px-8 py-4 text-base font-medium text-brand-500 transition hover:bg-brand-200 sm:mt-11">
