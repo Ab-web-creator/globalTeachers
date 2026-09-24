@@ -6,7 +6,7 @@ const contacts = [
 
 export default function FooterContact() {
   return (
-    <div id="footer-contact" className="relative overflow-hidden rounded-3xl bg-brand-500/70 p-6 sm:p-7">
+    <div id="footer-contact" className="relative col-span-2 overflow-hidden rounded-3xl bg-brand-500/70 p-6 sm:p-7 xl:col-span-1">
       <svg viewBox="0 0 120 120" fill="none" stroke="currentColor" strokeWidth="1.5" className="pointer-events-none absolute -right-8 bottom-0 size-48 text-brand-300/15" aria-hidden="true">
         <path d="m10 35 50-23 50 23-50 23-50-23ZM30 45v23q30 20 60 0V45M110 35v40M18 82l45-14 47 18-46 18-46-22ZM18 90l46 22 46-18M18 98l46 22 46-18" />
       </svg>

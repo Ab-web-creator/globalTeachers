@@ -27,7 +27,7 @@ const groups: { title: string; links: FooterLink[] }[] = [
 export default function FooterLinks({ openPanel }: PanelProps) {
   const linkClass = "text-left transition hover:text-white hover:underline underline-offset-4";
   return groups.map(({ title, links }) => (
-    <nav key={title} aria-label={`Подвал: ${title}`}>
+    <nav key={title} aria-label={`Подвал: ${title}`} className="xl:pt-7">
       <h2 className="text-lg leading-tight font-medium text-white">{title}</h2>
       <ul className="mt-5 space-y-2 text-sm leading-normal text-brand-100">
         {links.map((link) => (
