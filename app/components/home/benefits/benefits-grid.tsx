@@ -12,10 +12,10 @@ export default function BenefitsGrid() {
       <div className="flex flex-col items-center gap-8">
         <ul
           id="benefits-list"
-          className={`grid min-w-0 max-w-full grid-cols-[minmax(0,18rem)] justify-center gap-4 @min-[37rem]:grid-cols-[repeat(2,18rem)] @min-[56rem]:grid-cols-[repeat(3,18rem)] @min-[75rem]:grid-cols-[repeat(4,18rem)] ${
+          className={`grid w-full min-w-0 max-w-full grid-cols-1 justify-center gap-4 @min-[37rem]:w-auto @min-[37rem]:grid-cols-[repeat(2,16rem)] @min-[50rem]:grid-cols-[repeat(3,16rem)] @min-[67rem]:grid-cols-[repeat(4,16rem)] ${
             expanded
               ? ""
-              : "[&>li]:hidden [&>li:first-child]:block @min-[37rem]:[&>li:nth-child(2)]:block @min-[56rem]:[&>li:nth-child(3)]:block @min-[75rem]:[&>li:nth-child(4)]:block"
+              : "[&>li:nth-child(n+5)]:hidden @max-[67rem]:[&>li:nth-child(4)]:hidden @min-[37rem]:@max-[50rem]:[&>li:nth-child(3)]:hidden"
           }`}
         >
           {benefits.map((benefit) => (

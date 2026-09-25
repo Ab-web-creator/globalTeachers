@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Logo from "../Logo";
 import DesktopNavigation from "./desktop-navigation";
 import MobileNavigation from "./mobile-navigation";
@@ -11,6 +11,7 @@ import type { Panel, PanelProps } from "./content";
 export default function SiteHeader({ openPanel }: PanelProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const compact = useCompactHeader();
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
 
   function navigate(panel: Panel) {
     setMenuOpen(false);
@@ -28,7 +29,7 @@ export default function SiteHeader({ openPanel }: PanelProps) {
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d={menuOpen ? "M6 6l12 12M6 18 18 6" : "M3 6h18M3 12h18M3 18h18"} /></svg>
         </button>
       </div>
-      {menuOpen && <MobileNavigation openPanel={navigate} />}
+      {menuOpen && <MobileNavigation openPanel={navigate} onClose={closeMenu} />}
     </header>
   );
 }
