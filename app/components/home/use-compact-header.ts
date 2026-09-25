@@ -1,16 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type RefObject } from "react";
 
-export default function useCompactHeader() {
+export default function useCompactHeader(headerRef: RefObject<HTMLElement | null>) {
   const [compact, setCompact] = useState(false);
 
   useEffect(() => {
     let current = false;
+    const hero = document.querySelector<HTMLElement>('section[aria-labelledby="hero-title"]');
+    let expandedHeight = headerRef.current?.getBoundingClientRect().height ?? 0;
 
     function update() {
-      // Separate thresholds prevent flickering as the header changes height.
-      const next = current ? window.scrollY > 16 : window.scrollY > 96;
+      // Retain the expanded height so shrinking the navbar cannot flip it back.
+      if (!current) expandedHeight = headerRef.current?.getBoundingClientRect().height ?? expandedHeight;
+      const next = !hero || hero.getBoundingClientRect().bottom <= expandedHeight;
       if (next !== current) {
         current = next;
         setCompact(next);
@@ -19,8 +22,15 @@ export default function useCompactHeader() {
 
     update();
     window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
-  }, []);
+    window.addEventListener("resize", update);
+    const observer = new ResizeObserver(update);
+    if (hero) observer.observe(hero);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+      observer.disconnect();
+    };
+  }, [headerRef]);
 
   return compact;
 }

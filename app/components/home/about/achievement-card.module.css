@@ -1,0 +1,16 @@
+.card {
+  position: relative;
+  background: rgb(255 255 255 / 92%);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(to right, #2563eb, #7c3aed, #ec4899, #f97316);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}

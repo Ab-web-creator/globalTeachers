@@ -16,7 +16,7 @@ export default function ProgramCardFooter({ program, onDetails }: ProgramCardFoo
             </span>
           )}
         </p>
-        <button onClick={onDetails} className="shrink-0 rounded-full bg-brand-100 px-5 py-3 text-base lg:text-sm font-medium whitespace-nowrap text-brand-900 transition hover:bg-brand-200" aria-label={`Подробнее о программе ${program.tier}`}>
+        <button onClick={onDetails} className="shrink-0 rounded-full bg-linear-to-r from-blue-100 to-violet-200 px-5 py-3 text-base lg:text-sm font-medium whitespace-nowrap text-brand-700 transition hover:from-blue-200 hover:to-violet-300 hover:shadow-md" aria-label={`Подробнее о программе ${program.tier}`}>
           Подробнее
         </button>
       </div>

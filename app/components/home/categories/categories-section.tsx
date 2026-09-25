@@ -26,11 +26,11 @@ const categories = [
 
 export default function CategoriesSection({ openPanel }: PanelProps) {
   return (
-    <section id="categories" aria-labelledby="categories-title" className="bg-brand-50">
+    <section id="categories" aria-labelledby="categories-title" className="bg-linear-to-br from-sky-100 via-violet-100 to-pink-100">
       <div className="mx-auto max-w-400 px-6 py-10 sm:px-10 sm:py-12 lg:px-16 lg:py-16 xl:px-20">
         <header data-reveal className="text-center">
           <p className="mb-3 text-sm font-semibold tracking-widest text-brand-500 uppercase sm:mb-4 sm:text-base">КАК МЫ ПОМОГАЕМ</p>
-          <h2 id="categories-title" className="text-4xl sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl leading-none font-semibold tracking-wide">Всё для вашей международной 
+          <h2 id="categories-title" className="text-4xl sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl leading-none font-semibold tracking-wide text-brand-700">Всё для вашей международной 
             <br />
             карьеры</h2>
           <p className="mx-auto mt-5 max-w-3xl text-base leading-normal text-neutral-600 sm:text-lg">

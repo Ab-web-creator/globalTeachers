@@ -6,17 +6,28 @@
 }
 
 @theme {
-  --color-brand-50: #edf5f7;
-  --color-brand-100: #d5ebf0;
-  --color-brand-200: #acd2dc;
-  --color-brand-300: #89aab5;
-  --color-brand-400: #4b8d9c;
-  --color-brand-500: #00566b;
-  --color-brand-600: #003e4d;
-  --color-brand-700: #002e3b;
-  --color-brand-800: #00232d;
-  --color-brand-900: #001820;
-  --color-brand-950: #000d12;
+  --color-brand-50: #f8f8fa;
+  --color-brand-100: #eeeef2;
+  --color-brand-200: #dddde5;
+  --color-brand-300: #b9b5ff;
+  --color-brand-400: #8580f5;
+  --color-brand-500: #5750cf;
+  --color-brand-600: #453bb5;
+  --color-brand-700: #29292e;
+  --color-brand-800: #222227;
+  --color-brand-900: #19191d;
+  --color-brand-950: #101013;
+
+  --color-accent-50: #edf8f3;
+  --color-accent-100: #d4efe1;
+  --color-accent-200: #abdcbc;
+  --color-accent-300: #7fc698;
+  --color-accent-400: #58af77;
+  --color-accent-500: #3d9660;
+  --color-accent-600: #2f7a4d;
+  --color-accent-700: #27613f;
+  --color-accent-800: #214d34;
+  --color-accent-900: #1b3f2b;
 }
 
 @theme inline {
@@ -53,4 +64,23 @@ button {
 ::selection {
   background: var(--color-brand-100);
   color: var(--color-brand-500);
+}
+
+@utility action-gradient {
+  background-image: linear-gradient(to right, #2563eb, #7c3aed);
+  color: #ffffff;
+  &:hover {
+    background-image: linear-gradient(to right, #1d4ed8, #6d28d9);
+  }
+}
+
+@utility action-gradient-outline {
+  border: 2px solid transparent;
+  background: linear-gradient(white, white) padding-box,
+    linear-gradient(to right, #2563eb, #7c3aed, #ec4899, #f97316) border-box;
+  color: var(--color-brand-700);
+  &:hover {
+    background: linear-gradient(#f8f8fa, #f8f8fa) padding-box,
+      linear-gradient(to right, #1d4ed8, #6d28d9, #db2777, #ea580c) border-box;
+  }
 }

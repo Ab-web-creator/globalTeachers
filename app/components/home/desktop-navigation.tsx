@@ -11,7 +11,7 @@ export default function DesktopNavigation({ openPanel, onHero = false }: PanelPr
           {label}{expandable && <span aria-hidden="true" className="text-xl font-light text-brand-300">+</span>}
         </button>
       ))}
-      <button onClick={() => openPanel("Courses")} className={`rounded-full px-4 py-3.5 font-medium transition lg:px-7 ${onHero ? "bg-transparent text-white hover:text-brand-200" : "bg-brand-100 text-brand-500 hover:bg-brand-200"}`}>Начать свой путь</button>
+      <button onClick={() => openPanel("Courses")} className={`border-0 bg-transparent px-4 py-3.5 font-medium transition-colors lg:px-7 ${onHero ? "text-white hover:text-brand-200" : "text-brand-500 hover:text-brand-600"}`}>Начать свой путь</button>
     </nav>
   );
 }

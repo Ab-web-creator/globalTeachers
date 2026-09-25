@@ -14,7 +14,7 @@ export default function Benefits() {
           </p>
           <h2
             id="benefits-title"
-            className="mt-3 text-4xl leading-none font-semibold tracking-wide text-brand-950 sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl"
+            className="mt-3 text-4xl leading-none font-semibold tracking-wide text-brand-700 sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl"
           >
             $4,000 — это ещё<br className="hidden sm:block" /> не весь доход
           </h2>

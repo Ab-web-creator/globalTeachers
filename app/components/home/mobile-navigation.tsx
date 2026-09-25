@@ -50,7 +50,7 @@ export default function MobileNavigation({ openPanel, onClose }: MobileNavigatio
             <button key={panel} type="button" onClick={() => openPanel(panel)} className="rounded-xl px-4 py-3 transition hover:bg-brand-50 hover:text-brand-500">{label}</button>
           ))}
           <a href="#programs" onClick={onClose} className="rounded-xl px-4 py-3 transition hover:bg-brand-50 hover:text-brand-500">Программы</a>
-          <button type="button" onClick={() => openPanel("Consultation")} className="mt-4 rounded-full bg-brand-500 px-6 py-4 text-base text-white transition hover:bg-brand-600">Получить консультацию</button>
+          <button type="button" onClick={() => openPanel("Consultation")} className="mt-4 rounded-full action-gradient px-6 py-4 text-base text-white transition hover:action-gradient">Получить консультацию</button>
         </nav>
       </div>
     </dialog>
