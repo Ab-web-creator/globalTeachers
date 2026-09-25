@@ -1,31 +1,23 @@
 import type { PanelProps } from "./content";
-import PrimaryButton from "./primary-button";
-import SecondaryButton from "./secondary-button";
-import StudentTrust from "./student-trust";
 
 export default function Hero({ openPanel }: PanelProps) {
   return (
-    <section className="py-2 lg:py-4" aria-labelledby="hero-title">
-      <p className="mb-3 text-xs font-semibold tracking-wide text-brand-500 uppercase sm:mb-4 sm:text-base">МЕЖДУНАРОДНАЯ КАРЬЕРА ПЕДАГОГА</p>
-      <h1 id="hero-title" className="max-w-2xl text-4xl sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl leading-none font-semibold tracking-wide">
-        Помогаем учителям из СНГ строить карьеру зарубежом
+    <div className="relative z-10 max-w-3xl py-12 sm:py-16 lg:py-20">
+      <p className="mb-4 text-xs font-semibold tracking-widest text-brand-200 uppercase sm:text-sm">Международная карьера педагога</p>
+      <h1 id="hero-title" className="text-4xl leading-none font-semibold tracking-wide text-white sm:text-5xl xl:text-6xl 2xl:text-7xl">
+        Ваш опыт.<br />Новая страна.<br />
+        <span className="text-brand-200">Новые возможности.</span>
       </h1>
-      <p className="mt-5 max-w-xl text-base leading-normal text-[#616161] sm:mt-6 sm:text-lg">
-        Хотите работать в международной школе за рубежом, но сомневаетесь в своих силах?
-        Ваш опыт может быть ценнее, чем вы думаете. Расскажите нам о себе — вместе
-        определим ваши сильные стороны и обсудим первые шаги к работе за границей.
+      <p className="mt-6 max-w-xl text-base leading-relaxed text-brand-50 sm:text-lg">
+        Помогаем учителям из СНГ строить карьеру за рубежом — от оценки опыта и подготовки CV до собеседований и международного оффера.
       </p>
-      <div className="mt-6 flex max-w-xl flex-wrap gap-4 sm:mt-7 sm:gap-6">
-        <SecondaryButton className="min-w-max flex-1 basis-64" onClick={() => openPanel("Courses")}>
-          <span className="whitespace-nowrap">Отправить запрос</span>
-          <span aria-hidden="true" className="shrink-0 text-2xl leading-none text-brand-700">→</span>
-        </SecondaryButton>
-        <PrimaryButton className="min-w-max flex-1 basis-64" onClick={() => openPanel("Demo")}>
-          <span className="whitespace-nowrap">Оценить свои шансы</span>
-          <span aria-hidden="true" className="shrink-0 text-2xl leading-none text-brand-200">→</span>
-        </PrimaryButton>
+      <div className="mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
+        <button type="button" onClick={() => openPanel("Consultation")} className="inline-flex items-center justify-center gap-4 rounded-full bg-white px-6 py-4 text-base font-semibold text-brand-700 transition hover:bg-brand-100">
+          Получить консультацию <span aria-hidden="true">→</span>
+        </button>
+        <a href="#programs" className="rounded-full border border-brand-200/60 px-6 py-4 text-base font-medium text-white transition hover:bg-white/10">Выбрать программу</a>
       </div>
-      <StudentTrust />
-    </section>
+      <p className="mt-6 text-sm leading-normal text-brand-200">Понятный план. Личная поддержка. Ваш следующий шаг.</p>
+    </div>
   );
 }

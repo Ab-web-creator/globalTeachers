@@ -1,0 +1,65 @@
+.windows {
+  /* Match the background image's object-cover and responsive position. */
+  mask-image: url("/images/hero-window-mask.svg");
+  mask-size: cover;
+  mask-position: center;
+  mask-repeat: no-repeat;
+}
+
+@media (min-width: 64rem) {
+  .windows {
+    mask-position: right center;
+  }
+}
+
+.flight {
+  position: absolute;
+  width: 100%;
+  color: #171717;
+  opacity: 0;
+  animation: fly-across 28s linear infinite;
+}
+
+.plane {
+  width: 64px;
+  height: auto;
+  transform: rotate(-5deg);
+}
+
+.departing {
+  top: 26%;
+  animation-delay: -8s;
+}
+
+.arriving {
+  top: 16%;
+  animation-duration: 34s;
+  animation-delay: -20s;
+  animation-direction: reverse;
+}
+
+.arriving .plane {
+  width: 48px;
+  transform: scaleX(-1) rotate(-3deg);
+}
+
+.distant {
+  top: 34%;
+  animation-duration: 40s;
+  animation-delay: 7s;
+}
+
+.distant .plane {
+  width: 32px;
+}
+
+@keyframes fly-across {
+  0% { transform: translate(-10%, 24px); opacity: 0; }
+  8% { opacity: 0.75; }
+  80% { opacity: 0.75; }
+  90%, 100% { transform: translate(110%, -32px); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flight { display: none; animation: none; }
+}
