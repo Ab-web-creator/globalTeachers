@@ -5,6 +5,7 @@ import useScrollReveal from "./use-scroll-reveal";
 import type { Panel } from "./content";
 import SiteHeader from "./site-header";
 import SiteFooter from "./site-footer";
+import FaqSection from "./faq/faq-section";
 import HeroSection from "./hero-section";
 import PartnersSection from "./partners-section";
 import PreviewDialog from "./preview-dialog";
@@ -37,6 +38,7 @@ export default function HomePage() {
         <StatisticsSection />
         <CategoriesSection openPanel={openPanel} />
         <ProgramsSection />
+        <FaqSection openPanel={openPanel} />
       </main>
       <SiteFooter openPanel={openPanel} />
       <PreviewDialog dialog={dialog} panel={panel} />

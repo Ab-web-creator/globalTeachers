@@ -19,7 +19,7 @@ const groups: { title: string; links: FooterLink[] }[] = [
       { label: "Страны и направления", href: "#benefits" },
       { label: "Подготовка к интервью", href: "#categories" },
       { label: "CV и портфолио", href: "#categories" },
-      { label: "FAQ", panel: "Consultation" },
+      { label: "FAQ", href: "#faq" },
     ],
   },
 ];

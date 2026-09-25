@@ -13,7 +13,7 @@ export default function MobileNavigation({ openPanel, onClose }: MobileNavigatio
     const previousOverflow = document.body.style.overflow;
     element?.showModal();
     document.body.style.overflow = "hidden";
-    const desktop = window.matchMedia("(min-width: 1280px)");
+    const desktop = window.matchMedia("(min-width: 768px)");
     const closeOnDesktop = () => { if (desktop.matches) onClose(); };
     desktop.addEventListener("change", closeOnDesktop);
     return () => {
