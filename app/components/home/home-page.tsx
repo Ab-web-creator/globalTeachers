@@ -9,6 +9,7 @@ import HeroSection from "./hero-section";
 import PartnersSection from "./partners-section";
 import PreviewDialog from "./preview-dialog";
 import AboutSection from "./about/about-section";
+import MentorNote from "./mentor-note";
 import Benefits from "./Benefits";
 import StatisticsSection from "./statistics-section";
 import CategoriesSection from "./categories/categories-section";
@@ -32,6 +33,7 @@ export default function HomePage() {
         <PartnersSection />
         <Benefits />
         <AboutSection openPanel={openPanel} />
+        <MentorNote openPanel={openPanel} />
         <StatisticsSection />
         <CategoriesSection openPanel={openPanel} />
         <ProgramsSection />
