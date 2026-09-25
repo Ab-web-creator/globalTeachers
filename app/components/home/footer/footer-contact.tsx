@@ -12,7 +12,7 @@ export default function FooterContact() {
       </svg>
       <div className="relative">
         <h2 className="text-lg leading-tight font-semibold">Связаться с нами</h2>
-        <ul className="mt-5 space-y-4 text-sm text-brand-100">
+        <ul className="mt-5 space-y-4 text-base text-brand-100 lg:text-sm">
           {contacts.map(({ text, path }) => (
             <li key={text} className="flex items-center gap-3">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-5 shrink-0" aria-hidden="true"><path d={path} /></svg>

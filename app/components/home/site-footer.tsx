@@ -23,7 +23,7 @@ export default function SiteFooter({ openPanel }: PanelProps) {
           <FooterLinks openPanel={openPanel} />
           <FooterContact />
         </div>
-        <div className="flex flex-col gap-4 border-t border-brand-300/30 py-5 text-xs leading-normal text-brand-200 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-4 border-t border-brand-300/30 py-5 text-sm leading-normal text-brand-200 lg:flex-row lg:items-center lg:justify-between lg:text-xs">
           <p>© {new Date().getFullYear()} GlobalTeacherHub. Все права защищены.</p>
           <div className="flex flex-wrap gap-x-5 gap-y-2">
             <span>Политика конфиденциальности</span>

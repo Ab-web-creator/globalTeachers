@@ -29,7 +29,7 @@ export default function FooterLinks({ openPanel }: PanelProps) {
   return groups.map(({ title, links }) => (
     <nav key={title} aria-label={`Подвал: ${title}`} className="lg:pt-7">
       <h2 className="text-lg leading-tight font-medium text-white">{title}</h2>
-      <ul className="mt-5 space-y-2 text-sm leading-normal text-brand-100">
+      <ul className="mt-5 space-y-2 text-base leading-normal text-brand-100 lg:text-sm">
         {links.map((link) => (
           <li key={link.label}>
             {"href" in link ? (

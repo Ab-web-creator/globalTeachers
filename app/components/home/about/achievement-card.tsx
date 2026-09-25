@@ -8,7 +8,7 @@ export default function AchievementCard({ title, description, kind }: Achievemen
       <AchievementIcon kind={kind} />
       <div>
         <h3 className="text-sm font-medium tracking-tight">{title}</h3>
-        <p className="mt-1 text-xs leading-normal text-neutral-600">{description}</p>
+        <p className="mt-1 text-sm leading-normal text-neutral-600 lg:text-xs">{description}</p>
       </div>
     </li>
   );
