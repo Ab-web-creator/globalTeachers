@@ -11,7 +11,8 @@ import type { Panel, PanelProps } from "./content";
 export default function SiteHeader({ openPanel }: PanelProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
-  const compact = useCompactHeader(headerRef);
+  const { compact, hidden } = useCompactHeader(headerRef);
+  const hideHeader = hidden && !menuOpen;
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
   function navigate(panel: Panel) {
@@ -20,7 +21,7 @@ export default function SiteHeader({ openPanel }: PanelProps) {
   }
 
   return (
-    <header ref={headerRef} className={`fixed inset-x-0 top-0 z-40 border-b transition-colors duration-200 motion-reduce:transition-none ${compact ? "border-black/5 bg-white shadow-sm" : "border-transparent bg-transparent"}`}>
+    <header ref={headerRef} inert={hideHeader} aria-hidden={hideHeader} className={`fixed inset-x-0 top-0 z-40 border-b transition-[opacity,background-color,border-color] duration-200 motion-reduce:transition-none ${hideHeader ? "pointer-events-none opacity-0" : "opacity-100"} ${compact ? "border-black/5 bg-white shadow-sm" : "border-transparent bg-transparent"}`}>
       <div className={`mx-auto flex max-w-400 items-center justify-between gap-6 px-6 transition-[min-height] duration-200 motion-reduce:transition-none sm:px-10 lg:px-16 xl:px-20 ${compact ? "min-h-14 lg:min-h-16" : "min-h-16 lg:min-h-18"}`}>
         <Link href="/" aria-label="Global Teacher Hub home" className="shrink-0 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-500">
           <Logo className={`transition-[width] duration-200 motion-reduce:transition-none ${compact ? "w-44 lg:w-48" : "w-48 brightness-0 invert lg:w-56"}`} aria-hidden="true" />

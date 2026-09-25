@@ -84,3 +84,23 @@ button {
       linear-gradient(to right, #1d4ed8, #6d28d9, #db2777, #ea580c) border-box;
   }
 }
+
+@utility nav-action-outline {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(to right, #2563eb, #7c3aed, #ec4899, #f97316);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0;
+  }
+  &:hover::before,
+  &:focus-visible::before {
+    opacity: 1;
+  }
+}

@@ -19,7 +19,7 @@ export default function CourseCategoryCard({ title, description, imageBounds, op
           viewBox={`${viewportX} ${y} ${viewportWidth} ${height}`}
           className="mx-auto mt-2 mb-5 block aspect-5/4 w-3/4 overflow-hidden"
         >
-          <image href="/images/course-categories-colorful.png" width="1254" height="1254" />
+          <image href="/images/course-categories-four-colors.png" width="1254" height="1254" />
         </svg>
         <span className="text-xl font-medium tracking-tight group-hover:text-brand-500 xl:text-xl">{title}</span>
         <span className="mt-2 text-base leading-normal text-neutral-600">{description}</span>

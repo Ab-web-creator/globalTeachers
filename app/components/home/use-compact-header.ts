@@ -4,6 +4,7 @@ import { useEffect, useState, type RefObject } from "react";
 
 export default function useCompactHeader(headerRef: RefObject<HTMLElement | null>) {
   const [compact, setCompact] = useState(false);
+  const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
     let current = false;
@@ -14,6 +15,7 @@ export default function useCompactHeader(headerRef: RefObject<HTMLElement | null
       // Retain the expanded height so shrinking the navbar cannot flip it back.
       if (!current) expandedHeight = headerRef.current?.getBoundingClientRect().height ?? expandedHeight;
       const next = !hero || hero.getBoundingClientRect().bottom <= expandedHeight;
+      setHidden(!next && window.scrollY > 8);
       if (next !== current) {
         current = next;
         setCompact(next);
@@ -32,5 +34,5 @@ export default function useCompactHeader(headerRef: RefObject<HTMLElement | null
     };
   }, [headerRef]);
 
-  return compact;
+  return { compact, hidden };
 }

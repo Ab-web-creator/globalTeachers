@@ -8,7 +8,7 @@ export default function ProgramCardFooter({ program, onDetails }: ProgramCardFoo
       <div className="flex flex-col items-start gap-4 @min-[17rem]:flex-row @min-[17rem]:items-center @min-[17rem]:justify-between">
         <p className="flex min-h-14 min-w-0 items-center text-brand-500 @min-[17rem]:flex-1">
           {program.price === null ? (
-            <span lang="ru" className="min-w-0 text-base lg:text-xs leading-snug font-medium hyphens-manual">Стоимость рассчиты&shy;ва&shy;ется индивидуально</span>
+            <span lang="ru" className="max-w-[25ch] text-base lg:text-xs leading-snug font-medium hyphens-manual">Стоимость рассчиты&shy;ва&shy;ется индивидуально</span>
           ) : (
             <span className="flex flex-col">
               <span className="text-3xl font-semibold tracking-tight">${program.price}</span>

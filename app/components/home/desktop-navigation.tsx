@@ -3,15 +3,16 @@ import type { PanelProps } from "./content";
 import { navigationItems } from "./navigation-items";
 
 export default function DesktopNavigation({ openPanel, onHero = false }: PanelProps & { onHero?: boolean }) {
+  const underline = `decoration-[3px] underline-offset-8 group-hover:underline group-focus-visible:underline ${onHero ? "decoration-white" : "decoration-brand-500"}`;
   return (
     <nav aria-label="Основная навигация" className={`hidden items-center gap-3 whitespace-nowrap text-sm md:flex lg:gap-6 lg:text-base 2xl:gap-9 ${onHero ? "text-white" : "text-neutral-600"}`}>
-      <Link href="/" aria-current="page" className={onHero ? "text-brand-100" : "text-brand-500"}>Главная</Link>
+      <Link href="/" aria-current="page" className={`group ${onHero ? "text-white" : "text-brand-500"}`}><span className={underline}>Главная</span></Link>
       {navigationItems.map(({ label, panel, expandable }) => (
-        <button key={panel} onClick={() => openPanel(panel)} className={`flex items-center gap-2 py-3 transition ${onHero ? "hover:text-brand-200" : "hover:text-brand-500"}`}>
-          {label}{expandable && <span aria-hidden="true" className="text-xl font-light text-brand-300">+</span>}
+        <button key={panel} onClick={() => openPanel(panel)} className={`group flex items-center gap-2 py-3 transition ${onHero ? "hover:text-white" : "hover:text-brand-500"}`}>
+          <span className={underline}>{label}</span>{expandable && <span aria-hidden="true" className="text-xl font-light text-brand-300">+</span>}
         </button>
       ))}
-      <button onClick={() => openPanel("Courses")} className={`border-0 bg-transparent px-4 py-3.5 font-medium transition-colors lg:px-7 ${onHero ? "text-white hover:text-brand-200" : "text-brand-500 hover:text-brand-600"}`}>Начать свой путь</button>
+      <button onClick={() => openPanel("Courses")} className={`group rounded-full border-0 bg-transparent px-4 py-3.5 font-medium transition-colors lg:px-7 ${onHero ? "text-white hover:text-white" : "nav-action-outline text-brand-500 hover:bg-brand-500/5 hover:text-brand-600"}`}><span className={onHero ? underline : undefined}>Начать свой путь</span></button>
     </nav>
   );
 }
