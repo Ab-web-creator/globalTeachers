@@ -4,29 +4,29 @@ import type { Benefit } from "./benefits-content";
 
 export default function BenefitCard({ benefit }: { benefit: Benefit }) {
   return (
-    <li className={`w-full max-w-64 justify-self-center overflow-hidden rounded-3xl text-center ${benefit.color}`}>
-      <div className="relative aspect-5/4">
+    <li className={`relative isolate w-full max-w-72 justify-self-center overflow-hidden rounded-3xl text-center ${benefit.color}`}>
+      <div className="relative aspect-5/3">
         <Image
-          src={`/images/benefits/${benefit.id}.jpg`}
+          src={benefit.image}
           alt=""
           fill
-          sizes="256px"
+          sizes="288px"
           className="object-cover"
         />
       </div>
-      <div className="relative px-4 pb-5">
-        <div className={`relative mx-auto -mt-10 mb-3 flex size-20 items-center justify-center rounded-full ${benefit.iconColor}`}>
+      <div className="relative px-6 pb-7">
+        <div className={`relative mx-auto -mt-12 mb-3 flex size-24 items-center justify-center rounded-full shadow-sm ${benefit.iconColor}`}>
           <BenefitIcon name={benefit.id} />
         </div>
-        <h3 className="text-2xl leading-tight font-semibold tracking-tight text-brand-950 lg:text-xl">
+        <h3 className="text-xl leading-tight font-bold tracking-tight text-brand-950">
           {benefit.title}
         </h3>
-        {benefit.subtitle && (
-          <p className="mt-2 text-base leading-tight font-medium text-brand-950 lg:text-sm">
-            {benefit.subtitle}
-          </p>
-        )}
-        <p className="mt-3 text-left text-base leading-normal text-neutral-700 lg:text-sm">{benefit.description}</p>
+        <p className={`mt-2 text-md leading-tight font-bold ${benefit.accentColor}`}>
+          {benefit.subtitle}
+        </p>
+        <p className="mt-5 text-left text-base leading-relaxed text-neutral-700">
+          {benefit.description}
+        </p>
       </div>
     </li>
   );

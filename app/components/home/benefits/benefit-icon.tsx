@@ -16,7 +16,18 @@ export default function BenefitIcon({ name }: { name: BenefitIconName }) {
           <path d="m2 9 10-5 10 5-10 5L2 9ZM6 11v7l6 3 6-3v-7M22 9v7" />
         </>
       )}
-      {name === "insurance" && <path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6V3Z" />}
+      {name === "insurance" && <path d="M12 2 3 6v6c0 5 9 10 9 10s9-5 9-10V6l-9-4ZM12 8v8M8 12h8" />}
+      {name === "relocation" && (
+        <>
+          <rect x="3" y="7" width="18" height="14" rx="2" />
+          <path d="M8 7V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v3M8 7v14M16 7v14" />
+        </>
+      )}
+      {name === "development" && (
+        <>
+          <path d="M4 21v-4M9 21v-7M14 21V10M19 21V5M3 11c7 0 12-4 17-9M13 2h7v7" />
+        </>
+      )}
       {name === "visa" && (
         <>
           <rect x="5" y="2" width="14" height="20" rx="2" />
