@@ -12,7 +12,7 @@ export default function CourseCategoryCard({ title, description, imageBounds, op
   const viewportX = x + (width - viewportWidth) / 2;
 
   return (
-    <li>
+    <li data-reveal>
       <button onClick={() => openPanel("Courses")} className="group flex h-full w-full flex-col rounded-3xl bg-white px-6 py-4 text-left transition hover:shadow-lg motion-safe:hover:-translate-y-1 sm:px-7 sm:py-5">
         <svg
           aria-hidden="true"

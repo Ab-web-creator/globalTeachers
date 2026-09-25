@@ -4,7 +4,7 @@ import type { Benefit } from "./benefits-content";
 
 export default function BenefitCard({ benefit }: { benefit: Benefit }) {
   return (
-    <li className={`relative isolate grid w-full grid-cols-[1fr_3fr] overflow-hidden rounded-3xl text-left @min-[37rem]:block @min-[37rem]:max-w-64 @min-[37rem]:justify-self-center @min-[37rem]:text-center ${benefit.color}`}>
+    <li data-reveal className={`relative isolate grid w-full grid-cols-[1fr_3fr] overflow-hidden rounded-3xl text-left @min-[37rem]:block @min-[37rem]:max-w-64 @min-[37rem]:justify-self-center @min-[37rem]:text-center ${benefit.color}`}>
       <div className="relative min-h-32 @min-[37rem]:aspect-5/2 @min-[37rem]:min-h-0">
         <Image
           src={benefit.image}

@@ -4,7 +4,7 @@ type AchievementCardProps = { title: string; description: string; kind: Achievem
 
 export default function AchievementCard({ title, description, kind }: AchievementCardProps) {
   return (
-    <li className="flex items-center gap-3 rounded-2xl bg-brand-50 px-4 py-3 shadow-sm sm:gap-4 sm:px-5 sm:py-4">
+    <li data-reveal="badge" className="flex items-center gap-3 rounded-2xl bg-brand-50 px-4 py-3 shadow-sm sm:gap-4 sm:px-5 sm:py-4">
       <AchievementIcon kind={kind} />
       <div>
         <h3 className="text-sm font-medium tracking-tight">{title}</h3>

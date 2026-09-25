@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import useScrollReveal from "./use-scroll-reveal";
 import type { Panel } from "./content";
 import SiteHeader from "./site-header";
 import SiteFooter from "./site-footer";
@@ -14,6 +15,7 @@ import CategoriesSection from "./categories/categories-section";
 import ProgramsSection from "./categories/programs-section";
 
 export default function HomePage() {
+  useScrollReveal();
   const [panel, setPanel] = useState<Panel>("Courses");
   const dialog = useRef<HTMLDialogElement>(null);
 
