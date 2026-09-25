@@ -36,7 +36,7 @@ export const benefits: Benefit[] = [
     id: "visa",
     title: "Виза",
     subtitle: "Оформление документов",
-    description: "Многие международные школы берут на себя оформление рабочей визы и необходимых документов и оплачивают связанные расходы.",
+    description: "Международные школы часто сами оформляют рабочую визу, а также оплачивают все бумажные расходы.",
     image: "/images/benefits/visa-passport.jpg",
     color: "bg-violet-50",
     iconColor: "bg-violet-50 text-violet-700",

@@ -9,7 +9,7 @@ const highlights: { kind: AchievementKind; title: string; description: string }[
 
 export default function AboutHighlights() {
   return (
-    <ul className="absolute inset-y-0 -right-3 left-12 flex translate-y-10 flex-col justify-center gap-4 sm:-right-8 sm:left-1/3 sm:translate-y-12 sm:gap-5 [&>li]:w-full [&>li:nth-child(2)]:-translate-x-4 sm:[&>li:nth-child(2)]:-translate-x-10">
+    <ul className="absolute inset-y-0 right-4 left-8 flex translate-y-10 flex-col justify-center gap-4 sm:-right-8 sm:left-1/3 sm:translate-y-12 sm:gap-5 [&>li]:w-full [&>li:nth-child(2)]:-translate-x-4 sm:[&>li:nth-child(2)]:-translate-x-10">
       {highlights.map((highlight) => (
         <AchievementCard key={highlight.kind} {...highlight} />
       ))}

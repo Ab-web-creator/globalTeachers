@@ -4,8 +4,8 @@ import type { Benefit } from "./benefits-content";
 
 export default function BenefitCard({ benefit }: { benefit: Benefit }) {
   return (
-    <li className={`relative isolate w-full max-w-72 justify-self-center overflow-hidden rounded-3xl text-center ${benefit.color}`}>
-      <div className="relative aspect-5/3">
+    <li className={`relative isolate w-full max-w-64 justify-self-center overflow-hidden rounded-3xl text-center ${benefit.color}`}>
+      <div className="relative aspect-5/2">
         <Image
           src={benefit.image}
           alt=""

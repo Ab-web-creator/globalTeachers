@@ -9,14 +9,15 @@ export default function SiteFooter({ openPanel }: PanelProps) {
     <footer className="bg-brand-700 text-white">
       <div className="mx-auto max-w-400 px-6 pt-8 sm:px-10 lg:px-16 xl:px-20">
         <FooterBanner openPanel={openPanel} />
-        <div className="grid grid-cols-2 items-start gap-x-5 gap-y-8 py-8 sm:gap-x-8 sm:py-10 xl:grid-cols-[1.5fr_0.7fr_0.9fr_1.4fr] xl:gap-10">
-          <div className="col-span-2 xl:col-span-1 xl:pt-7">
+        <div className="grid grid-cols-2 items-start gap-x-5 gap-y-8 py-8 sm:gap-x-8 sm:py-10 lg:grid-cols-[0.7fr_0.9fr_1.4fr] xl:grid-cols-[1.5fr_0.7fr_0.9fr_1.4fr] xl:gap-10">
+          <div className="col-span-2 lg:col-span-3 xl:col-span-1 xl:pt-7">
             <a href="#home" aria-label="GlobalTeacherHub — на главную" className="inline-flex items-center gap-3 rounded-sm">
               <Logo className="w-24 brightness-0 invert sm:w-28" aria-hidden="true" />
             </a>
-            <p className="mt-4 max-w-sm text-base leading-normal text-brand-100">
-              Ваша работа мечты может быть<br className="hidden sm:block" /> в любой точке мира.<br />
-              Найдите её вместе с нами, <br /> с GlobalTeacherHub.
+            <p className="mt-4 text-base leading-normal text-brand-100 sm:max-w-sm xl:w-full">
+              Ваша работа мечты может быть<br className="hidden xl:block" /> в любой точке мира.{' '}
+              <br className="hidden xl:block" />
+              Найдите её вместе с нами, <br className="hidden xl:block" /> вместе с GlobalTeacherHub.
             </p>
           </div>
           <FooterLinks openPanel={openPanel} />

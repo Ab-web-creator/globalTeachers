@@ -28,7 +28,7 @@ export default function BenefitsGrid() {
             aria-expanded={false}
             aria-controls="benefits-list"
             onClick={() => setExpanded(true)}
-            className="rounded-full bg-brand-100 px-8 py-4 text-center text-base font-medium text-brand-500 transition-colors hover:bg-brand-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600"
+            className="rounded-full bg-brand-100 px-5 md:px-8 py-4 text-center text-base font-medium text-brand-500 transition-colors hover:bg-brand-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600"
           >
             Показать все преимущества
           </button>
