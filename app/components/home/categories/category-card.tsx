@@ -20,13 +20,14 @@ export default function CategoryCard({ program, onDetails }: CategoryCardProps) 
       <div className="relative aspect-video overflow-hidden rounded-xl bg-brand-100">
         {imageFailed ? <p className="flex h-full items-center justify-center text-brand-500">Фото программы {program.tier}</p> :
           <Image src={program.image} alt={program.alt} fill sizes="(max-width: 1024px) 90vw, 30vw" className="object-cover object-top" onError={() => setImageFailed(true)} />}
+        <div aria-hidden="true" className="pointer-events-none absolute top-0 right-0 h-28 w-52 bg-linear-to-bl from-black/80 to-transparent to-70%" />
+        <span className={`absolute top-3 right-3 rounded-full border border-white/80 px-4 py-1.5 text-center text-base lg:text-sm font-semibold whitespace-nowrap text-white shadow-md ${badgeColors[program.tier]}`}>Пакет {program.tier}</span>
       </div>
       <div className="flex flex-col px-3 pt-4">
         <div className="flex items-start justify-between gap-3">
           <h3 className="min-w-0 text-2xl leading-tight font-medium tracking-tight">{program.title}</h3>
-          <span className={`mt-1 shrink-0 rounded-full px-4 py-1 text-center text-xs font-semibold whitespace-nowrap text-white shadow-sm ${badgeColors[program.tier]}`}>Пакет {program.tier}</span>
         </div>
-        <p className="mt-2 text-sm leading-normal text-neutral-600">{program.description}</p>
+        <p className="mt-2 text-base lg:text-sm leading-normal text-neutral-600">{program.description}</p>
       </div>
       <div className="px-3">
         <ProgramInclusions program={program} />
