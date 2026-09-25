@@ -9,7 +9,7 @@ export default function BenefitsGrid() {
 
   return (
     <div className="@container mx-auto mt-8 w-full">
-      <div className="flex flex-col items-center gap-8">
+      <div className="flex flex-col items-center gap-12">
         <ul
           id="benefits-list"
           className={`grid w-full min-w-0 max-w-full grid-cols-1 justify-center gap-4 @min-[37rem]:w-auto @min-[37rem]:grid-cols-[repeat(2,16rem)] @min-[50rem]:grid-cols-[repeat(3,16rem)] @min-[67rem]:grid-cols-[repeat(4,16rem)] ${

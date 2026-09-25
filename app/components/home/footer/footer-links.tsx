@@ -8,7 +8,7 @@ const groups: { title: string; links: FooterLink[] }[] = [
       { label: "Главная", href: "#home" },
       { label: "О нас", href: "#about" },
       { label: "Программы", href: "#programs" },
-      { label: "Вакансии", panel: "Jobs" },
+      { label: "Вакансии", href: "/jobs" },
       { label: "Полезное", href: "#categories" },
     ],
   },
@@ -29,7 +29,7 @@ export default function FooterLinks({ openPanel }: PanelProps) {
   return groups.map(({ title, links }) => (
     <nav key={title} aria-label={`Подвал: ${title}`} className="lg:pt-7">
       <h2 className="text-lg leading-tight font-medium text-white">{title}</h2>
-      <ul className="mt-5 space-y-2 text-base leading-normal text-white/90 lg:text-sm">
+      <ul className="mt-5 space-y-2 text-base leading-normal text-white/90 sm:text-sm">
         {links.map((link) => (
           <li key={link.label}>
             {"href" in link ? (

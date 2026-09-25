@@ -7,7 +7,6 @@ import SiteHeader from "./site-header";
 import SiteFooter from "./site-footer";
 import FaqSection from "./faq/faq-section";
 import HeroSection from "./hero-section";
-import HeroSectionCopy from "./hero-section-copy";
 import PartnersSection from "./partners-section";
 import PreviewDialog from "./preview-dialog";
 import AboutSection from "./about/about-section";
@@ -29,13 +28,12 @@ export default function HomePage() {
 
   return (
     <>
-      <SiteHeader openPanel={openPanel} />
+      <SiteHeader />
       <main id="home">
-        <HeroSection openPanel={openPanel} />
-        <HeroSectionCopy openPanel={openPanel} />
+        <HeroSection />
+        <AboutSection />
         <PartnersSection />
         <Benefits />
-        <AboutSection openPanel={openPanel} />
         <MentorNote openPanel={openPanel} />
         <StatisticsSection />
         <CategoriesSection openPanel={openPanel} />

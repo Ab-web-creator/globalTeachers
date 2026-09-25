@@ -1,11 +1,11 @@
+import Link from "next/link";
 import { useEffect, useRef } from "react";
-import type { PanelProps } from "./content";
 import MenuLanguages from "./menu-languages";
 import { navigationItems } from "./navigation-items";
 
-type MobileNavigationProps = PanelProps & { onClose: () => void };
+type MobileNavigationProps = { onClose: () => void };
 
-export default function MobileNavigation({ openPanel, onClose }: MobileNavigationProps) {
+export default function MobileNavigation({ onClose }: MobileNavigationProps) {
   const dialog = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -45,12 +45,12 @@ export default function MobileNavigation({ openPanel, onClose }: MobileNavigatio
           <span className="h-px flex-1 bg-brand-100" />
         </div>
         <nav aria-label="Мобильная навигация" className="flex flex-col items-stretch gap-2 px-5 pb-8 text-center text-xl font-medium sm:px-7">
-          <a href="#home" onClick={onClose} aria-current="page" className="rounded-xl bg-brand-50 px-4 py-3 text-brand-500">Главная</a>
-          {navigationItems.map(({ label, panel }) => (
-            <button key={panel} type="button" onClick={() => openPanel(panel)} className="rounded-xl px-4 py-3 transition hover:bg-brand-50 hover:text-brand-500">{label}</button>
+          <Link href="/#home" onClick={onClose} className="rounded-xl bg-brand-50 px-4 py-3 text-brand-500">Главная</Link>
+          {navigationItems.map(({ label, href }) => (
+            <Link key={label} href={href} onClick={onClose} className="rounded-xl px-4 py-3 transition hover:bg-brand-50 hover:text-brand-500">{label}</Link>
           ))}
-          <a href="#programs" onClick={onClose} className="rounded-xl px-4 py-3 transition hover:bg-brand-50 hover:text-brand-500">Программы</a>
-          <button type="button" onClick={() => openPanel("Consultation")} className="mt-4 rounded-full action-gradient px-6 py-4 text-base text-white transition hover:action-gradient">Получить консультацию</button>
+          <Link href="/#programs" onClick={onClose} className="rounded-xl px-4 py-3 transition hover:bg-brand-50 hover:text-brand-500">Программы</Link>
+          <Link href="/consultation" onClick={onClose} className="mt-4 rounded-full action-gradient px-6 py-4 text-base text-white transition hover:action-gradient">Получить консультацию</Link>
         </nav>
       </div>
     </dialog>

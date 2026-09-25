@@ -5,10 +5,10 @@ import FooterLinks from "./footer/footer-links";
 
 export default function SiteFooter({ openPanel }: PanelProps) {
   return (
-    <footer className="text-white" style={{ background: "linear-gradient(135deg, #2563eb 0%, #7c3aed 45%, #4f46e5 70%, #087ea4 88%, #047857 100%)" }}>
-      <div className="mx-auto max-w-400 px-6 pt-8 sm:px-10 lg:px-16 xl:px-20">
-        <div className="grid grid-cols-2 items-start gap-x-5 gap-y-8 py-8 sm:gap-x-8 sm:py-10 lg:grid-cols-[0.7fr_0.9fr_1.4fr] xl:grid-cols-[1.5fr_0.7fr_0.9fr_1.4fr] xl:gap-10">
-          <div className="col-span-2 lg:col-span-3 xl:col-span-1 xl:pt-2">
+    <footer id="footer" className="scroll-mt-16 text-white" style={{ background: "linear-gradient(135deg, #2563eb 0%, #7c3aed 45%, #4f46e5 70%, #087ea4 88%, #047857 100%)" }}>
+      <div className="mx-auto max-w-400 px-6 sm:px-10 lg:px-16 xl:px-20">
+        <div className="grid grid-cols-2 items-start gap-x-5 gap-y-8 py-8 sm:gap-x-8 sm:py-10 lg:pb-12 xl:pb-12 sm:grid-cols-[0.7fr_0.9fr_1.4fr] xl:grid-cols-[1.5fr_0.7fr_0.9fr_1.4fr] xl:gap-10">
+          <div className="col-span-2 sm:col-span-3 xl:col-span-1 xl:pt-2">
             <a href="#home" aria-label="GlobalTeacherHub — на главную" className="inline-flex items-center gap-3 rounded-sm">
               <Logo className="w-48 brightness-0 invert sm:w-52" aria-hidden="true" />
             </a>
