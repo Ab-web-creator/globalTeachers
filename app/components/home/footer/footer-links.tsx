@@ -9,7 +9,6 @@ const groups: { title: string; links: FooterLink[] }[] = [
       { label: "О нас", href: "#about" },
       { label: "Программы", href: "#programs" },
       { label: "Вакансии", href: "/jobs" },
-      { label: "Полезное", href: "#categories" },
     ],
   },
   {
@@ -19,7 +18,6 @@ const groups: { title: string; links: FooterLink[] }[] = [
       { label: "Страны и направления", href: "#benefits" },
       { label: "Подготовка к интервью", href: "#categories" },
       { label: "CV и портфолио", href: "#categories" },
-      { label: "FAQ", href: "#faq" },
     ],
   },
 ];

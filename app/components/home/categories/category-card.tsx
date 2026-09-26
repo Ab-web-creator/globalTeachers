@@ -22,7 +22,7 @@ export default function CategoryCard({ program }: CategoryCardProps) {
           <Image src={program.image} alt={program.alt} fill sizes="(max-width: 1024px) 90vw, 30vw" className="object-cover object-top" onError={() => setImageFailed(true)} />}
         <span className={`absolute top-3 left-3 rounded-full border border-white/80 px-4 py-1.5 text-center text-base lg:text-sm font-semibold whitespace-nowrap text-white shadow-md sm:right-3 sm:left-auto ${badgeColors[program.tier]}`}>Пакет {program.tier}</span>
       </div>
-      <div className="flex flex-col pt-4 sm:px-3">
+      <div className="flex flex-col pt-5 sm:px-3">
         <div className="flex items-start justify-between gap-3">
           <h3 className="min-w-0 text-2xl leading-tight font-medium tracking-tight">{program.title}</h3>
         </div>
