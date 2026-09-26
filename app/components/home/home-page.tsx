@@ -38,7 +38,7 @@ export default function HomePage() {
         <StatisticsSection />
         <CategoriesSection openPanel={openPanel} />
         <ProgramsSection />
-        <FaqSection openPanel={openPanel} />
+        <FaqSection />
       </main>
       <SiteFooter openPanel={openPanel} />
       <PreviewDialog dialog={dialog} panel={panel} />

@@ -5,7 +5,7 @@ import ProgramFeatures from "./program-features";
 import ProgramInclusions from "./program-inclusions";
 import ProgramCardFooter from "./program-card-footer";
 
-type CategoryCardProps = { program: Program; onDetails: () => void };
+type CategoryCardProps = { program: Program };
 
 const badgeColors: Record<string, string> = {
   START: "bg-green-700",
@@ -13,7 +13,7 @@ const badgeColors: Record<string, string> = {
   VIP: "bg-purple-600",
 };
 
-export default function CategoryCard({ program, onDetails }: CategoryCardProps) {
+export default function CategoryCard({ program }: CategoryCardProps) {
   const [imageFailed, setImageFailed] = useState(false);
   return (
     <li data-reveal className="relative flex flex-col bg-white before:absolute before:-top-12 before:left-1/2 before:w-screen before:-translate-x-1/2 before:h-1 before:bg-linear-to-r before:from-blue-100 before:to-violet-200 first:before:hidden sm:before:hidden sm:rounded-2xl sm:border sm:border-neutral-200/60 sm:p-2.5 lg:row-span-4 lg:grid lg:grid-rows-subgrid lg:gap-y-0">
@@ -32,7 +32,7 @@ export default function CategoryCard({ program, onDetails }: CategoryCardProps) 
         <ProgramInclusions program={program} />
         <ProgramFeatures features={program.features} icons={program.icons} />
       </div>
-      <ProgramCardFooter program={program} onDetails={onDetails} />
+      <ProgramCardFooter program={program} />
     </li>
   );
 }

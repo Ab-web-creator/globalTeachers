@@ -1,17 +1,9 @@
 "use client";
 
-import { useRef, useState } from "react";
 import CategoryCard from "./category-card";
-import ProgramDialog from "./program-dialog";
-import { programs, type Program } from "./programs";
+import { programs } from "./programs";
 
 export default function ProgramsSection() {
-  const dialog = useRef<HTMLDialogElement>(null);
-  const [selected, setSelected] = useState<Program | null>(null);
-  function showDetails(program: Program | null) {
-    setSelected(program);
-    dialog.current?.showModal();
-  }
   return (
     <section id="programs" aria-labelledby="programs-title" className="bg-white">
       <div className="mx-auto max-w-400 px-6 py-10 sm:py-12 lg:py-20 xl:py-24 sm:px-10 lg:px-16 xl:px-20">
@@ -22,10 +14,9 @@ export default function ProgramsSection() {
           </div>
         </header>
         <ul className="mt-10 sm:mt-12 grid gap-20 sm:gap-5 lg:grid-cols-3 lg:gap-x-8 xl:gap-x-12">
-          {programs.map((program) => <CategoryCard key={program.tier} program={program} onDetails={() => showDetails(program)} />)}
+          {programs.map((program) => <CategoryCard key={program.tier} program={program} />)}
         </ul>
       </div>
-      <ProgramDialog dialog={dialog} program={selected} />
     </section>
   );
 }
