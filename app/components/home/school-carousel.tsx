@@ -69,14 +69,13 @@ export default function SchoolCarousel() {
         className="flex touch-pan-y items-center justify-between gap-4 rounded-xl py-2 sm:gap-6"
       >
         {visiblePartners.map(({ name, image }) => (
-          <li key={image} className="flex w-20 max-w-full shrink-0 items-center justify-center sm:w-32 lg:w-40">
+          <li key={image} className="relative h-14 w-20 max-w-full shrink-0 sm:h-24 sm:w-32 lg:w-40">
             <Image
               src={`/images/collaboration/${image}.jpeg`}
               alt={name}
-              width={160}
-              height={96}
+              fill
               sizes="(min-width: 1024px) 160px, (min-width: 640px) 128px, 80px"
-              className="h-14 w-full object-contain mix-blend-multiply sm:h-24"
+              className="object-contain mix-blend-multiply"
             />
           </li>
         ))}

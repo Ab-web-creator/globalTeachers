@@ -14,7 +14,7 @@ export default function SiteFooter({ openPanel }: PanelProps) {
             <a href="#home" aria-label="GlobalTeacherHub — на главную" className="inline-flex items-center gap-3 rounded-sm">
               <Logo className="w-48 text-white sm:w-52" aria-hidden="true" />
             </a>
-            <p className="mt-4 text-base leading-normal text-white/90 sm:max-w-sm xl:w-full">
+            <p className="mt-4 text-base leading-normal text-white/90 sm:max-w-sm lg:text-lg xl:w-full">
               Ваша работа мечты может быть<br className="hidden xl:block" /> в любой точке мира.{' '}
               <br className="hidden xl:block" />
               Найдите её вместе с нами, <br className="hidden xl:block" /> вместе с GlobalTeacherHub.
