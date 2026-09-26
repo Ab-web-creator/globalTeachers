@@ -14,15 +14,19 @@ export default function useScrollReveal() {
       animations.clear();
       if (preference.matches) return;
 
+      const started = new WeakSet<HTMLElement>();
       observer = new IntersectionObserver((entries) => {
-        const visible = entries.filter((entry) => entry.isIntersecting);
+        const visible = entries.filter((entry) => entry.isIntersecting && entry.intersectionRatio >= 0.08);
         visible.forEach((entry, index) => {
           const element = entry.target as HTMLElement;
           observer?.unobserve(element);
-          if (element.dataset.revealed) return;
-          element.dataset.revealed = "true";
+          if (element.dataset.revealed || started.has(element)) return;
+          started.add(element);
           // Keep focused controls and anchor destinations immediately readable.
-          if (element.contains(document.activeElement)) return;
+          if (element.contains(document.activeElement)) {
+            element.dataset.revealed = "true";
+            return;
+          }
           const isBadge = element.dataset.reveal === "badge";
           const badgeIndex = Array.from(element.parentElement?.children ?? []).indexOf(element);
           const animation = element.animate(
@@ -41,7 +45,10 @@ export default function useScrollReveal() {
             },
           );
           animations.add(animation);
-          animation.onfinish = () => animations.delete(animation);
+          animation.onfinish = () => {
+            element.dataset.revealed = "true";
+            animations.delete(animation);
+          };
         });
       }, { threshold: 0.08 });
 

@@ -11,7 +11,7 @@ export default function FaqSection({ openPanel }: PanelProps) {
   return (
     <section id="faq" aria-labelledby="faq-title" className="scroll-mt-24 border-t border-neutral-200 bg-neutral-50 px-6 py-10 sm:px-10 sm:py-12 lg:py-20 xl:py-24 lg:px-16">
       <div className="mx-auto max-w-6xl">
-        <header data-reveal className="mb-10 sm:mb-12 text-center">
+        <header data-reveal className="mb-10 sm:mb-12 text-left sm:text-center">
           <p className="mb-4 text-sm font-semibold tracking-widest text-brand-500 uppercase sm:mb-6 sm:text-base">Полезно знать</p>
           <h2 id="faq-title" className="text-4xl leading-none font-semibold tracking-wide text-brand-700 sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl">Часто задаваемые вопросы</h2>
         </header>

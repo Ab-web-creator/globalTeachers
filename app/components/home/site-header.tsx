@@ -7,6 +7,7 @@ import DesktopNavigation from "./desktop-navigation";
 import MobileNavigation from "./mobile-navigation";
 import useCompactHeader from "./use-compact-header";
 import { usePathname } from "next/navigation";
+import styles from "./hero-mobile.module.css";
 
 export default function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -19,7 +20,7 @@ export default function SiteHeader() {
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
   return (
-    <header ref={headerRef} inert={hideHeader} aria-hidden={hideHeader} className={`fixed inset-x-0 top-0 z-40 transition-opacity duration-200 motion-reduce:transition-none ${compact ? "bg-white text-brand-700 shadow-sm" : !hidden ? "bg-linear-to-r from-blue-600 to-violet-600 text-white sm:bg-none" : "bg-transparent text-white"} ${hideHeader ? "pointer-events-none opacity-0" : "opacity-100"}`}>
+    <header ref={headerRef} inert={hideHeader} aria-hidden={hideHeader} className={`fixed inset-x-0 top-0 z-40 isolate transition-opacity duration-200 motion-reduce:transition-none ${compact ? "bg-white text-brand-700 shadow-sm" : !hidden ? `${styles.mobileBackground} text-white` : "bg-transparent text-white"} ${hideHeader ? "pointer-events-none opacity-0" : "opacity-100"}`}>
       <div className={`mx-auto flex max-w-400 items-center justify-between gap-6 px-6 transition-[min-height] duration-200 motion-reduce:transition-none sm:px-10 lg:px-16 xl:px-20 ${compact ? "min-h-14 lg:min-h-16" : "min-h-16 lg:min-h-18"}`}>
         <Link href="/" aria-label="Global Teacher Hub home" className="shrink-0 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-500">
           <Logo className={`transition-[width] duration-200 motion-reduce:transition-none ${compact ? "w-36 text-brand-500 sm:w-44 lg:w-48" : "w-40 text-white sm:w-48 lg:w-56"}`} aria-hidden="true" />

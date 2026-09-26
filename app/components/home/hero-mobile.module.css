@@ -1,0 +1,35 @@
+@media (width < 40rem) {
+  .mobileBackground {
+    background: linear-gradient(120deg, #1c426c, #0b233e);
+  }
+
+  .copySurface,
+  .imageFade {
+    background: linear-gradient(to right, #103255, #0b233e);
+  }
+
+  .imageFade {
+    mask-image: linear-gradient(to bottom, transparent, rgb(0 0 0 / 35%) 40%, #000 95%);
+  }
+
+  .heading {
+    font-size: clamp(1.5rem, 7.6vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: 0.025em;
+  }
+
+  .description {
+    position: relative;
+    padding-left: 2.75rem;
+  }
+
+  .description::before {
+    content: "";
+    position: absolute;
+    top: 0.75rem;
+    left: 0;
+    width: 2rem;
+    height: 2px;
+    background: #fde68a;
+  }
+}

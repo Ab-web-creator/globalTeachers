@@ -7,7 +7,7 @@ export default function HeroImage() {
   return (
     <picture>
       <source media="(min-width: 40rem)" srcSet={desktop.srcSet} sizes="100vw" />
-      <img {...mobile} alt="" className="-z-30 -scale-x-100 object-cover object-[80%_center] brightness-125 sm:scale-x-100 sm:object-center sm:brightness-100 lg:object-right" />
+      <img {...mobile} alt="" className="-z-30 -scale-x-100 object-cover object-[80%_center] sm:scale-x-100 sm:object-center lg:object-right" />
     </picture>
   );
 }

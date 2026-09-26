@@ -28,7 +28,7 @@ export default function BenefitsGrid() {
             aria-expanded={false}
             aria-controls="benefits-list"
             onClick={() => setExpanded(true)}
-            className="rounded-2xl sm:rounded-full action-gradient-outline px-5 md:px-8 py-2.5 sm:py-4 text-center text-base font-medium text-brand-700 transition-colors hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600"
+            className="self-start sm:self-center rounded-2xl sm:rounded-full action-gradient-outline px-5 md:px-8 py-2.5 sm:py-4 text-center text-base font-medium text-brand-700 transition-colors hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600"
           >
             Показать все преимущества
           </button>

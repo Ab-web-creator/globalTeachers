@@ -16,7 +16,7 @@ const badgeColors: Record<string, string> = {
 export default function CategoryCard({ program, onDetails }: CategoryCardProps) {
   const [imageFailed, setImageFailed] = useState(false);
   return (
-    <li data-reveal className="flex flex-col bg-white sm:rounded-2xl sm:border sm:border-neutral-200/60 sm:p-2.5 lg:row-span-4 lg:grid lg:grid-rows-subgrid lg:gap-y-0">
+    <li data-reveal className="relative flex flex-col bg-white before:absolute before:-top-12 before:left-1/2 before:w-screen before:-translate-x-1/2 before:h-1 before:bg-linear-to-r before:from-blue-100 before:to-violet-200 first:before:hidden sm:before:hidden sm:rounded-2xl sm:border sm:border-neutral-200/60 sm:p-2.5 lg:row-span-4 lg:grid lg:grid-rows-subgrid lg:gap-y-0">
       <div className="relative aspect-video overflow-hidden rounded-xl bg-brand-100">
         {imageFailed ? <p className="flex h-full items-center justify-center text-brand-500">Фото программы {program.tier}</p> :
           <Image src={program.image} alt={program.alt} fill sizes="(max-width: 1024px) 90vw, 30vw" className="object-cover object-top" onError={() => setImageFailed(true)} />}

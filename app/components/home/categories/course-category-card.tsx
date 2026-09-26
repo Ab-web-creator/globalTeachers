@@ -17,7 +17,7 @@ export default function CourseCategoryCard({ title, description, imageBounds, op
         <svg
           aria-hidden="true"
           viewBox={`${viewportX} ${y} ${viewportWidth} ${height}`}
-          className="mx-auto mt-2 mb-5 block aspect-5/4 w-3/4 overflow-hidden"
+          className="mx-auto mt-2 mb-5 block aspect-5/4 w-1/2 overflow-hidden sm:w-3/4"
         >
           <image href="/images/course-categories-four-colors.png" width="1254" height="1254" />
         </svg>

@@ -1,8 +1,25 @@
+.background,
+.mobileBackground {
+  --surface-gradient:
+    linear-gradient(315deg, transparent 35%, rgb(92 126 172 / 25%) 100%),
+    linear-gradient(315deg, transparent 15%, rgb(49 82 126 / 20%) 65%, transparent 100%),
+    linear-gradient(315deg, #1b3252 0%, #203959 45%, #2b4870 75%, #3b5c88 100%);
+}
+
 .background {
-  background:
-    linear-gradient(315deg, transparent 35%, rgb(87 80 207 / 55%) 100%),
-    linear-gradient(315deg, transparent 15%, rgb(37 99 235 / 25%) 65%, transparent 100%),
-    linear-gradient(315deg, #11142b 0%, #1d234b 45%, #30276c 75%, #453bb5 100%);
+  background: var(--surface-gradient);
+}
+
+@media (width >= 64rem) {
+  .background {
+    --surface-gradient: linear-gradient(110deg, #273568 0%, #62408f 32%, #ae667f 56%, #ed9860 78%, #f7b64f 100%);
+  }
+}
+
+@media (width < 40rem) {
+  .mobileBackground {
+    background: var(--surface-gradient);
+  }
 }
 
 .ornament {
@@ -11,7 +28,27 @@
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
-  background: url("/images/footer-reference-pattern.png") center right / cover no-repeat;
   opacity: 0.05;
   mask-image: linear-gradient(to right, transparent 0%, rgb(0 0 0 / 15%) 20%, rgb(0 0 0 / 50%) 45%, rgb(0 0 0 / 85%) 70%, #000 100%);
+}
+
+.ornament::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/images/footer-reference-pattern.png") center right / cover no-repeat;
+  transform: scale(1.5);
+  transform-origin: right center;
+}
+
+@media (width >= 64rem) {
+  .ornament {
+    opacity: 0.12;
+  }
+}
+
+@media (width < 40rem) {
+  .ornament::before {
+    transform: none;
+  }
 }
