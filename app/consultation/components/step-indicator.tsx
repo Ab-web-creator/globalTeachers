@@ -1,4 +1,4 @@
-const labels = ["О вас", "Опыт", "Цели"];
+const labels = ["О вас", "Опыт", "Планы"];
 
 export default function StepIndicator({ step }: { step: number }) {
   return (
