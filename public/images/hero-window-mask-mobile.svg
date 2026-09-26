@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1672" height="800" viewBox="0 0 1672 800">
+  <!-- Match the mobile image's bottom crop, keeping the original window coordinates. -->
+  <g fill="white">
+    <path d="M0 0H777V74L0 34Z" />
+    <path d="M810 0H1399V100L810 75Z" />
+    <path d="M1432 0H1672V113L1432 102Z" />
+    <path d="M0 81L777 112V684L0 697Z" />
+    <path d="M811 113L1399 139V677L811 685Z" />
+    <path d="M1432 140L1672 151V674L1435 677Z" />
+  </g>
+</svg>

@@ -21,7 +21,7 @@ export default function ProgramsSection() {
             <h2 id="programs-title" className="max-w-3xl text-4xl sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl leading-none font-semibold tracking-wide text-brand-700">Выберите свой путь<br className="hidden sm:block" /> к международной карьере</h2>
           </div>
         </header>
-        <ul className="mt-10 sm:mt-12 grid gap-5 lg:grid-cols-3 lg:gap-x-8 xl:gap-x-12">
+        <ul className="mt-10 sm:mt-12 grid gap-10 sm:gap-5 lg:grid-cols-3 lg:gap-x-8 xl:gap-x-12">
           {programs.map((program) => <CategoryCard key={program.tier} program={program} onDetails={() => showDetails(program)} />)}
         </ul>
       </div>

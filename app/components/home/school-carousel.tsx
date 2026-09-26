@@ -21,8 +21,9 @@ export default function SchoolCarousel() {
     const element = track.current;
     if (!element) return;
     const resize = new ResizeObserver(([entry]) => {
-      const itemWidth = window.innerWidth >= 1024 ? 160 : window.innerWidth >= 640 ? 128 : 112;
-      setVisibleCount(Math.max(1, Math.min(schoolPartners.length, Math.floor((entry.contentRect.width + 24) / (itemWidth + 24)))));
+      const itemWidth = window.innerWidth >= 1024 ? 160 : window.innerWidth >= 640 ? 128 : 80;
+      const gap = window.innerWidth >= 640 ? 24 : 16;
+      setVisibleCount(Math.max(1, Math.min(schoolPartners.length, Math.floor((entry.contentRect.width + gap) / (itemWidth + gap)))));
     });
     resize.observe(element);
     return () => resize.disconnect();
@@ -65,17 +66,17 @@ export default function SchoolCarousel() {
           touchStart.current = null;
         }}
         onTouchCancel={() => { touchStart.current = null; }}
-        className="flex touch-pan-y items-center justify-between gap-6 rounded-xl py-2"
+        className="flex touch-pan-y items-center justify-between gap-4 rounded-xl py-2 sm:gap-6"
       >
         {visiblePartners.map(({ name, image }) => (
-          <li key={image} className="flex w-28 max-w-full shrink-0 items-center justify-center sm:w-32 lg:w-40">
+          <li key={image} className="flex w-20 max-w-full shrink-0 items-center justify-center sm:w-32 lg:w-40">
             <Image
               src={`/images/collaboration/${image}.jpeg`}
               alt={name}
               width={160}
               height={96}
-              sizes="(min-width: 1024px) 160px, (min-width: 640px) 128px, 112px"
-              className="h-20 w-full object-contain sm:h-24"
+              sizes="(min-width: 1024px) 160px, (min-width: 640px) 128px, 80px"
+              className="h-14 w-full object-contain sm:h-24"
             />
           </li>
         ))}

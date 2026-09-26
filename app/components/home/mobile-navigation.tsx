@@ -50,7 +50,7 @@ export default function MobileNavigation({ onClose }: MobileNavigationProps) {
             <Link key={label} href={href} onClick={onClose} className="rounded-xl px-4 py-3 transition hover:bg-brand-50 hover:text-brand-500">{label}</Link>
           ))}
           <Link href="/#programs" onClick={onClose} className="rounded-xl px-4 py-3 transition hover:bg-brand-50 hover:text-brand-500">Программы</Link>
-          <Link href="/consultation" onClick={onClose} className="mt-4 rounded-full action-gradient px-6 py-4 text-base text-white transition hover:action-gradient">Получить консультацию</Link>
+          <Link href="/consultation" onClick={onClose} className="mt-4 rounded-full bg-brand-500 px-6 py-4 text-base text-white transition hover:bg-brand-600 sm:action-gradient sm:hover:action-gradient">Получить консультацию</Link>
         </nav>
       </div>
     </dialog>

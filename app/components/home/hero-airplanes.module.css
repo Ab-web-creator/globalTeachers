@@ -1,6 +1,6 @@
 .windows {
   /* Match the image's mobile family focus before both layers are mirrored. */
-  mask-image: url("/images/hero-window-mask.svg");
+  mask-image: url("/images/hero-window-mask-mobile.svg");
   mask-size: cover;
   mask-position: 80% center;
   mask-repeat: no-repeat;
@@ -8,6 +8,7 @@
 
 @media (min-width: 40rem) {
   .windows {
+    mask-image: url("/images/hero-window-mask.svg");
     mask-position: right center;
   }
 }
