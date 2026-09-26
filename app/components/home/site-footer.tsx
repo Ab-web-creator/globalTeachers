@@ -2,10 +2,12 @@ import Logo from "../Logo";
 import type { PanelProps } from "./content";
 import FooterContact from "./footer/footer-contact";
 import FooterLinks from "./footer/footer-links";
+import styles from "./footer/footer-background.module.css";
 
 export default function SiteFooter({ openPanel }: PanelProps) {
   return (
-    <footer id="footer" className="scroll-mt-16 text-white" style={{ background: "linear-gradient(135deg, #2563eb 0%, #7c3aed 45%, #4f46e5 70%, #087ea4 88%, #047857 100%)" }}>
+    <footer id="footer" className={`${styles.background} relative isolate overflow-hidden scroll-mt-16 text-white`}>
+      <div aria-hidden="true" className={styles.ornament} />
       <div className="mx-auto max-w-400 px-6 sm:px-10 lg:px-16 xl:px-20">
         <div className="grid grid-cols-2 items-start gap-x-5 gap-y-8 py-8 sm:gap-x-8 sm:py-10 lg:pb-12 xl:pb-12 sm:grid-cols-[0.7fr_0.9fr_1.4fr] xl:grid-cols-[1.5fr_0.7fr_0.9fr_1.4fr] xl:gap-10">
           <div className="col-span-2 sm:col-span-3 xl:col-span-1 xl:pt-2">

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <path id="rosette" fill="#9ca3af" fill-rule="evenodd" d="M-5-16H5V-12H12V-5H16V5H12V12H5V16H-5V12H-12V5H-16V-5H-12V-12H-5ZM-3-7-7-3V3L-3 7H3L7 3V-3L3-7Z" />
+    <pattern id="lattice" width="32" height="32" patternUnits="userSpaceOnUse">
+      <use href="#rosette" x="16" y="16" />
+      <path fill="#9ca3af" d="m0 0 4 4L0 8Zm32 0-4 4 4 4ZM0 32l4-4-4-4Zm32 0-4-4 4-4Z" />
+    </pattern>
+  </defs>
+  <rect width="64" height="64" fill="url(#lattice)" />
+</svg>

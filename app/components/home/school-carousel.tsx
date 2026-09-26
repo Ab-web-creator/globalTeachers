@@ -76,7 +76,7 @@ export default function SchoolCarousel() {
               width={160}
               height={96}
               sizes="(min-width: 1024px) 160px, (min-width: 640px) 128px, 80px"
-              className="h-14 w-full object-contain sm:h-24"
+              className="h-14 w-full object-contain sm:h-24 lg:mix-blend-multiply"
             />
           </li>
         ))}
