@@ -15,7 +15,7 @@ export default function useCompactHeader(headerRef: RefObject<HTMLElement | null
       // Retain the expanded height so shrinking the navbar cannot flip it back.
       if (!current) expandedHeight = headerRef.current?.getBoundingClientRect().height ?? expandedHeight;
       const next = !hero || hero.getBoundingClientRect().bottom <= expandedHeight;
-      setHidden(!next && window.scrollY > 8);
+      setHidden(!next && window.scrollY > 0);
       if (next !== current) {
         current = next;
         setCompact(next);
