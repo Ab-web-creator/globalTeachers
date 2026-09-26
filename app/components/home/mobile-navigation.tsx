@@ -46,12 +46,12 @@ export default function MobileNavigation({ onClose }: MobileNavigationProps) {
           <span className="h-px flex-1 bg-brand-100" />
         </div>
         <nav aria-label="Мобильная навигация" className="flex flex-col items-stretch gap-2 px-5 pb-8 text-center text-xl font-medium sm:px-7">
-          <Link href="/#home" onClick={onClose} className="rounded-xl bg-brand-50 px-4 py-3 text-brand-500">Главная</Link>
+          <Link href="/#home" onClick={onClose} className="rounded-xl bg-brand-50 px-4 py-3 text-brand-500">Главная страница</Link>
           {navigationItems.map(({ label, href }) => (
             <Link key={label} href={href} onClick={onClose} className="rounded-xl px-4 py-3 transition hover:bg-brand-50 hover:text-brand-500">{label}</Link>
           ))}
           <Link href="/#programs" onClick={onClose} className="rounded-xl px-4 py-3 transition hover:bg-brand-50 hover:text-brand-500">Программы</Link>
-          <Link href="/consultation" onClick={onClose} className="mt-4 rounded-2xl sm:rounded-full action-gradient-outline px-6 py-2.5 sm:py-4 text-base transition">Получить консультацию</Link>
+          <Link href="/consultation" onClick={onClose} className="rounded-xl px-4 py-3 transition hover:bg-brand-50 hover:text-brand-500">Получить консультацию</Link>
         </nav>
       </div>
     </dialog>

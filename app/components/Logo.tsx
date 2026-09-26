@@ -21,8 +21,8 @@ export default function Logo({ className = "w-52", ...props }: LogoProps) {
         <path d="m6 46-4 10c13-2 24 1 32 7 8-6 19-9 32-7l-4-10M9 45c10 1 18 5 25 12 7-7 15-11 25-12" />
       </g>
       <text fill="currentColor" fontFamily="Arial, Helvetica, sans-serif" letterSpacing="0.2" aria-hidden="true">
-        <tspan x="64" y="33" fontSize="22" fontWeight="600">Global</tspan>
-        <tspan x="64" y="53" fontSize="18" fontWeight="400">Teacher Hub</tspan>
+        <tspan x="64" y="33" fontSize="22" fontWeight="900" textLength="104" lengthAdjust="spacing">GLOBAL</tspan>
+        <tspan x="64" y="53" fontSize="18" fontWeight="400" textLength="104" lengthAdjust="spacing">Teacher Hub</tspan>
       </text>
     </svg>
   );

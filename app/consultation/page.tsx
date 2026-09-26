@@ -1,21 +1,31 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import PageHeader from "../components/page-header";
-import ConsultationDetails from "./consultation-details";
+import ConsultationIntro from "./components/consultation-intro";
+import ConsultationForm from "./components/consultation-form";
+import ConsultationAside from "./components/consultation-aside";
 
 export const metadata: Metadata = {
   title: "Консультация — Global Teacher Hub",
-  description: "Обсудите свой педагогический опыт и следующие шаги к работе в международной школе.",
+  description: "Расскажите о своём педагогическом опыте и целях за три простых шага. Начните путь к работе в международной школе.",
 };
 
 export default function ConsultationPage() {
   return (
-    <div className="min-h-screen bg-linear-to-br from-sky-50 via-white to-violet-50 text-brand-700">
+    <div className="min-h-screen bg-sky-50 text-brand-700">
       <PageHeader />
-      <main className="mx-auto max-w-6xl px-6 py-16 sm:px-10 lg:py-24">
-        <p className="text-sm font-semibold tracking-widest text-brand-500 uppercase">Личная консультация</p>
-        <h1 className="mt-6 max-w-3xl text-4xl leading-tight font-semibold tracking-tight sm:text-5xl">Ваш следующий шаг к международной карьере</h1>
-        <p className="mt-8 max-w-2xl text-lg leading-relaxed text-neutral-600">Расскажите о своём опыте и целях. Вместе определим, с чего начать и как подготовиться к работе в международной школе.</p>
-        <ConsultationDetails />
+      <main className="relative isolate overflow-hidden">
+        <Image src="/images/consultation-world.png" alt="" fill priority sizes="100vw" className="-z-20 object-cover object-left-bottom max-lg:hidden" />
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 hidden bg-linear-to-r from-white/60 via-transparent to-white/20 lg:block" />
+        <div className="mx-auto grid max-w-400 items-start gap-8 px-6 py-8 sm:px-10 sm:py-12 lg:grid-cols-[1.1fr_1fr] lg:gap-10 lg:px-16 xl:grid-cols-[1.3fr_1fr_0.32fr] xl:gap-8 xl:px-20">
+          <div className="relative isolate">
+            <Image src="/images/consultation-world.png" alt="" fill sizes="(min-width: 1024px) 1px, 100vw" className="-z-10 object-cover object-left-bottom lg:hidden" />
+            <div aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-b from-sky-50/95 via-sky-50/70 to-transparent lg:hidden" />
+            <ConsultationIntro />
+          </div>
+          <ConsultationForm />
+          <ConsultationAside />
+        </div>
       </main>
     </div>
   );
