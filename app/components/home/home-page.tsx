@@ -36,7 +36,7 @@ export default function HomePage() {
         <Benefits />
         <MentorNote openPanel={openPanel} />
         <StatisticsSection />
-        <CategoriesSection openPanel={openPanel} />
+        <CategoriesSection />
         <ProgramsSection />
         <FaqSection />
       </main>
