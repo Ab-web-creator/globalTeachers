@@ -10,7 +10,7 @@ export default function LearningGallery({ openPanel }: PanelProps) {
       </div>
       <div className="relative row-span-2 hidden overflow-hidden rounded-3xl bg-[#e7eae7] sm:block">
         <Image src="/images/educators-colorful.png" alt="Three educators in colorful clothing collaborating around a laptop in a library" fill preload sizes="(max-width: 1024px) 45vw, 25vw" className="object-cover object-center" />
-        <button onClick={() => openPanel("Demo")} aria-label="Open the Global Teacher Hub demo preview" className="absolute top-1/2 left-1/2 flex size-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-brand-100 transition hover:scale-105 hover:bg-white sm:size-22">
+        <button onClick={() => openPanel("Demo")} aria-label="Open the Global Teacher Hub demo preview" className="absolute top-1/2 left-1/2 flex size-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl sm:rounded-full bg-brand-100 transition hover:scale-105 hover:bg-white sm:size-22">
           <svg viewBox="0 0 24 28" className="ml-1 h-7 w-6" fill="currentColor" aria-hidden="true"><path d="M3 1 23 14 3 27V1Z" /></svg>
         </button>
       </div>

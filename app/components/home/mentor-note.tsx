@@ -28,7 +28,7 @@ export default function MentorNote({ openPanel }: PanelProps) {
         <button
           type="button"
           onClick={() => openPanel("Consultation")}
-          className="mt-12 rounded-full action-gradient px-6 py-4 text-base font-medium text-white transition hover:action-gradient sm:px-8"
+          className="mt-12 rounded-2xl sm:rounded-full action-gradient px-6 py-2.5 sm:py-4 text-base font-medium text-white transition hover:action-gradient sm:px-8"
         >
           Обсудить мой следующий шаг
         </button>

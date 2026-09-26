@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import MenuLanguages from "./menu-languages";
 import { navigationItems } from "./navigation-items";
+import styles from "./site-header.module.css";
 
 type MobileNavigationProps = { onClose: () => void };
 
@@ -30,12 +31,12 @@ export default function MobileNavigation({ onClose }: MobileNavigationProps) {
       aria-label="Меню сайта"
       onCancel={onClose}
       onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}
-      className="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none bg-transparent p-3 text-brand-700 backdrop:bg-brand-950/60 backdrop:backdrop-blur-sm sm:p-6"
+      className={`${styles.menuColors} fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none bg-transparent p-3 text-brand-700 backdrop:bg-violet-600/25 backdrop:backdrop-blur-sm sm:p-6`}
     >
-      <div className="ml-auto flex max-h-full w-full max-w-sm flex-col overflow-y-auto rounded-3xl bg-white shadow-2xl sm:max-w-md">
+      <div className="ml-auto flex max-h-full w-full max-w-sm flex-col overflow-y-auto rounded-3xl bg-white shadow-2xl shadow-violet-500/20 sm:max-w-md">
         <div className="flex items-center justify-between gap-4 px-5 pt-5 sm:px-7 sm:pt-7">
           <MenuLanguages />
-          <button type="button" onClick={onClose} aria-label="Закрыть меню" autoFocus className="flex size-11 items-center justify-center rounded-full text-brand-500 transition hover:bg-brand-50">
+          <button type="button" onClick={onClose} aria-label="Закрыть меню" autoFocus className="flex size-11 items-center justify-center rounded-2xl sm:rounded-full text-brand-500 transition hover:bg-brand-50">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="size-6" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6" /></svg>
           </button>
         </div>
@@ -50,7 +51,7 @@ export default function MobileNavigation({ onClose }: MobileNavigationProps) {
             <Link key={label} href={href} onClick={onClose} className="rounded-xl px-4 py-3 transition hover:bg-brand-50 hover:text-brand-500">{label}</Link>
           ))}
           <Link href="/#programs" onClick={onClose} className="rounded-xl px-4 py-3 transition hover:bg-brand-50 hover:text-brand-500">Программы</Link>
-          <Link href="/consultation" onClick={onClose} className="mt-4 rounded-full bg-brand-500 px-6 py-4 text-base text-white transition hover:bg-brand-600 sm:action-gradient sm:hover:action-gradient">Получить консультацию</Link>
+          <Link href="/consultation" onClick={onClose} className="mt-4 rounded-2xl sm:rounded-full action-gradient-outline px-6 py-2.5 sm:py-4 text-base transition">Получить консультацию</Link>
         </nav>
       </div>
     </dialog>

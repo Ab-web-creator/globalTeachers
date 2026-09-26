@@ -20,7 +20,7 @@ export default function JobsPage() {
           <h2 id="jobs-status" className="mt-6 text-2xl font-semibold sm:text-3xl">Вакансии пока не опубликованы</h2>
           <p className="mt-5 max-w-2xl leading-relaxed text-neutral-600">Пока мы готовим этот раздел, вы можете обсудить свой опыт и цели на консультации. Поможем определить направление поиска и подготовиться к откликам.</p>
           <div className="mt-8 flex flex-wrap items-center gap-6">
-            <Link href="/consultation" className="action-gradient-outline inline-flex rounded-full px-6 py-4 text-center font-medium">Получить консультацию</Link>
+            <Link href="/consultation" className="action-gradient-outline inline-flex rounded-2xl sm:rounded-full px-6 py-2.5 sm:py-4 text-center font-medium">Получить консультацию</Link>
             <Link href="/#programs" className="font-medium text-brand-500 underline-offset-8 hover:underline">Посмотреть программы</Link>
           </div>
         </section>

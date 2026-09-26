@@ -12,7 +12,7 @@ export default function AboutCopy() {
       Международная карьера начинается не с отправки сотен резюме, а с понимания своих возможностей. Мы помогаем определить вашу точку старта, выбрать направление и выстроить понятный путь к международному офферу.
       </p>
       <AboutBenefits />
-      <Link href="/consultation" className="mt-6 inline-flex rounded-full action-gradient-outline px-8 py-4 text-base font-medium text-brand-700 transition hover:shadow-md sm:mt-8">
+      <Link href="/consultation" className="mt-6 inline-flex rounded-2xl sm:rounded-full action-gradient-outline px-8 py-2.5 sm:py-4 text-base font-medium text-brand-700 transition hover:shadow-md sm:mt-8">
         Начать свой путь
       </Link>
     </div>

@@ -42,8 +42,8 @@ export default function VideoPreview() {
         <source src="/audio/globalteacherhub-ru.mp3" type="audio/mpeg" />
       </audio>
       <div className="mt-4 flex flex-wrap items-center gap-3">
-        <button type="button" disabled={index === 0} onClick={() => seek(index - 1)} className="rounded-full bg-brand-100 px-4 py-3 text-brand-600 disabled:opacity-40">Назад</button>
-        <button type="button" disabled={index === scenes.length - 1} onClick={() => seek(index + 1)} className="rounded-full bg-brand-100 px-4 py-3 text-brand-600 disabled:opacity-40">Далее</button>
+        <button type="button" disabled={index === 0} onClick={() => seek(index - 1)} className="rounded-2xl sm:rounded-full bg-brand-100 px-4 py-2.5 sm:py-3 text-brand-600 disabled:opacity-40">Назад</button>
+        <button type="button" disabled={index === scenes.length - 1} onClick={() => seek(index + 1)} className="rounded-2xl sm:rounded-full bg-brand-100 px-4 py-2.5 sm:py-3 text-brand-600 disabled:opacity-40">Далее</button>
         <a href="/audio/globalteacherhub-ru.mp3" download className="text-brand-500 underline underline-offset-4">Скачать озвучку MP3</a>
       </div>
       <p className="mt-4 text-base leading-relaxed text-neutral-700">{scene.narration}</p>

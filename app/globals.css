@@ -77,11 +77,11 @@ button {
 @utility action-gradient-outline {
   border: 2px solid transparent;
   background: linear-gradient(white, white) padding-box,
-    linear-gradient(to right, #2563eb, #7c3aed, #ec4899, #f97316) border-box;
+    linear-gradient(to right, #2563eb, #7c3aed) border-box;
   color: var(--color-brand-700);
   &:hover {
     background: linear-gradient(#f8f8fa, #f8f8fa) padding-box,
-      linear-gradient(to right, #1d4ed8, #6d28d9, #db2777, #ea580c) border-box;
+      linear-gradient(to right, #1d4ed8, #6d28d9) border-box;
   }
 }
 
@@ -93,7 +93,7 @@ button {
     inset: 0;
     border-radius: inherit;
     padding: 2px;
-    background: linear-gradient(to right, #2563eb, #7c3aed, #ec4899, #f97316);
+    background: linear-gradient(to right, #2563eb, #7c3aed);
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask-composite: exclude;
     pointer-events: none;
