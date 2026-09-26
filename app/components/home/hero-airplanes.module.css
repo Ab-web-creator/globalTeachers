@@ -1,5 +1,5 @@
 .windows {
-  /* Match the image's mobile family focus before both layers are mirrored. */
+  /* Match each image's crop and positioning. */
   mask-image: url("/images/hero-window-mask-mobile.svg");
   mask-size: cover;
   mask-position: 80% center;
@@ -7,6 +7,13 @@
 }
 
 @media (min-width: 40rem) {
+  .windows {
+    mask-image: url("/images/hero-window-mask.svg");
+    mask-position: center;
+  }
+}
+
+@media (min-width: 64rem) {
   .windows {
     mask-position: right center;
   }
