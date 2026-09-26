@@ -1,12 +1,12 @@
 .windows {
-  /* Match the background image's object-cover and responsive position. */
+  /* Match the image's mobile family focus before both layers are mirrored. */
   mask-image: url("/images/hero-window-mask.svg");
   mask-size: cover;
-  mask-position: center;
+  mask-position: 80% center;
   mask-repeat: no-repeat;
 }
 
-@media (min-width: 64rem) {
+@media (min-width: 40rem) {
   .windows {
     mask-position: right center;
   }

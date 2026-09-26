@@ -2,7 +2,7 @@ import styles from "./hero-airplanes.module.css";
 
 export default function HeroAirplanes() {
   return (
-    <div aria-hidden="true" className={`${styles.windows} pointer-events-none absolute inset-0 -z-20 overflow-hidden`}>
+    <div aria-hidden="true" className={`${styles.windows} pointer-events-none absolute inset-0 -z-20 -scale-x-100 overflow-hidden`}>
       {[styles.departing, styles.arriving, styles.distant].map((flight) => (
         <div key={flight} className={`${styles.flight} ${flight}`}>
           <svg viewBox="0 0 120 40" className={styles.plane} fill="currentColor">

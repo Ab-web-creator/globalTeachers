@@ -1,13 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1672" height="941" viewBox="0 0 1672 941">
-  <!-- Transparent frames; opaque panes match hero-airport-family-v2.png. -->
+  <!-- Occlude airplanes only behind visible frames; the removed pole leaves a continuous pane. -->
   <g fill="white">
     <path d="M0 0H777V74L0 34Z" />
     <path d="M810 0H1399V100L810 75Z" />
-    <path d="M1456 0H1530V106L1456 103Z" />
-    <path d="M1602 0H1672V113L1602 110Z" />
+    <path d="M1432 0H1672V113L1432 102Z" />
     <path d="M0 81L777 112V684L0 697Z" />
     <path d="M811 113L1399 139V677L811 685Z" />
-    <path d="M1456 142L1530 145V675L1456 677Z" />
-    <path d="M1602 148L1672 151V674H1602Z" />
+    <path d="M1432 140L1672 151V674L1435 677Z" />
   </g>
 </svg>
