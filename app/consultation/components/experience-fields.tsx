@@ -9,11 +9,11 @@ const questions: { name: keyof Answers; label: string; options: string[] }[] = [
   { name: "international", label: "Есть ли у вас опыт работы в международной школе?", options: ["Да", "Нет"] },
 ];
 
-export default function ExperienceFields({ answers, onChange }: { answers: Answers; onChange: (name: keyof Answers, value: string) => void }) {
+export default function ExperienceFields({ names, answers, onChange }: { names: readonly string[]; answers: Answers; onChange: (name: keyof Answers, value: string) => void }) {
   return (
-    <div className="space-y-6">
-      <SubjectSelector value={answers.subject} onChange={(value) => onChange("subject", value)} />
-      {questions.map((question) => <ChoiceField key={question.name} {...question} value={answers[question.name]} onChange={(value) => onChange(question.name, value)} />)}
-    </div>
+    <>
+      {names.includes("subject") && <SubjectSelector value={answers.subject} onChange={(value) => onChange("subject", value)} />}
+      {questions.filter((question) => names.includes(question.name)).map((question) => <ChoiceField key={question.name} {...question} value={answers[question.name]} onChange={(value) => onChange(question.name, value)} />)}
+    </>
   );
 }

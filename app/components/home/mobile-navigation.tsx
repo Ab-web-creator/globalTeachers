@@ -31,9 +31,9 @@ export default function MobileNavigation({ onClose }: MobileNavigationProps) {
       aria-label="Меню сайта"
       onCancel={onClose}
       onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}
-      className={`${styles.menuColors} fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none bg-transparent p-3 text-brand-700 backdrop:bg-violet-600/25 backdrop:backdrop-blur-sm sm:p-6`}
+      className={`${styles.mobileMenuColors} fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none bg-transparent p-3 text-brand-700 backdrop:bg-neutral-900/25 backdrop:backdrop-blur-sm sm:p-6`}
     >
-      <div className="ml-auto flex max-h-full w-full max-w-sm flex-col overflow-y-auto rounded-3xl bg-white shadow-2xl shadow-violet-500/20 sm:max-w-md">
+      <div className="ml-auto flex max-h-full w-full max-w-sm flex-col overflow-y-auto rounded-3xl bg-white shadow-2xl shadow-neutral-900/20 sm:max-w-md">
         <div className="flex items-center justify-between gap-4 px-5 pt-5 sm:px-7 sm:pt-7">
           <MenuLanguages />
           <button type="button" onClick={onClose} aria-label="Закрыть меню" autoFocus className="flex size-11 items-center justify-center rounded-2xl sm:rounded-full text-brand-500 transition hover:bg-brand-50">
@@ -45,7 +45,7 @@ export default function MobileNavigation({ onClose }: MobileNavigationProps) {
           <span className="size-2 rotate-45 bg-brand-400" />
           <span className="h-px flex-1 bg-brand-100" />
         </div>
-        <nav aria-label="Мобильная навигация" className="flex flex-col items-stretch gap-2 px-5 pb-8 text-center text-xl font-medium sm:px-7">
+        <nav aria-label="Мобильная навигация" className="flex flex-col items-stretch gap-2 px-5 pb-8 text-center text-xl font-normal sm:px-7">
           <Link href="/#home" onClick={onClose} className="rounded-xl bg-brand-50 px-4 py-3 text-brand-500">Главная страница</Link>
           {navigationItems.map(({ label, href }) => (
             <Link key={label} href={href} onClick={onClose} className="rounded-xl px-4 py-3 transition hover:bg-brand-50 hover:text-brand-500">{label}</Link>

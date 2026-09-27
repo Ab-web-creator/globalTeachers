@@ -61,6 +61,11 @@ button {
   outline-offset: 5px;
 }
 
+.consultation-form :focus-visible {
+  outline-width: 1px;
+  outline-offset: 1px;
+}
+
 ::selection {
   background: var(--color-brand-100);
   color: var(--color-brand-500);

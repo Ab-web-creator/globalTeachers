@@ -1,14 +1,14 @@
-const labels = ["О вас", "Опыт", "Планы"];
+import { consultationSteps } from "./consultation-steps";
 
 export default function StepIndicator({ step }: { step: number }) {
   return (
     <div>
-      <p className="text-sm text-neutral-500" aria-live="polite">Шаг {step + 1} из 3</p>
-      <ol className="relative mt-5 grid grid-cols-3 before:absolute before:inset-x-6 before:top-5 before:h-px before:bg-brand-200" aria-label="Этапы заявки">
-        {labels.map((label, index) => (
-          <li key={label} aria-current={step === index ? "step" : undefined} className="relative flex flex-col items-center gap-2">
-            <span className={`flex size-10 items-center justify-center rounded-full text-sm font-semibold ${index <= step ? "bg-brand-500 text-white shadow-sm" : "bg-brand-100 text-neutral-500"}`}>{index < step ? "✓" : index + 1}</span>
-            <span className={`text-xs ${index === step ? "font-medium text-brand-600" : "text-neutral-500"}`}>{label}</span>
+      <p className="text-sm text-neutral-500" aria-live="polite">Шаг {step + 1} из {consultationSteps.length}</p>
+      {step === 0 && <p className="mt-3 text-base leading-relaxed text-slate-600 lg:hidden">Оставьте заявку на консультацию — вместе определим ваш следующий шаг к работе в международной школе.</p>}
+      <ol className="mt-4 flex gap-2" aria-label="Этапы заявки">
+        {consultationSteps.map(({ title }, index) => (
+          <li key={title} aria-current={step === index ? "step" : undefined} className={`h-2 flex-1 rounded-full ${index <= step ? "bg-brand-500" : "bg-brand-100"}`}>
+            <span className="sr-only">{index + 1}. {title}{index < step ? " — завершён" : ""}</span>
           </li>
         ))}
       </ol>
