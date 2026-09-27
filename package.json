@@ -9,8 +9,9 @@
     "lint": "eslint",
     "db:migrate": "node scripts/migrate.mjs",
     "test": "node --test tests/*.test.cjs",
-    "db:start": "pg_ctl -D .local/postgres -l .local/postgres.log start",
-    "db:stop": "pg_ctl -D .local/postgres stop"
+    "db:start": "node scripts/local-database.mjs start",
+    "db:stop": "node scripts/local-database.mjs stop",
+    "db:setup": "node scripts/local-database.mjs setup"
   },
   "dependencies": {
     "next": "16.3.5",

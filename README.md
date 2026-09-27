@@ -1,3 +1,37 @@
+## Collaborator setup after git pull
+
+Install Node.js and [Docker Desktop](https://docs.docker.com/get-started/get-docker/),
+and start Docker Desktop. In the project directory run:
+
+```sh
+git pull
+npm ci
+npm run db:setup
+npm run dev
+```
+
+`db:setup` creates `.env.local` if missing, generates private local credentials,
+starts PostgreSQL 16, waits for it to be ready, and applies all migrations.
+An existing `DATABASE_URL` is preserved; for externally managed databases it
+only generates missing admin credentials and applies migrations to that database.
+Your existing native PostgreSQL setup remains supported.
+
+Each collaborator gets an **empty independent database**, not a copy of another
+person's applications. Git carries the schema/setup, never user data or passwords.
+Data persists in a Docker volume through container restarts and ordinary git pulls.
+Keep `.env.local` so its password continues to match the database; do not delete
+Docker volumes unless you intentionally want to erase local records.
+
+Fill in `RESEND_API_KEY`, a verified `CONSULTATION_EMAIL_FROM`, and a reachable
+`CONSULTATION_EMAIL_TO` in `.env.local` for real email testing. These credentials
+must be shared separately. Read `ADMIN_PASSWORD` in that file to use `/admin`.
+`SITE_URL=http://localhost:3000` works for local testing.
+
+On later days, start Docker Desktop and run `npm run db:start`. Use `npm run
+db:stop` to stop the database without deleting records. After code updates, rerun
+`npm run db:setup` to apply new migrations. Port 55433 is used for Docker; change
+`LOCAL_DATABASE_PORT` before the first setup if that port is already occupied.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -74,7 +108,7 @@ Resend's 24-hour deduplication window. Rows with a null `notification_sent_at`
 after that window need manual review in Resend before retrying. Keep email
 sender/recipient settings stable while retrying jobs. The record remains saved.
 
-This adds application records, not login accounts or an admin dashboard. Database
+This stores application records separately from user login accounts. Database
 access is server-side only. Row-level security is enabled with no public policies;
 use a server-only connection with the table-owning role. Deploy the schema before the app update. Previously
 issued encrypted links are incompatible: submit again to receive a new link.

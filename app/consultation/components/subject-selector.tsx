@@ -22,6 +22,13 @@ export default function SubjectSelector({ value, onChange }: { value: string; on
     search.current?.focus({ preventScroll: true });
   }
 
+  function finishSelection() {
+    search.current?.focus({ preventScroll: true });
+    setFocused(false);
+    setActiveIndex(-1);
+    setQuery("");
+  }
+
   function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     if (event.key === "Escape") {
       setFocused(false);
@@ -39,7 +46,15 @@ export default function SubjectSelector({ value, onChange }: { value: string; on
     <fieldset>
       <legend className="text-sm font-medium">Что вы преподаёте?</legend>
       <p id="subjects-help" className="mt-1 text-xs text-neutral-500">Выберите предметы из списка или начните вводить для поиска. Можно выбрать несколько.</p>
-      <div className="relative mt-3">
+      <div
+        className="relative mt-3"
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget)) {
+            setFocused(false);
+            setActiveIndex(-1);
+          }
+        }}
+      >
         <label htmlFor="subject-search" className="sr-only">Поиск по предметам</label>
         <input
           ref={search}
@@ -56,12 +71,11 @@ export default function SubjectSelector({ value, onChange }: { value: string; on
           onChange={(event) => { setQuery(event.target.value); setFocused(true); setActiveIndex(-1); }}
           onFocus={() => setFocused(true)}
           onClick={() => setFocused(true)}
-          onBlur={() => { setFocused(false); setActiveIndex(-1); }}
           onKeyDown={handleKeyDown}
           placeholder="Поиск по предметам"
           className="w-full rounded-xl border border-brand-200 px-4 py-3 text-base focus:outline-2 focus:outline-brand-500"
         />
-        {open && options.length > 0 && <SubjectOptions options={options} selected={selected} activeIndex={activeIndex} onSelect={select} />}
+        {open && options.length > 0 && <SubjectOptions options={options} selected={selected} activeIndex={activeIndex} onSelect={select} onDone={finishSelection} />}
       </div>
       {open && options.length === 0 && <p role="status" className="mt-2 text-xs text-neutral-500">Нет совпадений. Попробуйте другой запрос.</p>}
       {selected.length > 0 && (

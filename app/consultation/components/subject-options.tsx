@@ -5,9 +5,10 @@ type Props = {
   selected: string[];
   activeIndex: number;
   onSelect: (subject: string) => void;
+  onDone: () => void;
 };
 
-export default function SubjectOptions({ options, selected, activeIndex, onSelect }: Props) {
+export default function SubjectOptions({ options, selected, activeIndex, onSelect, onDone }: Props) {
   const list = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
@@ -23,13 +24,15 @@ export default function SubjectOptions({ options, selected, activeIndex, onSelec
   }, [activeIndex]);
 
   return (
+    <div className="absolute z-10 mt-1 w-full overflow-hidden rounded-xl border border-brand-100 bg-white shadow-lg">
     <ul
       ref={list}
       id="subject-options"
       role="listbox"
+      tabIndex={-1}
       aria-multiselectable="true"
       aria-label="Предметы"
-      className="absolute z-10 mt-1 max-h-60 w-full overflow-y-auto overscroll-contain rounded-xl border border-brand-100 bg-white p-1 shadow-lg"
+      className="relative max-h-48 overflow-y-auto overscroll-contain p-1"
     >
       {options.map((subject, index) => (
         <li
@@ -53,5 +56,16 @@ export default function SubjectOptions({ options, selected, activeIndex, onSelec
         </li>
       ))}
     </ul>
+    <div className="flex items-center justify-between gap-3 border-t border-brand-100 px-3 py-2">
+      <span className="text-xs text-neutral-500" aria-live="polite">Выбрано: {selected.length}</span>
+      <button
+        type="button"
+        onClick={onDone}
+        className="rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600"
+      >
+        Готово ✓
+      </button>
+    </div>
+    </div>
   );
 }
