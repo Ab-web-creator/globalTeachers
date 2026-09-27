@@ -5,11 +5,11 @@ import { countries } from "./countries";
 
 export type Answers = {
   name: string; country: string; email: string; contact: string;
-  subject: string; subjectOther: string; experience: string; education: string; qualification: string; international: string;
+  subject: string; experience: string; education: string; qualification: string; international: string;
   english: string; priority: string; destinations: string; timing: string; goals: string;
 };
 export const emptyAnswers: Answers = {
-  name: "", country: "", email: "", contact: "", subject: "", subjectOther: "", experience: "", education: "", qualification: "", international: "", english: "", priority: "", destinations: "", timing: "", goals: "",
+  name: "", country: "", email: "", contact: "", subject: "", experience: "", education: "", qualification: "", international: "", english: "", priority: "", destinations: "", timing: "", goals: "",
 };
 const fieldClass = "mt-2 w-full rounded-xl border border-brand-200 bg-white/80 px-4 py-3 text-base text-brand-700 placeholder:text-neutral-400 focus:border-brand-500 focus:outline-2 focus:outline-brand-300";
 type Field = { name: keyof Answers; label: string; placeholder?: string; type?: string; autocomplete?: string; options?: string[]; multiline?: boolean; optional?: boolean };

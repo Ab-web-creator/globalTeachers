@@ -12,26 +12,7 @@ const questions: { name: keyof Answers; label: string; options: string[] }[] = [
 export default function ExperienceFields({ answers, onChange }: { answers: Answers; onChange: (name: keyof Answers, value: string) => void }) {
   return (
     <div className="space-y-6">
-      <SubjectSelector value={answers.subject} onChange={(value) => {
-        onChange("subject", value);
-        if (!value.split("; ").includes("Другое")) onChange("subjectOther", "");
-      }} />
-      {answers.subject.split("; ").includes("Другое") && (
-        <label htmlFor="subject-other" className="block text-sm font-medium">
-          Напишите свой ответ
-          <input
-            id="subject-other"
-            name="subjectOther"
-            value={answers.subjectOther}
-            onChange={(event) => onChange("subjectOther", event.target.value)}
-            required
-            pattern=".*\S.*"
-            maxLength={200}
-            placeholder="Ваш предмет или специализация"
-            className="mt-2 w-full rounded-xl border border-brand-200 px-4 py-3 text-base font-normal focus:outline-2 focus:outline-brand-500"
-          />
-        </label>
-      )}
+      <SubjectSelector value={answers.subject} onChange={(value) => onChange("subject", value)} />
       {questions.map((question) => <ChoiceField key={question.name} {...question} value={answers[question.name]} onChange={(value) => onChange(question.name, value)} />)}
     </div>
   );

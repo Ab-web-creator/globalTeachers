@@ -23,5 +23,10 @@ export const subjects = [
   "Learning Support / SEN — поддержка учащихся и специальное образование",
   "Библиотека — Librarian / Teacher Librarian",
   "College / University Counselling — профориентация и поступление в университет",
-  "Другое",
+  "Узбекский язык — Uzbek",
+  "Русский язык — Russian",
+  "Казахский язык — Kazakh",
+  "Таджикский язык — Tajik",
+  "Туркменский язык — Turkmen",
+  "Кыргызский язык — Kyrgyz",
 ];
