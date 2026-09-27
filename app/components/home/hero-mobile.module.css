@@ -1,15 +1,11 @@
 @media (width < 40rem) {
-  .mobileBackground {
-    background: linear-gradient(120deg, #1c426c, #0b233e);
-  }
-
-  .copySurface,
+  .mobileBackground,
   .imageFade {
-    background: linear-gradient(to right, #103255, #0b233e);
+    background: linear-gradient(to right, #273568, #62408f);
   }
 
   .imageFade {
-    mask-image: linear-gradient(to bottom, transparent, rgb(0 0 0 / 35%) 40%, #000 95%);
+    mask-image: linear-gradient(to bottom, transparent, #000);
   }
 
   .heading {
@@ -30,6 +26,6 @@
     left: 0;
     width: 2rem;
     height: 2px;
-    background: #fde68a;
+    background: var(--color-brand-200);
   }
 }

@@ -7,13 +7,7 @@
 }
 
 .background {
-  background: var(--surface-gradient);
-}
-
-@media (width >= 64rem) {
-  .background {
-    --surface-gradient: linear-gradient(110deg, #273568 0%, #62408f 32%, #ae667f 56%, #ed9860 78%, #f7b64f 100%);
-  }
+  background: linear-gradient(110deg, #273568 0%, #273568 35%, #62408f 80%, #ae667f 100%);
 }
 
 @media (width < 40rem) {
