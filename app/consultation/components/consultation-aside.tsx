@@ -7,7 +7,7 @@ const highlights = [
 
 export default function ConsultationAside() {
   return (
-    <aside className="hidden self-stretch pt-8 xl:flex xl:flex-col xl:justify-between">
+    <aside className="hidden min-h-0 self-stretch overflow-y-auto overscroll-contain pt-8 xl:flex xl:flex-col xl:justify-between">
       <p className="border-l border-slate-300 pl-4 text-sm leading-relaxed text-slate-500">Учителя меняют мир.<br />Начните свою новую главу вместе с нами.</p>
       <ul className="my-10 space-y-7">
         {highlights.map(({ text, path }) => <li key={text} className="flex items-start gap-3 text-xs leading-relaxed text-slate-600"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="size-6 shrink-0" aria-hidden="true"><path d={path} /></svg>{text}</li>)}
