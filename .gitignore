@@ -53,3 +53,5 @@ next-env.d.ts
 # Next.js generated files
 .next/
 out/
+# Local PostgreSQL data (never commit user records)
+/.local/

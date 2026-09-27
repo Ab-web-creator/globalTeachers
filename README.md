@@ -109,3 +109,17 @@ sessions. Anonymous requests never load the application data. The admin page
 is dynamic and excluded from search indexing; it is not linked in public navigation.
 Configure hosting-level rate limiting for `/admin/login` before public deployment.
 The database and migrations must be configured before records can be displayed.
+
+### Local database on this computer
+
+A dedicated PostgreSQL instance is initialized in `.local/postgres` and listens
+only on `127.0.0.1:55432`. Its application connection is in `.env.local`. Database
+files and credentials are ignored by Git. Records survive application/server
+restarts; do not delete `.local` if you want to keep them.
+
+After restarting your computer, run `npm run db:start` before `npm run dev`.
+Use `npm run db:stop` to stop PostgreSQL cleanly. These commands require the
+locally installed PostgreSQL tools; they are not production deployment commands.
+The application role owns its database and has no PostgreSQL superuser rights.
+The protected maintenance endpoint still needs a scheduler for unattended expiry
+cleanup and notification retries.
