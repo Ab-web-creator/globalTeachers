@@ -1,6 +1,6 @@
-import type { PanelProps } from "./content";
+import Link from "next/link";
 
-export default function MentorMessage({ openPanel }: PanelProps) {
+export default function MentorMessage() {
   return (
       <div className="min-w-0">
         <header data-reveal>
@@ -26,14 +26,13 @@ export default function MentorMessage({ openPanel }: PanelProps) {
           <p className="text-base font-medium text-brand-700">Основатель GlobalTeacherHub</p>
           <p className="mt-1 text-sm text-neutral-600">Ваш наставник на пути к международной карьере</p>
         </div>
-        <button
+        <Link
           data-reveal
-          type="button"
-          onClick={() => openPanel("Consultation")}
-          className="mt-12 rounded-2xl sm:rounded-full action-gradient px-6 py-2.5 sm:py-4 text-base font-medium text-white transition hover:action-gradient sm:px-8"
+          href="/consultation"
+          className="mt-12 inline-block rounded-2xl sm:rounded-full action-gradient px-6 py-2.5 sm:py-4 text-base font-medium text-white transition hover:action-gradient sm:px-8"
         >
           Обсудить мой следующий шаг
-        </button>
+        </Link>
       </div>
   );
 }
