@@ -1,13 +1,12 @@
-import { createHash } from "node:crypto";
+import { trustedRequestOrigin } from "../../../lib/request-origin";
 import { parseAnswers } from "../../../lib/consultation/answers";
 import { emailConfig, sendEmail } from "../../../lib/consultation/email";
-import { createToken } from "../../../lib/consultation/token";
+import { removeExpiredApplications, savePendingApplication } from "../../../lib/consultation/applications";
 
 export const runtime = "nodejs";
-const attempts = new Map<string, number>();
 
 export async function POST(request: Request) {
-  if (request.headers.get("origin") !== new URL(request.url).origin) return Response.json({ error: "Недопустимый запрос." }, { status: 403 });
+  if (!trustedRequestOrigin(request)) return Response.json({ error: "Недопустимый запрос." }, { status: 403 });
   let answers;
   try {
     const body = await request.text();
@@ -16,15 +15,13 @@ export async function POST(request: Request) {
   } catch {
     return Response.json({ error: "Проверьте заполнение всех полей заявки." }, { status: 400 });
   }
-  const identity = createHash("sha256").update(answers.email.toLowerCase()).digest("hex");
-  const now = Date.now();
-  for (const [id, expires] of attempts) if (expires <= now) attempts.delete(id);
-  if (attempts.has(identity)) return Response.json({ error: "Подождите минуту перед повторной отправкой." }, { status: 429 });
-  attempts.set(identity, now + 60000);
   try {
     const { origin } = emailConfig();
-    // The fragment keeps the encrypted application out of HTTP access logs and referrers.
-    const link = `${origin}/consultation/confirm#${createToken(answers)}`;
+    await removeExpiredApplications();
+    const token = await savePendingApplication(answers);
+    if (!token) return Response.json({ error: "Подождите минуту перед повторной отправкой." }, { status: 429 });
+    // Only a random token goes into the link; personal data stays in the database.
+    const link = `${origin}/consultation/confirm#${token}`;
     await sendEmail({
       to: answers.email,
       subject: "Подтвердите email — GlobalTeacherHub",
@@ -32,7 +29,6 @@ export async function POST(request: Request) {
     });
     return Response.json({ ok: true });
   } catch {
-    attempts.delete(identity);
     return Response.json({ error: "Не удалось отправить письмо. Попробуйте позже." }, { status: 503 });
   }
 }
