@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PageHeader from "../../components/page-header";
 import { programs } from "../../components/home/categories/programs";
-import ProgramDetails from "../program-details";
+import StartDetails from "../start/start-details";
+import ProDetails from "../pro/pro-details";
+import VipDetails from "../vip/vip-details";
 
 type Props = { params: Promise<{ tier: string }> };
 
@@ -24,10 +26,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProgramPage({ params }: Props) {
   const program = await getProgram(params);
+  const Details = program.tier === "START" ? StartDetails : program.tier === "PRO" ? ProDetails : VipDetails;
   return (
     <div className="min-h-screen bg-linear-to-br from-sky-50 via-white to-violet-50 text-brand-700">
       <PageHeader />
-      <ProgramDetails program={program} />
+      <Details program={program} />
     </div>
   );
 }
