@@ -7,7 +7,7 @@ import StepIndicator from "./step-indicator";
 
 import { consultationSteps } from "./consultation-steps";
 
-export default function ConsultationForm({ onIntroVisibilityChange }: { onIntroVisibilityChange: (visible: boolean) => void }) {
+export default function ConsultationForm() {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>(emptyAnswers);
   const [sent, setSent] = useState(false);
@@ -31,7 +31,6 @@ export default function ConsultationForm({ onIntroVisibilityChange }: { onIntroV
   }
 
   function changeStep(next: number) {
-    onIntroVisibilityChange(next === 0);
     setStep(next);
     setError("");
     requestAnimationFrame(() => {
@@ -55,7 +54,6 @@ export default function ConsultationForm({ onIntroVisibilityChange }: { onIntroV
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Не удалось отправить письмо.");
       setSent(true);
-      onIntroVisibilityChange(false);
       requestAnimationFrame(resetScroll);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Проверьте соединение и попробуйте ещё раз.");
