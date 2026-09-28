@@ -4,13 +4,14 @@ import "./globals.css";
 
 const roboto = Roboto({
   variable: "--font-roboto",
-  subsets: ["latin"],
+  subsets: ["cyrillic"],
   display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  preload: false,
 });
 
 export const metadata: Metadata = {

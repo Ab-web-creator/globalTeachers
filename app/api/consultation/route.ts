@@ -1,5 +1,5 @@
 import { trustedRequestOrigin } from "../../../lib/request-origin";
-import { parseAnswers } from "../../../lib/consultation/answers";
+import { AnswerValidationError, parseAnswers } from "../../../lib/consultation/answers";
 import { emailConfig, sendEmail } from "../../../lib/consultation/email";
 import { removeExpiredApplications, savePendingApplication } from "../../../lib/consultation/applications";
 
@@ -12,7 +12,8 @@ export async function POST(request: Request) {
     const body = await request.text();
     if (body.length > 20000) throw new Error("Too large");
     answers = parseAnswers(JSON.parse(body));
-  } catch {
+  } catch (error) {
+    if (error instanceof AnswerValidationError) return Response.json({ error: error.message, field: error.field }, { status: 400 });
     return Response.json({ error: "Проверьте заполнение всех полей заявки." }, { status: 400 });
   }
   try {

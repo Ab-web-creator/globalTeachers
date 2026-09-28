@@ -74,6 +74,17 @@ button {
     inset 0 0 0 4px var(--color-brand-500);
 }
 
+.consultation-form input[aria-invalid="true"] {
+  border-color: var(--color-red-500);
+}
+
+.consultation-form input[aria-invalid="true"]:focus {
+  border-color: var(--color-red-500);
+  box-shadow:
+    inset 0 0 0 2px white,
+    inset 0 0 0 4px var(--color-red-500);
+}
+
 ::selection {
   background: var(--color-brand-100);
   color: var(--color-brand-500);

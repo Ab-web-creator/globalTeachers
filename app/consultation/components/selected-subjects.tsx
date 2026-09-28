@@ -7,7 +7,7 @@ export default function SelectedSubjects({ selected, onRemove }: Props) {
   if (!selected.length) return null;
 
   return (
-    <ul aria-label="Выбранные предметы" className="max-h-40 space-y-2 overflow-y-auto overscroll-contain px-2 pb-2">
+    <ul aria-label="Выбранные предметы" className="max-h-48 space-y-2 overflow-y-auto overscroll-contain px-2 pb-2">
       {selected.map((subject) => (
         <li key={subject} className="flex min-w-0 items-center gap-2 rounded-lg bg-brand-50 py-1 pl-3 pr-1 text-sm text-brand-600">
           <span title={subject} className="min-w-0 flex-1 truncate">{subject}</span>

@@ -19,6 +19,7 @@ const { savePendingApplication, confirmApplication, removeExpiredApplications } 
 const { deliverNotification } = require('../lib/consultation/notifications.ts');
 const { listApplications } = require('../lib/admin/applications.ts');
 const { subjects } = require('../app/consultation/components/subjects.ts');
+const { parseAnswers } = require('../lib/consultation/answers.ts');
 const answers = {
   name: 'Test Teacher', country: 'Test', email: 'test@example.com', contact: '',
   subject: subjects[0], experience: 'До 2 лет', education: 'Бакалавр',
@@ -27,6 +28,19 @@ const answers = {
 };
 const request = (body) => new Request('https://example.com/api/consultation', {
   method: 'POST', headers: { origin: 'https://example.com' }, body: JSON.stringify(body),
+});
+
+test('the last question is optional and validation identifies the earlier invalid field', async () => {
+  assert.equal(parseAnswers(answers).goals, '');
+  assert.equal(parseAnswers({ ...answers, goals: '   ' }).goals, '');
+  const response = await submit(request({ ...answers, email: 'teacher@school' }));
+  assert.equal(response.status, 400);
+  assert.deepEqual(await response.json(), {
+    error: 'Укажите корректный email, например name@example.com.', field: 'email',
+  });
+  const missing = await submit(request({ ...answers, education: '' }));
+  assert.equal(missing.status, 400);
+  assert.equal((await missing.json()).field, 'education');
 });
 
 test('tokens are random, contain no answers, and malformed tokens are rejected', () => {
