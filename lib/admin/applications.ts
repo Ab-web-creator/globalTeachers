@@ -18,7 +18,10 @@ const records = `WITH records AS (
   FROM consultation_applications
 )`;
 const where = `WHERE ($1 = 'all' OR status = $1)
-  AND ($2 = '' OR strpos(lower(email), lower($2)) > 0 OR strpos(lower(answers->>'name'), lower($2)) > 0)`;
+  AND ($2 = '' OR strpos(lower(email), lower($2)) > 0 OR EXISTS (
+    SELECT 1 FROM jsonb_each_text(answers) AS answer
+    WHERE strpos(lower(answer.value), lower($2)) > 0
+  ))`;
 
 export async function listApplications(filter: ApplicationFilter, search: string, requestedPage: number) {
   const db = database();
