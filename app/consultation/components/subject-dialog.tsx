@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import SubjectOptions from "./subject-options";
+import SubjectSearchField from "./subject-search-field";
 import { subjects } from "./subjects";
 
 type Props = {
@@ -13,7 +14,7 @@ export default function SubjectDialog({ selected, onSelect, onClose }: Props) {
   const list = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
   const normalized = query.trim().toLocaleLowerCase("ru");
-  const options = subjects.filter((subject) => subject.toLocaleLowerCase("ru").includes(normalized));
+  const options = subjects.filter((subject) => !selected.includes(subject) && subject.toLocaleLowerCase("ru").includes(normalized));
 
   useEffect(() => {
     const element = dialog.current;
@@ -32,12 +33,11 @@ export default function SubjectDialog({ selected, onSelect, onClose }: Props) {
             </button>
           </div>
           <p id="subject-dialog-help" className="mt-2 text-sm text-neutral-500">Можно выбрать несколько предметов.</p>
-          <label htmlFor="subject-search" className="sr-only">Поиск по предметам</label>
-          <input id="subject-search" type="search" value={query} onChange={(event) => { setQuery(event.target.value); list.current?.scrollTo({ top: 0 }); }} placeholder="Поиск по предметам" autoComplete="off" className="mt-4 w-full rounded-xl border border-brand-200 px-4 py-3 text-base text-brand-700 focus:border-brand-500 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500" />
+          <SubjectSearchField query={query} selected={selected} onQueryChange={(value) => { setQuery(value); list.current?.scrollTo({ top: 0 }); }} onRemove={onSelect} />
         </header>
         <div ref={list} className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-3 sm:p-4">
           <SubjectOptions options={options} selected={selected} onSelect={onSelect} />
-          {options.length === 0 && <p role="status" className="p-4 text-sm text-neutral-500">Нет совпадений. Попробуйте другой запрос.</p>}
+          {options.length === 0 && <p role="status" className="p-4 text-sm text-neutral-500">{selected.length === subjects.length ? "Все предметы выбраны." : "Нет новых совпадений. Попробуйте другой запрос."}</p>}
         </div>
         <footer className="flex shrink-0 items-center justify-between gap-4 border-t border-brand-100 p-5 sm:p-6">
           <span className="text-sm text-neutral-500" aria-live="polite">Выбрано: {selected.length}</span>

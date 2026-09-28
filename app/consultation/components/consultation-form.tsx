@@ -70,7 +70,7 @@ export default function ConsultationForm() {
       </div> : <form onSubmit={submit} className="flex min-h-0 flex-1 flex-col">
         <fieldset disabled={sending} className="flex min-h-0 min-w-0 flex-1 flex-col">
           <div ref={scrollArea} className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
-            <div className={`${consultationSteps[step].fields[0] === "goals" ? "grid-rows-[auto_1fr]" : styles.stepLayout} grid h-full content-start`}>
+            <div className={`${["name", "goals"].includes(consultationSteps[step].fields[0]) ? "grid-rows-[auto_1fr]" : styles.stepLayout} grid h-full content-start`}>
               <div className={consultationSteps[step].fields[0] === "goals" ? "pb-4" : "pb-6"}>
                 <StepIndicator step={step} />
                 <h2 ref={heading} tabIndex={-1} id="form-heading" className="mt-5 text-2xl font-semibold tracking-tight outline-none sm:mt-8">{consultationSteps[step].title}</h2>

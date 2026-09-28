@@ -30,7 +30,7 @@ export default function ProgramDetails({ program }: { program: Program }) {
       <section className="mt-10" aria-labelledby="next-step-title">
         <h2 id="next-step-title" className="text-2xl font-semibold">Как начать</h2>
         <p className="mt-3 max-w-2xl leading-relaxed text-neutral-600">На консультации обсудим ваш педагогический опыт, цели и вопросы о программе {program.tier}. Это поможет определить, подходит ли вам этот формат поддержки.</p>
-        <Link href="/consultation" className="action-gradient mt-6 inline-flex rounded-2xl px-6 py-3 font-semibold text-white sm:rounded-full">Обсудить программу {program.tier}</Link>
+        <Link href="/consultation" className="action-gradient mt-6 inline-flex rounded-2xl px-6 py-3 font-semibold text-white sm:rounded-full">Купить пакет</Link>
       </section>
     </main>
   );

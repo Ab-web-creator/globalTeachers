@@ -1,0 +1,33 @@
+.digit {
+  position: relative;
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+  line-height: 1;
+  align-self: center;
+}
+
+.fallback {
+  visibility: hidden;
+}
+
+.reel {
+  position: absolute;
+  inset: 0 0 auto;
+  animation: roll var(--roll-duration) cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.cell {
+  display: block;
+  height: 1em;
+}
+
+@keyframes roll {
+  from { transform: translateY(var(--roll-start)); }
+  to { transform: translateY(var(--roll-end)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reel { display: none; }
+  .fallback { visibility: visible; }
+}

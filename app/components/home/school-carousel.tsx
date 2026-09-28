@@ -1,85 +1,49 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { schoolPartners } from "./school-partners";
+import useScrollLogos from "./use-scroll-logos";
 
 export default function SchoolCarousel() {
-  const track = useRef<HTMLUListElement>(null);
-
-  const [visibleCount, setVisibleCount] = useState(1);
-  const [start, setStart] = useState(0);
+  const { viewport, track, move } = useScrollLogos();
   const touchStart = useRef<number | null>(null);
 
-  function advance(direction: number) {
-    if (visibleCount < schoolPartners.length) {
-      setStart((current) => (current + direction + schoolPartners.length) % schoolPartners.length);
-    }
-  }
-
-  useEffect(() => {
-    const element = track.current;
-    if (!element) return;
-    const resize = new ResizeObserver(([entry]) => {
-      const itemWidth = window.innerWidth >= 1024 ? 160 : window.innerWidth >= 640 ? 128 : 80;
-      const gap = window.innerWidth >= 640 ? 24 : 16;
-      setVisibleCount(Math.max(1, Math.min(schoolPartners.length, Math.floor((entry.contentRect.width + gap) / (itemWidth + gap)))));
-    });
-    resize.observe(element);
-    return () => resize.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const element = track.current;
-    if (!element) return;
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const timer = window.setInterval(() => {
-      if (document.hidden || reducedMotion.matches || element.matches(":hover, :focus-within")) return;
-      if (visibleCount >= schoolPartners.length) return;
-      setStart((current) => (current + 1) % schoolPartners.length);
-    }, 3000);
-    return () => window.clearInterval(timer);
-  }, [visibleCount]);
-
-  const visiblePartners = Array.from({ length: visibleCount }, (_, index) =>
-    schoolPartners[((visibleCount === schoolPartners.length ? 0 : start) + index) % schoolPartners.length],
-  );
-
   return (
-    <div className="mt-5 sm:mt-6" role="region" aria-roledescription="карусель" aria-labelledby="partners-title">
-      <ul
-        ref={track}
-        id="school-carousel"
-        tabIndex={0}
-        aria-label="Логотипы международных школ"
-        onKeyDown={(event) => {
-          if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
-            event.preventDefault();
-            advance(event.key === "ArrowRight" ? 1 : -1);
-          }
-        }}
-        onTouchStart={(event) => { touchStart.current = event.touches[0].clientX; }}
-        onTouchEnd={(event) => {
-          if (touchStart.current === null) return;
-          const distance = touchStart.current - event.changedTouches[0].clientX;
-          if (Math.abs(distance) > 40) advance(distance > 0 ? 1 : -1);
-          touchStart.current = null;
-        }}
-        onTouchCancel={() => { touchStart.current = null; }}
-        className="flex touch-pan-y items-center justify-between gap-4 rounded-xl py-2 sm:gap-6"
-      >
-        {visiblePartners.map(({ name, image }) => (
-          <li key={image} className="relative h-14 w-20 max-w-full shrink-0 sm:h-24 sm:w-32 lg:w-40">
-            <Image
-              src={`/images/collaboration/${image}.jpeg`}
-              alt={name}
-              fill
-              sizes="(min-width: 1024px) 160px, (min-width: 640px) 128px, 80px"
-              className="object-contain mix-blend-multiply"
-            />
-          </li>
+    <div
+      ref={viewport}
+      id="school-carousel"
+      role="region"
+      aria-roledescription="карусель"
+      aria-labelledby="partners-title"
+      tabIndex={0}
+      onKeyDown={(event) => {
+        if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+          event.preventDefault();
+          move(event.key === "ArrowRight" ? 160 : -160);
+        }
+      }}
+      onTouchStart={(event) => { touchStart.current = event.touches[0].clientX; }}
+      onTouchEnd={(event) => {
+        if (touchStart.current === null) return;
+        const distance = touchStart.current - event.changedTouches[0].clientX;
+        if (Math.abs(distance) > 40) move(distance);
+        touchStart.current = null;
+      }}
+      onTouchCancel={() => { touchStart.current = null; }}
+      className="mt-5 overflow-hidden rounded-xl touch-pan-y focus-visible:-outline-offset-2 sm:mt-6"
+    >
+      <div ref={track} className="flex w-max py-2">
+        {[0, 1, 2].map((copy) => (
+          <ul key={copy} aria-hidden={copy !== 1 ? true : undefined} aria-label={copy === 1 ? "Логотипы международных школ" : undefined} className="flex shrink-0 items-center gap-4 pr-4 sm:gap-6 sm:pr-6">
+            {schoolPartners.map(({ name, image }) => (
+              <li key={image} className="relative h-14 w-20 shrink-0 sm:h-24 sm:w-32 lg:w-40">
+                <Image src={`/images/collaboration/${image}.jpeg`} alt={copy === 1 ? name : ""} fill sizes="(min-width: 1024px) 160px, (min-width: 640px) 128px, 80px" className="object-contain mix-blend-multiply" />
+              </li>
+            ))}
+          </ul>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

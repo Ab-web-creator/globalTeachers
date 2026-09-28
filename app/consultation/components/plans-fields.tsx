@@ -1,6 +1,5 @@
 import type { Answers } from "./form-fields";
 import ChoiceField from "./choice-field";
-import RadioField from "./radio-field";
 
 const questions: { name: keyof Answers; label: string; options: string[]; multiple?: boolean }[] = [
   {
@@ -15,7 +14,7 @@ const questions: { name: keyof Answers; label: string; options: string[]; multip
     ],
   },
   { name: "timing", label: "Когда вы хотели бы начать работу за рубежом?", options: ["Как можно скорее", "В следующем учебном году", "Через 1–2 года", "Пока изучаю возможности"] },
-  { name: "destinations", label: "Какие страны или регионы вы рассматриваете?", options: ["Азия", "Ближний Восток", "Европа", "Другие регионы", "Открыт(а) к разным вариантам"], multiple: true },
+  { name: "destinations", label: "Какие страны или регионы вы рассматриваете?", options: ["Азия", "Ближний Восток", "Европа"], multiple: true },
   { name: "priority", label: "Что для вас сейчас самое важное?", options: ["Понять свои шансы", "Выбрать страны и школы", "Найти вакансии", "Подготовить CV и портфолио", "Подготовиться к интервью", "Получить сопровождение до оффера"] },
 ];
 
@@ -23,8 +22,7 @@ export default function PlansFields({ names, answers, onChange }: { names: reado
   return (
     <>
       {questions.filter((question) => names.includes(question.name)).map((question) => {
-        const Field = question.name === "english" ? RadioField : ChoiceField;
-        return <Field key={question.name} {...question} value={answers[question.name]} onChange={(value) => onChange(question.name, value)} />;
+        return <ChoiceField key={question.name} {...question} value={answers[question.name]} onChange={(value) => onChange(question.name, value)} />;
       })}
       {names.includes("goals") && <label htmlFor="consultation-goals" className="block text-sm font-medium">
         <span className="sr-only">Расскажите немного о своей ситуации (необязательно)</span>

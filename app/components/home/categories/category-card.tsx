@@ -30,7 +30,7 @@ export default function CategoryCard({ program }: CategoryCardProps) {
       </div>
       <div className="sm:px-3">
         <ProgramInclusions program={program} />
-        <ProgramFeatures features={program.features} icons={program.icons} />
+        <ProgramFeatures features={program.features} />
       </div>
       <ProgramCardFooter program={program} />
     </li>

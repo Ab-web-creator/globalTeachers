@@ -3,9 +3,19 @@ import { notFound } from "next/navigation";
 import PageHeader from "../../components/page-header";
 import ServiceDetails from "../components/service-details";
 import JobSearchDetails from "../components/job-search/job-search-details";
+import CvPortfolioDetails from "../components/cv-portfolio/cv-portfolio-details";
+import InterviewPreparationDetails from "../components/interview-preparation/interview-preparation-details";
+import CareerSupportDetails from "../components/career-support/career-support-details";
 import { services } from "../services";
 
 type Props = { params: Promise<{ slug: string }> };
+
+const detailComponents = {
+  "job-search": JobSearchDetails,
+  "cv-portfolio": CvPortfolioDetails,
+  "interview-preparation": InterviewPreparationDetails,
+  "career-support": CareerSupportDetails,
+};
 
 export function generateStaticParams() {
   return services.map(({ slug }) => ({ slug }));
@@ -25,10 +35,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ServicePage({ params }: Props) {
   const service = await getService(params);
+  const Details = detailComponents[service.slug as keyof typeof detailComponents] ?? ServiceDetails;
   return (
     <div className="min-h-screen bg-linear-to-br from-sky-50 via-white to-violet-50 text-brand-700">
       <PageHeader />
-      {service.slug === "job-search" ? <JobSearchDetails service={service} /> : <ServiceDetails service={service} />}
+      <Details service={service} />
     </div>
   );
 }
