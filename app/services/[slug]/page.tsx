@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PageHeader from "../../components/page-header";
 import ServiceDetails from "../components/service-details";
+import JobSearchDetails from "../components/job-search/job-search-details";
 import { services } from "../services";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -27,7 +28,7 @@ export default async function ServicePage({ params }: Props) {
   return (
     <div className="min-h-screen bg-linear-to-br from-sky-50 via-white to-violet-50 text-brand-700">
       <PageHeader />
-      <ServiceDetails service={service} />
+      {service.slug === "job-search" ? <JobSearchDetails service={service} /> : <ServiceDetails service={service} />}
     </div>
   );
 }

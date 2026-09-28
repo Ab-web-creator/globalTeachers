@@ -13,7 +13,6 @@ export default function ApplicationCard({ application }: { application: Applicat
     <article className="min-w-0 rounded-2xl border border-brand-100 bg-white p-5 shadow-sm transition-shadow hover:shadow-md sm:p-6">
       <ApplicationDetailsToggle name={application.answers.name} email={application.email} badge={
           <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium ${confirmed ? "bg-brand-50 text-brand-600" : expired ? "bg-neutral-100 text-neutral-600" : "bg-amber-50 text-amber-800"}`}>
-            <span aria-hidden="true" className="size-1.5 rounded-full bg-current" />
             {confirmed ? "Подтверждена" : expired ? "Истекла · ожидает удаления" : "Ожидает подтверждения"}
           </span>
       } actions={<>
