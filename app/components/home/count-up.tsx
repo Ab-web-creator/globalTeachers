@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import styles from "./count-up.module.css";
 
-export default function CountUp({ value }: { value: number }) {
+export default function CountUp({ value, delay = 0 }: { value: number; delay?: number }) {
   const container = useRef<HTMLSpanElement>(null);
   const [rolling, setRolling] = useState(false);
   const formatted = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -11,14 +11,31 @@ export default function CountUp({ value }: { value: number }) {
   useEffect(() => {
     const element = container.current;
     if (!element || !("IntersectionObserver" in window)) return;
+    const reveal = element.closest<HTMLElement>("[data-reveal]");
+    let visible = false;
+    let timer: number | undefined;
+    function startRolling() {
+      if (!visible || (reveal && reveal.dataset.revealed !== "true")) return;
+      completion.disconnect();
+      timer = window.setTimeout(() => {
+        if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) setRolling(true);
+      }, delay);
+    }
+    const completion = new MutationObserver(startRolling);
+    if (reveal) completion.observe(reveal, { attributes: true, attributeFilter: ["data-revealed"] });
     const observer = new IntersectionObserver((entries) => {
       if (!entries.some((entry) => entry.isIntersecting)) return;
+      visible = true;
       observer.disconnect();
-      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) setRolling(true);
+      startRolling();
     }, { threshold: 0.5 });
     observer.observe(element);
-    return () => observer.disconnect();
-  }, []);
+    return () => {
+      observer.disconnect();
+      completion.disconnect();
+      window.clearTimeout(timer);
+    };
+  }, [delay]);
 
   return (
     <span ref={container} className="inline-flex tabular-nums">
