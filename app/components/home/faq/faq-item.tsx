@@ -5,7 +5,7 @@ type FaqItemProps = { question: string; answer: string; icon: FaqIconName };
 export default function FaqItem({ question, answer, icon }: FaqItemProps) {
   return (
     <details className="group rounded-2xl border border-neutral-200 bg-white transition-colors open:border-brand-500 hover:border-brand-300">
-      <summary className="flex cursor-pointer list-none items-start justify-between gap-4 p-5 text-base leading-normal font-semibold text-neutral-900 sm:px-6 sm:text-lg [&::-webkit-details-marker]:hidden">
+      <summary className="flex cursor-pointer list-none items-start justify-between gap-4 p-2 sm:p-4 text-base leading-normal font-semibold text-neutral-900 sm:px-6 sm:text-lg [&::-webkit-details-marker]:hidden">
         <span aria-hidden="true" className="flex size-8 shrink-0 items-center justify-center text-brand-500">
           <FaqIcon name={icon} />
         </span>

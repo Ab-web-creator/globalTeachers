@@ -19,7 +19,7 @@ export const benefits: Benefit[] = [
     description: "Размер зарплаты зависит от образования, квалификации и стажа работы.",
     image: "/images/benefits/salary.jpg",
     color: "bg-linear-to-br from-emerald-100 via-teal-50 to-cyan-50",
-    iconColor: "bg-emerald-100 text-emerald-700",
+    iconColor: "bg-white text-emerald-700",
     accentColor: "text-emerald-700",
   },
   {
@@ -29,7 +29,7 @@ export const benefits: Benefit[] = [
     description: "Школа может предоставить жильё или ежемесячную компенсацию за аренду.",
     image: "/images/benefits/housing.jpg",
     color: "bg-linear-to-br from-amber-100 via-orange-50 to-yellow-50",
-    iconColor: "bg-amber-100 text-amber-700",
+    iconColor: "bg-white text-amber-700",
     accentColor: "text-amber-700",
   },
   {
@@ -39,7 +39,7 @@ export const benefits: Benefit[] = [
     description: "Международные школы часто сами оформляют рабочую визу, а также оплачивают все бумажные расходы.",
     image: "/images/benefits/visa-passport.jpg",
     color: "bg-linear-to-br from-violet-100 via-purple-50 to-fuchsia-50",
-    iconColor: "bg-violet-100 text-violet-700",
+    iconColor: "bg-white text-violet-700",
     accentColor: "text-violet-700",
   },
   {
@@ -49,7 +49,7 @@ export const benefits: Benefit[] = [
     description: "Страховка может распространяться на сотрудника и семью, включая международное покрытие.",
     image: "/images/benefits/insurance.jpg",
     color: "bg-linear-to-br from-rose-100 via-pink-50 to-orange-50",
-    iconColor: "bg-rose-100 text-rose-700",
+    iconColor: "bg-white text-rose-700",
     accentColor: "text-rose-700",
   },
   {
@@ -59,7 +59,7 @@ export const benefits: Benefit[] = [
     description: "Многие школы оплачивают ежегодные перелёты сотруднику и членам его семьи.",
     image: "/images/benefits/flights.jpg",
     color: "bg-linear-to-br from-sky-100 via-blue-50 to-indigo-50",
-    iconColor: "bg-sky-100 text-sky-700",
+    iconColor: "bg-white text-sky-700",
     accentColor: "text-sky-700",
   },
   {
@@ -69,7 +69,7 @@ export const benefits: Benefit[] = [
     description: "Школа может компенсировать расходы на переезд и первоначальное обустройство в новой стране.",
     image: "/images/benefits/relocation.jpg",
     color: "bg-linear-to-br from-orange-100 via-amber-50 to-rose-50",
-    iconColor: "bg-orange-100 text-orange-700",
+    iconColor: "bg-white text-orange-700",
     accentColor: "text-orange-700",
   },
   {
@@ -79,7 +79,7 @@ export const benefits: Benefit[] = [
     description: "Дети сотрудников могут учиться бесплатно или со значительной скидкой.",
     image: "/images/benefits/education-classroom.jpg",
     color: "bg-linear-to-br from-indigo-100 via-violet-50 to-blue-50",
-    iconColor: "bg-indigo-100 text-indigo-700",
+    iconColor: "bg-white text-indigo-700",
     accentColor: "text-indigo-700",
   },
   {
@@ -89,7 +89,7 @@ export const benefits: Benefit[] = [
     description: "Многие школы финансируют курсы, тренинги, конференции и программы повышения квалификации сотрудников.",
     image: "/images/benefits/development.jpg",
     color: "bg-linear-to-br from-fuchsia-100 via-pink-50 to-violet-50",
-    iconColor: "bg-fuchsia-100 text-fuchsia-700",
+    iconColor: "bg-white text-fuchsia-700",
     accentColor: "text-fuchsia-700",
   },
 ];

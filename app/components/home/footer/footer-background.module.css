@@ -23,7 +23,8 @@
   overflow: hidden;
   pointer-events: none;
   opacity: 0.05;
-  mask-image: linear-gradient(to right, transparent 0%, rgb(0 0 0 / 15%) 20%, rgb(0 0 0 / 50%) 45%, rgb(0 0 0 / 85%) 70%, #000 100%);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  mask-image: linear-gradient(to top left, #000 0%, transparent 50%);
 }
 
 .ornament::before {
@@ -42,7 +43,14 @@
 }
 
 @media (width < 40rem) {
+  .ornament {
+    inset: 55% 0 0;
+    opacity: 0.1;
+  }
+
   .ornament::before {
+    background-position: bottom right;
+    background-size: auto 100%;
     transform: none;
   }
 }

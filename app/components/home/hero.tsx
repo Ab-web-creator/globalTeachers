@@ -4,7 +4,7 @@ import styles from "./hero-mobile.module.css";
 export default function Hero() {
   return (
     <div className="relative z-10 max-w-3xl pt-2 pb-10 text-left sm:py-16 lg:py-24 xl:py-28">
-      <p className="mb-4 text-xs font-semibold tracking-widest text-brand-200 uppercase sm:text-sm">Международная карьера педагога</p>
+      <p className="mb-4 text-[10px] font-semibold tracking-widest text-brand-50 uppercase sm:text-sm">Международная карьера педагога</p>
       <h1 id="hero-title" className={`${styles.heading} text-4xl leading-none font-semibold tracking-wide text-white sm:text-5xl xl:text-6xl 2xl:text-7xl`}>
         <span className="hidden sm:inline">Ваш опыт.<br /></span>
         Новая страна.<br />
