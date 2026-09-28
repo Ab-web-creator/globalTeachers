@@ -10,13 +10,21 @@ export default function BenefitIcon({ name }: { name: BenefitIconName }) {
         </>
       )}
       {name === "housing" && <path d="m3 11 9-8 9 8M5 10v11h5v-7h4v7h5V10M16 4h3v4" />}
-      {name === "flights" && <path d="m22 2-7 2-4 6-7-1-2 2 7 4-3 5 2 2 5-5 4 5 2-2-1-8 4-7Z" />}
+      {name === "flights" && (
+        <path d="M12 2c-.8 0-1.5.9-1.5 2v4L3 12v2.5l7.5-2V18l-3 2v2l4.5-1.5 4.5 1.5v-2l-3-2v-5.5l7.5 2V12l-7.5-4V4c0-1.1-.7-2-1.5-2Z" />
+      )}
       {name === "education" && (
         <>
           <path d="m2 9 10-5 10 5-10 5L2 9ZM6 11v7l6 3 6-3v-7M22 9v7" />
         </>
       )}
-      {name === "insurance" && <path d="M12 2 3 6v6c0 5 9 10 9 10s9-5 9-10V6l-9-4ZM12 8v8M8 12h8" />}
+      {name === "insurance" && (
+        <>
+          <path d="M4 9h16a8 6 0 0 1-16 0ZM12 15v7M8 22h8" />
+          <path d="M12 4c0-3 7-3 7 1 0 4-6 5-6 8 0 3 4 3 3 5s-6 0-6 3" />
+          <ellipse cx="11" cy="4" rx="1.5" ry="1" fill="currentColor" stroke="none" />
+        </>
+      )}
       {name === "relocation" && (
         <>
           <rect x="3" y="7" width="18" height="14" rx="2" />
@@ -25,7 +33,8 @@ export default function BenefitIcon({ name }: { name: BenefitIconName }) {
       )}
       {name === "development" && (
         <>
-          <path d="M4 21v-4M9 21v-7M14 21V10M19 21V5M3 11c7 0 12-4 17-9M13 2h7v7" />
+          <path d="M3 3v16a2 2 0 0 0 2 2h16" />
+          <path d="m7 14 4-4 4 3 6-8M15 5h6v6" />
         </>
       )}
       {name === "visa" && (

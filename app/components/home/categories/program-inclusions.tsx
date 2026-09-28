@@ -3,7 +3,7 @@ import type { Program } from "./programs";
 export default function ProgramInclusions({ program, detailed = false }: { program: Program; detailed?: boolean }) {
   return (
     <div className="mt-3">
-      <p className="text-base lg:text-sm font-semibold text-brand-500">{program.inclusionLabel}</p>
+      <p className="text-base lg:text-sm font-semibold text-blue-700">{program.inclusionLabel}</p>
       <p className="mt-1 text-base lg:text-xs leading-normal text-neutral-600">{program.supportSummary}</p>
       {detailed && program.inheritedServices.length > 0 && (
         <div className="mt-3">
