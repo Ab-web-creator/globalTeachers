@@ -6,13 +6,21 @@ export default function useScrollReveal() {
     if (!("IntersectionObserver" in window)) return;
 
     const animations = new Set<Animation>();
+    const pending = new Map<HTMLElement, string>();
     let observer: IntersectionObserver | undefined;
+
+    function restore(element: HTMLElement) {
+      const opacity = pending.get(element);
+      if (opacity === undefined) return;
+      element.style.opacity = opacity;
+      pending.delete(element);
+    }
 
     function start() {
       observer?.disconnect();
-      animations.forEach((animation) => animation.cancel());
+      animations.forEach((animation) => animation.finish());
       animations.clear();
-      if (preference.matches) return;
+      pending.forEach((_, element) => restore(element));
 
       const started = new WeakSet<HTMLElement>();
       observer = new IntersectionObserver((entries) => {
@@ -24,6 +32,7 @@ export default function useScrollReveal() {
           started.add(element);
           // Keep focused controls and anchor destinations immediately readable.
           if (element.contains(document.activeElement)) {
+            restore(element);
             element.dataset.revealed = "true";
             return;
           }
@@ -44,20 +53,41 @@ export default function useScrollReveal() {
               fill: "backwards",
             },
           );
+          restore(element);
           animations.add(animation);
           animation.onfinish = () => {
             element.dataset.revealed = "true";
             animations.delete(animation);
           };
         });
-      }, { threshold: 0.08 });
+      }, {
+        threshold: 0.08,
+        // Start reveals after content clears the bottom fifth of the screen.
+        rootMargin: `0px 0px -${Math.round(window.innerHeight * 0.2)}px 0px`,
+      });
 
-      document.querySelectorAll("[data-reveal]").forEach((element) => observer?.observe(element));
+      document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((element) => {
+        // Never fade out content the visitor can already see.
+        if (preference.matches || element.dataset.revealed || element.getBoundingClientRect().top < window.innerHeight) {
+          element.dataset.revealed = "true";
+          return;
+        }
+        pending.set(element, element.style.opacity);
+        element.style.opacity = "0";
+        observer?.observe(element);
+      });
     }
 
     function revealFocusedContent(event: FocusEvent) {
       const target = event.target as HTMLElement;
-      target.closest("[data-reveal]")?.getAnimations().forEach((animation) => animation.finish());
+      let element = target.closest<HTMLElement>("[data-reveal]");
+      while (element) {
+        restore(element);
+        element.dataset.revealed = "true";
+        observer?.unobserve(element);
+        element.getAnimations().forEach((animation) => animation.finish());
+        element = element.parentElement?.closest<HTMLElement>("[data-reveal]") ?? null;
+      }
     }
 
     start();
@@ -66,6 +96,7 @@ export default function useScrollReveal() {
     return () => {
       observer?.disconnect();
       animations.forEach((animation) => animation.cancel());
+      pending.forEach((_, element) => restore(element));
       preference.removeEventListener("change", start);
       document.removeEventListener("focusin", revealFocusedContent);
     };

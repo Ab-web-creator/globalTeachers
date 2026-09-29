@@ -25,7 +25,7 @@ export default function ChoiceField({ name, label, options, value, multiple = fa
           return (
           <label key={option.value} className="relative cursor-pointer">
             <input type={multiple ? "checkbox" : "radio"} name={name} value={option.value} checked={multiple ? selected.includes(option.value) : value === option.value} required={!multiple} onChange={() => choose(option.value)} className="peer sr-only" />
-            <span className="block rounded-xl border border-brand-200 px-3 py-2 text-sm peer-checked:border-brand-500 peer-checked:outline-1 peer-checked:-outline-offset-3 peer-checked:outline-brand-500 peer-checked:bg-brand-50 peer-checked:text-brand-600 peer-focus-visible:outline-1 peer-focus-visible:-outline-offset-3 peer-focus-visible:outline-brand-500">{option.label}</span>
+            <span className="block rounded-xl border border-brand-200 px-3 py-2 text-sm peer-checked:border-brand-500 peer-checked:text-brand-600 peer-focus-visible:underline peer-focus-visible:underline-offset-4">{option.label}</span>
           </label>
           );
         })}
