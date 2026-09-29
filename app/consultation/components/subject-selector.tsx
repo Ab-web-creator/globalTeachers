@@ -2,7 +2,8 @@ import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import RequiredMark from "./required-mark";
 import SubjectDialog from "./subject-dialog";
-import SelectedSubjects from "./selected-subjects";
+import SelectedSubjectList from "./selected-subject-list";
+import { MAX_SUBJECTS } from "./subjects";
 
 export default function SubjectSelector({ value, onChange }: { value: string; onChange: (value: string) => void }) {
   const [open, setOpen] = useState(false);
@@ -10,6 +11,7 @@ export default function SubjectSelector({ value, onChange }: { value: string; on
   const selected = value ? value.split("; ") : [];
 
   function select(subject: string) {
+    if (!selected.includes(subject) && selected.length >= MAX_SUBJECTS) return;
     const next = selected.includes(subject) ? selected.filter((item) => item !== subject) : [...selected, subject];
     onChange(next.join("; "));
   }
@@ -22,7 +24,7 @@ export default function SubjectSelector({ value, onChange }: { value: string; on
           <span>{selected.length ? `Выбрано предметов: ${selected.length}` : "Выберите предметы"}</span>
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="size-5 shrink-0 text-brand-600"><path d="m6 9 6 6 6-6" /></svg>
         </button>
-        <SelectedSubjects selected={selected} onRemove={(subject) => { select(subject); trigger.current?.focus({ preventScroll: true }); }} />
+        <SelectedSubjectList selected={selected} onRemove={(subject) => { select(subject); trigger.current?.focus({ preventScroll: true }); }} />
       </div>
       {open && createPortal(<SubjectDialog selected={selected} onSelect={select} onClose={() => setOpen(false)} />, document.body)}
     </fieldset>

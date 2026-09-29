@@ -1,4 +1,5 @@
 import type { Answers } from "./form-fields";
+import { MAX_SUBJECTS } from "./subjects";
 
 const requiredMessages: Record<string, string> = {
   firstName: "Укажите ваше имя.",
@@ -16,6 +17,7 @@ const requiredMessages: Record<string, string> = {
 
 export function validateStep(form: HTMLFormElement, field: keyof Answers, answers: Answers): { field: string; message: string } | null {
   if (field === "subject" && !answers.subject) return { field, message: "Выберите хотя бы один предмет." };
+  if (field === "subject" && answers.subject.split("; ").length > MAX_SUBJECTS) return { field, message: `Выберите не более ${MAX_SUBJECTS} предметов.` };
   if (field === "destinations" && !answers.destinations) return { field, message: "Выберите хотя бы один регион." };
   if (field === "email" && answers.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(answers.email.trim())) {
     return { field, message: "Укажите корректный email, например name@example.com." };

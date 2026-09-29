@@ -43,6 +43,16 @@ test('the last question is optional and validation identifies the earlier invali
   assert.equal((await missing.json()).field, 'education');
 });
 
+test('subject selection accepts three subjects and rejects a fourth', async () => {
+  const subject = subjects.slice(0, 3).join('; ');
+  assert.equal(parseAnswers({ ...answers, subject }).subject, subject);
+  const response = await submit(request({ ...answers, subject: subjects.slice(0, 4).join('; ') }));
+  assert.equal(response.status, 400);
+  assert.deepEqual(await response.json(), {
+    error: 'Выберите не более 3 предметов.', field: 'subject',
+  });
+});
+
 test('tokens are random, contain no answers, and malformed tokens are rejected', () => {
   const token = createToken();
   assert.equal(token.length, 43);

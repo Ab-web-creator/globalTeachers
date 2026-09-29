@@ -1,5 +1,5 @@
 import type { Answers } from "../../app/consultation/components/form-fields";
-import { subjects } from "../../app/consultation/components/subjects";
+import { MAX_SUBJECTS, subjects } from "../../app/consultation/components/subjects";
 
 export const answerLabels: Record<keyof Answers, string> = { name: "Имя", country: "Страна проживания", email: "Email", contact: "WhatsApp / Telegram", subject: "Специализация", experience: "Стаж", education: "Образование", qualification: "Педагогическая квалификация", international: "Опыт в международной школе", english: "Уровень английского", priority: "Главный приоритет", destinations: "Страны и регионы", timing: "Сроки", goals: "Ситуация и вопросы" };
 
@@ -23,6 +23,7 @@ export function parseAnswers(input: unknown): Answers {
     if (!result[key] && key !== "goals" && key !== "contact") throw new AnswerValidationError(key, `Заполните поле «${answerLabels[key]}».`);
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(result.email) || /[\r\n]/.test(result.email)) throw new AnswerValidationError("email", "Укажите корректный email, например name@example.com.");
+  if (result.subject.split("; ").length > MAX_SUBJECTS) throw new AnswerValidationError("subject", `Выберите не более ${MAX_SUBJECTS} предметов.`);
   if (!result.subject.split("; ").every((subject) => subjects.includes(subject))) throw new AnswerValidationError("subject", "Выберите предметы из списка заново: один из выбранных вариантов недоступен.");
   return result as Answers;
 }
