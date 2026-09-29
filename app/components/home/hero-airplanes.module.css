@@ -34,12 +34,12 @@
 }
 
 .departing {
-  top: 26%;
+  top: 15%;
   animation-delay: -8s;
 }
 
 .arriving {
-  top: 16%;
+  top: 9%;
   animation-duration: 34s;
   animation-delay: -20s;
   animation-direction: reverse;
@@ -51,7 +51,7 @@
 }
 
 .distant {
-  top: 34%;
+  top: 20%;
   animation-duration: 40s;
   animation-delay: 7s;
 }
