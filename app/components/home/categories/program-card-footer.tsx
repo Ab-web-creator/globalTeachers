@@ -9,7 +9,10 @@ export default function ProgramCardFooter({ program }: ProgramCardFooterProps) {
       <div className="flex flex-col items-start gap-4 @min-[17rem]:flex-row @min-[17rem]:items-center @min-[17rem]:justify-between">
         <p className="flex min-h-14 min-w-0 items-center text-brand-500 @min-[17rem]:flex-1">
           {program.price === null ? (
-            <span lang="ru" className="max-w-[25ch] text-base lg:text-xs leading-snug font-medium hyphens-manual">Стоимость рассчиты&shy;ва&shy;ется индивидуально</span>
+            <span className="flex flex-col items-start gap-1">
+              <span className="rounded-md bg-brand-100 px-2 py-1 text-sm font-semibold text-brand-600">Индивидуально</span>
+              <span className="text-xs leading-normal text-neutral-600">Стоимость по запросу</span>
+            </span>
           ) : (
             <span className="flex flex-col">
               <span className="text-3xl font-semibold tracking-tight">${program.price}</span>
