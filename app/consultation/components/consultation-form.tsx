@@ -77,7 +77,7 @@ export default function ConsultationForm() {
   }
 
   return (
-    <section className="consultation-form flex h-full min-h-0 min-w-0 flex-col overflow-hidden bg-white lg:rounded-3xl lg:border lg:border-white lg:shadow-xl lg:shadow-slate-900/5" aria-labelledby="form-heading">
+    <section className="consultation-form flex h-full min-h-0 min-w-0 flex-col overflow-hidden bg-white lg:border-4 lg:border-gray-200 lg:rounded-3xl lg:shadow-xl lg:shadow-slate-900/5" aria-labelledby="form-heading">
       {sent ? <div className="min-h-0 overflow-y-auto overscroll-contain px-4 py-5 lg:p-8 xl:p-10">
         <EmailPending email={answers.email} onEdit={() => { setSent(false); changeStep(0); }} />
         <p className="mt-5 flex items-start gap-2 text-xs leading-relaxed text-neutral-500"><span aria-hidden="true">◇</span>Ваши данные используются только для рассмотрения заявки и связи с вами.</p>
@@ -85,7 +85,7 @@ export default function ConsultationForm() {
         <fieldset disabled={sending} aria-describedby={error ? "step-error" : undefined} className="flex min-h-0 min-w-0 flex-1 flex-col">
           <div ref={scrollArea} className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
             <div className="flex min-h-full flex-col">
-              <div className="bg-neutral-100 px-4 py-5 lg:p-8 xl:p-10">
+              <div className="bg-white px-4 py-5 lg:p-8 xl:p-10">
                 <StepIndicator step={step} />
                 <h2 ref={heading} tabIndex={-1} id="form-heading" className="mt-5 text-2xl font-semibold tracking-tight outline-none sm:mt-8">{consultationSteps[step].title}</h2>
                 {consultationSteps[step].description && <p id="step-description" className="mt-2 text-sm leading-relaxed text-neutral-500">{consultationSteps[step].description}</p>}
