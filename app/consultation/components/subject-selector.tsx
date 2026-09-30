@@ -1,14 +1,23 @@
 import { useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import RequiredMark from "./required-mark";
-import SubjectDialog from "./subject-dialog";
+import SubjectPicker from "./subject-picker";
+import SubjectDropdown from "./subject-dropdown";
+import SubjectSearchField from "./subject-search-field";
 import SelectedSubjectList from "./selected-subject-list";
 import { MAX_SUBJECTS } from "./subjects";
 
 export default function SubjectSelector({ value, onChange }: { value: string; onChange: (value: string) => void }) {
   const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
   const trigger = useRef<HTMLButtonElement>(null);
+  const anchor = useRef<HTMLDivElement>(null);
   const selected = value ? value.split("; ") : [];
+
+  function toggleOpen() {
+    setOpen(!open);
+    setQuery("");
+    trigger.current?.focus({ preventScroll: true });
+  }
 
   function select(subject: string) {
     if (!selected.includes(subject) && selected.length >= MAX_SUBJECTS) return;
@@ -17,16 +26,20 @@ export default function SubjectSelector({ value, onChange }: { value: string; on
   }
 
   return (
-    <fieldset className="min-w-0">
+    <fieldset className="min-w-0" onKeyDown={(event) => { if (open && event.key === "Escape") { event.preventDefault(); event.stopPropagation(); toggleOpen(); } }}>
       <legend id="subject-label" className="text-sm font-medium">Что вы преподаёте?<RequiredMark /></legend>
-      <div className="mt-3 min-w-0 rounded-xl border border-brand-200 bg-white hover:border-brand-400">
-        <button ref={trigger} type="button" onClick={() => setOpen(true)} aria-haspopup="dialog" aria-expanded={open} aria-describedby="subject-label step-description" className="flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3 text-left text-base text-brand-700 focus-visible:-outline-offset-2">
-          <span>{selected.length ? `Выбрано предметов: ${selected.length}` : "Выберите предметы"}</span>
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="size-5 shrink-0 text-brand-600"><path d="m6 9 6 6 6-6" /></svg>
+      <div ref={anchor} className={`relative mt-3 min-h-12 min-w-0 ${open ? "" : "rounded-xl border border-brand-200 bg-white hover:border-brand-400"}`}>
+        <button ref={trigger} type="button" onClick={toggleOpen} aria-label={open ? "Закрыть выбор предметов" : selected.length ? `Изменить предметы: ${selected.join("; ")}` : "Выберите предметы"} aria-controls={open ? "subject-picker" : undefined} aria-expanded={open} aria-describedby="subject-label step-description" className={`${open ? "absolute right-1 top-1 z-10 size-12" : "absolute inset-0 flex w-full items-center justify-between gap-3 px-4 py-3"} rounded-xl text-left text-base text-brand-700 focus-visible:-outline-offset-2`}>
+          {!open && <span>{selected.length ? null : "Выберите предметы"}</span>}
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={`absolute size-5 shrink-0 text-brand-600 ${open ? "right-3 top-3 rotate-180" : "right-4 top-4"}`}><path d="m6 9 6 6 6-6" /></svg>
         </button>
-        <SelectedSubjectList selected={selected} onRemove={(subject) => { select(subject); trigger.current?.focus({ preventScroll: true }); }} />
+        {open ? (
+          <SubjectSearchField query={query} selected={selected} onQueryChange={setQuery} onRemove={select} />
+        ) : (
+          <SelectedSubjectList selected={selected} onRemove={(subject) => { select(subject); trigger.current?.focus({ preventScroll: true }); }} />
+        )}
       </div>
-      {open && createPortal(<SubjectDialog selected={selected} onSelect={select} onClose={() => setOpen(false)} />, document.body)}
+      {open && <SubjectDropdown anchor={anchor}><SubjectPicker query={query} selected={selected} onSelect={select} onDone={toggleOpen} /></SubjectDropdown>}
     </fieldset>
   );
 }
