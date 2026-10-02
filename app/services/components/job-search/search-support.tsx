@@ -1,9 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import styles from "../../../components/home/footer/footer-background.module.css";
 
 export default function SearchSupport() {
   return (
-    <section aria-labelledby="job-search-support" className="grid overflow-hidden rounded-3xl bg-linear-to-br from-brand-50 to-brand-300/20 md:grid-cols-5">
+    <section aria-labelledby="job-search-support" className="relative isolate grid overflow-hidden rounded-3xl bg-linear-to-br from-brand-50 to-brand-300/20 md:grid-cols-5">
+      <div aria-hidden="true" className={styles.ornament} />
       <div className="relative min-h-64 md:col-span-2">
         <Image src="/images/benefits/relocation.jpg" alt="" fill sizes="(min-width: 1600px) 576px, (min-width: 768px) 40vw, 100vw" className="object-cover" />
       </div>
