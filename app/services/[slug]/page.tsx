@@ -36,8 +36,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ServicePage({ params }: Props) {
   const service = await getService(params);
   const Details = detailComponents[service.slug as keyof typeof detailComponents] ?? ServiceDetails;
+  const background = service.slug === "job-search" ? "bg-white" : "bg-linear-to-br from-sky-50 via-white to-violet-50";
   return (
-    <div className="min-h-screen bg-linear-to-br from-sky-50 via-white to-violet-50 text-brand-700">
+    <div className={`min-h-screen text-brand-700 ${background}`}>
       <PageHeader />
       <Details service={service} />
     </div>

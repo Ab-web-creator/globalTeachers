@@ -124,3 +124,88 @@ button {
     opacity: 1;
   }
 }
+
+@keyframes period-blink {
+  0%, 10%, 30%, 40%, 60%, 70%, 90%, 100% {
+    background-color: color-mix(in oklab, var(--color-brand-300) 20%, transparent);
+    animation-timing-function: ease-in-out;
+  }
+  20%, 50%, 80% {
+    background-color: color-mix(in oklab, var(--color-brand-400) 38%, transparent);
+    animation-timing-function: ease-in-out;
+  }
+}
+
+.period-blink {
+  animation: period-blink 8s linear 1;
+}
+
+@keyframes season-fall {
+  0% { top: -14%; opacity: 0; transform: translateX(0) rotate(-20deg); }
+  16% { opacity: 0.85; }
+  100% { top: 108%; opacity: 0; transform: translateX(var(--drift, 1rem)) rotate(150deg); }
+}
+
+.season-fall {
+  animation: season-fall var(--fall-duration, 3.4s) linear both;
+  animation-delay: var(--fall-delay, 0s);
+}
+
+@keyframes season-snow {
+  0% { top: -12%; opacity: 0; }
+  18% { opacity: 0.9; }
+  100% { top: 108%; opacity: 0; }
+}
+
+@keyframes season-sway {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(var(--drift, 0.75rem)); }
+}
+
+.season-snow {
+  animation: season-snow var(--fall-duration, 3.6s) linear both, season-sway 1.8s ease-in-out infinite;
+  animation-delay: var(--fall-delay, 0s), 0s;
+}
+
+@keyframes season-bloom {
+  0% { opacity: 0; transform: scale(0.35); }
+  40% { opacity: 0.9; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.06); }
+}
+
+.season-bloom {
+  animation: season-bloom 8s ease-out both;
+}
+
+@keyframes season-sun {
+  0%, 100% { opacity: 0.4; transform: scale(0.92); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes season-glow {
+  0%, 100% { opacity: 0.15; transform: scale(0.75); }
+  50% { opacity: 0.7; transform: scale(1.2); }
+}
+
+.season-sun {
+  animation: season-sun 8s ease-in-out 1;
+}
+
+.season-glow {
+  animation: season-glow 8s ease-in-out 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .period-blink,
+  .season-fall,
+  .season-snow,
+  .season-bloom,
+  .season-sun,
+  .season-glow {
+    animation: none;
+  }
+
+  .season-effects {
+    display: none;
+  }
+}

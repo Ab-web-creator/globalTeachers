@@ -9,7 +9,7 @@ export default function VacancySources() {
         <ul className="space-y-6">
           {vacancySources.map(({ title, text }) => (
             <li key={title} className="flex gap-4">
-              <span aria-hidden="true" className="mt-2.5 size-2 shrink-0 rounded-full bg-brand-500" />
+              <span aria-hidden="true" className="mt-2.5 size-2 shrink-0 rounded-full bg-gray-300" />
               <div>
                 <h3 className="text-lg font-semibold leading-snug">{title}</h3>
                 <p className="mt-1.5 text-sm leading-relaxed text-neutral-600">{text}</p>

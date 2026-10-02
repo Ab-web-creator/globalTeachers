@@ -3,7 +3,14 @@ import { recruitmentPlatforms, recruitmentPlatformsIntroduction } from "./conten
 export default function RecruitmentPlatforms() {
   return (
     <section aria-label={recruitmentPlatformsIntroduction}>
-      <p className="text-base leading-relaxed text-neutral-600">{recruitmentPlatformsIntroduction}</p>
+      <p className="text-base leading-relaxed text-neutral-600">
+        {recruitmentPlatformsIntroduction.split(/(?<=школы )/).map((part, index) => (
+          <span key={part}>
+            {index > 0 && <br />}
+            {part}
+          </span>
+        ))}
+      </p>
       <ul className="mt-4 grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
         {recruitmentPlatforms.map(({ name, text, href, logo, logoClass }) => (
           <li key={name} className="flex">
