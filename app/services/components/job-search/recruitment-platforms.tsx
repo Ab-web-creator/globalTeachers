@@ -2,9 +2,9 @@ import { recruitmentPlatforms, recruitmentPlatformsIntroduction } from "./conten
 
 export default function RecruitmentPlatforms() {
   return (
-    <section aria-labelledby="recruitment-platforms">
-      <h2 id="recruitment-platforms" className="max-w-2xl text-lg font-normal leading-relaxed text-neutral-600 sm:text-xl">{recruitmentPlatformsIntroduction}</h2>
-      <ul className="mt-8 grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
+    <section aria-label={recruitmentPlatformsIntroduction}>
+      <p className="text-base leading-relaxed text-neutral-600">{recruitmentPlatformsIntroduction}</p>
+      <ul className="mt-4 grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
         {recruitmentPlatforms.map(({ name, text, href, logo, logoClass }) => (
           <li key={name} className="flex">
             <a href={href} target="_blank" rel="noopener noreferrer" className="group flex h-full w-full overflow-hidden rounded-2xl border border-brand-100 bg-white shadow-sm transition-colors duration-200 hover:border-brand-300 hover:bg-brand-50">

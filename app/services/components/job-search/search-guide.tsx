@@ -7,7 +7,7 @@ import VacancySources from "./vacancy-sources";
 export default function SearchGuide() {
   return (
     <div className="space-y-12 sm:space-y-16">
-      <div className="space-y-8">
+      <div className="space-y-12">
         <VacancySources />
         <RecruitmentPlatforms />
       </div>
