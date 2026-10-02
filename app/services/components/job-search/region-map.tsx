@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 
 const regions = [
-  { name: "Северная Америка", label: "left-[6%] top-[14%] w-24", pin: "left-[22%] top-[32%]" },
-  { name: "Латинская Америка", label: "left-[2%] top-[58%] w-28", pin: "left-[28%] top-[70%]" },
+  { name: "Северная Америка", label: "left-[6%] top-[14%]", pin: "left-[22%] top-[32%]" },
+  { name: "Латинская Америка", label: "left-[2%] top-[58%]", pin: "left-[28%] top-[70%]" },
   { name: "Европа", label: "left-[46%] top-[6%]", pin: "left-[51%] top-[20%]" },
   { name: "Африка", label: "left-[42%] top-[40%]", pin: "left-[50%] top-[52%]" },
-  { name: "Ближний Восток", label: "left-[58%] top-[26%] w-28", pin: "left-[58%] top-[40%]" },
+  { name: "Ближний Восток", label: "left-[58%] top-[26%]", pin: "left-[58%] top-[40%]" },
   { name: "Азия", label: "left-[78%] top-[28%]", pin: "left-[72%] top-[40%]" },
   { name: "Океания", label: "left-[70%] top-[66%]", pin: "left-[80%] top-[78%]" },
 ];
@@ -58,7 +58,7 @@ export default function RegionMap() {
       {regions.map(({ name, label, pin }, index) => (
         <span key={name}>
           <span
-            className={`absolute ${label} rounded-lg border bg-white px-2 py-1 text-center text-xs font-medium leading-tight transition-[color,border-color,box-shadow] motion-reduce:border-brand-100 motion-reduce:text-brand-600 motion-reduce:shadow-sm motion-reduce:transition-none ${fadingOut ? "duration-1000 ease-in" : "duration-500 ease-out"} ${lit === index ? "border-amber-400 bg-amber-50 text-amber-600 shadow-md shadow-amber-400/70" : "border-brand-100 text-brand-400 shadow-none"}`}
+            className={`absolute ${label} rounded-lg border border-brand-100 bg-white px-2 py-1 text-center text-xs font-medium leading-tight transition-colors motion-reduce:text-brand-600 motion-reduce:transition-none ${fadingOut ? "duration-1000 ease-in" : "duration-500 ease-out"} ${lit === index ? "text-yellow-600" : "text-brand-400"}`}
           >
             {name}
           </span>
