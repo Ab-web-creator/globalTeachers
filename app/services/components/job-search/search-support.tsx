@@ -6,7 +6,7 @@ export default function SearchSupport() {
   return (
     <section aria-labelledby="job-search-support" className="grid overflow-hidden rounded-3xl bg-linear-to-br from-brand-50 to-brand-300/20 md:grid-cols-5">
       <div className="relative min-h-64 md:col-span-2">
-        <Image src="/images/benefits/relocation.jpg" alt="" fill sizes="(min-width: 1152px) 430px, (min-width: 768px) 40vw, 100vw" className="object-cover" />
+        <Image src="/images/benefits/relocation.jpg" alt="" fill sizes="(min-width: 1600px) 576px, (min-width: 768px) 40vw, 100vw" className="object-cover" />
       </div>
       <div className="relative overflow-hidden p-7 sm:p-10 md:col-span-3">
         <GuideIcon name="globe" className="pointer-events-none absolute -right-10 -bottom-12 size-56 text-brand-500/5" />

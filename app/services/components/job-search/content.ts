@@ -8,12 +8,21 @@ export const vacancySources = [
   {
     title: "Международные платформы",
     text: "Существуют специализированные сайты, на которых международные школы публикуют вакансии для педагогов со всего мира. Там можно искать позиции по предмету, стране, программе и дате начала работы.",
-    example: "Например: Teacher Horizons, TES, Schrole и другие.",
   },
   {
     title: "Сети международных школ",
     text: "Крупные образовательные группы управляют десятками школ в разных странах. На их карьерных страницах можно увидеть вакансии сразу во всей сети.",
   },
+];
+
+export const recruitmentPlatformsIntroduction = "Например, существует несколько веб-платформ, на которых школы из разных стран набирают педагогов.";
+
+export const recruitmentPlatforms = [
+  { name: "Teacher Horizons", text: "Вакансии в школах по всему миру", href: "https://www.teacherhorizons.com/jobs", logo: "/images/platforms/teacher-horizons.png", logoClass: "h-12" },
+  { name: "TES", text: "Одна из крупнейших платформ для педагогов", href: "https://www.tes.com/jobs", logo: "/images/platforms/tes.svg", logoClass: "h-10" },
+  { name: "Schrole", text: "Вакансии и управление заявками", href: "https://www.schrole.com/jobs-for-teachers/", logo: "/images/platforms/schrole.svg", logoClass: "h-9" },
+  { name: "Search Associates", text: "Для опытных педагогов", href: "https://www.searchassociates.com/Candidates/Get-Started.aspx", logo: "/images/platforms/search-associates.png", logoClass: "h-14" },
+  { name: "ISS", text: "Вакансии, ярмарки и ресурсы", href: "https://www.iss.edu/for-individuals/find-a-job/find-a-teaching-job", logo: "/images/platforms/iss.png", logoClass: "h-11" },
 ];
 
 export const searchTimingIntroduction = "Школы начинают набор за несколько месяцев до нового учебного года. Если планируете выйти на работу в августе, не откладывайте поиск до лета.";

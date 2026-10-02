@@ -3,7 +3,7 @@ import CourseCategoryCard from "./course-category-card";
 
 export default function CategoriesSection() {
   return (
-    <section id="categories" aria-labelledby="categories-title" className="bg-linear-to-br from-sky-100 via-violet-100 to-pink-100">
+    <section id="categories" aria-labelledby="categories-title" className="scroll-mt-16 bg-linear-to-br from-sky-100 via-violet-100 to-pink-100">
       <div className="mx-auto max-w-400 px-6 py-10 sm:px-10 sm:py-12 lg:px-16 lg:py-20 xl:py-24 xl:px-20">
         <header data-reveal className="text-left sm:text-center">
           <p className="mb-4 text-sm font-semibold tracking-widest text-brand-500 uppercase sm:mb-6 sm:text-base">КАК МЫ ПОМОГАЕМ</p>
