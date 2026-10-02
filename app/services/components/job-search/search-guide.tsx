@@ -7,8 +7,8 @@ import VacancySources from "./vacancy-sources";
 
 export default function SearchGuide() {
   return (
-    <div className="space-y-16 sm:space-y-24 lg:space-y-32">
-      <div className="space-y-16 sm:space-y-20">
+    <div className="space-y-16 sm:space-y-20 lg:space-y-24">
+      <div className="space-y-16">
         <VacancySources />
         <RecruitmentPlatforms />
       </div>
@@ -23,10 +23,8 @@ export default function SearchGuide() {
           </div>
         </div>
       </div>
-      <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-16">
-        <ApplicationChecks />
-        <FirstSteps />
-      </div>
+      <ApplicationChecks />
+      <FirstSteps />
     </div>
   );
 }
