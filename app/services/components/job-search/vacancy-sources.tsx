@@ -2,8 +2,6 @@ import { vacancySources } from "./content";
 import RegionMap from "./region-map";
 
 export default function VacancySources() {
-  const mapCaption = vacancySources[2].text;
-
   return (
     <section aria-labelledby="vacancy-sources">
       <h2 id="vacancy-sources" className="text-2xl font-semibold tracking-tight sm:text-3xl">Где искать вакансии?</h2>
@@ -19,10 +17,7 @@ export default function VacancySources() {
             </li>
           ))}
         </ul>
-        <div>
-          <p className="mb-4 text-sm leading-relaxed text-neutral-600">{mapCaption}</p>
-          <RegionMap />
-        </div>
+        <RegionMap />
       </div>
     </section>
   );
