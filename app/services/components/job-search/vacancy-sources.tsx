@@ -4,7 +4,7 @@ import RegionMap from "./region-map";
 export default function VacancySources() {
   return (
     <section aria-labelledby="vacancy-sources">
-      <h2 id="vacancy-sources" className="text-2xl font-semibold tracking-tight sm:text-3xl">Где искать вакансии?</h2>
+      <h2 id="vacancy-sources" className="text-2xl font-semibold tracking-tight sm:text-3xl">Так где же искать вакансии?</h2>
       <div className="mt-7 grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
         <ul className="space-y-6">
           {vacancySources.map(({ title, text }) => (
