@@ -1,3 +1,5 @@
+import StickyNote from "./sticky-note";
+
 const tones = {
   weak: { box: "bg-rose-50", badge: "bg-rose-500", label: "text-rose-500", dot: "bg-rose-400", icon: "M6 6l12 12M18 6 6 18" },
   strong: { box: "bg-emerald-50", badge: "bg-emerald-500", label: "text-emerald-600", dot: "bg-emerald-400", icon: "m5 12 5 5 9-10" },
@@ -18,15 +20,17 @@ export default function ExperienceExample({ tone, label, text, note }: { tone: k
         <p className="mt-3 text-base leading-relaxed text-neutral-700 sm:text-lg">{text}</p>
         {note && (
           <>
-            <p className={`mt-6 text-sm font-semibold tracking-wide uppercase ${style.label}`}>{note.sticker}:</p>
-            <ul className="mt-3 space-y-1 text-base leading-relaxed text-neutral-700 sm:text-lg">
-              {note.words.map((word) => (
-                <li key={word} className="flex items-center gap-3">
-                  <span aria-hidden="true" className={`size-1.5 shrink-0 rounded-full ${style.dot}`} />
-                  {word}
-                </li>
-              ))}
-            </ul>
+            <div className="mt-6 flex items-start gap-6">
+              <ul className="space-y-1 text-base leading-relaxed text-neutral-700 sm:text-lg">
+                {note.words.map((word) => (
+                  <li key={word} className="flex items-center gap-3">
+                    <span aria-hidden="true" className={`size-1.5 shrink-0 rounded-full ${style.dot}`} />
+                    {word}
+                  </li>
+                ))}
+              </ul>
+              <StickyNote tone={tone}>{note.sticker}</StickyNote>
+            </div>
           </>
         )}
       </div>
