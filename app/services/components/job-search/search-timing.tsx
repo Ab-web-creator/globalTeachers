@@ -1,5 +1,7 @@
 "use client";
 
+import SectionLabel from "./section-label";
+
 import { useEffect, useState } from "react";
 import { searchTiming, searchTimingIntroduction } from "./content";
 import SeasonEffect, { type SeasonName } from "./season-effect";
@@ -41,8 +43,8 @@ export default function SearchTiming() {
       {playing && <SeasonEffect season={seasons[active]} />}
       <div className="relative grid items-start gap-10 xl:grid-cols-3 xl:gap-12">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-wide text-brand-500">Когда начинать поиск?</p>
-          <h2 id="search-timing" className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">Лучшее время для поиска</h2>
+          <SectionLabel>Когда начинать поиск?</SectionLabel>
+          <h2 id="search-timing" className="text-3xl font-semibold tracking-tight sm:text-4xl">Лучшее время для поиска</h2>
           <p className="mt-5 leading-relaxed text-neutral-600">{searchTimingIntroduction}</p>
         </div>
         <div className="min-w-0 xl:col-span-2">

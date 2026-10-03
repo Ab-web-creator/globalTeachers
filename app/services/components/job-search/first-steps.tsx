@@ -1,5 +1,7 @@
 "use client";
 
+import SectionLabel from "./section-label";
+
 import { useEffect, useState } from "react";
 import { firstSteps } from "./content";
 
@@ -54,6 +56,7 @@ export default function FirstSteps() {
 
   return (
     <section aria-labelledby="job-search-first-steps">
+      <SectionLabel>Первые шаги</SectionLabel>
       <div className="flex flex-col gap-2">
         <h2 id="job-search-first-steps" className="text-2xl font-semibold tracking-tight sm:text-3xl">С чего начать?</h2>
         <p className="text-sm text-neutral-500 sm:text-base">Пошаговый план, который поможет вам искать вакансии эффективно.</p>

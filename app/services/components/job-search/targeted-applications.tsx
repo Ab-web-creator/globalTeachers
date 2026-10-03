@@ -1,29 +1,26 @@
+import GuideCard from "./guide-card";
 import { applicationChecks } from "./content";
 
 export default function TargetedApplications() {
   return (
-    <section aria-labelledby="targeted-applications">
-      <div className="max-w-[65ch]">
-        <h2 id="targeted-applications" className="text-2xl font-semibold tracking-tight sm:text-3xl">Не отправляйте одно резюме всем подряд</h2>
-        <p className="mt-4 leading-relaxed text-neutral-600">Количество откликов само по себе не увеличивает шансы получить работу.</p>
-        <p className="mt-4 leading-relaxed text-neutral-600">Лучше отправить несколько хорошо подготовленных заявок на подходящие позиции, чем десятки одинаковых откликов.</p>
-      </div>
-    </section>
+    <GuideCard id="targeted-applications" label="Подготовка откликов" title="Не отправляйте одно резюме всем подряд.">
+      <p>Работодатели за рубежом ценят персонализированные отклики. Покажите, что вы понимаете школу, её ценности и требования вакансии.</p>
+      <p>Качество откликов всегда важнее их количества. Целевой подход повышает шансы на приглашение на собеседование.</p>
+    </GuideCard>
   );
 }
 
 export function ApplicationChecks() {
   return (
-    <section aria-labelledby="application-checks">
-      <h2 id="application-checks" className="text-2xl font-semibold tracking-tight sm:text-3xl">Перед отправкой заявки посмотрите</h2>
-      <ul className="mt-7 space-y-4">
+    <GuideCard id="application-checks" label="Проверка вакансии" title="Перед отправкой заявки посмотрите.">
+      <ul className="space-y-4">
         {applicationChecks.map((text) => (
           <li key={text} className="flex gap-4">
             <span aria-hidden="true" className="mt-2 size-2 shrink-0 rounded-full bg-brand-500" />
-            <p className="text-sm leading-relaxed text-neutral-600">{text}</p>
+            <p>{text}</p>
           </li>
         ))}
       </ul>
-    </section>
+    </GuideCard>
   );
 }

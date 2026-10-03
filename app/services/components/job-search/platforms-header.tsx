@@ -1,11 +1,10 @@
+import SectionLabel from "./section-label";
 export default function PlatformsHeader() {
   return (
     <div className="grid items-end gap-6 lg:grid-cols-2 lg:gap-10">
       <div>
-        <p className="flex items-center gap-4 text-xs font-semibold tracking-widest text-white uppercase sm:text-sm">
-          Полезные ресурсы
-        </p>
-        <h2 id="recruitment-platforms" className="mt-5 text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl xl:text-5xl">
+        <SectionLabel light>Полезные ресурсы</SectionLabel>
+        <h2 id="recruitment-platforms" className="text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl xl:text-5xl">
           Полезные платформы для поиска вакансий
         </h2>
         <p className="mt-4 text-base leading-relaxed text-brand-200">

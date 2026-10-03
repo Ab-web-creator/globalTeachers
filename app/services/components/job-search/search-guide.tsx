@@ -1,8 +1,7 @@
 import FirstSteps from "./first-steps";
 import RecruitmentPlatforms from "./recruitment-platforms";
 import SearchTiming from "./search-timing";
-import TargetedApplications, { ApplicationChecks } from "./targeted-applications";
-import TeachingRoles from "./teaching-roles";
+import ApplicationAdvice from "./application-advice";
 import VacancySources from "./vacancy-sources";
 
 export default function SearchGuide() {
@@ -15,17 +14,7 @@ export default function SearchGuide() {
           <SearchTiming />
         </div>
       </div>
-      <div className="grid items-stretch gap-6 lg:grid-cols-3">
-        <div className="rounded-3xl border border-brand-200 p-6 sm:p-8">
-          <TeachingRoles />
-        </div>
-        <div className="rounded-3xl border border-brand-200 p-6 sm:p-8">
-          <TargetedApplications />
-        </div>
-        <div className="rounded-3xl border border-brand-200 p-6 sm:p-8">
-          <ApplicationChecks />
-        </div>
-      </div>
+      <ApplicationAdvice />
       <FirstSteps />
     </div>
   );
