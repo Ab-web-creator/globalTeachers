@@ -25,21 +25,23 @@ export const recruitmentPlatforms = [
   { name: "ISS", text: "Вакансии, ярмарки и ресурсы", href: "https://www.iss.edu/for-individuals/find-a-job/find-a-teaching-job", logo: "/images/platforms/iss.png", logoClass: "h-11" },
 ];
 
-export const searchTimingIntroduction = "Школы часто начинают набирать педагогов за несколько месяцев до начала нового учебного года.";
+export const searchTimingIntroduction = "Вакансии в международных школах появляются в течение всего года, но интенсивность найма меняется от сезона к сезону. Поэтому важно понимать, когда школы начинают поиск кандидатов и когда появляется больше всего возможностей.";
 
 export const searchTiming = [
-  { period: "Август – Октябрь", text: "Основной период набора на следующий учебный год." },
-  { period: "Ноябрь – Январь", text: "Дополнительные вакансии и новые позиции." },
-  { period: "Февраль – Апрель", text: "Возможны незапланированные вакансии." },
-  { period: "Май – Июль", text: "Отдельные позиции и замещения." },
+  { period: "Август – Октябрь", text: "Школы начинают поиск и оценивают потенциально заинтересованных кандидатов." },
+  { period: "Ноябрь – Январь", text: "Основной период набора на следующий учебный год." },
+  { period: "Февраль – Апрель", text: "Дополнительные вакансии и новые позиции." },
+  { period: "Май – Июль", text: "Возможны незапланированные вакансии и срочные замещения." },
 ];
 
 export const teachingRoles = [
-  ["Учитель математики", "Mathematics Teacher"],
-  ["Учитель музыки", "Music Teacher"],
-  ["Учитель физики", "Physics Teacher"],
-  ["Учитель информатики", "Computer Science / Computing Teacher"],
-  ["Учитель истории", "History Teacher"],
+  ["Учитель информатики", "Computer Science / ICT"],
+  ["ИЗО/ рисование", "Art(s)"],
+] as const;
+
+export const internationalTeachingRoles = [
+  ["Humanities Teacher", "это История + География"],
+  ["EAL / ESL", "Английский как дополнительный / иностранный язык"],
 ] as const;
 
 export const applicationChecks = [

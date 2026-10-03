@@ -1,31 +1,33 @@
-import { recruitmentPlatforms, recruitmentPlatformsIntroduction } from "./content";
+import { recruitmentPlatforms } from "./content";
+import PlatformCard from "./platform-card";
+import PlatformsHeader from "./platforms-header";
+import PlatformsBanner from "./platforms-banner";
+
+const cardVisuals = [
+  { background: "bg-brand-100", image: "/images/benefits/housing.jpg" },
+  { background: "bg-accent-50", image: "/images/benefits/development.jpg" },
+  { background: "bg-amber-50", image: "/images/benefits/education-classroom.jpg" },
+  { background: "bg-rose-50", image: "/images/benefits/relocation.jpg" },
+  { background: "bg-sky-50", image: "/images/benefits/flights.jpg" },
+];
 
 export default function RecruitmentPlatforms() {
   return (
-    <section aria-label={recruitmentPlatformsIntroduction}>
-      <p className="text-base leading-relaxed text-neutral-600">
-        {recruitmentPlatformsIntroduction.split(/(?<=школы )/).map((part, index) => (
-          <span key={part}>
-            {index > 0 && <br />}
-            {part}
-          </span>
-        ))}
-      </p>
-      <ul className="mt-4 grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
-        {recruitmentPlatforms.map(({ name, text, href, logo, logoClass }) => (
-          <li key={name} className="flex">
-            <a href={href} target="_blank" rel="noopener noreferrer" className="group flex h-full w-full overflow-hidden rounded-2xl border border-brand-100 bg-white shadow-sm transition-colors duration-200 hover:border-brand-300 hover:bg-brand-50">
-              <span className="flex min-w-0 flex-1 flex-col justify-center px-6 py-5">
-                <span className="block text-lg font-semibold tracking-tight">{name}</span>
-                <span className="mt-1 block text-sm leading-relaxed text-neutral-600">{text}</span>
-              </span>
-              <span className="flex w-2/5 shrink-0 items-center justify-center border-l border-brand-100 px-6 group-hover:border-brand-200">
-                <img src={logo} alt="" className={`w-auto max-w-full object-contain ${logoClass}`} />
-              </span>
-            </a>
+    <section aria-labelledby="recruitment-platforms" className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden bg-linear-to-br from-blue-900 via-brand-600 to-violet-900">
+      <div className="mx-auto max-w-400 px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20 xl:px-20">
+        <PlatformsHeader />
+        <ul className="mt-8 grid gap-5 md:grid-cols-2 xl:mt-10 xl:grid-cols-3">
+          {recruitmentPlatforms.map((platform, index) => (
+            <li key={platform.name} className="flex">
+              <PlatformCard {...platform} {...cardVisuals[index]} />
+            </li>
+          ))}
+          <li className="flex">
+            <PlatformCard name="И другие" text="Также стоит проверять платформы конкретных образовательных групп и сетей школ." href="#vacancy-sources" background="bg-brand-100" image="/images/consultation-globe-books.png" imageClass="object-left" />
           </li>
-        ))}
-      </ul>
+        </ul>
+        <PlatformsBanner />
+      </div>
     </section>
   );
 }

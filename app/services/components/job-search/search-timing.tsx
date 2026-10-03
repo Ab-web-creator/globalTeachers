@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { searchTiming, searchTimingIntroduction } from "./content";
 import SeasonEffect, { type SeasonName } from "./season-effect";
+import SeasonTimeline from "./season-timeline";
 
 const seasons: SeasonName[] = ["fall", "winter", "spring", "summer"];
 const seasonMs = 8000;
@@ -38,24 +39,15 @@ export default function SearchTiming() {
   return (
     <section aria-labelledby="search-timing" className="relative overflow-hidden">
       {playing && <SeasonEffect season={seasons[active]} />}
-      <div className="relative">
-        <h2 id="search-timing" className="text-2xl font-semibold tracking-tight sm:text-3xl">Когда начинать поиск?</h2>
-        <p className="mt-4 leading-relaxed text-neutral-600">{searchTimingIntroduction}</p>
-        <ol className="mt-8">
-          {searchTiming.map(({ period, text }, index) => (
-            <li key={period} className="flex gap-4">
-              <span className="flex w-3 shrink-0 flex-col items-center">
-                <span aria-hidden="true" className={`w-px flex-1 ${index > 0 ? "bg-brand-300" : ""}`} />
-                <span aria-hidden="true" className="size-3 shrink-0 rounded-full bg-brand-500" />
-                <span aria-hidden="true" className={`w-px flex-1 ${index < searchTiming.length - 1 ? "bg-brand-300" : ""}`} />
-              </span>
-              <div className="flex min-w-0 flex-1 items-center gap-4 py-2.5">
-                <span className={`w-fit shrink-0 rounded-full bg-brand-300/20 px-4 py-2 text-sm font-medium ${playing && index === active ? "period-blink" : ""}`}>{period}</span>
-                <p className="text-sm leading-relaxed text-neutral-600">{text}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
+      <div className="relative grid items-start gap-10 xl:grid-cols-3 xl:gap-12">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-wide text-brand-500">Когда начинать поиск?</p>
+          <h2 id="search-timing" className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">Лучшее время для поиска</h2>
+          <p className="mt-5 leading-relaxed text-neutral-600">{searchTimingIntroduction}</p>
+        </div>
+        <div className="min-w-0 xl:col-span-2">
+          <SeasonTimeline active={active} playing={playing} />
+        </div>
       </div>
     </section>
   );

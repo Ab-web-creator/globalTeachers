@@ -11,23 +11,15 @@ const groups: { title: string; links: FooterLink[] }[] = [
       { label: "Вакансии", href: "/jobs" },
     ],
   },
-  {
-    title: "Полезное",
-    links: [
-      { label: "Международные школы", href: "#partners-title" },
-      { label: "Страны и направления", href: "#benefits" },
-      { label: "Подготовка к интервью", href: "#categories" },
-      { label: "CV и портфолио", href: "#categories" },
-    ],
-  },
 ];
 
 export default function FooterLinks({ openPanel }: PanelProps) {
-  const linkClass = "text-left transition hover:text-white hover:underline underline-offset-4";
-  return groups.map(({ title, links }) => (
-    <nav key={title} aria-label={`Подвал: ${title}`} className="lg:pt-7">
-      <h2 className="text-lg leading-tight font-medium text-white">{title}</h2>
-      <ul className="mt-5 space-y-2 text-base leading-normal text-white/90 sm:text-sm">
+  const linkClass = "text-left text-base text-white/90 transition hover:text-white hover:underline underline-offset-4 sm:text-sm";
+  const links = groups.flatMap((group) => group.links);
+
+  return (
+    <nav aria-label="Подвал" className="lg:pt-2">
+      <ul className="flex flex-wrap gap-x-6 gap-y-2 lg:justify-end">
         {links.map((link) => (
           <li key={link.label}>
             {"href" in link ? (
@@ -39,5 +31,5 @@ export default function FooterLinks({ openPanel }: PanelProps) {
         ))}
       </ul>
     </nav>
-  ));
+  );
 }

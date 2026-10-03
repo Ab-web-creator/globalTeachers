@@ -50,7 +50,7 @@ export default function RegionMap() {
   }, []);
 
   return (
-    <div className="relative aspect-[95/52] w-full text-brand-300">
+    <div className="relative aspect-[95/52] w-full text-brand-400">
       <div
         aria-hidden="true"
         className="absolute inset-0 bg-[radial-gradient(circle,currentColor_1.1px,transparent_1.3px)] bg-size-[7px_7px] mask-contain mask-center mask-no-repeat [-webkit-mask-image:url(/images/world-map.svg)] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain] [mask-image:url(/images/world-map.svg)]"
@@ -58,11 +58,11 @@ export default function RegionMap() {
       {regions.map(({ name, label, pin }, index) => (
         <span key={name}>
           <span
-            className={`absolute ${label} rounded-lg border border-brand-100 bg-white px-2 py-1 text-center text-xs font-medium leading-tight transition-colors motion-reduce:text-brand-600 motion-reduce:transition-none ${fadingOut ? "duration-1000 ease-in" : "duration-500 ease-out"} ${lit === index ? "text-yellow-600" : "text-brand-400"}`}
+            className={`absolute ${label} rounded-lg border border-brand-200 bg-white px-2 py-1 text-center text-xs font-medium leading-tight transition-colors motion-reduce:text-brand-600 motion-reduce:transition-none ${fadingOut ? "duration-1000 ease-in" : "duration-500 ease-out"} ${lit === index ? "text-yellow-700" : "text-brand-500"}`}
           >
             {name}
           </span>
-          <svg viewBox="0 0 24 24" aria-hidden="true" className={`absolute ${pin} size-5 text-brand-500`}>
+          <svg viewBox="0 0 24 24" aria-hidden="true" className={`absolute ${pin} size-5 text-brand-600`}>
             <path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z" />
           </svg>
         </span>

@@ -8,7 +8,7 @@ export default function JobSearchHero() {
       <div className="relative mx-auto grid max-w-400 lg:min-h-120 lg:grid-cols-2">
         <div className="relative z-10 flex flex-col justify-center px-6 py-10 sm:px-10 sm:py-14 lg:order-2 lg:px-16 lg:py-16 xl:px-20">
           <p className="text-xs font-semibold tracking-widest text-brand-500 uppercase">Поиск работы за рубежом</p>
-          <h1 className="mt-4 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">Где искать вакансии в международных школах?</h1>
+          <h1 className="mt-4 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl md:text-4xl xl:text-6xl">Где искать вакансии в международных школах?</h1>
           <p className="mt-6 text-base leading-relaxed text-neutral-600">{introduction}</p>
           <p className="mt-5 border-l-2 border-brand-300 pl-4 text-base font-medium leading-relaxed text-brand-700">Главное — понимать, где искать, когда начинать и на какие позиции откликаться.</p>
         </div>
