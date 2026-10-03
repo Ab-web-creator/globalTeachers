@@ -1,25 +1,15 @@
 import Link from "next/link";
-import ServiceIllustration from "../../../components/service-illustration";
-import type { Service } from "../../services";
-import { introduction } from "./content";
+import BackLink from "../back-link";
 import CvGuide from "./cv-guide";
+import CvHero from "./cv-hero";
 
-export default function CvPortfolioDetails({ service }: { service: Service }) {
+export default function CvPortfolioDetails() {
   return (
-    <main className="mx-auto max-w-6xl px-6 py-12 sm:px-10 lg:py-20">
-      <Link href="/#categories" className="text-brand-500 underline-offset-4 hover:underline">← Как мы помогаем</Link>
+    <main className="mx-auto max-w-400 px-6 pt-6 pb-12 sm:px-10 lg:px-16 lg:pt-8 lg:pb-20 xl:px-20">
+      <BackLink />
       <article>
-        <header className="mt-8 grid items-center gap-8 md:grid-cols-[1.5fr_1fr]">
-          <div>
-            <p className="text-sm font-semibold tracking-widest text-brand-500 uppercase">CV и портфолио</p>
-            <h1 className="mt-4 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">Как представить свой опыт международной школе?</h1>
-            {introduction.map((text) => <p key={text} className="mt-4 text-lg leading-relaxed text-neutral-600">{text}</p>)}
-          </div>
-          <div className="rounded-3xl bg-white p-6">
-            <ServiceIllustration bounds={service.imageBounds} className="mx-auto aspect-5/4 w-full max-w-xs overflow-hidden" />
-          </div>
-        </header>
-        <div className="mx-auto mt-12 max-w-3xl space-y-10 sm:space-y-12">
+        <CvHero />
+        <div className="mt-12 space-y-10 sm:space-y-12">
           <CvGuide />
           <section aria-labelledby="cv-pro-support" className="rounded-3xl border border-brand-100 bg-white p-6 sm:p-8">
             <h2 id="cv-pro-support" className="text-2xl font-semibold">Хотите профессионально подготовить CV и портфолио?</h2>

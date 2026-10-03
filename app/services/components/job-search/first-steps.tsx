@@ -4,28 +4,10 @@ import SectionLabel from "./section-label";
 
 import { useEffect, useState, type ReactNode } from "react";
 import { firstSteps, firstStepsIntroduction } from "./content";
+import { StepArrow, stepArrows, stepPlacements } from "./step-path";
 
 const stepMs = 8000;
 const pauseMs = 2000;
-
-const connectors = [
-  { down: "sm:hidden", right: "hidden sm:block" },
-  { down: "lg:hidden", right: "hidden lg:block" },
-  { down: "sm:hidden lg:block", right: "hidden sm:block lg:hidden" },
-  { down: "lg:hidden", right: "hidden lg:block" },
-];
-
-function StepArrow({ direction, className, active }: { direction: "down" | "right"; className: string; active: boolean }) {
-  const place = direction === "down"
-    ? "left-1/2 top-[calc(100%+1rem)] sm:top-[calc(100%+1.5rem)] lg:top-[calc(100%+2rem)]"
-    : "top-1/2 left-[calc(100%+1.5rem)] lg:left-[calc(100%+2rem)]";
-
-  return (
-    <span aria-hidden="true" className={`pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 text-brand-200 ${place} ${className} ${active ? "step-arrow-blink" : ""}`}>
-      <svg viewBox="0 0 24 24" className={`size-8 ${direction === "down" ? "rotate-90" : ""}`} fill="currentColor"><path d="M8.5 4.5 19 12 8.5 19.5V4.5Z" /></svg>
-    </span>
-  );
-}
 
 export default function FirstSteps({ children }: { children?: ReactNode }) {
   const [active, setActive] = useState(0);
@@ -63,13 +45,10 @@ export default function FirstSteps({ children }: { children?: ReactNode }) {
       </div>
       <ol className="mt-8 grid gap-8 sm:grid-cols-2 sm:gap-12 lg:grid-cols-3 lg:gap-16">
         {firstSteps.map(({ title, text }, index) => (
-          <li key={title} className="relative">
-            {connectors[index] && (
-              <>
-                <StepArrow direction="down" className={connectors[index].down} active={playing && index === active} />
-                <StepArrow direction="right" className={connectors[index].right} active={playing && index === active} />
-              </>
-            )}
+          <li key={title} className={`relative ${stepPlacements[index]}`}>
+            {stepArrows[index].map(({ direction, visibility }) => (
+              <StepArrow key={direction} direction={direction} className={visibility} active={playing && index === active} />
+            ))}
             <div className={`flex h-full items-start gap-3 rounded-2xl border border-neutral-200 p-4 ${playing && index === active ? "step-card-blink" : ""}`}>
               <span className={`flex size-8 shrink-0 items-center justify-center rounded-full border border-gray-400 text-sm font-semibold text-gray-400 ${playing && index === active ? "step-number-blink" : ""}`}>{index + 1}</span>
               <div className="min-w-0">

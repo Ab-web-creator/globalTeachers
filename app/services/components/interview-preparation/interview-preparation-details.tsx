@@ -1,14 +1,14 @@
-import Link from "next/link";
 import ServiceIllustration from "../../../components/service-illustration";
 import type { Service } from "../../services";
 import { introduction } from "./content";
 import InterviewConversation from "./interview-conversation";
 import InterviewPractice from "./interview-practice";
+import BackLink from "../back-link";
 
 export default function InterviewPreparationDetails({ service }: { service: Service }) {
   return (
     <main className="mx-auto max-w-6xl px-6 py-12 sm:px-10 lg:py-20">
-      <Link href="/#categories" className="text-brand-500 underline-offset-4 hover:underline">← Как мы помогаем</Link>
+      <BackLink />
       <article>
         <header className="mt-8 grid items-center gap-8 md:grid-cols-[1.5fr_1fr]">
           <div>

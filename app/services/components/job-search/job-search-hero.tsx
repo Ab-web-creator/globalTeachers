@@ -1,18 +1,13 @@
 import SectionLabel from "./section-label";
 import Image from "next/image";
-import Link from "next/link";
+import BackLink from "../back-link";
 import { introduction } from "./content";
 
 export default function JobSearchHero() {
   return (
     <header className="relative isolate overflow-hidden bg-white">
       <div className="relative mx-auto grid max-w-400 lg:min-h-120 lg:grid-cols-2">
-        <Link href="/#categories" className="group z-20 mx-6 mt-6 inline-flex w-fit items-center gap-1 rounded-xl bg-white/90 py-1 pr-3 pl-1 text-sm text-neutral-500 shadow-sm sm:mx-10 lg:absolute lg:top-10 lg:left-20 lg:m-0 xl:left-24">
-          <span className="flex size-8 items-center justify-center rounded-full transition-colors duration-200 motion-reduce:transition-none group-hover:bg-neutral-200 group-hover:text-neutral-600">
-            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M11 6 4 12l7 6v-4h9v-4h-9z" /></svg>
-          </span>
-          Назад
-        </Link>
+        <BackLink className="mx-6 mt-6 sm:mx-10 lg:absolute lg:top-10 lg:left-20 lg:m-0 xl:left-24" />
         <div className="relative z-10 flex flex-col justify-center px-6 py-10 sm:px-10 sm:py-14 lg:order-2 lg:px-16 lg:py-16 xl:px-20">
           <SectionLabel>Поиск работы за рубежом</SectionLabel>
           <h1 className="text-4xl font-semibold leading-tight tracking-tight sm:text-5xl md:text-4xl xl:text-6xl">Где искать вакансии в международных школах?</h1>
