@@ -31,7 +31,7 @@ const falling: Record<"fall" | "winter", { icon: GuideIconName; motion: string; 
   },
 };
 
-const blooms = ["top-1 right-2", "top-16 right-16", "top-[36%] right-4", "bottom-20 right-14", "bottom-2 right-4"];
+const blooms = ["top-6 right-8", "top-1/4 right-1/4", "top-1/2 right-12", "bottom-1/4 right-1/3", "bottom-6 right-1/6"];
 
 export default function SeasonEffect({ season }: { season: SeasonName }) {
   return (
@@ -53,7 +53,7 @@ export default function SeasonEffect({ season }: { season: SeasonName }) {
           </span>
         ))}
       {season === "summer" && (
-        <span className="absolute top-2 right-4 grid size-32 place-items-center">
+        <span className="absolute top-4 right-4 grid size-32 place-items-center sm:top-6 sm:right-6">
           <span className="season-glow absolute inset-0 rounded-full bg-white/40" />
           <GuideIcon name="sun" className="season-sun relative size-28" />
         </span>

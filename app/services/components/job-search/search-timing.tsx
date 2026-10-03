@@ -39,7 +39,7 @@ export default function SearchTiming() {
   }, []);
 
   return (
-    <section aria-labelledby="search-timing" className="relative overflow-hidden">
+    <section aria-labelledby="search-timing">
       {playing && <SeasonEffect season={seasons[active]} />}
       <div className="relative grid items-start gap-10 xl:grid-cols-3 xl:gap-12">
         <div>

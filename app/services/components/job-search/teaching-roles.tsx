@@ -1,19 +1,18 @@
 import GuideCard from "./guide-card";
-import { internationalTeachingRoles, teachingRoles } from "./content";
+import { subjectNameExamples, teachingRolesIntroduction } from "./content";
 
 export default function TeachingRoles() {
   return (
-    <GuideCard id="teaching-roles" label="Ваша специализация" title="Какие вакансии искать за рубежом?">
-      <ul className="space-y-6">
-        {teachingRoles.map(([russian, english]) => (
-          <li key={russian}><span className="font-medium">{russian}</span> — {english}</li>
+    <GuideCard id="teaching-roles" title="Какие вакансии искать за рубежом?">
+      <p>
+        {teachingRolesIntroduction} Например:{" "}
+        {subjectNameExamples.map(([russian, english], index) => (
+          <span key={english}>
+            {russian} — <span className="font-semibold text-brand-950">{english}</span>
+            {index < subjectNameExamples.length - 1 ? "; " : "."}
+          </span>
         ))}
-      </ul>
-      <ul className="space-y-6">
-        {internationalTeachingRoles.map(([english, russian]) => (
-          <li key={english}><span className="font-medium">{english}</span> — {russian}</li>
-        ))}
-      </ul>
+      </p>
     </GuideCard>
   );
 }

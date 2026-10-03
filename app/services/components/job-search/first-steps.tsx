@@ -2,8 +2,8 @@
 
 import SectionLabel from "./section-label";
 
-import { useEffect, useState } from "react";
-import { firstSteps } from "./content";
+import { useEffect, useState, type ReactNode } from "react";
+import { firstSteps, firstStepsIntroduction } from "./content";
 
 const stepMs = 8000;
 const pauseMs = 2000;
@@ -27,7 +27,7 @@ function StepArrow({ direction, className, active }: { direction: "down" | "righ
   );
 }
 
-export default function FirstSteps() {
+export default function FirstSteps({ children }: { children?: ReactNode }) {
   const [active, setActive] = useState(0);
   const [playing, setPlaying] = useState(true);
 
@@ -58,8 +58,8 @@ export default function FirstSteps() {
     <section aria-labelledby="job-search-first-steps">
       <SectionLabel>Первые шаги</SectionLabel>
       <div className="flex flex-col gap-2">
-        <h2 id="job-search-first-steps" className="text-2xl font-semibold tracking-tight sm:text-3xl">С чего начать?</h2>
-        <p className="text-sm text-neutral-500 sm:text-base">Пошаговый план, который поможет вам искать вакансии эффективно.</p>
+        <h2 id="job-search-first-steps" className="text-3xl font-semibold tracking-tight sm:text-4xl">С чего начать?</h2>
+        <p className="max-w-3xl text-base leading-relaxed text-neutral-600">{firstStepsIntroduction}</p>
       </div>
       <ol className="mt-8 grid gap-8 sm:grid-cols-2 sm:gap-12 lg:grid-cols-3 lg:gap-16">
         {firstSteps.map(({ title, text }, index) => (
@@ -70,16 +70,17 @@ export default function FirstSteps() {
                 <StepArrow direction="right" className={connectors[index].right} active={playing && index === active} />
               </>
             )}
-            <div className={`flex h-full items-start gap-3 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm ${playing && index === active ? "step-card-blink" : ""}`}>
-              <span className={`flex size-8 shrink-0 items-center justify-center rounded-full border-2 border-gray-400 text-sm font-semibold text-gray-400 ${playing && index === active ? "step-number-blink" : ""}`}>{index + 1}</span>
+            <div className={`flex h-full items-start gap-3 rounded-2xl border border-neutral-200 p-4 ${playing && index === active ? "step-card-blink" : ""}`}>
+              <span className={`flex size-8 shrink-0 items-center justify-center rounded-full border border-gray-400 text-sm font-semibold text-gray-400 ${playing && index === active ? "step-number-blink" : ""}`}>{index + 1}</span>
               <div className="min-w-0">
-                <p className="text-sm font-semibold leading-snug">{title}</p>
-                <p className="mt-1.5 text-xs leading-relaxed text-neutral-500">{text}</p>
+                <p className="text-base font-semibold leading-snug">{title}</p>
+                <p className="mt-1.5 text-base leading-relaxed text-neutral-500">{text}</p>
               </div>
             </div>
           </li>
         ))}
       </ol>
+      {children && <div className="mt-16 sm:mt-20">{children}</div>}
     </section>
   );
 }
