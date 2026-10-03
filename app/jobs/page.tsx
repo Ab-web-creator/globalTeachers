@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function JobsPage() {
   return (
-    <div className="min-h-screen bg-linear-to-br from-sky-50 via-white to-violet-50 text-brand-700">
+    <div className="min-h-screen bg-white text-brand-700">
       <PageHeader />
       <main className="mx-auto max-w-6xl px-6 py-16 sm:px-10 lg:py-24">
         <p className="text-sm font-semibold tracking-widest text-brand-500 uppercase">Работа за рубежом</p>

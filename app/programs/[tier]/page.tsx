@@ -28,7 +28,7 @@ export default async function ProgramPage({ params }: Props) {
   const program = await getProgram(params);
   const Details = program.tier === "START" ? StartDetails : program.tier === "PRO" ? ProDetails : VipDetails;
   return (
-    <div className="min-h-screen bg-linear-to-br from-sky-50 via-white to-violet-50 text-brand-700">
+    <div className="min-h-screen bg-white text-brand-700">
       <PageHeader />
       <Details program={program} />
     </div>

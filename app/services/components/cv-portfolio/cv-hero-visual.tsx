@@ -1,8 +1,8 @@
 import Image from "next/image";
 
-export default function CvHeroVisual() {
+export default function CvHeroVisual({ className = "" }: { className?: string }) {
   return (
-    <div aria-hidden="true" className="relative mx-auto aspect-square w-full max-w-xl">
+    <div aria-hidden="true" className={`relative mx-auto aspect-square w-full max-w-xl ${className}`}>
       <div className="absolute top-0 left-4 size-1/2 rounded-full bg-brand-100" />
       <div className="absolute right-0 bottom-8 size-1/4 rounded-full bg-brand-300/30" />
       <div className="absolute inset-8 overflow-hidden rounded-full shadow-xl shadow-brand-500/10">

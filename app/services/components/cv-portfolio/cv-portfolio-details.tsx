@@ -9,7 +9,7 @@ export default function CvPortfolioDetails() {
       <BackLink />
       <article>
         <CvHero />
-        <div className="mt-12 space-y-10 sm:space-y-12">
+        <div className="mt-12 space-y-16 sm:mt-16 sm:space-y-20 lg:mt-20 lg:space-y-24">
           <CvGuide />
           <section aria-labelledby="cv-pro-support" className="rounded-3xl border border-brand-100 bg-white p-6 sm:p-8">
             <h2 id="cv-pro-support" className="text-2xl font-semibold">Хотите профессионально подготовить CV и портфолио?</h2>
