@@ -1,8 +1,8 @@
 import SectionHeading from "../section-heading";
 import SectionLabel from "../job-search/section-label";
-import { reviewQuestions } from "./content";
 import CvExperience from "./cv-experience";
 import CvSections from "./cv-sections";
+import PortfolioFolder from "./portfolio-folder";
 import PortfolioItems from "./portfolio-items";
 import QualitySection from "./quality-section";
 import SectionFade from "./section-fade";
@@ -20,22 +20,18 @@ export default function CvGuide() {
       <CvExperience />
       <div>
         <section aria-labelledby="teacher-portfolio" className="pb-12 sm:pb-16 lg:pb-20">
-          <SectionLabel>Портфолио</SectionLabel>
-          <SectionHeading id="teacher-portfolio">А что такое Teacher Portfolio?</SectionHeading>
-          <p className="mt-4 max-w-2xl leading-relaxed text-neutral-600">Портфолио дополняет CV и позволяет показать вашу работу более наглядно. Оно особенно полезно, если вы можете показать результат своей работы, а не только рассказать о нём. В него могут входить:</p>
+          <div className="flex items-center justify-between gap-10">
+            <div>
+              <SectionLabel>Портфолио</SectionLabel>
+              <SectionHeading id="teacher-portfolio">А что такое Teacher Portfolio?</SectionHeading>
+              <p className="mt-4 max-w-2xl leading-relaxed text-neutral-600">Портфолио дополняет CV и позволяет показать вашу работу более наглядно. Оно особенно полезно, если вы можете показать результат своей работы, а не только рассказать о нём. В него могут входить:</p>
+            </div>
+            <PortfolioFolder className="hidden w-32 shrink-0 lg:block xl:w-36" />
+          </div>
           <PortfolioItems />
         </section>
         <QualitySection />
       </div>
-      <section aria-labelledby="cv-review">
-        <SectionHeading id="cv-review">Перед отправкой проверьте</SectionHeading>
-        <ol className="mt-6 space-y-4">
-          {reviewQuestions.map((question, index) => <li key={question} className="flex items-baseline gap-4 leading-relaxed text-neutral-600">
-            <span aria-hidden="true" className="font-semibold tabular-nums text-brand-500">{String(index + 1).padStart(2, "0")}</span>
-            {question}
-          </li>)}
-        </ol>
-      </section>
     </div>
   );
 }

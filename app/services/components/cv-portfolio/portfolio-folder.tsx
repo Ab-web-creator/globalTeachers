@@ -1,12 +1,16 @@
 import { Caveat } from "next/font/google";
+import { useId } from "react";
 
 const caveat = Caveat({ subsets: ["latin"], weight: "500", preload: false });
 
 export default function PortfolioFolder({ className = "" }: { className?: string }) {
+  // A unique gradient id keeps several copies of the illustration on one page from clashing.
+  const pocket = useId();
+
   return (
     <svg aria-hidden="true" viewBox="0 0 240 240" className={className}>
       <defs>
-        <linearGradient id="portfolio-pocket" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id={pocket} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="#c7cdf3" />
           <stop offset="1" stopColor="#aeb6e6" />
         </linearGradient>
@@ -24,7 +28,7 @@ export default function PortfolioFolder({ className = "" }: { className?: string
         <circle cx="156" cy="88" r="7" className="fill-indigo-200" />
       </g>
       <g transform="rotate(-3 122 152)" className="drop-shadow-lg">
-        <rect x="66" y="110" width="114" height="88" rx="6" fill="url(#portfolio-pocket)" />
+        <rect x="66" y="110" width="114" height="88" rx="6" fill={`url(#${pocket})`} />
         <text x="123" y="160" textAnchor="middle" className={`${caveat.className} fill-white text-2xl`}>Portfolio</text>
       </g>
       <path d="M156 30l3 14M186 38l-8 12M196 64l-13 2" strokeWidth="5" strokeLinecap="round" className="stroke-indigo-300" />
