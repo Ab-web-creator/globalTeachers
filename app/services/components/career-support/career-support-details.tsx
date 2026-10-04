@@ -7,12 +7,18 @@ import CareerSupportBanner from "./career-support-banner";
 
 export default function CareerSupportDetails() {
   return (
-    <main className="mx-auto max-w-400 px-6 pt-6 pb-12 sm:px-10 lg:px-16 lg:pt-0 lg:pb-20 xl:px-20">
+    <main className="mx-auto max-w-400 px-6 pt-6 pb-12 sm:px-10 sm:pb-16 lg:px-16 lg:pt-0 lg:pb-20 xl:px-20">
       <article>
-        <ServiceHero image="/images/VIPpackage.jpeg">
+        <ServiceHero image="/images/VIPpackage.jpeg" imageAspectRatio="400 / 323">
           <SectionLabel>Карьерное сопровождение</SectionLabel>
           <PageTitle>Когда рядом есть человек, который знает весь процесс</PageTitle>
-          {introduction.map((text) => <p key={text} className="mt-4 text-lg leading-relaxed text-neutral-600">{text}</p>)}
+          {introduction.map((text, index) => (
+            <p key={text} className={index === introduction.length - 1
+              ? "mt-5 border-l-2 border-brand-300 pl-4 text-base font-medium leading-relaxed text-brand-700"
+              : "mt-4 text-lg leading-relaxed text-neutral-600"}>
+              {text}
+            </p>
+          ))}
         </ServiceHero>
         <div className="mt-12 max-w-4xl space-y-10 sm:mt-16 sm:space-y-12 lg:mt-20">
           <SupportGuide />
