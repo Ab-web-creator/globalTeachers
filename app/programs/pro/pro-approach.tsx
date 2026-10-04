@@ -11,13 +11,13 @@ export default function ProApproach() {
       <SectionFade tone="violet" />
       <div className="min-w-0 lg:col-span-3">
         <SectionLabel>Подход</SectionLabel>
-        <SectionHeading id="pro-approach">Не просто рекомендации — мы готовим вместе с вами</SectionHeading>
+        <SectionHeading id="pro-approach">Не просто рекомендации —<br />мы готовим вместе с вами</SectionHeading>
         {approach.paragraphs.map((text) => <p key={text} className="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-600">{text}</p>)}
         <p className="mt-6 text-lg font-medium leading-relaxed text-brand-950">{approach.flowTitle}</p>
         <NumberedSteps flow={approach.flow} />
       </div>
-      <div style={{ aspectRatio: "25 / 23" }} className="relative w-full max-w-md justify-self-center lg:col-span-2">
-        <Image src="/images/consultation-globe-books.png" alt="Глобус, книги и паспорт на рабочем столе" fill sizes="(min-width: 1024px) 40vw, (min-width: 640px) 448px, 100vw" className="object-cover object-left mask-l-from-80% mask-b-from-85%" />
+      <div style={{ aspectRatio: "25 / 23" }} className="relative hidden w-full max-w-md justify-self-center lg:col-span-2 lg:block">
+        <Image src="/images/consultation-globe-books.png" alt="Глобус, книги и паспорт на рабочем столе" fill sizes="448px" className="object-cover object-left mask-l-from-80% mask-b-from-85%" />
       </div>
     </section>
   );

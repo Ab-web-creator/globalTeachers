@@ -31,7 +31,7 @@ export default function StartGuide({ children }: { children?: ReactNode }) {
         </div>
       </div>
       <StartOutcomes flow={approach.outcome} />
-      <ProgramSection id="start-inclusions" label="Состав программы" title="Что входит в START" fade="violet" fadeDirection="down">
+      <ProgramSection id="start-inclusions" label="Состав программы" title="Что входит в START" fade="violet" fadeDirection="down" flushBottom>
         <ul className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {inclusions.map(({ icon, title, text }) => <IconCard key={title} icon={icons[icon]} title={title} paragraphs={[text]} />)}
         </ul>

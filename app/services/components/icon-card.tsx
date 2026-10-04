@@ -1,14 +1,15 @@
 import FlowChips from "./flow-chips";
 import LineIcon from "./line-icon";
 
+// On phones the icon and heading share a row and the text runs full width below; from sm the icon sits in its own column.
 export default function IconCard({ icon, title, paragraphs }: { icon: string; title: string; paragraphs: string[] }) {
   return (
-    <li className="group flex items-start gap-5 rounded-3xl border border-brand-100 bg-white p-6 transition-colors hover:border-brand-300 hover:shadow-lg hover:shadow-brand-500/10 sm:p-8">
-      <span aria-hidden="true" className="flex size-12 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600 transition-colors group-hover:bg-brand-500 group-hover:text-white">
+    <li className="group grid grid-cols-[auto_1fr] content-start items-center gap-x-4 gap-y-3 rounded-3xl border border-brand-100 bg-white p-6 transition-colors hover:border-brand-300 hover:shadow-lg hover:shadow-brand-500/10 sm:items-start sm:gap-x-5 sm:p-8">
+      <span aria-hidden="true" className="flex size-12 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600 transition-colors group-hover:bg-brand-500 group-hover:text-white sm:row-span-2">
         <LineIcon path={icon} className="size-6" />
       </span>
-      <div className="min-w-0 space-y-3">
-        <h3 className="text-xl font-semibold">{title}</h3>
+      <h3 className="min-w-0 text-base font-semibold leading-relaxed">{title}</h3>
+      <div className="col-span-2 min-w-0 space-y-3 sm:col-span-1 sm:col-start-2">
         {paragraphs.map((text) => text.includes("→")
           ? <FlowChips key={text} text={text} />
           : <p key={text} className="leading-relaxed text-neutral-600">{text}</p>)}
