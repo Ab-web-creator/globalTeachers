@@ -13,7 +13,7 @@ export default function ProgramHero({ tier, image, title, intro, highlight, imag
       <div className="mt-6 space-y-5">
         {intro.map((text) => <p key={text} className="text-base leading-relaxed text-neutral-600 sm:text-lg">{text}</p>)}
       </div>
-      <p className="mt-5 border-l-2 border-brand-300 pl-4 text-base font-medium leading-relaxed text-brand-700">{highlight}</p>
+      <p className="mt-5 border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-700">{highlight}</p>
     </ServiceHero>
   );
 }

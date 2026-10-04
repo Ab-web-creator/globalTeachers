@@ -8,7 +8,7 @@ export default function CvExperience() {
     <section aria-labelledby="cv-achievements">
       <SectionLabel>Как описать опыт</SectionLabel>
       <SectionHeading id="cv-achievements">CV — это не автобиография</SectionHeading>
-      <p className="mt-4 max-w-2xl leading-relaxed text-neutral-600">Не нужно подробно описывать каждую должность и перечислять все обязанности, которые выполняет обычный учитель.</p>
+      <p className="mt-7 max-w-2xl leading-relaxed text-neutral-600">Не нужно подробно описывать каждую должность и перечислять все обязанности, которые выполняет обычный учитель.</p>
       <div className="mt-10 grid gap-6 lg:grid-cols-2">
         <ExperienceExample tone="weak" label="Вместо:" text={experienceExamples.weak} note={experienceNotes.weak} />
         <ExperienceExample tone="strong" label="Лучше показать конкретный опыт и ответственность:" text={experienceExamples.strong} note={experienceNotes.strong} />

@@ -14,7 +14,7 @@ export default function CvGuide() {
         <SectionFade />
         <SectionLabel>Структура CV</SectionLabel>
         <SectionHeading id="cv-structure">Что должно быть в CV?</SectionHeading>
-        <p className="mt-4 max-w-lg leading-relaxed text-neutral-600">Для международного поиска лучше подготовить CV на английском языке с понятной и логичной структурой. Обычно в него входят:</p>
+        <p className="mt-7 max-w-lg leading-relaxed text-neutral-600">Для международного поиска лучше подготовить CV на английском языке с понятной и логичной структурой. Обычно в него входят:</p>
         <CvSections />
       </section>
       <CvExperience />
@@ -25,7 +25,7 @@ export default function CvGuide() {
             <div>
               <SectionLabel>Портфолио</SectionLabel>
               <SectionHeading id="teacher-portfolio">А что такое Teacher Portfolio?</SectionHeading>
-              <p className="mt-4 max-w-2xl leading-relaxed text-neutral-600">Портфолио дополняет CV и позволяет показать вашу работу более наглядно. Оно особенно полезно, если вы можете показать результат своей работы, а не только рассказать о нём. В него могут входить:</p>
+              <p className="mt-7 max-w-2xl leading-relaxed text-neutral-600">Портфолио дополняет CV и позволяет показать вашу работу более наглядно. Оно особенно полезно, если вы можете показать результат своей работы, а не только рассказать о нём. В него могут входить:</p>
             </div>
             <PortfolioFolder className="hidden w-32 shrink-0 lg:block xl:w-36" />
           </div>

@@ -10,7 +10,7 @@ export default function InterviewTopics() {
     <section aria-labelledby="interview-topics" className="relative isolate bg-white pb-12 sm:pb-16 lg:pb-20">
       <SectionLabel>Темы интервью</SectionLabel>
       <SectionHeading id="interview-topics">Что могут спросить?</SectionHeading>
-      <p className="mt-4 max-w-3xl text-lg font-medium leading-relaxed text-neutral-600">{interviewTopicsIntroduction}</p>
+      <p className="mt-7 max-w-3xl text-lg font-medium leading-relaxed text-neutral-600">{interviewTopicsIntroduction}</p>
       <ul className="mt-10 grid gap-4 md:grid-cols-2">
         {interviewTopics.map(({ title, text }, index) => (
           <TopicCard key={title} icon={topicIcons[index]} tone={questionIcons[index].tone} title={title} text={text} />

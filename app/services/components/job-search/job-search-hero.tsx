@@ -12,8 +12,8 @@ export default function JobSearchHero() {
         <div className="relative z-10 flex flex-col justify-center px-6 py-8 sm:px-10 lg:order-2 lg:px-16 lg:py-16 xl:px-20">
           <SectionLabel>Поиск работы за рубежом</SectionLabel>
           <PageTitle>Где искать вакансии в международных школах?</PageTitle>
-          <p className="mt-6 text-base leading-relaxed text-neutral-600 sm:text-lg">{introduction}</p>
-          <p className="mt-5 border-l-2 border-brand-300 pl-4 text-base font-medium leading-relaxed text-brand-700">Главное — понимать, где искать, когда начинать и на какие позиции откликаться.</p>
+          <p className="mt-7 text-base leading-relaxed text-neutral-600 sm:text-lg">{introduction}</p>
+          <p className="mt-5 border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-700">Главное — понимать, где искать, когда начинать и на какие позиции откликаться.</p>
         </div>
         <div className="relative mx-6 min-h-72 sm:mx-10 sm:min-h-96 lg:order-1 lg:mt-6 lg:mr-0 lg:ml-16 lg:min-h-full xl:ml-20">
           <Image src="/images/benefits/development.jpg" alt="" fill preload sizes="(min-width: 1600px) 800px, (min-width: 1024px) 50vw, 100vw" className="object-cover object-center" />

@@ -11,10 +11,10 @@ export default function RelocationSteps() {
       <div>
         <SectionLabel>После оффера</SectionLabel>
         <SectionHeading id="support-relocation">И после предложения наша работа ещё не заканчивается</SectionHeading>
-        {relocation.paragraphs.map((text, index) => <p key={text} className={`mt-4 leading-relaxed text-neutral-600 ${index === 0 ? "text-lg" : ""}`}>{text}</p>)}
+        {relocation.paragraphs.map((text, index) => <p key={text} className={`${index === 0 ? "mt-7" : "mt-4"} text-lg leading-relaxed text-neutral-600`}>{text}</p>)}
         <p className="mt-6 text-lg leading-relaxed text-brand-600">{relocation.help}</p>
       </div>
-      <div className="relative">
+      <div className="relative lg:w-4/5 lg:justify-self-end">
         <span aria-hidden="true" className="absolute top-8 bottom-8 left-11 w-2.5 -translate-x-1/2 bg-brand-200" />
         <ol className="space-y-3">
           {relocation.steps.map((step, index) => (

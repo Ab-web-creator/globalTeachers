@@ -4,7 +4,7 @@ export default function MentorMessage() {
   return (
       <div className="min-w-0">
         <header data-reveal>
-        <p className="mb-4 text-sm font-semibold tracking-widest text-brand-500 uppercase sm:mb-6 sm:text-base">
+        <p className="mb-4 text-sm font-semibold tracking-widest text-brand-500 uppercase sm:text-base">
           Лично от основателя
         </p>
         <h2 id="mentor-note-title" className="text-4xl leading-none font-semibold tracking-wide text-brand-700 sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl">
@@ -23,8 +23,8 @@ export default function MentorMessage() {
           </p>
         </div>
         <div data-reveal className="mt-6 border-l-2 border-brand-300 pl-4">
-          <p className="text-base font-medium text-brand-700">Основатель GlobalTeacherHub</p>
-          <p className="mt-1 text-sm text-neutral-600">Ваш наставник на пути к международной карьере</p>
+          <p className="text-lg font-medium text-brand-700">Основатель GlobalTeacherHub</p>
+          <p className="mt-1 text-lg text-neutral-600">Ваш наставник на пути к международной карьере</p>
         </div>
         <Link
           data-reveal

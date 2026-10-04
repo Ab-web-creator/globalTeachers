@@ -17,8 +17,8 @@ export default function SpeakWithExamples() {
       <div className="lg:col-span-3">
         <SectionLabel>Сильные ответы</SectionLabel>
         <SectionHeading id="interview-examples">Говорите примерами</SectionHeading>
-        <p className="mt-5 text-lg leading-relaxed text-neutral-600">{speakWithExamples.intro}</p>
-        <div className="mt-5">
+        <p className="mt-7 text-lg leading-relaxed text-neutral-600">{speakWithExamples.intro}</p>
+        <div className="mt-8">
           <AnswerExample label="Пример фразы">{speakWithExamples.weakPhrase}</AnswerExample>
         </div>
         <p className="mt-8 text-lg leading-relaxed text-neutral-600">{speakWithExamples.stepsIntro}</p>

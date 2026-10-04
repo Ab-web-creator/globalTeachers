@@ -11,7 +11,7 @@ export default function SupportStages() {
       <SectionFade />
       <SectionLabel>Этапы сопровождения</SectionLabel>
       <SectionHeading id="support-stages">Как проходит сопровождение?</SectionHeading>
-      <p className="mt-4 max-w-3xl text-lg leading-relaxed text-neutral-600">{stagesIntroduction}</p>
+      <p className="mt-7 max-w-3xl text-lg leading-relaxed text-neutral-600">{stagesIntroduction}</p>
       <ul className="mt-10 grid gap-4 lg:grid-cols-2">
         {supportSections.map(({ id, title, paragraphs }, index) => (
           <IconCard key={id} icon={stageIcons[index]} tone={stageTones[index]} title={title} paragraphs={paragraphs} />

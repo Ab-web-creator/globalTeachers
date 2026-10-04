@@ -16,7 +16,7 @@ export default function SupportBanner({ id, label, title, text, image, children 
         <div aria-hidden="true" className={styles.ornament} />
         <SectionLabel>{label}</SectionLabel>
         <SectionHeading id={id}>{title}</SectionHeading>
-        <p className="mt-4 max-w-[68ch] leading-relaxed text-neutral-600">{text}</p>
+        <p className="mt-4 max-w-[68ch] text-lg leading-relaxed text-neutral-600">{text}</p>
         <div className="mt-7 flex flex-wrap gap-3">{children}</div>
       </div>
     </section>

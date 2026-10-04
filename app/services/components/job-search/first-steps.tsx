@@ -9,7 +9,7 @@ export default function FirstSteps({ children }: { children?: ReactNode }) {
   return (
     <section aria-labelledby="job-search-first-steps">
       <SectionLabel>Первые шаги</SectionLabel>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-7">
         <SectionHeading id="job-search-first-steps">С чего начать?</SectionHeading>
         <p className="max-w-3xl text-base leading-relaxed text-neutral-600">{firstStepsIntroduction}</p>
       </div>

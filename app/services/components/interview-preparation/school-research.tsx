@@ -13,7 +13,7 @@ export default function SchoolResearch() {
       <div className="lg:col-span-3">
         <SectionLabel>Изучите школу</SectionLabel>
         <SectionHeading id="research-school">Почему именно эта школа?</SectionHeading>
-        {schoolResearch.paragraphs.map((text) => <p key={text} className="mt-5 max-w-3xl text-lg leading-relaxed text-neutral-600">{text}</p>)}
+        {schoolResearch.paragraphs.map((text, index) => <p key={text} className={`${index === 0 ? "mt-7" : "mt-5"} max-w-3xl text-lg leading-relaxed text-neutral-600`}>{text}</p>)}
         <div className="mt-8">
           <AnswerExample>{schoolResearch.weakAnswer}</AnswerExample>
         </div>
