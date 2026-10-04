@@ -26,7 +26,7 @@ export default function CategoryCard({ program }: CategoryCardProps) {
         <div className="flex items-start justify-between gap-3">
           <h3 className="min-w-0 text-2xl leading-tight font-medium tracking-tight">{program.title}</h3>
         </div>
-        <p className="mt-2 text-base lg:text-sm leading-normal text-neutral-600">{program.description}</p>
+        <p className="mt-2 text-base leading-normal text-neutral-600">{program.description}</p>
       </div>
       <div className="sm:px-3">
         <ProgramInclusions program={program} />
