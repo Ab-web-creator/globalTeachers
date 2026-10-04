@@ -18,12 +18,12 @@ export default function RelocationSteps() {
         <span aria-hidden="true" className="absolute top-8 bottom-8 left-11 w-2.5 -translate-x-1/2 bg-brand-200" />
         <ol className="space-y-3">
           {relocation.steps.map((step, index) => (
-            <li key={step} className="relative flex items-center gap-5 rounded-2xl border border-brand-100 bg-white px-5 py-4">
-              <span aria-hidden="true" className="flex size-12 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600">
+            <li key={step} className="group relative flex items-center gap-5 rounded-2xl border border-brand-100 bg-white px-5 py-4 transition-colors duration-200 hover:border-brand-300 hover:bg-violet-50 motion-reduce:transition-none">
+              <span aria-hidden="true" className="flex size-12 shrink-0 items-center justify-center rounded-full border border-transparent bg-brand-50 text-brand-600 transition-colors duration-200 group-hover:border-brand-400 motion-reduce:transition-none">
                 <LineIcon path={relocationIcons[index]} className="size-6" />
               </span>
               <span className="text-lg font-medium text-brand-950">{step}</span>
-              <span aria-hidden="true" className="ml-auto text-sm font-semibold tabular-nums text-brand-300">{String(index + 1).padStart(2, "0")}</span>
+              <span aria-hidden="true" className="ml-auto text-sm font-semibold tabular-nums text-brand-300 transition-colors duration-200 group-hover:text-brand-500 motion-reduce:transition-none">{String(index + 1).padStart(2, "0")}</span>
             </li>
           ))}
         </ol>
