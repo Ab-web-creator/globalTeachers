@@ -1,3 +1,4 @@
+import CvSupport from "./cv-support";
 import IconPanel from "./icon-panel";
 import ReviewChecklist from "./review-checklist";
 
@@ -11,6 +12,7 @@ export default function QualitySection() {
           <p className="mt-3 max-w-[64ch] leading-relaxed text-neutral-600">Каждый материал должен помогать школе лучше понять вас как специалиста.</p>
           <p className="mt-6 text-base font-medium leading-relaxed text-brand-600">CV говорит о вашем опыте. Портфолио показывает его.</p>
         </IconPanel>
+        <div className="mt-6 lg:col-span-2"><CvSupport /></div>
       </div>
     </div>
   );

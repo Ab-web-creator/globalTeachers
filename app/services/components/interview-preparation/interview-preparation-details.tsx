@@ -7,7 +7,6 @@ import InterviewTopics from "./interview-topics";
 import SchoolResearch from "./school-research";
 import SpeakWithExamples from "./speak-with-examples";
 import UnexpectedQuestions from "./unexpected-questions";
-import InterviewSupport from "./interview-support";
 
 export default function InterviewPreparationDetails() {
   return (
@@ -17,27 +16,18 @@ export default function InterviewPreparationDetails() {
           <SectionLabel>Подготовка к интервью</SectionLabel>
           <PageTitle>Что вас ждёт на собеседовании?</PageTitle>
           <div className="mt-6 space-y-5">
-            {introduction.map((text) => <p key={text} className="text-lg leading-relaxed text-neutral-600">{text}</p>)}
+            {introduction.map((text) => <p key={text} className="text-base leading-relaxed text-neutral-600 sm:text-lg">{text}</p>)}
           </div>
           <p className="mt-5 border-l-2 border-brand-300 pl-4 text-base font-medium leading-relaxed text-brand-700">Успешное собеседование — это всегда диалог, а не экзамен.</p>
         </ServiceHero>
         <div className="mt-12 sm:mt-16 lg:mt-20">
           <InterviewTopics />
         </div>
-        <div className="mt-16 sm:mt-20 lg:mt-24">
-          <SchoolResearch />
-        </div>
-        <div className="mt-16 sm:mt-20 lg:mt-24">
-          <SpeakWithExamples />
-        </div>
-        <div className="mt-16 sm:mt-20 lg:mt-24">
-          <UnexpectedQuestions />
-        </div>
+        <SchoolResearch />
+        <SpeakWithExamples />
+        <UnexpectedQuestions />
         <div className="mt-16 sm:mt-20 lg:mt-24">
           <InterviewPractice />
-        </div>
-        <div className="mt-16 sm:mt-20 lg:mt-24">
-          <InterviewSupport />
         </div>
       </article>
     </main>

@@ -1,3 +1,4 @@
+import InterviewSupport from "./interview-support";
 import GuideCard from "../job-search/guide-card";
 import { preparationSteps } from "./content";
 
@@ -29,6 +30,7 @@ export default function InterviewPractice() {
           <p className="text-brand-600">Вы тоже выбираете школу.</p>
         </GuideCard>
       </div>
+      <div className="lg:col-span-13"><InterviewSupport /></div>
     </div>
   );
 }

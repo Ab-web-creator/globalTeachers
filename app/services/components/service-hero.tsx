@@ -1,17 +1,21 @@
 import Image from "next/image";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import BackLink from "./back-link";
 
-type ServiceHeroProps = { image: string; children: ReactNode; imageAspectRatio?: string };
+type ServiceHeroProps = { image: string; children: ReactNode; imageAspectRatio?: string; backHref?: string; stretchImage?: boolean };
 
-export default function ServiceHero({ image, children, imageAspectRatio }: ServiceHeroProps) {
+const imageSizes = "(min-width: 1600px) 688px, (min-width: 1024px) 45vw, 100vw";
+
+// Stacked, the image spans the full width but stays no taller than max-h-130; on lg it sits beside the text,
+// at least as tall as the text column, and fades into it.
+export default function ServiceHero({ image, children, imageAspectRatio = "1", backHref, stretchImage = true }: ServiceHeroProps) {
   return (
-    <header className="relative isolate mt-6 grid items-start gap-8 bg-white lg:mt-0 lg:grid-cols-2 lg:gap-16">
-      <BackLink className="lg:absolute lg:top-10 lg:left-4" />
-      <div className="lg:order-2 lg:py-6">{children}</div>
-      <div aria-hidden="true" style={imageAspectRatio ? { aspectRatio: imageAspectRatio } : undefined} className="relative mx-auto aspect-square w-full max-w-xl overflow-hidden lg:order-1 lg:mt-6 lg:max-w-none">
-        <Image src={image} alt="" fill preload sizes="(min-width: 1600px) 688px, (min-width: 1024px) 45vw, (min-width: 640px) 576px, 100vw" className="object-cover object-center" />
-        <div className="absolute inset-0 bg-linear-to-l from-white via-transparent to-transparent" />
+    <header className="relative isolate mt-2 grid items-start gap-8 bg-white lg:mt-0 lg:grid-cols-2 lg:gap-16">
+      <BackLink href={backHref} className="lg:absolute lg:top-10 lg:left-4" />
+      <div className="relative z-10 lg:order-2 lg:py-6">{children}</div>
+      <div aria-hidden="true" style={{ "--hero-aspect": imageAspectRatio } as CSSProperties} className={`relative aspect-(--hero-aspect) max-h-130 w-full overflow-hidden lg:order-1 lg:mt-6 lg:max-h-none ${stretchImage ? "lg:self-stretch" : "lg:self-start"}`}>
+        <Image src={image} alt="" fill preload sizes={imageSizes} className="object-cover object-center" />
+        <div className="absolute inset-0 hidden bg-linear-to-l from-white via-transparent to-transparent lg:block" />
       </div>
     </header>
   );

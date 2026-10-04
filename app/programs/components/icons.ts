@@ -1,0 +1,30 @@
+// Line-icon paths (24×24, stroked) used on the program pages.
+export const icons = {
+  profile: "M12 3a4 4 0 1 0 0 8a4 4 0 1 0 0-8 M4 21a8 8 0 0 1 16 0",
+  globe: "M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18 M3 12h18 M12 3c2.5 2.5 3.5 5.5 3.5 9s-1 6.5-3.5 9c-2.5-2.5-3.5-5.5-3.5-9s1-6.5 3.5-9Z",
+  chat: "M4 5h16v11H9l-5 4Z M8 9h8 M8 12h5",
+  document: "M14 3H6v18h12V7l-4-4Z M14 3v4h4 M9 12h6 M9 16h4",
+  letter: "M3 6h18v12H3z M3 7l9 6 9-6",
+  search: "M11 4a7 7 0 1 0 0 14a7 7 0 1 0 0-14 M20 20l-4-4",
+  compass: "M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18 M15.5 8.5l-2 5-5 2 2-5Z",
+  folder: "M3 6h6l2 2h10v11H3Z",
+  link: "M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-1 1 M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l1-1",
+  mic: "M12 3a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3 M5 11a7 7 0 0 0 14 0 M12 18v3",
+  target: "M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18 M12 7a5 5 0 1 0 0 10a5 5 0 1 0 0-10 M12 11a1 1 0 1 0 0 2a1 1 0 1 0 0-2",
+  checklist: "M9 4h6v3H9z M9 5H6v16h12V5h-3 M9 12l2 2 4-4 M9 17h6",
+  calendar: "M4 5h16v15H4z M4 9h16 M8 3v4 M16 3v4",
+  question: "M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18 M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.7 M12 17h.01",
+  alert: "M12 3l9 16H3Z M12 10v4 M12 17h.01",
+  wallet: "M3 7h18v12H3z M3 7l3-3h12l3 3 M16 13h2",
+  home: "M3 11l9-7 9 7 M5 10v10h14V10 M10 20v-6h4v6",
+  receipt: "M7 3h10v18l-2.5-1.5L12 21l-2.5-1.5L7 21Z M10 8h4 M10 12h4",
+  health: "M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3Z M12 9v6 M9 12h6",
+  plane: "M3 13l18-8-6 16-3-6-9-2Z M12 15l9-10",
+  school: "M2 9l10-5 10 5-10 5Z M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5",
+  passport: "M6 3h12v18H6z M12 8a3 3 0 1 0 0 6a3 3 0 1 0 0-6 M9 17h6",
+  truck: "M3 7h11v10H3z M14 10h4l3 3v4h-7 M7 19a2 2 0 1 0 0-4a2 2 0 1 0 0 4 M17 19a2 2 0 1 0 0-4a2 2 0 1 0 0 4",
+  clock: "M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18 M12 7v5l3 2",
+  more: "M6 12h.01 M12 12h.01 M18 12h.01",
+} as const;
+
+export type IconName = keyof typeof icons;

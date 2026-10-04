@@ -1,3 +1,4 @@
+import SearchSupport from "./search-support";
 import FirstSteps from "./first-steps";
 import GradientBand from "./gradient-band";
 import RecruitmentPlatforms from "./recruitment-platforms";
@@ -17,6 +18,7 @@ export default function SearchGuide() {
       </div>
       <FirstSteps>
         <ApplicationAdvice />
+        <div className="mt-12 sm:mt-16 lg:mt-20"><SearchSupport /></div>
       </FirstSteps>
     </div>
   );

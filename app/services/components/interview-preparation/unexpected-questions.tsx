@@ -1,5 +1,5 @@
-import Image from "next/image";
 import SectionHeading from "../section-heading";
+import SectionFade from "../cv-portfolio/section-fade";
 import SectionLabel from "../job-search/section-label";
 import QuestionRow from "./question-row";
 import ResearchTip from "./research-tip";
@@ -8,7 +8,8 @@ import { questionIcons } from "./question-icons";
 
 export default function UnexpectedQuestions() {
   return (
-    <section aria-labelledby="unexpected-questions" className="grid items-center gap-10 lg:grid-cols-3 lg:gap-12">
+    <section aria-labelledby="unexpected-questions" className="relative isolate grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-3 lg:gap-12 lg:py-20">
+      <SectionFade direction="down" halfHeight />
       <div className="lg:col-span-2">
         <SectionLabel>Сложные вопросы</SectionLabel>
         <SectionHeading id="unexpected-questions">Будьте готовы к неожиданным вопросам</SectionHeading>
@@ -23,7 +24,9 @@ export default function UnexpectedQuestions() {
         </div>
       </div>
       <div className="relative hidden self-stretch lg:block">
-        <Image src="/images/interview-notes.png" alt="" width={688} height={1206} sizes="384px" className="absolute inset-y-0 left-1/2 h-full w-auto max-w-none -translate-x-1/2 mask-t-from-92% mask-r-from-88% mask-b-from-92% mask-l-from-88%" />
+        <svg aria-hidden="true" viewBox="0 88 1024 1380" preserveAspectRatio="xMidYMax meet" className="absolute inset-0 h-full w-full">
+          <image href="/images/interview-notes-cutout.png" width="1024" height="1536" style={{ maskImage: "url(/images/interview-notes-mask.svg)", maskSize: "100% 100%", maskRepeat: "no-repeat" }} />
+        </svg>
       </div>
     </section>
   );

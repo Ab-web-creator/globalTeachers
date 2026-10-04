@@ -11,7 +11,7 @@ export default function CvHero() {
       <PageTitle>
         Как представить свой опыт <span className="text-brand-500">международной школе?</span>
       </PageTitle>
-      <div className="mt-8 space-y-5">
+      <div className="mt-6 space-y-5">
         {introduction.map((text) => <p key={text} className="text-base leading-relaxed text-neutral-600 sm:text-lg">{text}</p>)}
       </div>
       <CvQuote />

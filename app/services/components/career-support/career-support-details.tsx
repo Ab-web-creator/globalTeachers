@@ -1,30 +1,21 @@
-import PageTitle from "../page-title";
-import SectionLabel from "../job-search/section-label";
-import ServiceHero from "../service-hero";
-import { introduction } from "./content";
-import SupportGuide from "./support-guide";
-import CareerSupportBanner from "./career-support-banner";
+import CareerSupportHero from "./career-support-hero";
+import OfferReview from "./offer-review";
+import RelocationSteps from "./relocation-steps";
+import SupportMeaning from "./support-meaning";
+import SupportStages from "./support-stages";
 
 export default function CareerSupportDetails() {
   return (
     <main className="mx-auto max-w-400 px-6 pt-6 pb-12 sm:px-10 sm:pb-16 lg:px-16 lg:pt-0 lg:pb-20 xl:px-20">
       <article>
-        <ServiceHero image="/images/VIPpackage.jpeg" imageAspectRatio="400 / 323">
-          <SectionLabel>Карьерное сопровождение</SectionLabel>
-          <PageTitle>Когда рядом есть человек, который знает весь процесс</PageTitle>
-          {introduction.map((text, index) => (
-            <p key={text} className={index === introduction.length - 1
-              ? "mt-5 border-l-2 border-brand-300 pl-4 text-base font-medium leading-relaxed text-brand-700"
-              : "mt-4 text-lg leading-relaxed text-neutral-600"}>
-              {text}
-            </p>
-          ))}
-        </ServiceHero>
-        <div className="mt-12 max-w-4xl space-y-10 sm:mt-16 sm:space-y-12 lg:mt-20">
-          <SupportGuide />
-        </div>
-        <div className="mt-16 sm:mt-20 lg:mt-24">
-          <CareerSupportBanner />
+        <CareerSupportHero />
+        <div className="mt-12 space-y-16 sm:mt-16 sm:space-y-20 lg:mt-20 lg:space-y-24">
+          <SupportStages />
+          <div>
+            <OfferReview />
+            <SupportMeaning />
+          </div>
+          <RelocationSteps />
         </div>
       </article>
     </main>

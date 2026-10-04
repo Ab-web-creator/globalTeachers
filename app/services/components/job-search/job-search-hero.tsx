@@ -8,11 +8,11 @@ export default function JobSearchHero() {
   return (
     <header className="relative isolate overflow-hidden bg-white">
       <div className="relative mx-auto grid max-w-400 lg:min-h-120 lg:grid-cols-2">
-        <BackLink className="mx-6 mt-6 sm:mx-10 lg:absolute lg:top-10 lg:left-20 lg:m-0 xl:left-24" />
-        <div className="relative z-10 flex flex-col justify-center px-6 py-10 sm:px-10 sm:py-14 lg:order-2 lg:px-16 lg:py-16 xl:px-20">
+        <BackLink className="mx-6 mt-8 sm:mx-10 lg:absolute lg:top-10 lg:left-20 lg:m-0 xl:left-24" />
+        <div className="relative z-10 flex flex-col justify-center px-6 py-8 sm:px-10 lg:order-2 lg:px-16 lg:py-16 xl:px-20">
           <SectionLabel>Поиск работы за рубежом</SectionLabel>
           <PageTitle>Где искать вакансии в международных школах?</PageTitle>
-          <p className="mt-6 text-base leading-relaxed text-neutral-600">{introduction}</p>
+          <p className="mt-6 text-base leading-relaxed text-neutral-600 sm:text-lg">{introduction}</p>
           <p className="mt-5 border-l-2 border-brand-300 pl-4 text-base font-medium leading-relaxed text-brand-700">Главное — понимать, где искать, когда начинать и на какие позиции откликаться.</p>
         </div>
         <div className="relative mx-6 min-h-72 sm:mx-10 sm:min-h-96 lg:order-1 lg:mt-6 lg:mr-0 lg:ml-16 lg:min-h-full xl:ml-20">

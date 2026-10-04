@@ -9,8 +9,8 @@ import { speakWithExamples } from "./content";
 
 export default function SpeakWithExamples() {
   return (
-    <section aria-labelledby="interview-examples" className="relative isolate grid items-center gap-10 pb-12 sm:pb-16 lg:grid-cols-5 lg:gap-20 lg:pb-20">
-      <SectionFade tone="rose" />
+    <section aria-labelledby="interview-examples" className="relative isolate grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-5 lg:gap-20 lg:py-20">
+      <SectionFade tone="rose" direction="down" halfHeight />
       <div className="hidden justify-items-center lg:col-span-2 lg:grid">
         <HandwrittenNote>{speakWithExamples.note}</HandwrittenNote>
       </div>

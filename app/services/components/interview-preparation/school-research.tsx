@@ -8,8 +8,8 @@ import { schoolResearch } from "./content";
 
 export default function SchoolResearch() {
   return (
-    <section aria-labelledby="research-school" className="relative isolate grid items-center gap-10 pb-12 sm:pb-16 lg:grid-cols-5 lg:gap-12 lg:pb-20">
-      <SectionFade tone="sky" />
+    <section aria-labelledby="research-school" className="relative isolate grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-5 lg:gap-12 lg:py-20">
+      <SectionFade tone="sky" direction="down" halfHeight />
       <div className="lg:col-span-3">
         <SectionLabel>Изучите школу</SectionLabel>
         <SectionHeading id="research-school">Почему именно эта школа?</SectionHeading>

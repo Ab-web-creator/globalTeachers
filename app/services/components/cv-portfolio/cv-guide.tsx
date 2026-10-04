@@ -19,7 +19,8 @@ export default function CvGuide() {
       </section>
       <CvExperience />
       <div>
-        <section aria-labelledby="teacher-portfolio" className="pb-12 sm:pb-16 lg:pb-20">
+        <section aria-labelledby="teacher-portfolio" className="relative isolate py-12 sm:py-16 lg:py-20">
+          <SectionFade direction="down" halfHeight />
           <div className="flex items-center justify-between gap-10">
             <div>
               <SectionLabel>Портфолио</SectionLabel>
