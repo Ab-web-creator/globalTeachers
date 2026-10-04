@@ -7,6 +7,7 @@
 
 @theme {
   --shadow-surround: 0 0 2rem rgb(0 0 0 / 0.15);
+  --shadow-card: 0 0 0.5rem rgb(0 0 0 / 0.15);
 
   --color-brand-50: #f8f8fa;
   --color-brand-100: #eeeef2;

@@ -2,7 +2,7 @@ import SectionHeading from "../section-heading";
 import SectionLabel from "../job-search/section-label";
 import LineIcon from "../line-icon";
 import { offerConditions, offerReview } from "./content";
-import { offerIcons } from "./icons";
+import { offerIcons, offerTones } from "./icons";
 
 export default function OfferReview() {
   return (
@@ -17,7 +17,7 @@ export default function OfferReview() {
       <ul className="grid grid-cols-2 gap-3 rounded-3xl border border-brand-100 bg-white/80 p-5 sm:grid-cols-3 sm:p-6">
         {offerConditions.map((condition, index) => (
           <li key={condition} className="flex flex-col items-start gap-3 rounded-2xl bg-brand-50/60 p-4">
-            <span aria-hidden="true" className="flex size-10 items-center justify-center rounded-full bg-white text-brand-500">
+            <span aria-hidden="true" className={`flex size-10 items-center justify-center rounded-full ${offerTones[index]}`}>
               <LineIcon path={offerIcons[index]} />
             </span>
             <span className="text-sm leading-snug text-neutral-700 first-letter:uppercase">{condition}</span>

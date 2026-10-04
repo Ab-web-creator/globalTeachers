@@ -3,6 +3,7 @@ import SectionLabel from "../job-search/section-label";
 import { interviewTopics, interviewTopicsIntroduction, interviewTopicsTakeaway } from "./content";
 import TopicCard from "./topic-card";
 import { topicIcons } from "./topic-icons";
+import { questionIcons } from "./question-icons";
 
 export default function InterviewTopics() {
   return (
@@ -10,9 +11,9 @@ export default function InterviewTopics() {
       <SectionLabel>Темы интервью</SectionLabel>
       <SectionHeading id="interview-topics">Что могут спросить?</SectionHeading>
       <p className="mt-4 max-w-3xl text-lg font-medium leading-relaxed text-neutral-600">{interviewTopicsIntroduction}</p>
-      <ul className="mt-8 grid gap-4 md:grid-cols-2">
+      <ul className="mt-10 grid gap-4 md:grid-cols-2">
         {interviewTopics.map(({ title, text }, index) => (
-          <TopicCard key={title} icon={topicIcons[index]} title={title} text={text} />
+          <TopicCard key={title} icon={topicIcons[index]} tone={questionIcons[index].tone} title={title} text={text} />
         ))}
       </ul>
       <div className="mt-6 grid gap-4 md:grid-cols-2">

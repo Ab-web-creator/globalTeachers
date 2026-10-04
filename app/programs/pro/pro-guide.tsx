@@ -18,7 +18,7 @@ export default function ProGuide({ children }: { children?: ReactNode }) {
       </ProgramSection>
       <ProgramSection id="pro-inclusions" label="Состав программы" title="Что входит в PRO" fade="sky">
         <p className="mt-4 max-w-3xl text-lg leading-relaxed text-neutral-600">{inclusionsIntroduction}</p>
-        <ul className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <ul className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {inclusions.map(({ icon, title, paragraphs }) => <IconCard key={title} icon={icons[icon]} title={title} paragraphs={paragraphs} />)}
           <li>
             <QuestionCard lead={cvQuestion.lead} question={cvQuestion.question} />
@@ -28,7 +28,7 @@ export default function ProGuide({ children }: { children?: ReactNode }) {
       <ProApproach />
       <ProgramSection id="pro-practice" label="Практика и поддержка" title="Когда начинается настоящий поиск" fade="violet">
         <p className="mt-4 max-w-3xl text-lg leading-relaxed text-neutral-600">{practice.description}</p>
-        <ul className="mt-8 grid gap-4 md:grid-cols-2">
+        <ul className="mt-10 grid gap-4 md:grid-cols-2">
           {practice.inclusions.map(({ icon, title, paragraphs }) => <IconCard key={title} icon={icons[icon]} title={title} paragraphs={paragraphs} />)}
           <li>
             <StatCard value="30 дней" label="ответов на ваши вопросы" text={support.text} />

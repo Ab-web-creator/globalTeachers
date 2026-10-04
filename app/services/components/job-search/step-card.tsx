@@ -18,7 +18,7 @@ type Accent = (typeof stepAccents)[number];
 
 export default function StepCard({ number, title, text, accent }: { number: number; title: string; text: string; accent: Accent }) {
   return (
-    <div className="relative flex h-full gap-4 overflow-hidden rounded-3xl bg-white p-5 pb-7 shadow-lg shadow-neutral-200/60 ring-1 ring-neutral-100 sm:flex-col sm:gap-0">
+    <div className="relative flex h-full gap-4 overflow-hidden rounded-3xl bg-white p-5 pb-7 shadow-card shadow-neutral-300/60 ring-1 ring-neutral-100 sm:flex-col sm:gap-0">
       <div className="flex shrink-0 items-start gap-3">
         <span className={`flex size-10 shrink-0 items-center justify-center rounded-full text-lg font-bold sm:bg-neutral-100 sm:text-neutral-500 ${accent.badge}`}>{number}</span>
         <span className={`hidden size-20 items-center justify-center rounded-full sm:flex ${accent.circle}`}>

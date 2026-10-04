@@ -15,7 +15,7 @@ export default function RelocationSteps() {
         <p className="mt-6 text-lg leading-relaxed text-brand-600">{relocation.help}</p>
       </div>
       <div className="relative">
-        <span aria-hidden="true" className="absolute top-8 bottom-8 left-11 w-px bg-brand-200" />
+        <span aria-hidden="true" className="absolute top-8 bottom-8 left-11 w-2.5 -translate-x-1/2 bg-brand-200" />
         <ol className="space-y-3">
           {relocation.steps.map((step, index) => (
             <li key={step} className="relative flex items-center gap-5 rounded-2xl border border-brand-100 bg-white px-5 py-4">
