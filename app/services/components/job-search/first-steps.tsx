@@ -1,41 +1,10 @@
-"use client";
-
 import SectionLabel from "./section-label";
+import StepCard, { StepConnector, stepAccents } from "./step-card";
 
-import { useEffect, useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { firstSteps, firstStepsIntroduction } from "./content";
-import { StepArrow, stepArrows, stepPlacements } from "./step-path";
-
-const stepMs = 8000;
-const pauseMs = 2000;
 
 export default function FirstSteps({ children }: { children?: ReactNode }) {
-  const [active, setActive] = useState(0);
-  const [playing, setPlaying] = useState(true);
-
-  useEffect(() => {
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (media.matches) return;
-    let timeout = 0;
-    let cancelled = false;
-
-    function play(index: number) {
-      if (cancelled) return;
-      setActive(index);
-      setPlaying(true);
-      timeout = window.setTimeout(() => {
-        setPlaying(false);
-        timeout = window.setTimeout(() => play((index + 1) % firstSteps.length), pauseMs);
-      }, stepMs);
-    }
-
-    play(0);
-    return () => {
-      cancelled = true;
-      window.clearTimeout(timeout);
-    };
-  }, []);
-
   return (
     <section aria-labelledby="job-search-first-steps">
       <SectionLabel>Первые шаги</SectionLabel>
@@ -43,22 +12,16 @@ export default function FirstSteps({ children }: { children?: ReactNode }) {
         <h2 id="job-search-first-steps" className="text-3xl font-semibold tracking-tight sm:text-4xl">С чего начать?</h2>
         <p className="max-w-3xl text-base leading-relaxed text-neutral-600">{firstStepsIntroduction}</p>
       </div>
-      <ol className="mt-8 grid gap-8 sm:grid-cols-2 sm:gap-12 lg:grid-cols-3 lg:gap-16">
-        {firstSteps.map(({ title, text }, index) => (
-          <li key={title} className={`relative ${stepPlacements[index]}`}>
-            {stepArrows[index].map(({ direction, visibility }) => (
-              <StepArrow key={direction} direction={direction} className={visibility} active={playing && index === active} />
-            ))}
-            <div className={`flex h-full items-start gap-3 rounded-2xl border border-neutral-200 p-4 ${playing && index === active ? "step-card-blink" : ""}`}>
-              <span className={`flex size-8 shrink-0 items-center justify-center rounded-full border border-gray-400 text-sm font-semibold text-gray-400 ${playing && index === active ? "step-number-blink" : ""}`}>{index + 1}</span>
-              <div className="min-w-0">
-                <p className="text-base font-semibold leading-snug">{title}</p>
-                <p className="mt-1.5 text-base leading-relaxed text-neutral-500">{text}</p>
-              </div>
-            </div>
-          </li>
-        ))}
-      </ol>
+      <div className="mt-8 lg:-mx-4 lg:overflow-x-auto lg:px-4 lg:pb-4">
+        <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-[repeat(4,minmax(13rem,1fr)_auto)_minmax(13rem,1fr)] lg:gap-3">
+          {firstSteps.map(({ title, text }, index) => (
+            <li key={title} className="lg:contents">
+              <StepCard number={index + 1} title={title} text={text} accent={stepAccents[index]} />
+              {index < firstSteps.length - 1 && <StepConnector />}
+            </li>
+          ))}
+        </ol>
+      </div>
       {children && <div className="mt-16 sm:mt-20">{children}</div>}
     </section>
   );

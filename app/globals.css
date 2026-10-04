@@ -140,53 +140,6 @@ button {
   animation: period-blink 8s linear 1;
 }
 
-@keyframes step-arrow-blink {
-  0%, 12%, 44%, 56%, 88%, 100% {
-    color: var(--color-brand-200);
-    animation-timing-function: ease-in-out;
-  }
-  28%, 72% {
-    color: var(--color-brand-400);
-    animation-timing-function: ease-in-out;
-  }
-}
-
-.step-arrow-blink {
-  animation: step-arrow-blink 8s linear 1;
-}
-
-@keyframes step-card-blink {
-  0%, 12%, 44%, 56%, 88%, 100% {
-    border-color: var(--color-neutral-200);
-    animation-timing-function: ease-in-out;
-  }
-  28%, 72% {
-    border-color: var(--color-brand-300);
-    animation-timing-function: ease-in-out;
-  }
-}
-
-.step-card-blink {
-  animation: step-card-blink 8s linear 1;
-}
-
-@keyframes step-number-blink {
-  0%, 12%, 44%, 56%, 88%, 100% {
-    border-color: var(--color-gray-400);
-    color: var(--color-gray-400);
-    animation-timing-function: ease-in-out;
-  }
-  28%, 72% {
-    border-color: var(--color-brand-400);
-    color: var(--color-brand-400);
-    animation-timing-function: ease-in-out;
-  }
-}
-
-.step-number-blink {
-  animation: step-number-blink 8s linear 1;
-}
-
 @keyframes season-fall {
   0% { top: -14%; opacity: 0; transform: translateX(0) rotate(-20deg); }
   16% { opacity: 0.85; }
@@ -244,9 +197,6 @@ button {
 
 @media (prefers-reduced-motion: reduce) {
   .period-blink,
-  .step-arrow-blink,
-  .step-card-blink,
-  .step-number-blink,
   .season-fall,
   .season-snow,
   .season-bloom,

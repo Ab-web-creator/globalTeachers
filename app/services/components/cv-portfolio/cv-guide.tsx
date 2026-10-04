@@ -1,7 +1,7 @@
 import SectionLabel from "../job-search/section-label";
-import { cvSections, reviewQuestions } from "./content";
+import { reviewQuestions } from "./content";
 import CvExperience from "./cv-experience";
-import CvSectionCard from "./cv-section-card";
+import CvSections from "./cv-sections";
 import PortfolioItems from "./portfolio-items";
 import SectionFade from "./section-fade";
 
@@ -13,9 +13,7 @@ export default function CvGuide() {
         <SectionLabel>Структура CV</SectionLabel>
         <h2 id="cv-structure" className="text-2xl font-semibold sm:text-3xl">Что должно быть в CV?</h2>
         <p className="mt-4 max-w-lg leading-relaxed text-neutral-600">Для международного поиска лучше подготовить CV на английском языке с понятной и логичной структурой. Обычно в него входят:</p>
-        <div className="mt-6 grid gap-4 lg:grid-cols-2 lg:gap-6">
-          {cvSections.map((section) => <CvSectionCard key={section.title} {...section} />)}
-        </div>
+        <CvSections />
       </section>
       <CvExperience />
       <section aria-labelledby="teacher-portfolio" className="relative isolate pb-12 sm:pb-16 lg:pb-20">

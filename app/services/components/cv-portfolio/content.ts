@@ -7,11 +7,11 @@ export const introduction = [
 export const heroQuote = "Хорошее представление опыта открывает двери к новым возможностям.";
 
 export const cvSections = [
-  { title: "Контактная информация", image: "/images/benefits/visa-passport.jpg", text: "Имя, страна проживания, email, телефон и необходимые профессиональные ссылки." },
-  { title: "Образование и квалификация", image: "/images/benefits/education-classroom.jpg", text: "Высшее образование, педагогическая квалификация, лицензии и значимые профессиональные сертификаты." },
-  { title: "Опыт работы", image: "/images/benefits/development.jpg", text: "Школы, должности, предметы, возраст учащихся, учебные программы и основные обязанности." },
-  { title: "Профессиональные достижения", image: "/images/benefits/salary.jpg", text: "Не только то, что вы делали, но и результаты вашей работы: проекты, мероприятия, экзамены, конкурсы, развитие программ, руководство командами и другие достижения." },
-  { title: "Дополнительные навыки", image: "/images/benefits/flights.jpg", text: "Языки, технологии, extracurricular activities и другие компетенции, которые могут быть полезны школе." },
+  { title: "Контактная информация", label: "Contact", icon: "idCard" as const, image: "/images/benefits/visa-passport.jpg", text: "Имя, страна проживания, email, телефон и необходимые профессиональные ссылки." },
+  { title: "Образование и квалификация", label: "Education", icon: "graduation" as const, image: "/images/benefits/education-classroom.jpg", text: "Высшее образование, педагогическая квалификация, лицензии и значимые профессиональные сертификаты." },
+  { title: "Опыт работы", label: "Experience", icon: "briefcase" as const, image: "/images/benefits/development.jpg", text: "Школы, должности, предметы, возраст учащихся, учебные программы и основные обязанности." },
+  { title: "Профессиональные достижения", label: "Achievements", icon: "trophy" as const, image: "/images/benefits/salary.jpg", text: "Не только то, что вы делали, но и результаты вашей работы: проекты, мероприятия, экзамены, конкурсы, развитие программ, руководство командами и другие достижения." },
+  { title: "Дополнительные навыки", label: "Skills", icon: "languages" as const, image: "/images/benefits/flights.jpg", text: "Языки, технологии, extracurricular activities и другие компетенции, которые могут быть полезны школе." },
 ];
 
 export const experienceExamples = {
