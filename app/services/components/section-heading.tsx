@@ -1,8 +1,13 @@
 import type { ReactNode } from "react";
 
-export default function SectionHeading({ id, className = "", children }: { id: string; className?: string; children: ReactNode }) {
+const sizes = {
+  default: "text-3xl sm:text-4xl",
+  small: "text-base sm:text-lg",
+};
+
+export default function SectionHeading({ id, size = "default", className = "", children }: { id: string; size?: keyof typeof sizes; className?: string; children: ReactNode }) {
   return (
-    <h2 id={id} className={`text-3xl font-semibold leading-tight tracking-tight sm:text-4xl ${className}`}>
+    <h2 id={id} className={`font-semibold leading-tight tracking-tight ${sizes[size]} ${className}`}>
       {children}
     </h2>
   );

@@ -11,16 +11,16 @@ export default function ExperienceExample({ tone, label, text, note }: { tone: k
   const style = tones[tone];
 
   return (
-    <div className={`flex h-full gap-4 rounded-3xl p-5 sm:gap-5 sm:p-6 ${style.box}`}>
-      <span aria-hidden="true" className={`flex size-10 shrink-0 items-center justify-center rounded-full text-white sm:size-12 ${style.badge}`}>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="size-5 sm:size-6"><path d={style.icon} /></svg>
+    <div className={`-mx-6 flex h-full gap-3 p-5 sm:mx-0 sm:gap-5 sm:rounded-3xl sm:p-6 ${style.box}`}>
+      <span aria-hidden="true" className={`flex size-7 shrink-0 items-center justify-center rounded-full text-white sm:size-12 ${style.badge}`}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="size-4 sm:size-6"><path d={style.icon} /></svg>
       </span>
       <div className="min-w-0 pt-1 sm:pt-2">
         <p className={`text-sm font-semibold tracking-wide uppercase ${style.label}`}>{label}</p>
         <p className="mt-3 text-base leading-relaxed text-neutral-700 sm:text-lg">{text}</p>
         {note && (
           <>
-            <div className="mt-6 flex items-start gap-6">
+            <div className="mt-6 flex flex-wrap items-start gap-6">
               <ul className="space-y-1 text-base leading-relaxed text-neutral-700 sm:text-lg">
                 {note.words.map((word) => (
                   <li key={word} className="flex items-center gap-3">

@@ -4,6 +4,7 @@ import { reviewQuestions } from "./content";
 import CvExperience from "./cv-experience";
 import CvSections from "./cv-sections";
 import PortfolioItems from "./portfolio-items";
+import QualitySection from "./quality-section";
 import SectionFade from "./section-fade";
 
 export default function CvGuide() {
@@ -17,19 +18,15 @@ export default function CvGuide() {
         <CvSections />
       </section>
       <CvExperience />
-      <section aria-labelledby="teacher-portfolio" className="relative isolate pb-12 sm:pb-16 lg:pb-20">
-        <SectionFade />
-        <SectionLabel>Портфолио</SectionLabel>
-        <SectionHeading id="teacher-portfolio">А что такое Teacher Portfolio?</SectionHeading>
-        <p className="mt-4 max-w-2xl leading-relaxed text-neutral-600">Портфолио дополняет CV и позволяет показать вашу работу более наглядно. Оно особенно полезно, если вы можете показать результат своей работы, а не только рассказать о нём. В него могут входить:</p>
-        <PortfolioItems />
-      </section>
-      <section aria-labelledby="portfolio-quality">
-        <SectionHeading id="portfolio-quality">Главное — качество, а не количество</SectionHeading>
-        <p className="mt-4 leading-relaxed text-neutral-600">Не стоит собирать десятки страниц документов и фотографий только для того, чтобы портфолио выглядело большим.</p>
-        <p className="mt-4 leading-relaxed text-neutral-600">Каждый материал должен помогать школе лучше понять вас как специалиста.</p>
-        <p className="mt-6 text-xl font-medium leading-relaxed text-brand-600">CV говорит о вашем опыте. Портфолио показывает его.</p>
-      </section>
+      <div>
+        <section aria-labelledby="teacher-portfolio" className="pb-12 sm:pb-16 lg:pb-20">
+          <SectionLabel>Портфолио</SectionLabel>
+          <SectionHeading id="teacher-portfolio">А что такое Teacher Portfolio?</SectionHeading>
+          <p className="mt-4 max-w-2xl leading-relaxed text-neutral-600">Портфолио дополняет CV и позволяет показать вашу работу более наглядно. Оно особенно полезно, если вы можете показать результат своей работы, а не только рассказать о нём. В него могут входить:</p>
+          <PortfolioItems />
+        </section>
+        <QualitySection />
+      </div>
       <section aria-labelledby="cv-review">
         <SectionHeading id="cv-review">Перед отправкой проверьте</SectionHeading>
         <ol className="mt-6 space-y-4">
