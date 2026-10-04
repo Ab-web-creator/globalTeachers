@@ -41,7 +41,7 @@ export default function PortfolioItems() {
 
   return (
     <div className="mt-8">
-      <ul className="relative h-112 overflow-hidden lg:grid lg:h-auto lg:grid-cols-4 lg:gap-6 lg:overflow-visible">
+      <ul className="relative h-112 overflow-hidden lg:grid lg:h-auto lg:grid-cols-3 lg:gap-6 xl:grid-cols-4 lg:overflow-visible">
         {portfolioItems.map(({ title, text, image }, index) => {
           const offset = offsetFrom(index, active);
           const open = offset === 0;
@@ -56,7 +56,7 @@ export default function PortfolioItems() {
             >
               <div className={`flex aspect-2/3 h-full flex-col rounded-2xl border bg-white p-3 lg:aspect-auto ${open ? "border-brand-500 shadow-xl shadow-brand-500/20 lg:border-brand-300 lg:shadow-lg lg:shadow-neutral-900/10" : "border-brand-300 shadow-lg shadow-neutral-900/10"}`}>
                 <div className="relative min-h-32 flex-1 overflow-hidden rounded-xl lg:h-48 lg:flex-none">
-                  <Image src={image} alt="" fill sizes="(min-width: 1024px) 25vw, 288px" className="object-cover" />
+                  <Image src={image} alt="" fill sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, 288px" className="object-cover" />
                 </div>
                 <div className="px-3 pt-4 pb-3">
                   <p className="text-base font-semibold leading-snug text-brand-950">{title}</p>
