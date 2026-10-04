@@ -7,11 +7,11 @@ const icons = {
 } as const;
 
 export const stepAccents = [
-  { icon: "target", badge: "bg-violet-100 text-violet-600", circle: "bg-violet-50 text-violet-600", bar: "bg-violet-200" },
-  { icon: "map", badge: "bg-sky-100 text-sky-600", circle: "bg-sky-50 text-sky-600", bar: "bg-sky-200" },
-  { icon: "document", badge: "bg-emerald-100 text-emerald-600", circle: "bg-emerald-50 text-emerald-600", bar: "bg-emerald-200" },
-  { icon: "laptop", badge: "bg-amber-100 text-amber-600", circle: "bg-amber-50 text-amber-500", bar: "bg-amber-200" },
-  { icon: "bell", badge: "bg-pink-100 text-pink-600", circle: "bg-pink-50 text-pink-600", bar: "bg-pink-200" },
+  { icon: "target", badge: "bg-violet-100 text-violet-600", circle: "bg-violet-50 text-violet-600", bar: "border-violet-200" },
+  { icon: "map", badge: "bg-sky-100 text-sky-600", circle: "bg-sky-50 text-sky-600", bar: "border-sky-200" },
+  { icon: "document", badge: "bg-emerald-100 text-emerald-600", circle: "bg-emerald-50 text-emerald-600", bar: "border-emerald-200" },
+  { icon: "laptop", badge: "bg-amber-100 text-amber-600", circle: "bg-amber-50 text-amber-500", bar: "border-amber-200" },
+  { icon: "bell", badge: "bg-pink-100 text-pink-600", circle: "bg-pink-50 text-pink-600", bar: "border-pink-200" },
 ] as const;
 
 type Accent = (typeof stepAccents)[number];
@@ -29,7 +29,7 @@ export default function StepCard({ number, title, text, accent }: { number: numb
       </div>
       <p className="mt-5 text-base font-bold leading-snug text-neutral-900">{title}</p>
       <p className="mt-3 text-sm leading-relaxed text-neutral-500">{text}</p>
-      <span aria-hidden="true" className={`absolute inset-x-0 bottom-0 h-1.5 ${accent.bar}`} />
+      <span aria-hidden="true" className={`pointer-events-none absolute inset-0 rounded-3xl border-b-6 ${accent.bar}`} />
     </div>
   );
 }
