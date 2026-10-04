@@ -31,7 +31,7 @@ export default function StepCard({ number, title, text, accent }: { number: numb
         <p className="text-base font-bold leading-snug text-neutral-900">{title}</p>
         <p className="mt-3 text-sm leading-relaxed text-neutral-500">{text}</p>
       </div>
-      <span aria-hidden="true" className={`pointer-events-none absolute inset-0 rounded-3xl border-b-6 sm:border-t-6 ${accent.bar}`} />
+      <span aria-hidden="true" className={`pointer-events-none absolute inset-0 rounded-3xl border-r-6 border-b-6 ${accent.bar}`} />
     </div>
   );
 }
