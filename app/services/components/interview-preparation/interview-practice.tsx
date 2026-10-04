@@ -1,5 +1,4 @@
 import SectionHeading from "../section-heading";
-import Link from "next/link";
 import { preparationSteps } from "./content";
 
 export default function InterviewPractice() {
@@ -24,11 +23,6 @@ export default function InterviewPractice() {
         <p className="mt-4 leading-relaxed text-neutral-600">Интервью — это не экзамен, где только школа оценивает вас.</p>
         <p className="mt-4 text-xl font-medium text-brand-600">Вы тоже выбираете школу.</p>
         <p className="mt-4 leading-relaxed text-neutral-600">Это возможность узнать больше о руководстве, учениках, условиях работы, профессиональной культуре и понять, действительно ли эта школа подходит вам.</p>
-      </section>
-      <section aria-labelledby="interview-pro-support" className="rounded-3xl border border-brand-100 bg-white p-6 sm:p-8">
-        <SectionHeading id="interview-pro-support">Хотите подготовиться к интервью на практике?</SectionHeading>
-        <p className="mt-4 leading-relaxed text-neutral-600">В программе PRO мы разберём возможные вопросы, подготовим ваши профессиональные примеры и проведём пробное интервью, максимально приближенное к реальному собеседованию.</p>
-        <Link href="/programs/pro" className="action-gradient mt-6 inline-flex items-center gap-3 rounded-2xl px-6 py-3 font-medium text-white sm:rounded-full">Посмотреть PRO <span aria-hidden="true">→</span></Link>
       </section>
     </div>
   );

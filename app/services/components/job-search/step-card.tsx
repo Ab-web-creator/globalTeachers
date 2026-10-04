@@ -18,18 +18,20 @@ type Accent = (typeof stepAccents)[number];
 
 export default function StepCard({ number, title, text, accent }: { number: number; title: string; text: string; accent: Accent }) {
   return (
-    <div className="relative flex h-full flex-col overflow-hidden rounded-3xl bg-white p-5 pb-7 shadow-lg shadow-neutral-200/60 ring-1 ring-neutral-100">
-      <div className="flex items-start gap-3">
-        <span className={`flex size-10 shrink-0 items-center justify-center rounded-full text-lg font-bold ${accent.badge}`}>{number}</span>
-        <span className={`flex size-20 items-center justify-center rounded-full ${accent.circle}`}>
+    <div className="relative flex h-full gap-4 overflow-hidden rounded-3xl bg-white p-5 pb-7 shadow-lg shadow-neutral-200/60 ring-1 ring-neutral-100 sm:flex-col sm:gap-0">
+      <div className="flex shrink-0 items-start gap-3">
+        <span className={`flex size-10 shrink-0 items-center justify-center rounded-full text-lg font-bold sm:bg-neutral-100 sm:text-neutral-500 ${accent.badge}`}>{number}</span>
+        <span className={`hidden size-20 items-center justify-center rounded-full sm:flex ${accent.circle}`}>
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="size-10">
             <path d={icons[accent.icon]} />
           </svg>
         </span>
       </div>
-      <p className="mt-5 text-base font-bold leading-snug text-neutral-900">{title}</p>
-      <p className="mt-3 text-sm leading-relaxed text-neutral-500">{text}</p>
-      <span aria-hidden="true" className={`pointer-events-none absolute inset-0 rounded-3xl border-b-6 ${accent.bar}`} />
+      <div className="min-w-0 sm:mt-5">
+        <p className="text-base font-bold leading-snug text-neutral-900">{title}</p>
+        <p className="mt-3 text-sm leading-relaxed text-neutral-500">{text}</p>
+      </div>
+      <span aria-hidden="true" className={`pointer-events-none absolute inset-0 rounded-3xl border-b-6 sm:border-t-6 ${accent.bar}`} />
     </div>
   );
 }

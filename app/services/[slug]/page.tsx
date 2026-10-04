@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ComponentType } from "react";
 import { notFound } from "next/navigation";
 import PageHeader from "../../components/page-header";
 import ServiceDetails from "../components/service-details";
@@ -6,7 +7,7 @@ import JobSearchDetails from "../components/job-search/job-search-details";
 import CvPortfolioDetails from "../components/cv-portfolio/cv-portfolio-details";
 import InterviewPreparationDetails from "../components/interview-preparation/interview-preparation-details";
 import CareerSupportDetails from "../components/career-support/career-support-details";
-import { services } from "../services";
+import { services, type Service } from "../services";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -35,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ServicePage({ params }: Props) {
   const service = await getService(params);
-  const Details = detailComponents[service.slug as keyof typeof detailComponents] ?? ServiceDetails;
+  const Details: ComponentType<{ service: Service }> = detailComponents[service.slug as keyof typeof detailComponents] ?? ServiceDetails;
   return (
     <div className="min-h-screen bg-white text-brand-700">
       <PageHeader />

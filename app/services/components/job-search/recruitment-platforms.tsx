@@ -12,8 +12,8 @@ const cardVisuals = [
 
 export default function RecruitmentPlatforms() {
   return (
-    <section aria-labelledby="recruitment-platforms" className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden bg-white">
-      <div className="mx-auto max-w-400 px-6 pt-12 sm:px-10 sm:pt-16 lg:px-16 lg:pt-20 xl:px-20">
+    <section aria-labelledby="recruitment-platforms" className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden bg-linear-to-t from-violet-50 via-sky-50/60 to-transparent">
+      <div className="mx-auto max-w-400 px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20 xl:px-20">
         <PlatformsHeader />
         <ul className="mt-10 grid gap-6 md:grid-cols-2 lg:gap-8 xl:mt-12 xl:grid-cols-3">
           {recruitmentPlatforms.map((platform, index) => (

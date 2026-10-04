@@ -1,11 +1,12 @@
 import GuideCard from "./guide-card";
-import { applicationChecks } from "./content";
+import { applicationChecks, applicationChecksTakeaway, targetedApplicationsTakeaway } from "./content";
 
 export default function TargetedApplications() {
   return (
     <GuideCard id="targeted-applications" title="Не отправляйте одно резюме всем подряд.">
       <p>Работодатели за рубежом ценят персонализированные отклики. Покажите, что вы понимаете школу, её ценности и требования вакансии.</p>
       <p>Качество откликов всегда важнее их количества. Целевой подход повышает шансы на приглашение на собеседование.</p>
+      <p className="text-brand-600">{targetedApplicationsTakeaway}</p>
     </GuideCard>
   );
 }
@@ -21,6 +22,7 @@ export function ApplicationChecks() {
           </li>
         ))}
       </ul>
+      <p className="text-brand-600">{applicationChecksTakeaway}</p>
     </GuideCard>
   );
 }
