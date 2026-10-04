@@ -1,5 +1,6 @@
 "use client";
 
+import SectionHeading from "../section-heading";
 import SectionLabel from "./section-label";
 
 import { useEffect, useState } from "react";
@@ -44,7 +45,7 @@ export default function SearchTiming() {
       <div className="relative grid items-start gap-10 xl:grid-cols-3 xl:gap-12">
         <div>
           <SectionLabel>Когда начинать поиск?</SectionLabel>
-          <h2 id="search-timing" className="text-3xl font-semibold tracking-tight sm:text-4xl">Лучшее время для поиска</h2>
+          <SectionHeading id="search-timing">Лучшее время для поиска</SectionHeading>
           <p className="mt-5 leading-relaxed text-neutral-600">{searchTimingIntroduction}</p>
         </div>
         <div className="min-w-0 xl:col-span-2">

@@ -1,3 +1,4 @@
+import SectionHeading from "../section-heading";
 import SectionLabel from "../job-search/section-label";
 import { experienceExamples, experienceNotes } from "./content";
 import ExperienceExample from "./experience-example";
@@ -6,7 +7,7 @@ export default function CvExperience() {
   return (
     <section aria-labelledby="cv-achievements">
       <SectionLabel>Как описать опыт</SectionLabel>
-      <h2 id="cv-achievements" className="text-2xl font-semibold sm:text-3xl">CV — это не автобиография</h2>
+      <SectionHeading id="cv-achievements">CV — это не автобиография</SectionHeading>
       <p className="mt-4 max-w-2xl leading-relaxed text-neutral-600">Не нужно подробно описывать каждую должность и перечислять все обязанности, которые выполняет обычный учитель.</p>
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
         <ExperienceExample tone="weak" label="Вместо:" text={experienceExamples.weak} note={experienceNotes.weak} />

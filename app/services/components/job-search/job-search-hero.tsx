@@ -1,3 +1,4 @@
+import PageTitle from "../page-title";
 import SectionLabel from "./section-label";
 import Image from "next/image";
 import BackLink from "../back-link";
@@ -10,7 +11,7 @@ export default function JobSearchHero() {
         <BackLink className="mx-6 mt-6 sm:mx-10 lg:absolute lg:top-10 lg:left-20 lg:m-0 xl:left-24" />
         <div className="relative z-10 flex flex-col justify-center px-6 py-10 sm:px-10 sm:py-14 lg:order-2 lg:px-16 lg:py-16 xl:px-20">
           <SectionLabel>Поиск работы за рубежом</SectionLabel>
-          <h1 className="text-4xl font-semibold leading-tight tracking-tight sm:text-5xl md:text-4xl xl:text-6xl">Где искать вакансии в международных школах?</h1>
+          <PageTitle>Где искать вакансии в международных школах?</PageTitle>
           <p className="mt-6 text-base leading-relaxed text-neutral-600">{introduction}</p>
           <p className="mt-5 border-l-2 border-brand-300 pl-4 text-base font-medium leading-relaxed text-brand-700">Главное — понимать, где искать, когда начинать и на какие позиции откликаться.</p>
         </div>

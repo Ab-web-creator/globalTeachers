@@ -1,3 +1,4 @@
+import SectionHeading from "../section-heading";
 import SectionLabel from "./section-label";
 import StepCard, { StepConnector, stepAccents } from "./step-card";
 
@@ -9,7 +10,7 @@ export default function FirstSteps({ children }: { children?: ReactNode }) {
     <section aria-labelledby="job-search-first-steps">
       <SectionLabel>Первые шаги</SectionLabel>
       <div className="flex flex-col gap-2">
-        <h2 id="job-search-first-steps" className="text-3xl font-semibold tracking-tight sm:text-4xl">С чего начать?</h2>
+        <SectionHeading id="job-search-first-steps">С чего начать?</SectionHeading>
         <p className="max-w-3xl text-base leading-relaxed text-neutral-600">{firstStepsIntroduction}</p>
       </div>
       <div className="mt-8 lg:-mx-4 lg:overflow-x-auto lg:px-4 lg:pb-4">

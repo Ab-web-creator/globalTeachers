@@ -1,3 +1,4 @@
+import SectionHeading from "../section-heading";
 import SectionLabel from "./section-label";
 import { vacancySources } from "./content";
 import RegionMap from "./region-map";
@@ -6,7 +7,7 @@ export default function VacancySources() {
   return (
     <section aria-labelledby="vacancy-sources">
       <SectionLabel>Источники вакансий</SectionLabel>
-      <h2 id="vacancy-sources" className="text-3xl font-semibold tracking-tight sm:text-4xl">Так где же искать вакансии?</h2>
+      <SectionHeading id="vacancy-sources">Так где же искать вакансии?</SectionHeading>
       <div className="mt-7 grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
         <ul className="space-y-6">
           {vacancySources.map(({ title, text }) => (

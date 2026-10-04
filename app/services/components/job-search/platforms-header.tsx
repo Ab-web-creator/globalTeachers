@@ -1,12 +1,13 @@
+import SectionHeading from "../section-heading";
 import SectionLabel from "./section-label";
 
 export default function PlatformsHeader() {
   return (
     <div className="max-w-3xl">
       <SectionLabel>Полезные ресурсы</SectionLabel>
-      <h2 id="recruitment-platforms" className="text-3xl font-semibold leading-tight tracking-tight text-brand-950 sm:text-4xl">
+      <SectionHeading id="recruitment-platforms" className="text-brand-950">
         Полезные платформы для поиска вакансий
-      </h2>
+      </SectionHeading>
       <p className="mt-4 text-base leading-relaxed text-neutral-600">
         Существует несколько веб-платформ, на которых международные школы из разных стран публикуют вакансии. Используйте их, чтобы найти позиции, которые соответствуют вашему опыту, предмету и желаемой стране.
       </p>
