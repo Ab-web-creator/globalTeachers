@@ -17,38 +17,56 @@ function Heading() {
   return <Bar className="mb-3 w-1/4 opacity-80" />;
 }
 
+function Entry({ lines }: { lines: string[] }) {
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between gap-4"><Bar className="h-2.5 w-2/5" /><Bar className="w-1/6 opacity-70" /></div>
+      {lines.map((width, index) => <Bar key={index} className={`opacity-70 ${width}`} />)}
+    </div>
+  );
+}
+
 export default function CvSketch({ labels, active }: { labels: string[]; active: number }) {
   return (
-    <div aria-hidden="true" className="flex aspect-3/4 flex-col gap-3 rounded-2xl border border-neutral-200 bg-white p-5 shadow-xl shadow-neutral-900/5">
+    <div aria-hidden="true" className="flex aspect-3/4 flex-col justify-between gap-2 rounded-2xl border border-neutral-200 bg-white p-5 shadow-xl shadow-neutral-900/5">
       <Region label={labels[0]} active={active === 0}>
         <div className="flex items-center gap-4">
-          <span className="size-12 shrink-0 rounded-full bg-current" />
+          <span className="size-14 shrink-0 rounded-full bg-current" />
           <div className="flex-1 space-y-2">
             <Bar className="h-3 w-1/2" />
             <Bar className="w-3/4" />
+            <div className="flex gap-2 pt-1">
+              {["w-1/4", "w-1/5", "w-1/4"].map((width, index) => <Bar key={index} className={`opacity-70 ${width}`} />)}
+            </div>
           </div>
         </div>
       </Region>
       <Region label={labels[1]} active={active === 1}>
         <Heading />
-        <div className="space-y-2"><Bar className="w-5/6" /><Bar className="w-2/3" /></div>
+        <div className="space-y-3">
+          <Entry lines={["w-5/6"]} />
+          <Entry lines={["w-2/3"]} />
+        </div>
       </Region>
       <Region label={labels[2]} active={active === 2}>
         <Heading />
-        <div className="space-y-2"><Bar /><Bar className="w-11/12" /><Bar className="w-4/5" /><Bar className="w-2/3" /></div>
+        <div className="space-y-3">
+          <Entry lines={["w-full", "w-11/12", "w-3/4"]} />
+          <Entry lines={["w-full", "w-4/5", "w-2/3"]} />
+        </div>
       </Region>
       <Region label={labels[3]} active={active === 3}>
         <Heading />
         <div className="space-y-2">
-          {["w-3/4", "w-2/3", "w-4/5"].map((width) => (
-            <div key={width} className="flex items-center gap-2"><span className="size-2 shrink-0 rounded-full bg-current" /><Bar className={width} /></div>
+          {["w-3/4", "w-2/3", "w-4/5", "w-3/5"].map((width, index) => (
+            <div key={index} className="flex items-center gap-2"><span className="size-2 shrink-0 rounded-full bg-current" /><Bar className={width} /></div>
           ))}
         </div>
       </Region>
       <Region label={labels[4]} active={active === 4}>
         <Heading />
         <div className="flex flex-wrap gap-2">
-          {["w-12", "w-16", "w-10", "w-14"].map((width) => <span key={width} className={`h-4 rounded-full bg-current ${width}`} />)}
+          {["w-12", "w-16", "w-10", "w-14", "w-20", "w-12", "w-16"].map((width, index) => <span key={index} className={`h-4 rounded-full bg-current ${width}`} />)}
         </div>
       </Region>
     </div>
