@@ -14,7 +14,7 @@ export default function UnexpectedQuestions() {
         <SectionLabel>Сложные вопросы</SectionLabel>
         <SectionHeading id="unexpected-questions">Будьте готовы к неожиданным вопросам</SectionHeading>
         <p className="mt-7 max-w-2xl text-lg leading-relaxed text-neutral-600">{unexpectedQuestionsIntroduction}</p>
-        <ul className="mt-10 grid gap-2 md:grid-cols-2">
+        <ul className="mt-10 grid gap-4 md:grid-cols-2">
           {interviewQuestions.map((question, index) => (
             <QuestionRow key={question} icon={questionIcons[index]}>{question}</QuestionRow>
           ))}

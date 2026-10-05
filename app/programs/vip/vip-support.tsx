@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 import CheckList from "../components/check-list";
-import FlowCard from "../components/flow-card";
 import IconTiles from "../components/icon-tiles";
 import ProgramSection from "../components/program-section";
 import Prose from "../components/prose";
-import { afterOffer, audience, important, offer, value } from "./content";
+import { audience, important, offer, value } from "./content";
+import VipAfterOffer from "./vip-after-offer";
 
 export default function VipSupport({ children }: { children?: ReactNode }) {
   return (
@@ -12,9 +12,7 @@ export default function VipSupport({ children }: { children?: ReactNode }) {
       <ProgramSection id="vip-offer" label="Оффер" title="А если пришёл оффер?" fade="rose" aside={<IconTiles title={offer.itemsTitle} items={offer.items} />}>
         <Prose paragraphs={offer.paragraphs} closing={offer.closing} />
       </ProgramSection>
-      <ProgramSection id="vip-after-offer" label="После оффера" title="Предложение принято. Что дальше?" aside={<FlowCard title="Что впереди:" flow={afterOffer.flow} />}>
-        <Prose paragraphs={afterOffer.paragraphs} closing={afterOffer.closing} />
-      </ProgramSection>
+      <VipAfterOffer />
       <ProgramSection id="vip-value" label="Ценность VIP" title="Что вы на самом деле покупаете в VIP?" fade="violet" aside={<CheckList items={value.moments} />}>
         <ul className="mt-6 flex flex-wrap gap-2">
           {value.notThis.map((text) => <li key={text} className="rounded-full bg-neutral-100 px-4 py-2 text-neutral-500">{text}</li>)}

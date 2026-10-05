@@ -1,11 +1,10 @@
 import type { ReactNode } from "react";
-import IconCard from "../../services/components/icon-card";
 import CheckList from "../components/check-list";
 import StartOutcomes from "./start-outcomes";
+import StartInclusions from "./start-inclusions";
 import IconPanel from "../../services/components/cv-portfolio/icon-panel";
 import ProgramSection from "../components/program-section";
-import { icons } from "../components/icons";
-import { approach, audience, inclusions, questions } from "./content";
+import { approach, audience, questions } from "./content";
 
 export default function StartGuide({ children }: { children?: ReactNode }) {
   return (
@@ -14,7 +13,7 @@ export default function StartGuide({ children }: { children?: ReactNode }) {
         <div className="pb-12 sm:pb-16 lg:pb-20">
           <ProgramSection id="start-questions" label="Знакомо?" title="Хотите начать, но есть вопросы?">
             <p className="mt-8 max-w-3xl text-lg leading-relaxed text-neutral-600">Вы хотите работать в международной школе, но пока не уверены, с чего начать. Возможно, вас волнуют такие вопросы:</p>
-            <div className="mt-8">
+            <div className="mt-8 text-lg">
               <CheckList items={questions} icon="question" columns />
             </div>
           </ProgramSection>
@@ -33,9 +32,7 @@ export default function StartGuide({ children }: { children?: ReactNode }) {
       </div>
       <StartOutcomes flow={approach.outcome} />
       <ProgramSection id="start-inclusions" label="Состав программы" title="Что входит в START" fade="violet" fadeDirection="down" flushBottom>
-        <ul className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {inclusions.map(({ icon, title, text }) => <IconCard key={title} icon={icons[icon]} title={title} paragraphs={[text]} />)}
-        </ul>
+        <StartInclusions />
         {children && <div className="mt-12 sm:mt-16 lg:mt-20">{children}</div>}
       </ProgramSection>
     </>
