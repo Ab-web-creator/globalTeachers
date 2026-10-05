@@ -10,7 +10,7 @@ export default function VipDetails({ program }: { program: Program }) {
   const title = <>Вы занимаетесь своей работой. Мы помогаем вам <span className="text-brand-500">строить следующую карьеру</span>.</>;
 
   return (
-    <ProgramPage hero={<ProgramHero tier="VIP" image={program.image} title={title} intro={hero.intro} highlight={hero.highlight} />}>
+    <ProgramPage bottomPadding="60px" hero={<ProgramHero tier="VIP" image={program.image} title={title} intro={hero.intro} highlight={hero.highlight} />}>
       <VipPreparation />
       <VipSupport>
         <ProgramCta tier="VIP" price={program.price} title={cta.title} text={cta.text} image="/images/benefits/flights.jpg" />

@@ -29,7 +29,7 @@ export default function ProgramSection({ id, label, title, fade, fadeDirection =
   );
 
   return (
-    <section aria-labelledby={id} className={`relative isolate py-12 sm:py-16 lg:py-20 ${aside ? "grid items-center gap-10 lg:grid-cols-2 lg:gap-16" : ""}`}>
+    <section aria-labelledby={id} className={`relative isolate py-12 sm:py-16 lg:py-20 ${aside ? "grid items-center gap-10 lg:grid-cols-2 lg:gap-x-16" : ""}`}>
       {fade && <SectionFade tone={fade} direction={fadeDirection} toWhite={fadeToWhite} />}
       {decoration && <div aria-hidden="true" className="pointer-events-none absolute top-20 right-0 -z-10 hidden lg:block">{decoration}</div>}
       {aside ? (
@@ -40,7 +40,7 @@ export default function ProgramSection({ id, label, title, fade, fadeDirection =
       ) : (
         <>{header}{children}</>
       )}
-      {footer && <div className={aside ? "lg:col-span-2" : "mt-12 sm:mt-16 lg:mt-20"}>{footer}</div>}
+      {footer && <div className={aside ? "lg:col-span-2" : "mt-10"}>{footer}</div>}
     </section>
   );
 }

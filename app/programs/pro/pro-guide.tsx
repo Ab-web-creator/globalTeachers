@@ -48,9 +48,9 @@ export default function ProGuide({ children }: { children?: ReactNode }) {
           </ProgramSection>
         </div>
         <div className="relative isolate">
-          <div aria-hidden="true" className="pointer-events-none absolute top-0 -bottom-12 left-1/2 -z-10 w-screen -translate-x-1/2 bg-linear-to-r from-sky-50/60 via-brand-100/40 to-sky-50/60 sm:-bottom-16 lg:-bottom-20" />
+          <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-linear-to-b from-sky-50 via-brand-100/40 via-20% to-white to-70%" />
           <ProFit />
-          {children && <div className="mt-16 sm:mt-20 lg:mt-20">{children}</div>}
+          {children && <div className="pb-12 sm:pb-0">{children}</div>}
         </div>
       </div>
     </>

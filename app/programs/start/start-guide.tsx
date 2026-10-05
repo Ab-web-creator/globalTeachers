@@ -13,7 +13,7 @@ export default function StartGuide({ children }: { children?: ReactNode }) {
         <div>
           <ProgramSection id="start-questions" label="Знакомо?" title="Хотите начать, но есть вопросы?">
             <p className="mt-8 max-w-3xl text-lg leading-relaxed text-neutral-600">Вы хотите работать в международной школе, но пока не уверены, с чего начать. Возможно, вас волнуют такие вопросы:</p>
-            <div className="mt-8 text-lg">
+            <div className="mt-10 text-lg">
               <CheckList items={questions} icon="question" columns />
             </div>
           </ProgramSection>
@@ -33,8 +33,8 @@ export default function StartGuide({ children }: { children?: ReactNode }) {
       <StartOutcomes flow={approach.outcome} />
       <ProgramSection id="start-inclusions" label="Состав программы" title="Что входит в START" fade="violet" fadeDirection="down">
         <StartInclusions />
-        {children && <div className="mt-12 sm:mt-16 lg:mt-20">{children}</div>}
       </ProgramSection>
+      {children && <div className="pb-12 sm:pb-0">{children}</div>}
     </>
   );
 }

@@ -11,7 +11,7 @@ export default function VipAudience() {
         ))}
         <h3 className="mt-4 text-lg font-semibold leading-relaxed text-brand-950">{audience.itemsTitle}</h3>
       </div>
-      <ul className="mt-6 grid gap-x-12 gap-y-6 sm:grid-cols-2">
+      <ul className="mt-10 grid gap-x-12 gap-y-6 sm:grid-cols-2">
         {audience.items.map((text) => (
           <li key={text} className="flex items-start gap-4">
             <span aria-hidden="true" className="mt-1 flex size-7 shrink-0 items-center justify-center rounded-full bg-brand-100/60 text-brand-600">

@@ -13,7 +13,7 @@ export default function VipValue() {
           </ul>
           <p className="mt-6 font-semibold text-brand-600">{value.statement}</p>
         </div>
-        <ul className="mt-8 grid gap-x-12 gap-y-6 sm:grid-cols-2">
+        <ul className="mt-10 grid gap-x-12 gap-y-6 sm:grid-cols-2">
           {value.moments.map((text) => (
             <li key={text} className="flex items-start gap-4">
               <span aria-hidden="true" className="mt-1 flex size-7 shrink-0 items-center justify-center rounded-full bg-brand-100/60 text-brand-600">

@@ -15,7 +15,7 @@ export default function ProPreparationSteps() {
   const steps = approach.flow.replace(/\.$/, "").split("→").map((text) => text.trim());
 
   return (
-    <ol className="mt-6 grid gap-3 sm:grid-cols-2">
+    <ol className="mt-10 grid gap-3 sm:grid-cols-2">
       {steps.map((text, index) => (
         <li key={text} className="flex min-w-0 items-center gap-3 rounded-xl border border-brand-200 bg-white/80 p-4">
           <span aria-hidden="true" className={`flex size-12 shrink-0 items-center justify-center rounded-full ${badges[index].tone}`}>

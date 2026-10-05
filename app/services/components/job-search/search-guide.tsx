@@ -19,7 +19,7 @@ export default function SearchGuide() {
       <FirstSteps>
         <ApplicationAdvice />
       </FirstSteps>
-      <SearchSupport />
+      <div className="pb-12 sm:pb-0"><SearchSupport /></div>
     </div>
   );
 }

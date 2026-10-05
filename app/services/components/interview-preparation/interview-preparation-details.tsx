@@ -8,6 +8,7 @@ import SchoolResearch from "./school-research";
 import SpeakWithExamples from "./speak-with-examples";
 import UnexpectedQuestions from "./unexpected-questions";
 import InterviewSupport from "./interview-support";
+import SectionFade from "../cv-portfolio/section-fade";
 
 export default function InterviewPreparationDetails() {
   return (
@@ -26,7 +27,8 @@ export default function InterviewPreparationDetails() {
         </div>
         <SchoolResearch />
         <SpeakWithExamples />
-        <section aria-labelledby="unexpected-questions" className="py-12 sm:py-16 lg:py-20">
+        <section aria-labelledby="unexpected-questions" className="relative isolate py-12 sm:py-16 lg:py-20">
+          <SectionFade direction="down" halfHeight />
           <UnexpectedQuestions />
           <div className="mt-12 sm:mt-16 lg:mt-20">
             <InterviewPractice />

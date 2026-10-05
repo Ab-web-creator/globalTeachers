@@ -14,7 +14,7 @@ export default function CategoriesSection() {
             Мы сопровождаем педагогов от поиска подходящей вакансии до успешного переезда и начала работы за рубежом. Все необходимые услуги — в одном месте.
           </p>
         </header>
-        <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:mt-10 lg:grid-cols-4">
+        <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {services.map((category) => <CourseCategoryCard key={category.title} {...category} />)}
         </ul>
       </div>

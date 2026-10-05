@@ -19,7 +19,7 @@ export default function ServiceDetails({ service }: { service: Service }) {
       </header>
       <section aria-labelledby="service-topics" className="py-12 sm:py-16 lg:py-20">
         <h2 id="service-topics" className="text-2xl font-semibold">Над чем будем работать</h2>
-        <ol className="mt-6 grid gap-5 md:grid-cols-3">
+        <ol className="mt-10 grid gap-5 md:grid-cols-3">
           {service.topics.map(({ title, text }, index) => <li key={title} className="rounded-3xl border border-brand-100 bg-white p-6">
             <span className="flex size-9 items-center justify-center rounded-full bg-brand-50 font-semibold text-brand-500">{index + 1}</span>
             <h3 className="mt-4 text-xl font-medium">{title}</h3>

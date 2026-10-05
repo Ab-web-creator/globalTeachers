@@ -8,7 +8,7 @@ export default function BenefitsGrid() {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="@container mx-auto mt-8 w-full">
+    <div className="@container mx-auto mt-10 w-full">
       <div className="flex flex-col items-center gap-12">
         <ul
           id="benefits-list"

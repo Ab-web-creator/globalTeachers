@@ -10,20 +10,20 @@ const steps = [
 
 export default function AfterOfferSteps() {
   return (
-    <div className="rounded-3xl border border-brand-200 bg-white/80 p-6 sm:p-8">
-      <h3 className="text-xl font-semibold text-brand-950">Что впереди:</h3>
-      <ol className="mt-6 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-        {steps.map(({ title, icon, text }, index) => (
-          <li key={title} className="relative">
-            <span aria-hidden="true" className="mb-5 flex size-16 items-center justify-center rounded-full bg-brand-300/15 text-brand-500">
-              <LineIcon path={icon} className="size-8" />
+    <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {steps.map(({ title, icon, text }) => (
+        <li key={title} className="rounded-2xl border border-brand-100 bg-white p-6 shadow-sm">
+          <div className="flex items-start gap-3">
+            <span aria-hidden="true" className="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-100/60 text-brand-600">
+              <LineIcon path={icon} className="size-5" />
             </span>
-            {index < steps.length - 1 && <span aria-hidden="true" className="absolute top-4 right-2 hidden text-3xl text-brand-300 lg:block">→</span>}
-            <h4 className="text-lg font-semibold leading-snug text-brand-950">{title}</h4>
-            <p className="mt-4 leading-relaxed text-neutral-600">{text}</p>
-          </li>
-        ))}
-      </ol>
-    </div>
+            <div className="min-w-0">
+              <h3 className="text-lg font-semibold leading-snug text-brand-950">{title}</h3>
+              <p className="mt-3 leading-relaxed text-neutral-600">{text}</p>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
   );
 }

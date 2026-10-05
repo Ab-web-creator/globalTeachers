@@ -1,5 +1,4 @@
 import SectionHeading from "../section-heading";
-import SectionFade from "../cv-portfolio/section-fade";
 import SectionLabel from "../job-search/section-label";
 import QuestionRow from "./question-row";
 import ResearchTip from "./research-tip";
@@ -9,7 +8,6 @@ import { questionIcons } from "./question-icons";
 export default function UnexpectedQuestions() {
   return (
     <div className="relative isolate grid items-center gap-10 lg:grid-cols-3 lg:gap-12">
-      <SectionFade direction="down" halfHeight />
       <div className="lg:col-span-2">
         <SectionLabel>Сложные вопросы</SectionLabel>
         <SectionHeading id="unexpected-questions">Будьте готовы к неожиданным вопросам</SectionHeading>

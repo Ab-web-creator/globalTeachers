@@ -35,7 +35,7 @@ const cardColors = {
 
 export default function StartInclusions() {
   return (
-    <ul className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+    <ul className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
       {inclusions.map(({ icon, title, text }) => {
         const colors = cardColors[icon as keyof typeof cardColors];
 

@@ -1,4 +1,3 @@
-import CareerSupportBanner from "./career-support-banner";
 import SectionHeading from "../section-heading";
 import SectionLabel from "../job-search/section-label";
 import LineIcon from "../line-icon";
@@ -28,7 +27,6 @@ export default function RelocationSteps() {
           ))}
         </ol>
       </div>
-      <div className="mt-2 lg:col-span-2"><CareerSupportBanner /></div>
     </section>
   );
 }
