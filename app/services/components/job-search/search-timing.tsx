@@ -46,7 +46,7 @@ export default function SearchTiming() {
         <div>
           <SectionLabel>Когда начинать поиск?</SectionLabel>
           <SectionHeading id="search-timing">Лучшее время для поиска</SectionHeading>
-          <p className="mt-5 leading-relaxed text-neutral-600">{searchTimingIntroduction}</p>
+          <p className="mt-7 leading-relaxed text-neutral-600">{searchTimingIntroduction}</p>
         </div>
         <div className="min-w-0 xl:col-span-2">
           <SeasonTimeline active={active} playing={playing} />

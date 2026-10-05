@@ -10,7 +10,7 @@ export default function VipStrategy() {
   return (
     <ProgramSection id="vip-strategy" label="Стратегия" title={<>Сначала — <span className="text-brand-500">стратегия</span></>}>
       {strategy.paragraphs.map((text) => (
-        <p key={text} className="mt-4 max-w-lg text-lg leading-relaxed text-neutral-600">{text}</p>
+        <p key={text} className="mt-7 max-w-lg text-lg leading-relaxed text-neutral-600">{text}</p>
       ))}
       <h3 className="mt-4 text-lg font-semibold leading-relaxed text-brand-950">Определяем вместе:</h3>
       <IconList items={strategy.items.map((label, index) => ({

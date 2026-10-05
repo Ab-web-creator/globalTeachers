@@ -11,7 +11,7 @@ export default function MentorMessage() {
           Вы не одни на этом пути
         </h2>
         </header>
-        <div className="mt-6 sm:mt-8 space-y-4 text-base leading-normal text-neutral-700 sm:text-lg">
+        <div className="mt-7 space-y-4 text-base leading-normal text-neutral-700 sm:text-lg">
           <p data-reveal>
             Поиск работы за рубежом может казаться сложным и даже нереальным. Резюме, документы, собеседования, визы, контракты — иногда трудно понять, с чего начать.
           </p>

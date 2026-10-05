@@ -16,6 +16,10 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Tailwind CSS
 
+- In content sections, use `mt-7` (28px) between the main heading and its description. Keep spacing between subsequent paragraphs separate.
+- Use a 40px gap (`mt-10` or equivalent) before main card grids.
+- Normal content sections use `py-12 sm:py-16 lg:py-20` for vertical padding.
+
 - Use the `brand-50` through `brand-950` color scale defined in `app/globals.css` for brand colors. Primary teal is `brand-500`; prefer utilities such as `bg-brand-500` and `hover:bg-brand-600` over hardcoded teal values.
 - Always prefer standard Tailwind utilities over arbitrary values, such as `rounded-3xl` instead of `rounded-[24px]` and `leading-normal` instead of `leading-[1.5]`.
 - Use the built-in typography and spacing scales wherever possible; reserve arbitrary values for custom colors or layouts without a suitable standard utility.

@@ -29,7 +29,7 @@ export default function ServiceDetails({ service }: { service: Service }) {
       </section>
       <section aria-labelledby="service-start" className="rounded-3xl bg-white/80 px-6 sm:px-8 py-12 sm:py-16 lg:py-20">
         <h2 id="service-start" className="text-2xl font-semibold">С чего начать</h2>
-        <p className="mt-4 max-w-3xl leading-relaxed text-neutral-600">{service.preparation}</p>
+        <p className="mt-7 max-w-3xl leading-relaxed text-neutral-600">{service.preparation}</p>
         <div className="mt-6 flex flex-wrap gap-4">
           <Link href="/consultation" className="action-gradient rounded-2xl px-6 py-3 font-medium text-white sm:rounded-full">Получить консультацию</Link>
           <Link href="/#programs" className="action-gradient-outline rounded-2xl px-6 py-3 font-medium sm:rounded-full">Сравнить программы</Link>

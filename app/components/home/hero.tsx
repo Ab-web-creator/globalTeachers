@@ -10,7 +10,7 @@ export default function Hero() {
         Новая страна.<br />
         <span className="text-brand-200">Новые возможности.</span>
       </h1>
-      <p className={`${styles.description} mt-5 max-w-xl text-base font-normal leading-relaxed text-brand-50 sm:mt-6 sm:text-lg`}>
+      <p className={`${styles.description} mt-7 max-w-xl text-base font-normal leading-relaxed text-brand-50 sm:text-lg`}>
         Помогаем учителям из СНГ строить карьеру за рубежом<span className="sm:hidden">.</span>
         <span className="hidden sm:inline"> — от оценки опыта и подготовки CV до собеседований и международного оффера.</span>
       </p>

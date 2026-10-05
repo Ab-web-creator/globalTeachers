@@ -18,7 +18,7 @@ export default function Benefits() {
           >
             $4,000 — это ещё<br className="hidden sm:block" /> не весь доход
           </h2>
-          <p className="mx-auto mt-6 sm:mt-8 max-w-3xl text-base leading-normal text-neutral-600 sm:text-lg">
+          <p className="mx-auto mt-7 max-w-3xl text-base leading-normal text-neutral-600 sm:text-lg">
             Международные школы предлагают комплексный пакет, который может включать гораздо больше.
           </p>
         </header>

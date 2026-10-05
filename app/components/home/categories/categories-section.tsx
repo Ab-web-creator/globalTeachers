@@ -10,7 +10,7 @@ export default function CategoriesSection() {
           <h2 id="categories-title" className="text-4xl sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl leading-none font-semibold tracking-wide text-brand-700">Всё для вашей международной 
             <br />
             карьеры</h2>
-          <p className="mx-auto mt-6 sm:mt-8 max-w-3xl text-base leading-normal text-neutral-600 sm:text-lg">
+          <p className="mx-auto mt-7 max-w-3xl text-base leading-normal text-neutral-600 sm:text-lg">
             Мы сопровождаем педагогов от поиска подходящей вакансии до успешного переезда и начала работы за рубежом. Все необходимые услуги — в одном месте.
           </p>
         </header>

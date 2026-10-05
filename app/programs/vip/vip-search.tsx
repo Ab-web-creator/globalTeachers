@@ -26,7 +26,7 @@ export default function VipSearch() {
       title={<span className="block lg:pr-80">Когда поиск <span className="text-brand-500">уже начался</span></span>}
       decoration={<div className="mt-9 mr-10"><SearchNote /></div>}
     >
-      <p className="mt-4 max-w-3xl text-lg leading-relaxed text-neutral-600 lg:max-w-none lg:pr-80 xl:max-w-3xl xl:pr-0">{searchIntroduction}</p>
+      <p className="mt-7 max-w-3xl text-lg leading-relaxed text-neutral-600 lg:max-w-none lg:pr-80 xl:max-w-3xl xl:pr-0">{searchIntroduction}</p>
       <div aria-hidden="true" className="mt-6 flex justify-end pr-10 lg:hidden"><SearchNote /></div>
       <ol className="mt-10 grid gap-8 lg:grid-cols-3 lg:gap-20">
         {searchStages.map(({ id, title, paragraphs, closing }, index) => (

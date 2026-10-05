@@ -7,7 +7,7 @@ export default function VipValue() {
     <div className="relative isolate">
       <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-violet-50" />
       <ProgramSection id="vip-value" label="Ценность VIP" title="Что вы на самом деле покупаете в VIP?">
-        <div className="mt-4 max-w-lg text-lg leading-relaxed">
+        <div className="mt-7 max-w-lg text-lg leading-relaxed">
           <ul className="list-disc space-y-2 pl-5 text-neutral-600">
             {value.notThis.map((text) => <li key={text}>{text}</li>)}
           </ul>

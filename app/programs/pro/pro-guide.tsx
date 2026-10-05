@@ -17,7 +17,7 @@ export default function ProGuide({ children }: { children?: ReactNode }) {
         <Prose paragraphs={problem.paragraphs} closing={problem.closing} />
       </ProgramSection>
       <ProgramSection id="pro-inclusions" label="Состав программы" title="Что входит в PRO" fade="sky">
-        <p className="mt-4 max-w-3xl text-lg leading-relaxed text-neutral-600">{inclusionsIntroduction}</p>
+        <p className="mt-7 max-w-3xl text-lg leading-relaxed text-neutral-600">{inclusionsIntroduction}</p>
         <ul className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {inclusions.map(({ icon, title, paragraphs }) => <IconCard key={title} icon={icons[icon]} title={title} paragraphs={paragraphs} />)}
           <li>
@@ -29,7 +29,7 @@ export default function ProGuide({ children }: { children?: ReactNode }) {
       <div>
         <div>
           <ProgramSection id="pro-practice" label="Практика и поддержка" title="Когда начинается настоящий поиск">
-            <p className="mt-4 max-w-3xl text-lg leading-relaxed text-neutral-600">{practice.description}</p>
+            <p className="mt-7 max-w-3xl text-lg leading-relaxed text-neutral-600">{practice.description}</p>
             <ul className="mt-10 grid gap-4 md:grid-cols-2">
               {practice.inclusions.map(({ icon, title, paragraphs }) => (
                 <IconCard

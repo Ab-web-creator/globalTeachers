@@ -5,7 +5,7 @@ import { audience } from "./content";
 export default function VipAudience() {
   return (
     <ProgramSection id="vip-audience" label="Для кого" title="Кому подходит VIP?" fade="violet" fadeDirection="up" fadeToWhite>
-      <div className="mt-4 max-w-lg">
+      <div className="mt-7 max-w-lg">
         {audience.paragraphs.map((text) => (
           <p key={text} className="text-lg leading-relaxed text-neutral-600">{text}</p>
         ))}

@@ -12,7 +12,7 @@ export default function ProApproach() {
       <div className="min-w-0 lg:col-span-3">
         <SectionLabel>Подход</SectionLabel>
         <SectionHeading id="pro-approach">Не просто рекомендации —<br />мы готовим вместе с вами</SectionHeading>
-        {approach.paragraphs.map((text) => <p key={text} className="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-600">{text}</p>)}
+        {approach.paragraphs.map((text, index) => <p key={text} className={`${index === 0 ? "mt-7" : "mt-4"} max-w-2xl text-lg leading-relaxed text-neutral-600`}>{text}</p>)}
         <p className="mt-6 text-lg font-medium leading-relaxed text-brand-950">{approach.flowTitle}</p>
         <ProPreparationSteps />
       </div>
