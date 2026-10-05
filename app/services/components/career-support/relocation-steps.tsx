@@ -3,15 +3,19 @@ import SectionLabel from "../job-search/section-label";
 import LineIcon from "../line-icon";
 import { relocation } from "./content";
 import { relocationIcons, stageTones } from "./icons";
+import RelocationIllustration from "./relocation-illustration";
 
 export default function RelocationSteps() {
   return (
     <section aria-labelledby="support-relocation" className="py-12 sm:py-16 lg:py-20">
-      <div>
-        <SectionLabel>После оффера</SectionLabel>
-        <SectionHeading id="support-relocation">И после предложения наша<br />работа ещё не заканчивается</SectionHeading>
-        {relocation.paragraphs.map((text, index) => <p key={text} className={`${index === 0 ? "mt-7" : "mt-4"} max-w-2xl text-lg leading-relaxed text-neutral-600`}>{text}</p>)}
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-brand-600">{relocation.help}</p>
+      <div className="grid items-center gap-10 lg:grid-cols-3 lg:gap-12">
+        <div className="lg:col-span-2">
+          <SectionLabel>После оффера</SectionLabel>
+          <SectionHeading id="support-relocation">И после предложения наша<br />работа ещё не заканчивается</SectionHeading>
+          {relocation.paragraphs.map((text, index) => <p key={text} className={`${index === 0 ? "mt-7" : "mt-4"} max-w-2xl text-lg leading-relaxed text-neutral-600`}>{text}</p>)}
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-brand-600">{relocation.help}</p>
+        </div>
+        <RelocationIllustration />
       </div>
       <ol className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {relocation.steps.map(({ title, text }, index) => (
