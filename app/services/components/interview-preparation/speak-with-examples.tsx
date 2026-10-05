@@ -3,7 +3,7 @@ import SectionLabel from "../job-search/section-label";
 import SectionFade from "../cv-portfolio/section-fade";
 import AnswerExample from "./answer-example";
 import ExampleSteps from "./example-steps";
-import HandwrittenNote from "./handwritten-note";
+import ExampleIllustration from "./example-illustration";
 import ResearchTip from "./research-tip";
 import { speakWithExamples } from "./content";
 
@@ -12,7 +12,7 @@ export default function SpeakWithExamples() {
     <section aria-labelledby="interview-examples" className="relative isolate grid items-center gap-10 lg:grid-cols-5 lg:gap-20 py-12 sm:py-16 lg:py-20">
       <SectionFade tone="rose" direction="down" halfHeight />
       <div className="hidden justify-items-center lg:col-span-2 lg:grid">
-        <HandwrittenNote>{speakWithExamples.note}</HandwrittenNote>
+        <ExampleIllustration />
       </div>
       <div className="lg:col-span-3">
         <SectionLabel>Сильные ответы</SectionLabel>
