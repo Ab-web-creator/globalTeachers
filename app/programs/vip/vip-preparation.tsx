@@ -1,11 +1,11 @@
 import Image from "next/image";
-import IconTiles from "../components/icon-tiles";
 import ProgramSection from "../components/program-section";
 import Prose from "../components/prose";
-import { difference, preparation } from "./content";
+import { difference } from "./content";
 import TierCompare from "./tier-compare";
 import VipStrategy from "./vip-strategy";
 import VipSearch from "./vip-search";
+import VipPreparationOverview from "./vip-preparation-overview";
 
 export default function VipPreparation() {
   return (
@@ -14,9 +14,7 @@ export default function VipPreparation() {
         <Prose paragraphs={difference.paragraphs} closing={difference.closing} />
       </ProgramSection>
       <VipStrategy />
-      <ProgramSection id="vip-preparation" label="Подготовка" title="Полная профессиональная подготовка" fade="sky" aside={<IconTiles title="Мы готовим:" items={preparation.items} />}>
-        <Prose paragraphs={preparation.paragraphs} closing={preparation.closing} />
-      </ProgramSection>
+      <VipPreparationOverview />
       <VipSearch />
     </>
   );

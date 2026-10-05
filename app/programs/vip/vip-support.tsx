@@ -1,27 +1,19 @@
 import type { ReactNode } from "react";
-import CheckList from "../components/check-list";
-import IconTiles from "../components/icon-tiles";
 import ProgramSection from "../components/program-section";
 import Prose from "../components/prose";
-import { audience, important, offer, value } from "./content";
+import { important } from "./content";
+import VipAudience from "./vip-audience";
 import VipAfterOffer from "./vip-after-offer";
+import VipOffer from "./vip-offer";
+import VipValue from "./vip-value";
 
 export default function VipSupport({ children }: { children?: ReactNode }) {
   return (
     <>
-      <ProgramSection id="vip-offer" label="Оффер" title="А если пришёл оффер?" fade="rose" aside={<IconTiles title={offer.itemsTitle} items={offer.items} />}>
-        <Prose paragraphs={offer.paragraphs} closing={offer.closing} />
-      </ProgramSection>
+      <VipOffer />
       <VipAfterOffer />
-      <ProgramSection id="vip-value" label="Ценность VIP" title="Что вы на самом деле покупаете в VIP?" fade="violet" aside={<CheckList items={value.moments} />}>
-        <ul className="mt-6 flex flex-wrap gap-2">
-          {value.notThis.map((text) => <li key={text} className="rounded-full bg-neutral-100 px-4 py-2 text-neutral-500">{text}</li>)}
-        </ul>
-        <p className="mt-6 text-2xl font-medium leading-snug text-brand-600">{value.statement}</p>
-      </ProgramSection>
-      <ProgramSection id="vip-audience" label="Для кого" title="Кому подходит VIP?" aside={<CheckList title={audience.itemsTitle} items={audience.items} />}>
-        <Prose paragraphs={audience.paragraphs} />
-      </ProgramSection>
+      <VipValue />
+      <VipAudience />
       <ProgramSection id="vip-important" label="Честно о главном" title="Важно" footer={children}>
         <div className="max-w-2xl">
           <Prose paragraphs={important.paragraphs} closing={important.closing} />
