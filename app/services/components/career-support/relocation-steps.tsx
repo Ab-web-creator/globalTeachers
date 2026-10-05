@@ -7,7 +7,7 @@ import { relocationIcons } from "./icons";
 
 export default function RelocationSteps() {
   return (
-    <section aria-labelledby="support-relocation" className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+    <section aria-labelledby="support-relocation" className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16 py-12 sm:py-16 lg:py-20">
       <div>
         <SectionLabel>После оффера</SectionLabel>
         <SectionHeading id="support-relocation">И после предложения наша работа ещё не заканчивается</SectionHeading>

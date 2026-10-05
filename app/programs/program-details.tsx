@@ -20,14 +20,14 @@ export default function ProgramDetails({ program }: { program: Program }) {
         </div>
         <Image src={program.image} alt={program.alt} width={900} height={600} sizes="(min-width: 1024px) 50vw, 100vw" className="aspect-video w-full rounded-3xl object-cover" />
       </div>
-      <section className="mt-12 rounded-3xl border border-brand-100 bg-white p-6 sm:p-8" aria-labelledby="included-title">
+      <section className="rounded-3xl border border-brand-100 bg-white px-6 sm:px-8 py-12 sm:py-16 lg:py-20" aria-labelledby="included-title">
         <h2 id="included-title" className="text-2xl font-semibold">Что входит в программу</h2>
         <p className="mt-3 font-medium text-brand-500">{program.supportSummary}</p>
         <ul className="mt-6 list-disc space-y-4 pl-5 text-base leading-relaxed text-neutral-600">
           {services.map((service) => <li key={service}>{service}</li>)}
         </ul>
       </section>
-      <section className="mt-10" aria-labelledby="next-step-title">
+      <section className="py-12 sm:py-16 lg:py-20" aria-labelledby="next-step-title">
         <h2 id="next-step-title" className="text-2xl font-semibold">Как начать</h2>
         <p className="mt-3 max-w-2xl leading-relaxed text-neutral-600">На консультации обсудим ваш педагогический опыт, цели и вопросы о программе {program.tier}. Это поможет определить, подходит ли вам этот формат поддержки.</p>
         <Link href="/consultation" className="action-gradient mt-6 inline-flex rounded-2xl px-6 py-3 font-semibold text-white sm:rounded-full">Купить пакет</Link>

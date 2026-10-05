@@ -9,8 +9,8 @@ import SectionFade from "./section-fade";
 
 export default function CvGuide() {
   return (
-    <div className="space-y-16 sm:space-y-20 lg:space-y-24">
-      <section aria-labelledby="cv-structure" className="relative isolate pb-12 sm:pb-16 lg:pb-20">
+    <div>
+      <section aria-labelledby="cv-structure" className="relative isolate py-12 sm:py-16 lg:py-20">
         <SectionFade />
         <SectionLabel>Структура CV</SectionLabel>
         <SectionHeading id="cv-structure">Что должно быть в CV?</SectionHeading>

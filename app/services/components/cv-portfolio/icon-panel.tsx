@@ -20,13 +20,14 @@ type IconPanelProps = {
   icon: keyof typeof icons;
   children: ReactNode;
   tone?: keyof typeof tones;
+  as?: "section" | "div";
 };
 
-export default function IconPanel({ id, title, icon, children, tone = "default" }: IconPanelProps) {
+export default function IconPanel({ id, title, icon, children, tone = "default", as: Container = "section" }: IconPanelProps) {
   const colors = tones[tone];
 
   return (
-    <section aria-labelledby={id} className={`flex flex-col gap-5 rounded-3xl border p-6 sm:flex-row sm:gap-6 sm:p-8 ${colors.panel}`}>
+    <Container aria-labelledby={Container === "section" ? id : undefined} className={`flex flex-col gap-5 rounded-3xl border p-6 sm:flex-row sm:gap-6 sm:p-8 ${colors.panel}`}>
       <span aria-hidden="true" className={`flex size-14 shrink-0 items-center justify-center rounded-full ${colors.icon}`}>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-7">
           <path d={icons[icon]} />
@@ -40,6 +41,6 @@ export default function IconPanel({ id, title, icon, children, tone = "default" 
         )}
         {children}
       </div>
-    </section>
+    </Container>
   );
 }

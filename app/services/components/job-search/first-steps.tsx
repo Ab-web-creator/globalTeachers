@@ -7,7 +7,7 @@ import { firstSteps, firstStepsIntroduction } from "./content";
 
 export default function FirstSteps({ children }: { children?: ReactNode }) {
   return (
-    <section aria-labelledby="job-search-first-steps">
+    <section aria-labelledby="job-search-first-steps" className="py-12 sm:py-16 lg:py-20">
       <SectionLabel>Первые шаги</SectionLabel>
       <div className="flex flex-col gap-7">
         <SectionHeading id="job-search-first-steps">С чего начать?</SectionHeading>

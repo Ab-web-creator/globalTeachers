@@ -1,6 +1,6 @@
 export default function FinishedVideo() {
   return (
-    <section aria-labelledby="finished-video-title" className="mt-8">
+    <section aria-labelledby="finished-video-title" className="py-12 sm:py-16 lg:py-20">
       <h2 id="finished-video-title" className="mb-4 text-2xl font-semibold">Готовый ролик с озвучкой</h2>
       <video
         controls

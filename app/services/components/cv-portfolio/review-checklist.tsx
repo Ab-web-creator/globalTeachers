@@ -3,7 +3,7 @@ import { reviewQuestions } from "./content";
 
 export default function ReviewChecklist() {
   return (
-    <IconPanel id="cv-review" title="Перед отправкой проверьте" icon="checklist">
+    <IconPanel as="div" id="cv-review" title="Перед отправкой проверьте" icon="checklist">
       <ol className="mt-5 space-y-2.5">
         {reviewQuestions.map((question, index) => (
           <li key={question} className="flex items-baseline gap-4 leading-relaxed text-neutral-600">

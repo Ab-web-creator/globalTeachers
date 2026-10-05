@@ -9,10 +9,10 @@ const statistics = [
 
 export default function StatisticsSection() {
   return (
-    <section aria-label="Международный рынок работы в цифрах" className="mx-auto w-full max-w-400 px-6 py-10 sm:px-10 lg:px-16 lg:py-10 xl:py-12 xl:px-20">
-      <dl className="grid sm:grid-cols-2 sm:gap-y-8 lg:grid-cols-4">
+    <div className="mx-auto w-full max-w-400 px-6 py-10 sm:px-10 lg:px-16 lg:py-10 xl:py-12 xl:px-20">
+      <dl aria-label="Международный рынок работы в цифрах" className="grid sm:grid-cols-2 sm:gap-y-8 lg:grid-cols-4">
         {statistics.map((statistic, index) => <StatisticItem key={statistic.label} {...statistic} delay={index * 250} />)}
       </dl>
-    </section>
+    </div>
   );
 }

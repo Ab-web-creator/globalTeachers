@@ -1,8 +1,6 @@
 import GuideIcon, { type GuideIconName } from "./guide-icon";
 
-const seasons = ["fall", "winter", "spring", "summer"] as const;
-
-export type SeasonName = (typeof seasons)[number];
+export type SeasonName = "fall" | "winter" | "spring" | "summer";
 
 const falling: Record<"fall" | "winter", { icon: GuideIconName; motion: string; pieces: { left: string; delay: string; duration: string; drift: string; size: string }[] }> = {
   fall: {

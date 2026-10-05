@@ -27,7 +27,7 @@ export default function ProGuide({ children }: { children?: ReactNode }) {
       </ProgramSection>
       <ProApproach />
       <div>
-        <div className="pb-12 sm:pb-16 lg:pb-20">
+        <div>
           <ProgramSection id="pro-practice" label="Практика и поддержка" title="Когда начинается настоящий поиск">
             <p className="mt-4 max-w-3xl text-lg leading-relaxed text-neutral-600">{practice.description}</p>
             <ul className="mt-10 grid gap-4 md:grid-cols-2">
@@ -47,7 +47,7 @@ export default function ProGuide({ children }: { children?: ReactNode }) {
             </ul>
           </ProgramSection>
         </div>
-        <div className="relative isolate pt-12 sm:pt-16 lg:pt-20">
+        <div className="relative isolate">
           <div aria-hidden="true" className="pointer-events-none absolute top-0 -bottom-12 left-1/2 -z-10 w-screen -translate-x-1/2 bg-linear-to-r from-sky-50/60 via-brand-100/40 to-sky-50/60 sm:-bottom-16 lg:-bottom-20" />
           <ProFit />
           {children && <div className="mt-16 sm:mt-20 lg:mt-20">{children}</div>}

@@ -8,7 +8,7 @@ import { questionIcons } from "./question-icons";
 
 export default function UnexpectedQuestions() {
   return (
-    <section aria-labelledby="unexpected-questions" className="relative isolate grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-3 lg:gap-12 lg:py-20">
+    <div className="relative isolate grid items-center gap-10 lg:grid-cols-3 lg:gap-12">
       <SectionFade direction="down" halfHeight />
       <div className="lg:col-span-2">
         <SectionLabel>Сложные вопросы</SectionLabel>
@@ -28,6 +28,6 @@ export default function UnexpectedQuestions() {
           <image href="/images/interview-notes-cutout.png" width="1024" height="1536" style={{ maskImage: "url(/images/interview-notes-mask.svg)", maskSize: "100% 100%", maskRepeat: "no-repeat" }} />
         </svg>
       </div>
-    </section>
+    </div>
   );
 }

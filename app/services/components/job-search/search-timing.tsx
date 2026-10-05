@@ -40,7 +40,7 @@ export default function SearchTiming() {
   }, []);
 
   return (
-    <section aria-labelledby="search-timing">
+    <section aria-labelledby="search-timing" className="py-12 sm:py-16 lg:py-20">
       {playing && <SeasonEffect season={seasons[active]} />}
       <div className="relative grid items-start gap-10 xl:grid-cols-3 xl:gap-12">
         <div>

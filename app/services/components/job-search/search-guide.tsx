@@ -8,7 +8,7 @@ import VacancySources from "./vacancy-sources";
 
 export default function SearchGuide() {
   return (
-    <div className="space-y-16 sm:space-y-20 lg:space-y-24">
+    <div>
       <VacancySources />
       <div>
         <GradientBand>
@@ -18,8 +18,8 @@ export default function SearchGuide() {
       </div>
       <FirstSteps>
         <ApplicationAdvice />
-        <div className="mt-12 sm:mt-16 lg:mt-20"><SearchSupport /></div>
       </FirstSteps>
+      <SearchSupport />
     </div>
   );
 }

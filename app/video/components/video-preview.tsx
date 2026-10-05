@@ -18,7 +18,7 @@ export default function VideoPreview() {
   }
 
   return (
-    <section aria-labelledby="preview-title" className="mt-8">
+    <section aria-labelledby="preview-title" className="py-12 sm:py-16 lg:py-20">
       <h2 id="preview-title" className="mb-4 text-2xl font-semibold">Предпросмотр последовательности</h2>
       <div className="relative aspect-video overflow-hidden rounded-3xl bg-brand-900">
         <Image key={scene.image} src={scene.image} alt={scene.alt} fill sizes="(max-width: 1024px) 100vw, 1024px" className="object-cover" />

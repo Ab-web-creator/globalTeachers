@@ -5,7 +5,7 @@ import RegionMap from "./region-map";
 
 export default function VacancySources() {
   return (
-    <section aria-labelledby="vacancy-sources">
+    <section aria-labelledby="vacancy-sources" className="py-12 sm:py-16 lg:py-20">
       <SectionLabel>Источники вакансий</SectionLabel>
       <SectionHeading id="vacancy-sources">Так где же искать вакансии?</SectionHeading>
       <p className="mt-7 max-w-3xl text-lg leading-relaxed text-neutral-600">{vacancySourcesIntroduction}</p>

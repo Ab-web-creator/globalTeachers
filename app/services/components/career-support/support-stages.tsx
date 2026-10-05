@@ -7,7 +7,7 @@ import { stageIcons, stageTones } from "./icons";
 
 export default function SupportStages() {
   return (
-    <section aria-labelledby="support-stages" className="relative isolate pb-12 sm:pb-16 lg:pb-20">
+    <section aria-labelledby="support-stages" className="relative isolate py-12 sm:py-16 lg:py-20">
       <SectionFade />
       <SectionLabel>Этапы сопровождения</SectionLabel>
       <SectionHeading id="support-stages">Как проходит сопровождение?</SectionHeading>

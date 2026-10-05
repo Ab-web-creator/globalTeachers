@@ -5,7 +5,7 @@ import ExperienceExample from "./experience-example";
 
 export default function CvExperience() {
   return (
-    <section aria-labelledby="cv-achievements">
+    <section aria-labelledby="cv-achievements" className="py-12 sm:py-16 lg:py-20">
       <SectionLabel>Как описать опыт</SectionLabel>
       <SectionHeading id="cv-achievements">CV — это не автобиография</SectionHeading>
       <p className="mt-7 max-w-2xl text-lg leading-relaxed text-neutral-600">Не нужно подробно описывать каждую должность и перечислять все обязанности, которые выполняет обычный учитель.</p>

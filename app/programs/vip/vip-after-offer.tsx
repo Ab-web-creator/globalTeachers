@@ -11,6 +11,8 @@ export default function VipAfterOffer() {
       label="После оффера"
       title={<>Предложение принято.<br /><span className="text-brand-500">Что дальше?</span></>}
       fade="violet"
+      fadeDirection="down"
+      fadeToWhite
       aside={<AfterOfferVisual />}
       footer={<AfterOfferSteps />}
     >

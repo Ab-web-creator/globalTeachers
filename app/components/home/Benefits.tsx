@@ -5,7 +5,7 @@ export default function Benefits() {
     <section
       id="benefits"
       aria-labelledby="benefits-title"
-      className="bg-linear-to-b from-brand-50/60 to-white py-8 sm:py-12 lg:py-20 xl:py-24"
+      className="bg-linear-to-b from-brand-50/60 to-white py-12 sm:py-16 lg:py-20"
     >
       <div className="mx-auto w-full max-w-400 px-6 sm:px-10 lg:px-16 xl:px-20">
         <header data-reveal className="mx-auto max-w-4xl text-left sm:text-center">

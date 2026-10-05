@@ -23,7 +23,7 @@ export default function VideoPage() {
         <FinishedVideo />
         <VideoPreview />
         <Storyboard />
-        <section aria-labelledby="voiceover-title" className="mt-12 rounded-3xl bg-brand-50 p-6 sm:p-8">
+        <section aria-labelledby="voiceover-title" className="rounded-3xl bg-brand-50 px-6 sm:px-8 py-12 sm:py-16 lg:py-20">
           <h2 id="voiceover-title" className="text-2xl font-semibold">Полный текст для озвучки</h2>
           <div className="mt-5 space-y-4 text-base leading-relaxed text-neutral-700">
             {voiceover.split("\n\n").map((paragraph) => <p key={paragraph}>{paragraph}</p>)}

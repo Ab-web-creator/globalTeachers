@@ -6,7 +6,7 @@ import { offerIcons, offerTones } from "./icons";
 
 export default function OfferReview() {
   return (
-    <section aria-labelledby="support-offer" className="grid items-center gap-10 pb-12 sm:pb-16 lg:grid-cols-2 lg:gap-16 lg:pb-20">
+    <section aria-labelledby="support-offer" className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16 py-12 sm:py-16 lg:py-20">
       <div>
         <SectionLabel>Предложение школы</SectionLabel>
         <SectionHeading id="support-offer">Предложение от школы —<br />что дальше?</SectionHeading>

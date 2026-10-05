@@ -6,7 +6,7 @@ import { audience, preparationQuestions, support } from "./content";
 // Support, audience and "what you won't have to figure out" as three blocks in a row.
 export default function ProFit() {
   return (
-    <div>
+    <section aria-labelledby="pro-support pro-audience pro-preparation" className="py-12 sm:py-16 lg:py-20">
       <div className="grid gap-5 lg:grid-cols-3">
         <ProFitCard id="pro-support" title="И вы не остаётесь одни после консультации" icon={icons.chat} note="На каждом этапе вы не одни" variant="support">
           {support.paragraphs.map((text) => <p key={text}>{text}</p>)}
@@ -28,6 +28,6 @@ export default function ProFit() {
           <p className="border-t border-brand-200/60 pt-5 font-semibold text-brand-600">{audience.closing}</p>
         </ProFitCard>
       </div>
-    </div>
+    </section>
   );
 }

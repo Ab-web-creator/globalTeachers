@@ -5,7 +5,7 @@ import NumberedSteps from "../components/numbered-steps";
 
 export default function StartOutcomes({ flow }: { flow: string }) {
   return (
-    <section aria-labelledby="start-outcomes" className="grid items-center gap-10 lg:grid-cols-5 lg:gap-12">
+    <section aria-labelledby="start-outcomes" className="grid items-center gap-10 lg:grid-cols-5 lg:gap-12 py-12 sm:py-16 lg:py-20">
       <div className="min-w-0 lg:col-span-3">
         <SectionLabel>Результат программы</SectionLabel>
         <SectionHeading id="start-outcomes">Вы будете понимать:</SectionHeading>

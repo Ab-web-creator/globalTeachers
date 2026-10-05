@@ -3,7 +3,7 @@ import { scenes, timestamp } from "../scenes";
 
 export default function Storyboard() {
   return (
-    <section aria-labelledby="storyboard-title" className="mt-12">
+    <section aria-labelledby="storyboard-title" className="py-12 sm:py-16 lg:py-20">
       <h2 id="storyboard-title" className="text-2xl font-semibold">Кадры и текст диктора</h2>
       <ol className="mt-6 space-y-6">
         {scenes.map((scene, index) => {

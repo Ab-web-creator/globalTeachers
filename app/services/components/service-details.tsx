@@ -17,7 +17,7 @@ export default function ServiceDetails({ service }: { service: Service }) {
           <ServiceIllustration bounds={service.imageBounds} className="mx-auto aspect-5/4 w-full max-w-xs overflow-hidden" />
         </div>
       </header>
-      <section aria-labelledby="service-topics" className="mt-12">
+      <section aria-labelledby="service-topics" className="py-12 sm:py-16 lg:py-20">
         <h2 id="service-topics" className="text-2xl font-semibold">Над чем будем работать</h2>
         <ol className="mt-6 grid gap-5 md:grid-cols-3">
           {service.topics.map(({ title, text }, index) => <li key={title} className="rounded-3xl border border-brand-100 bg-white p-6">
@@ -27,7 +27,7 @@ export default function ServiceDetails({ service }: { service: Service }) {
           </li>)}
         </ol>
       </section>
-      <section aria-labelledby="service-start" className="mt-10 rounded-3xl bg-white/80 p-6 sm:p-8">
+      <section aria-labelledby="service-start" className="rounded-3xl bg-white/80 px-6 sm:px-8 py-12 sm:py-16 lg:py-20">
         <h2 id="service-start" className="text-2xl font-semibold">С чего начать</h2>
         <p className="mt-4 max-w-3xl leading-relaxed text-neutral-600">{service.preparation}</p>
         <div className="mt-6 flex flex-wrap gap-4">

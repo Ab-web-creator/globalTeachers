@@ -4,7 +4,7 @@ import { offer } from "./content";
 
 export default function VipOffer() {
   return (
-    <ProgramSection id="vip-offer" label="Оффер" title="А если пришёл оффер?" fade="rose">
+    <ProgramSection id="vip-offer" label="Оффер" title="А если пришёл оффер?" fade="violet" fadeDirection="down" fadeToWhite>
       <div className="mt-4 max-w-3xl space-y-4">
         <p className="max-w-lg text-lg leading-relaxed text-neutral-600">
           {offer.paragraphs[0]}{" "}

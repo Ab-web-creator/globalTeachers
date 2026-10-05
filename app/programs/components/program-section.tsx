@@ -9,6 +9,7 @@ type Props = {
   title: ReactNode;
   fade?: "violet" | "sky" | "rose";
   fadeDirection?: "up" | "down";
+  fadeToWhite?: boolean;
   aside?: ReactNode;
   // Decorative art pinned to the section's top right corner on lg, behind the content.
   decoration?: ReactNode;
@@ -16,12 +17,10 @@ type Props = {
   asideAlign?: "center" | "end";
   children?: ReactNode;
   footer?: ReactNode;
-  // Drops the bottom padding on phones, for a section that ends the page with an edge-to-edge banner.
-  flushBottom?: boolean;
 };
 
 // A full-width page section: optional gradient fade, eyebrow, heading, then content; `aside` sits in a second column on lg.
-export default function ProgramSection({ id, label, title, fade, fadeDirection = "up", aside, asideAlign = "center", decoration, children, footer, flushBottom = false }: Props) {
+export default function ProgramSection({ id, label, title, fade, fadeDirection = "up", fadeToWhite = false, aside, asideAlign = "center", decoration, children, footer }: Props) {
   const header = (
     <>
       <SectionLabel>{label}</SectionLabel>
@@ -30,9 +29,9 @@ export default function ProgramSection({ id, label, title, fade, fadeDirection =
   );
 
   return (
-    <section aria-labelledby={id} className={`relative isolate ${fade ? `${fadeDirection === "down" ? "pt-12 sm:pt-16 lg:pt-20" : ""} ${flushBottom ? "" : "pb-12"} sm:pb-16 lg:pb-20` : ""} ${aside ? "grid items-center gap-10 lg:grid-cols-2 lg:gap-16" : ""}`}>
-      {fade && <SectionFade tone={fade} direction={fadeDirection} />}
-      {decoration && <div aria-hidden="true" className="pointer-events-none absolute top-0 right-0 -z-10 hidden lg:block">{decoration}</div>}
+    <section aria-labelledby={id} className={`relative isolate py-12 sm:py-16 lg:py-20 ${aside ? "grid items-center gap-10 lg:grid-cols-2 lg:gap-16" : ""}`}>
+      {fade && <SectionFade tone={fade} direction={fadeDirection} toWhite={fadeToWhite} />}
+      {decoration && <div aria-hidden="true" className="pointer-events-none absolute top-20 right-0 -z-10 hidden lg:block">{decoration}</div>}
       {aside ? (
         <>
           <div>{header}{children}</div>

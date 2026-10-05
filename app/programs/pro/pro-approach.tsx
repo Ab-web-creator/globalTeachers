@@ -7,7 +7,7 @@ import { approach } from "./content";
 
 export default function ProApproach() {
   return (
-    <section aria-labelledby="pro-approach" className="relative isolate grid items-center gap-10 pb-12 sm:pb-16 lg:grid-cols-5 lg:gap-12 lg:pb-20">
+    <section aria-labelledby="pro-approach" className="relative isolate grid items-center gap-10 lg:grid-cols-5 lg:gap-12 py-12 sm:py-16 lg:py-20">
       <SectionFade tone="violet" />
       <div className="min-w-0 lg:col-span-3">
         <SectionLabel>Подход</SectionLabel>

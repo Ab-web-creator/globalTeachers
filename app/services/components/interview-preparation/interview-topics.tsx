@@ -7,7 +7,7 @@ import { questionIcons } from "./question-icons";
 
 export default function InterviewTopics() {
   return (
-    <section aria-labelledby="interview-topics" className="relative isolate bg-white pb-12 sm:pb-16 lg:pb-20">
+    <section aria-labelledby="interview-topics" className="relative isolate bg-white py-12 sm:py-16 lg:py-20">
       <SectionLabel>Темы интервью</SectionLabel>
       <SectionHeading id="interview-topics">Что могут спросить?</SectionHeading>
       <p className="mt-7 max-w-3xl text-lg font-medium leading-relaxed text-neutral-600">{interviewTopicsIntroduction}</p>
