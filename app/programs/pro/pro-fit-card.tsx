@@ -1,13 +1,14 @@
 import type { ReactNode } from "react";
 import LineIcon from "../../services/components/line-icon";
 import ProFitArt from "./pro-fit-art";
+import type { CardIllustration } from "./card-illustrations";
 
 type Props = {
   id: string;
   title: string;
   icon: string;
   note: string;
-  variant: "support" | "audience" | "preparation";
+  variant: CardIllustration;
   children: ReactNode;
   headingLevel?: "h2" | "h3";
 };

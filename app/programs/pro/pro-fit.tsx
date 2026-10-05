@@ -14,7 +14,7 @@ export default function ProFit() {
         <ProFitCard id="pro-audience" title="Кому подходит PRO?" icon={icons.profile} note="Больше, чем подготовка" variant="audience">
           {audience.paragraphs.map((text) => <p key={text}>{text}</p>)}
         </ProFitCard>
-        <ProFitCard id="pro-preparation" title={audience.listTitle} icon="M9 18h6 M10 21h4 M8 13a6 6 0 1 1 8 0c-1 1-1 2-1 3H9c0-1 0-2-1-3Z" note="Чёткие ответы на важные вопросы" variant="preparation">
+        <ProFitCard id="pro-preparation" title={audience.listTitle} icon="M9 18h6 M10 21h4 M8 13a6 6 0 1 1 8 0c-1 1-1 2-1 3H9c0-1 0-2-1-3Z" note="Чёткие ответы на важные вопросы" variant="documents">
           <ul className="space-y-3">
             {preparationQuestions.map((text) => (
               <li key={text} className="flex items-start gap-3">

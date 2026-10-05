@@ -5,11 +5,11 @@ import { preparationSteps } from "./content";
 export default function InterviewPractice() {
   return (
     <div className="grid gap-5 lg:grid-cols-3">
-      <ProFitCard headingLevel="h3" id="demo-lesson" title="Demo Lesson" icon={icons.school} note="Покажите себя в деле" variant="support">
+      <ProFitCard headingLevel="h3" id="demo-lesson" title="Demo Lesson" icon={icons.school} note="Покажите себя в деле" variant="lesson">
         <p>В некоторых школах кандидата могут попросить провести короткий пробный урок или представить его план.</p>
         <p>Здесь оценивается не только знание предмета. Школа может обращать внимание на структуру урока, взаимодействие с учениками, инструкции, темп, assessment, differentiation и вашу способность адаптироваться к ситуации.</p>
       </ProFitCard>
-      <ProFitCard headingLevel="h3" id="before-interview" title="Перед интервью" icon={icons.checklist} note="Спокойствие начинается с подготовки" variant="preparation">
+      <ProFitCard headingLevel="h3" id="before-interview" title="Перед интервью" icon={icons.checklist} note="Спокойствие начинается с подготовки" variant="checklist">
         <ol className="space-y-2">
           {preparationSteps.map((text, index) => (
             <li key={text} className="flex items-baseline gap-4">
@@ -19,7 +19,7 @@ export default function InterviewPractice() {
           ))}
         </ol>
       </ProFitCard>
-      <ProFitCard headingLevel="h3" id="choosing-school" title="И помните" icon={icons.compass} note="Вы тоже выбираете" variant="audience">
+      <ProFitCard headingLevel="h3" id="choosing-school" title="И помните" icon={icons.compass} note="Вы тоже выбираете" variant="choice">
         <p>Интервью — это не экзамен, где только школа оценивает вас.</p>
         <p>Это возможность узнать больше о руководстве, учениках, условиях работы, профессиональной культуре и понять, действительно ли эта школа подходит вам.</p>
         <p className="border-t border-brand-200/60 pt-5 font-semibold text-brand-600">Вы тоже выбираете школу.</p>
