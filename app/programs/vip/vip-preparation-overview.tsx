@@ -7,8 +7,8 @@ export default function VipPreparationOverview() {
   return (
     <div className="relative isolate">
       <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-violet-50" />
-      <ProgramSection id="vip-preparation" label="Подготовка" title="Полная профессиональная подготовка">
-        <p className="mt-7 max-w-lg text-lg leading-relaxed text-neutral-600">
+      <ProgramSection id="vip-preparation" label="Подготовка" title="Потом полная профессиональная подготовка">
+        <p className="mt-7 text-lg leading-relaxed text-neutral-600">
           {preparation.paragraphs[0]}
         </p>
         <h3 className="mt-4 text-lg font-semibold leading-relaxed text-brand-950">Мы готовим:</h3>
