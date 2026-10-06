@@ -31,7 +31,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: url("/images/footer-reference-pattern.png") center right / cover no-repeat;
+  background: url("/images/footer-reference-pattern.webp") center right / cover no-repeat;
   transform: scale(1.5);
   transform-origin: right center;
 }

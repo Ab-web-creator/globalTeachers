@@ -5,7 +5,7 @@ export default function ServiceIllustration({ bounds, className }: Props) {
   const viewportWidth = height * 1.25;
   return (
     <svg aria-hidden="true" viewBox={`${x + (width - viewportWidth) / 2} ${y} ${viewportWidth} ${height}`} className={className}>
-      <image href="/images/course-categories-four-colors.png" width="1254" height="1254" />
+      <image href="/images/course-categories-four-colors.webp" width="1254" height="1254" />
     </svg>
   );
 }

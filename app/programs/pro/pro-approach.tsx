@@ -19,7 +19,7 @@ export default function ProApproach() {
         <ProPreparationSteps />
       </div>
       <div style={{ aspectRatio: "25 / 23" }} className="relative mt-12 hidden w-full max-w-xs justify-self-center lg:col-span-2 lg:block">
-        <Image src="/images/pro-application-kit-illustration.png" alt="Профессиональный комплект: CV, портфолио, сопроводительное письмо и профиль" fill sizes="320px" className="object-contain" />
+        <Image src="/images/pro-application-kit-illustration.webp" alt="Профессиональный комплект: CV, портфолио, сопроводительное письмо и профиль" fill sizes="320px" className="object-contain" />
       </div>
     </section>
   );

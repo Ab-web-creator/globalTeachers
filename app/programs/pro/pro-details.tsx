@@ -9,9 +9,9 @@ export default function ProDetails({ program }: { program: Program }) {
   const title = <>Будьте готовы не просто искать работу. Будьте готовы <span className="text-brand-500">её получить</span>.</>;
 
   return (
-    <ProgramPage bottomPadding="60px" hero={<ProgramHero tier="PRO" image="/images/pro-application-hero.png" title={title} intro={hero.intro} highlight={hero.highlight} imageAspectRatio="250 / 207" />}>
+    <ProgramPage bottomPadding="60px" hero={<ProgramHero tier="PRO" image="/images/pro-application-hero.webp" title={title} intro={hero.intro} highlight={hero.highlight} imageAspectRatio="250 / 207" />}>
       <ProGuide>
-        <ProgramCta tier="PRO" price={program.price} title={cta.title} text={cta.text} image="/images/benefits/development.jpg" />
+        <ProgramCta tier="PRO" price={program.price} title={cta.title} text={cta.text} image="/images/benefits/development.webp" />
       </ProGuide>
     </ProgramPage>
   );

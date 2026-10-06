@@ -15,7 +15,7 @@ export default function ConsultationPage() {
     <div className="flex h-dvh flex-col overflow-hidden bg-white lg:bg-sky-50 text-brand-700">
       <PageHeader inFlow />
       <main className="relative isolate min-h-0 flex-1 overflow-hidden">
-        <Image src="/images/consultation-globe-books.png" alt="" fill priority sizes="(min-width: 1024px) 100vw, 0px" className="-z-20 object-cover object-bottom-left opacity-100 max-lg:hidden" />
+        <Image src="/images/consultation-globe-books.webp" alt="" fill priority sizes="(min-width: 1024px) 100vw, 0px" className="-z-20 object-cover object-bottom-left opacity-100 max-lg:hidden" />
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 hidden bg-linear-to-r from-white/90 via-transparent to-white/20 lg:block" />
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 hidden bg-linear-to-b from-white via-white/60 to-white/0 lg:block" />
         <ConsultationLayout aside={<ConsultationAside />} intro={<>

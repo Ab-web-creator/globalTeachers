@@ -22,7 +22,7 @@ export default function SchoolResearch() {
           <ResearchTip>{schoolResearch.tip}</ResearchTip>
         </div>
       </div>
-      <Image src="/images/interview-school.png" alt="" width={716} height={1060} sizes="384px" className="hidden h-auto w-full max-w-sm justify-self-center self-end [mask-image:radial-gradient(ellipse_closest-side,black_72%,transparent)] lg:col-span-2 lg:block" />
+      <Image src="/images/interview-school.webp" alt="" width={716} height={1060} sizes="384px" className="hidden h-auto w-full max-w-sm justify-self-center self-end [mask-image:radial-gradient(ellipse_closest-side,black_72%,transparent)] lg:col-span-2 lg:block" />
     </section>
   );
 }

@@ -23,7 +23,7 @@ export default function UnexpectedQuestions() {
       </div>
       <div className="relative hidden self-stretch lg:block">
         <svg aria-hidden="true" viewBox="0 88 1024 1380" preserveAspectRatio="xMidYMax meet" className="absolute inset-0 h-full w-full">
-          <image href="/images/interview-notes-cutout.png" width="1024" height="1536" style={{ maskImage: "url(/images/interview-notes-mask.svg)", maskSize: "100% 100%", maskRepeat: "no-repeat" }} />
+          <image href="/images/interview-notes-cutout.webp" width="1024" height="1536" style={{ maskImage: "url(/images/interview-notes-mask.svg)", maskSize: "100% 100%", maskRepeat: "no-repeat" }} />
         </svg>
       </div>
     </div>

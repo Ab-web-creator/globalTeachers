@@ -5,7 +5,7 @@ import { heroQuote, introduction } from "./content";
 
 export default function CareerSupportHero() {
   return (
-    <ServiceHero image="/images/career-compass.png" imageAspectRatio="400 / 360">
+    <ServiceHero image="/images/career-compass.webp" imageAspectRatio="400 / 360">
       <SectionLabel>Карьерное сопровождение</SectionLabel>
       <PageTitle>
         Когда рядом есть человек, который <span className="text-brand-500">знает весь процесс</span>

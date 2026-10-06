@@ -13,7 +13,7 @@ const proServices = [
 
 export const programs = [
   {
-    tier: "START", title: "Начните правильно", image: "/images/startPackage.jpeg",
+    tier: "START", title: "Начните правильно", image: "/images/startPackage.webp",
     price: 99,
     alt: "Педагог планирует международную карьеру за ноутбуком",
     description: "Для самостоятельного поиска работы с понятным планом и без типичных ошибок.",
@@ -24,7 +24,7 @@ export const programs = [
     icons: ["profile", "chat", "document", "support"],
   },
   {
-    tier: "PRO", title: "Увеличьте свои шансы", image: "/images/proPackage.jpeg",
+    tier: "PRO", title: "Увеличьте свои шансы", image: "/images/proPackage.webp",
     price: 299,
     alt: "Специалист за рабочим столом",
     description: "Подготовка к поиску: CV, портфолио, LinkedIn, интервью и отклики.",
@@ -35,7 +35,7 @@ export const programs = [
     icons: ["document", "folder", "profile", "support"],
   },
   {
-    tier: "VIP", title: "Полное Сопровождение ", image: "/images/VIPpackage.jpeg",
+    tier: "VIP", title: "Полное Сопровождение ", image: "/images/VIPpackage.webp",
     price: null,
     alt: "Портрет специалиста",
     description: "Личное сопровождение от стратегии до оффера международной школы.",

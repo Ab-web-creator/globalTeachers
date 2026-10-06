@@ -13,7 +13,7 @@ export default function StartOutcomes({ flow }: { flow: string }) {
         <NumberedSteps flow={flow} />
       </div>
       <div style={{ aspectRatio: "25 / 23" }} className="relative hidden w-full max-w-sm justify-self-center lg:col-span-2 lg:block">
-        <Image src="/images/start-search-plan-illustration-v2.png" alt="Иллюстрация плана поиска работы, списка школ и CV" fill sizes="384px" className="object-contain" />
+        <Image src="/images/start-search-plan-illustration-v2.webp" alt="Иллюстрация плана поиска работы, списка школ и CV" fill sizes="384px" className="object-contain" />
       </div>
     </section>
   );

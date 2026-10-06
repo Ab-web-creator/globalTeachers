@@ -14,7 +14,7 @@ export default function InterviewPreparationDetails() {
   return (
     <main className="mx-auto max-w-400 px-6 pt-6 pb-12 sm:px-10 sm:pb-16 lg:px-16 lg:pt-0 lg:pb-20 xl:px-20">
       <article>
-        <ServiceHero image="/images/interview-preparation-hero.png" imageAspectRatio="160000 / 116603" imageHeightScale={0.95}>
+        <ServiceHero image="/images/interview-preparation-hero.webp" imageAspectRatio="160000 / 116603" imageHeightScale={0.95}>
           <SectionLabel>Подготовка к интервью</SectionLabel>
           <PageTitle>Что вас ждёт на собеседовании?</PageTitle>
           <div className="mt-7 space-y-5">

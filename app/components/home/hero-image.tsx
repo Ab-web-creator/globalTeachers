@@ -5,9 +5,9 @@ import { useEffect, useRef, useState } from "react";
 import HeroAirplanes from "./hero-airplanes";
 
 const slides = [
-  { desktop: "/images/hero-airport-family-v2.png", mobile: "/images/hero-airport-family-mobile.png", airport: true },
-  { desktop: "/images/hero-campus-new-start.png", mobile: "/images/hero-campus-new-start.png", airport: false },
-  { desktop: "/images/hero-classroom-discovery.png", mobile: "/images/hero-classroom-discovery.png", airport: false },
+  { desktop: "/images/hero-airport-family-v2.webp", mobile: "/images/hero-airport-family-mobile.webp", airport: true },
+  { desktop: "/images/hero-campus-new-start.webp", mobile: "/images/hero-campus-new-start.webp", airport: false },
+  { desktop: "/images/hero-classroom-discovery.webp", mobile: "/images/hero-classroom-discovery.webp", airport: false },
 ];
 
 export default function HeroImage({ paused }: { paused: boolean }) {

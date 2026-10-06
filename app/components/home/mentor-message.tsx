@@ -1,4 +1,4 @@
-import Link from "next/link";
+import MentorSignature from "./mentor-signature";
 
 export default function MentorMessage() {
   return (
@@ -22,17 +22,9 @@ export default function MentorMessage() {
             Работа учителем за рубежом реальна. Возможно, именно сейчас начинается ваша международная история.
           </p>
         </div>
-        <div data-reveal className="mt-6 border-l-2 border-brand-300 pl-4">
-          <p className="text-lg font-medium text-brand-700">Основатель GlobalTeacherHub</p>
-          <p className="mt-1 text-lg text-neutral-600">Ваш наставник на пути к международной карьере</p>
+        <div>
+          <MentorSignature />
         </div>
-        <Link
-          data-reveal
-          href="/consultation"
-          className="mt-12 inline-block rounded-2xl sm:rounded-full action-gradient px-6 py-2.5 sm:py-4 text-base font-medium text-white transition hover:action-gradient sm:px-8"
-        >
-          Обсудить мой следующий шаг
-        </Link>
       </div>
   );
 }

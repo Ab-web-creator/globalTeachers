@@ -3,10 +3,10 @@ import PlatformCard from "./platform-card";
 import PlatformsHeader from "./platforms-header";
 
 const cardVisuals = [
-  { background: "bg-linear-to-br from-brand-300 to-violet-100", image: "/images/platforms/international-school-campus.png" },
-  { background: "bg-linear-to-br from-accent-200 to-teal-50", image: "/images/benefits/development.jpg" },
+  { background: "bg-linear-to-br from-brand-300 to-violet-100", image: "/images/platforms/international-school-campus.webp" },
+  { background: "bg-linear-to-br from-accent-200 to-teal-50", image: "/images/benefits/development.webp" },
   { background: "bg-linear-to-br from-amber-200 to-orange-50", image: "/images/benefits/education-classroom.jpg" },
-  { background: "bg-linear-to-br from-rose-200 to-pink-50", image: "/images/benefits/relocation.jpg" },
+  { background: "bg-linear-to-br from-rose-200 to-pink-50", image: "/images/benefits/relocation.webp" },
   { background: "bg-linear-to-br from-sky-200 to-indigo-50", image: "/images/benefits/flights.jpg" },
 ];
 

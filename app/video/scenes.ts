@@ -11,7 +11,7 @@ export const scenes = [
   },
   {
     title: "Знакомые сомнения",
-    image: "/images/startPackage.jpeg",
+    image: "/images/startPackage.webp",
     alt: "Педагог за ноутбуком обдумывает следующий шаг",
     seconds: timings[1],
     caption: "С чего начать? Куда отправить резюме?",
@@ -19,7 +19,7 @@ export const scenes = [
   },
   {
     title: "Личное обращение",
-    image: "/images/about-teacher.png",
+    image: "/images/about-teacher.webp",
     alt: "Основатель GlobalTeacherHub за рабочим столом",
     seconds: timings[2],
     caption: "Вы не одни на этом пути",
@@ -27,7 +27,7 @@ export const scenes = [
   },
   {
     title: "Понятный план",
-    image: "/images/proPackage.jpeg",
+    image: "/images/proPackage.webp",
     alt: "Специалист работает с документами за ноутбуком",
     seconds: timings[3],
     caption: "Ваш опыт → ваши сильные стороны → план действий",
@@ -43,7 +43,7 @@ export const scenes = [
   },
   {
     title: "Поддержка под ваши задачи",
-    image: "/images/startPackage.jpeg",
+    image: "/images/startPackage.webp",
     alt: "Подготовка к самостоятельному поиску работы",
     seconds: timings[5],
     caption: "START — план · PRO — подготовка · VIP — сопровождение",
@@ -51,7 +51,7 @@ export const scenes = [
   },
   {
     title: "Новая глава",
-    image: "/images/VIPpackage.jpeg",
+    image: "/images/VIPpackage.webp",
     alt: "Семья с багажом в аэропорту",
     seconds: timings[6],
     caption: "Новая страна. Новая школа. Новая глава.",
