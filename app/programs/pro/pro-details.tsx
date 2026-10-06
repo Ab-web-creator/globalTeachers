@@ -11,7 +11,7 @@ export default function ProDetails({ program }: { program: Program }) {
   return (
     <ProgramPage bottomPadding="60px" hero={<ProgramHero tier="PRO" image="/images/pro-application-hero.webp" title={title} intro={hero.intro} highlight={hero.highlight} imageAspectRatio="250 / 207" />}>
       <ProGuide>
-        <ProgramCta tier="PRO" price={program.price} title={cta.title} text={cta.text} image="/images/benefits/development.webp" />
+        <ProgramCta tier="PRO" price={program.price} title={cta.title} text={cta.text} image="/images/pro-development-wide.jpg" imageClassName="object-top md:object-center" imageContainerClassName="aspect-3/2 md:aspect-auto md:h-full" />
       </ProGuide>
     </ProgramPage>
   );

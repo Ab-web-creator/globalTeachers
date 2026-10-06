@@ -11,7 +11,7 @@ export default function StartDetails({ program }: { program: Program }) {
   return (
     <ProgramPage bottomPadding="60px" hero={<ProgramHero tier="START" image="/images/start-career-planning-hero.webp" title={title} intro={hero.intro} highlight={hero.highlight} imageAspectRatio="625 / 528" />}>
       <StartGuide>
-        <ProgramCta tier="START" price={program.price} title={cta.title} text={cta.text} image="/images/start-career-options.webp" imageClassName="object-top" />
+        <ProgramCta tier="START" price={program.price} title={cta.title} text={cta.text} image="/images/start-career-options-wide.jpg" imageClassName="object-center" imageContainerClassName="aspect-4/3 md:aspect-auto md:h-full" />
       </StartGuide>
     </ProgramPage>
   );

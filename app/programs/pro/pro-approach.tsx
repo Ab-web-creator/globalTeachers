@@ -13,7 +13,7 @@ export default function ProApproach() {
         {approach.paragraphs.map((text, index) => (
           <p key={text} className={`${index === 0 ? "mt-7" : "mt-4"} text-lg leading-relaxed text-neutral-600`}>
             {text}
-            {index === approach.paragraphs.length - 1 && <> <strong className="font-semibold text-brand-950">{approach.flowTitle}</strong></>}
+            {index === approach.paragraphs.length - 1 && <><br /><strong className="font-semibold text-brand-950">{approach.flowTitle}</strong></>}
           </p>
         ))}
         <ProPreparationSteps />
