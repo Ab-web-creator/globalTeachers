@@ -41,8 +41,8 @@ export default function PlatformCard({ name, text, href, logo, logoClass, backgr
         <span className="relative w-2/5 shrink-0 overflow-hidden rounded-2xl">
           <Image src={image} alt="" fill sizes="(min-width: 1600px) 180px, (min-width: 1280px) 13vw, (min-width: 768px) 20vw, 40vw" className={`object-cover ${imageClass}`} />
           {name === "Teacher Horizons" && logo && (
-            <span className="absolute inset-x-2 top-3 rounded-lg bg-white/90 p-2">
-              <Image src={logo} alt="" width={180} height={64} className="h-auto w-full object-contain" />
+            <span className="absolute top-3 right-3 aspect-square w-1/3 max-w-12">
+              <Image src={logo} alt="" fill sizes="48px" className="object-contain" />
             </span>
           )}
         </span>

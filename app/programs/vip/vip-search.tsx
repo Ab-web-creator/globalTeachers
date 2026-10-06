@@ -10,24 +10,14 @@ const stageIcons = [
 ];
 const takeawayIcons = [icons.target, icons.chat, "M4 20V14 M10 20V9 M16 20V4"];
 
-function SearchNote() {
-  return (
-    <span style={{ fontFamily: '"Segoe Print", "Bradley Hand", cursive' }} className="block max-w-64 -rotate-3 text-right text-xl font-normal italic leading-relaxed tracking-normal text-brand-400">
-      От заявки до предложения<br />— мы рядом
-    </span>
-  );
-}
-
 export default function VipSearch() {
   return (
     <ProgramSection
       id="vip-search"
       label="Поиск вместе"
-      title={<span className="block lg:pr-80">Когда поиск <span className="text-brand-500">уже начался</span></span>}
-      decoration={<div className="mt-9 mr-10"><SearchNote /></div>}
+      title={<>Когда поиск <span className="text-brand-500">уже начался</span></>}
     >
-      <p className="mt-7 max-w-3xl text-lg leading-relaxed text-neutral-600 lg:max-w-none lg:pr-80 xl:max-w-3xl xl:pr-0">{searchIntroduction}</p>
-      <div aria-hidden="true" className="mt-6 flex justify-end pr-10 lg:hidden"><SearchNote /></div>
+      <p className="mt-7 max-w-3xl text-lg leading-relaxed text-neutral-600">{searchIntroduction}</p>
       <ol className="mt-10 grid gap-8 lg:grid-cols-3 lg:gap-20">
         {searchStages.map(({ id, title, paragraphs, closing }, index) => (
           <li key={id} className="flex min-w-0 flex-col">

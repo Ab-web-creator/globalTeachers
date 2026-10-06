@@ -9,6 +9,7 @@ const strategyIcons: IconName[] = ["globe", "school", "target", "calendar", "doc
 export default function VipStrategy() {
   return (
     <ProgramSection id="vip-strategy" label="Стратегия" title={<>Сначала — <span className="text-brand-500">стратегия</span></>}>
+      <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-linear-to-b from-violet-50 to-violet-50/0" />
       {strategy.paragraphs.map((text) => (
         <p key={text} className="mt-7 max-w-lg text-lg leading-relaxed text-neutral-600">{text}</p>
       ))}

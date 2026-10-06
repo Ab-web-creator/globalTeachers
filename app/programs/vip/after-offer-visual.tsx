@@ -2,12 +2,9 @@ import Image from "next/image";
 
 export default function AfterOfferVisual() {
   return (
-    <div className="relative mx-auto w-full max-w-56">
-      <div className="absolute inset-4 rounded-full bg-brand-300/15 blur-3xl" aria-hidden="true" />
-      <div className="relative overflow-hidden rounded-3xl bg-brand-300/10 shadow-xl shadow-brand-500/10">
-        <Image src="/images/benefits/visa-passport.jpg" alt="Паспорт и документы для поездки" width={640} height={480} sizes="224px" className="aspect-4/3 w-full object-cover" />
-      </div>
-      <p style={{ fontFamily: '"Segoe Print", "Bradley Hand", cursive' }} className="mt-6 -rotate-3 text-right text-xl italic leading-relaxed text-brand-400">Новый этап.<br />Мы рядом.</p>
+    <div className="relative mx-auto w-full max-w-xs">
+      <Image src="/images/vip-after-offer-illustration.png" alt="Документы, паспорт и подготовка к переезду" width={1254} height={1254} sizes="320px" className="h-auto w-full object-contain mask-r-from-95% mask-b-from-95% mask-l-from-95% mask-t-from-95%" />
+      <p style={{ fontFamily: '"Segoe Print", "Bradley Hand", cursive' }} className="absolute right-0 bottom-0 -rotate-3 text-right text-xl italic leading-relaxed text-brand-500">Новый этап.<br />Мы рядом.</p>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import SectionHeading from "../section-heading";
 import SectionLabel from "../job-search/section-label";
 import { interviewTopics, interviewTopicsIntroduction, interviewTopicsTakeaway } from "./content";
 import TopicCard from "./topic-card";
+import ResearchTip from "./research-tip";
 import { topicIcons } from "./topic-icons";
 import { questionIcons } from "./question-icons";
 
@@ -10,17 +11,14 @@ export default function InterviewTopics() {
     <section aria-labelledby="interview-topics" className="relative isolate bg-white py-12 sm:py-16 lg:py-20">
       <SectionLabel>Темы интервью</SectionLabel>
       <SectionHeading id="interview-topics">Что могут спросить?</SectionHeading>
-      <p className="mt-7 max-w-3xl text-lg font-medium leading-relaxed text-neutral-600">{interviewTopicsIntroduction}</p>
+      <p className="mt-7 max-w-3xl text-lg leading-relaxed text-neutral-600">{interviewTopicsIntroduction}</p>
       <ul className="mt-10 grid gap-4 md:grid-cols-2">
         {interviewTopics.map(({ title, text }, index) => (
           <TopicCard key={title} icon={topicIcons[index]} tone={questionIcons[index].tone} title={title} text={text} />
         ))}
       </ul>
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
-        <figure className="flex items-center gap-5 rounded-3xl border border-brand-300 bg-linear-to-br from-violet-50 to-brand-300/10 p-5 sm:gap-8 sm:p-6">
-          <span aria-hidden="true" className="shrink-0 font-serif text-6xl leading-none text-brand-400">“</span>
-          <blockquote className="border-l border-brand-300 pl-5 text-lg leading-relaxed text-black sm:pl-8">{interviewTopicsTakeaway}</blockquote>
-        </figure>
+      <div className="mt-8 max-w-2xl">
+        <ResearchTip label={null}>{interviewTopicsTakeaway}</ResearchTip>
       </div>
     </section>
   );

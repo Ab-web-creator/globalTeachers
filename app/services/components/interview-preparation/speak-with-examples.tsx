@@ -10,7 +10,7 @@ import { speakWithExamples } from "./content";
 export default function SpeakWithExamples() {
   return (
     <section aria-labelledby="interview-examples" className="relative isolate grid items-center gap-10 lg:grid-cols-5 lg:gap-20 py-12 sm:py-16 lg:py-20">
-      <SectionFade tone="rose" direction="down" halfHeight />
+      <SectionFade tone="violet" direction="down" toWhite halfHeight />
       <div className="hidden justify-items-center lg:col-span-2 lg:grid">
         <ExampleIllustration />
       </div>

@@ -8,13 +8,19 @@ export default function useCompactHeader(headerRef: RefObject<HTMLElement | null
 
   useEffect(() => {
     let current = false;
-    const hero = document.querySelector<HTMLElement>('section[aria-labelledby="hero-title"]');
+    let hero: HTMLElement | null = null;
     let expandedHeight = headerRef.current?.getBoundingClientRect().height ?? 0;
+    const observer = new ResizeObserver(update);
 
     function update() {
+      if (!hero) {
+        hero = document.querySelector<HTMLElement>('section[aria-labelledby="hero-title"]');
+        if (hero) observer.observe(hero);
+      }
       // Retain the expanded height so shrinking the navbar cannot flip it back.
       if (!current) expandedHeight = headerRef.current?.getBoundingClientRect().height ?? expandedHeight;
-      const next = !hero || hero.getBoundingClientRect().bottom <= expandedHeight;
+      // The hero can mount after the header during client navigation.
+      const next = hero ? hero.getBoundingClientRect().bottom <= expandedHeight : false;
       setHidden(!next && window.scrollY > 0);
       if (next !== current) {
         current = next;
@@ -25,12 +31,16 @@ export default function useCompactHeader(headerRef: RefObject<HTMLElement | null
     update();
     window.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
-    const observer = new ResizeObserver(update);
-    if (hero) observer.observe(hero);
+    const mountObserver = new MutationObserver(() => {
+      update();
+      if (hero) mountObserver.disconnect();
+    });
+    if (!hero) mountObserver.observe(document.body, { childList: true, subtree: true });
     return () => {
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
       observer.disconnect();
+      mountObserver.disconnect();
     };
   }, [headerRef]);
 

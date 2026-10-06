@@ -1,0 +1,14 @@
+{
+  "tool": "built-in image_gen",
+  "sharedPrompt": "Landscape 4:3 Teacher Portfolio card image; natural editorial educational photography, soft daylight, light wood, warm cream, sky blue and lavender accents; clear central subjects for responsive crops; no branding or personal data.",
+  "subjects": {
+    "projects": "Three diverse middle-school students collaboratively building a small cardboard sustainable city model at a classroom table, hands arranging buildings, proud engaged faces.",
+    "events": "A school art exhibition, colorful student paintings on display panels, a teacher and students discussing the artwork in a bright school hall.",
+    "planning": "Overhead photograph of a teacher's lesson planning workspace, open organized lesson planner with a simple timetable and colored sticky tabs, pencil and laptop corner, hands annotating the plan.",
+    "achievements": "Two proud students showing a completed science project and a small competition trophy with their encouraging teacher, genuine smiles in a classroom.",
+    "certificates": "Overhead photograph of professional development materials: elegant generic course completion certificates with subtle seals and no readable names, seminar notebook, pen and conference lanyard on a light wooden desk.",
+    "clubs": "After-school robotics club, three diverse students and a teacher testing a small wheeled educational robot at a table, colorful parts, delighted focused expressions.",
+    "leadership": "Teacher facilitating a small collaborative team of colleagues around a school table, pointing at a project board of colored sticky notes while colleagues contribute ideas, candid natural interaction.",
+    "materials": "Overhead photograph of teacher-made learning materials on a light wooden classroom table: colorful fraction cards, illustrated science worksheet, vocabulary flashcards and a simple slide deck on a tablet."
+  }
+}

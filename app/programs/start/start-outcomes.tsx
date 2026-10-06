@@ -12,8 +12,8 @@ export default function StartOutcomes({ flow }: { flow: string }) {
         <p className="mt-7 max-w-2xl text-lg leading-relaxed text-neutral-600">После разбора вашего профиля и персональной консультации у вас появится понятный план самостоятельного поиска работы — от выбора подходящих школ до подготовки первых откликов.</p>
         <NumberedSteps flow={flow} />
       </div>
-      <div style={{ aspectRatio: "25 / 23" }} className="relative hidden w-full max-w-md justify-self-center lg:col-span-2 lg:block">
-        <Image src="/images/career-compass.png" alt="Компас на карте мира" fill sizes="448px" className="object-cover mask-l-from-80% mask-b-from-85%" />
+      <div style={{ aspectRatio: "25 / 23" }} className="relative hidden w-full max-w-sm justify-self-center lg:col-span-2 lg:block">
+        <Image src="/images/start-search-plan-illustration-v2.png" alt="Иллюстрация плана поиска работы, списка школ и CV" fill sizes="384px" className="object-contain" />
       </div>
     </section>
   );

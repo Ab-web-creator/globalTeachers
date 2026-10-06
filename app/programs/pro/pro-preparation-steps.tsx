@@ -17,7 +17,7 @@ export default function ProPreparationSteps() {
   return (
     <ol className="mt-10 grid gap-3 sm:grid-cols-2">
       {steps.map((text, index) => (
-        <li key={text} className="flex min-w-0 items-center gap-3 rounded-xl border border-brand-200 bg-white/80 p-4">
+        <li key={text} className="flex min-w-0 items-center gap-3 rounded-xl border border-brand-200 bg-white/80 p-2">
           <span aria-hidden="true" className={`flex size-12 shrink-0 items-center justify-center rounded-full ${badges[index].tone}`}>
             {badges[index].linkedIn ? (
               <span className="flex size-6 items-center justify-center rounded bg-sky-700 text-lg font-bold leading-none text-white">in</span>

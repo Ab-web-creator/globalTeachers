@@ -20,13 +20,13 @@ export default function VipOffer() {
       <IconList
         items={offer.items.map((item, index) => ({
           ...item,
-          tone: iconTones[index % iconTones.length],
+          tone: item.icon === "more" ? "bg-neutral-100 text-neutral-600" : iconTones[index % iconTones.length],
         }))}
         cards
         outlined
       />
 
-      <p className="mt-10 max-w-3xl border-l-2 border-brand-300 pl-5 text-lg leading-relaxed text-neutral-600 sm:mt-12">
+      <p className="mt-10 max-w-lg border-l-2 border-brand-300 pl-5 text-lg font-semibold leading-relaxed text-brand-600 sm:mt-12">
         {offer.closing}
       </p>
     </ProgramSection>

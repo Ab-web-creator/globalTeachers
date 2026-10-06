@@ -9,9 +9,9 @@ export default function StartDetails({ program }: { program: Program }) {
   const title = <>Поймите, <span className="text-brand-500">куда двигаться</span>, прежде чем отправлять десятки резюме</>;
 
   return (
-    <ProgramPage bottomPadding="60px" hero={<ProgramHero tier="START" image={program.image} title={title} intro={hero.intro} highlight={hero.highlight} imageAspectRatio="25 / 22" />}>
+    <ProgramPage bottomPadding="60px" hero={<ProgramHero tier="START" image="/images/start-career-planning-hero.png" title={title} intro={hero.intro} highlight={hero.highlight} imageAspectRatio="625 / 528" />}>
       <StartGuide>
-        <ProgramCta tier="START" price={program.price} title={cta.title} text={cta.text} image="/images/benefits/education-classroom.jpg" />
+        <ProgramCta tier="START" price={program.price} title={cta.title} text={cta.text} image="/images/start-career-options.png" imageClassName="object-top" />
       </StartGuide>
     </ProgramPage>
   );

@@ -29,7 +29,7 @@ export default function FaqSection() {
             </button>
           </div>
         )}
-        <div className="mx-auto mt-8 w-full max-w-lg rounded-3xl p-6 text-center sm:p-8" style={{ background: "radial-gradient(ellipse at center, #f8fbff 0%, #e0e7ff 55%, #c4b5fd 100%)" }}>
+        <div className="mx-auto mt-8 w-full max-w-lg rounded-3xl bg-linear-to-br from-orange-100 via-sky-50 to-violet-100 p-6 text-center sm:p-8">
           <h3 className="text-xl leading-tight font-semibold text-brand-700">Не нашли ответ на свой вопрос?</h3>
           <p className="mt-3 text-base leading-normal text-neutral-600">Расскажите нам о своей ситуации — мы поможем разобраться.</p>
           <Link href="/consultation" className="mt-5 inline-flex items-center justify-center gap-3 rounded-2xl sm:rounded-full max-lg:action-gradient-outline px-6 py-2.5 sm:py-4 text-base font-semibold text-brand-700 transition hover:shadow-md lg:border-2 lg:border-gray-400 lg:bg-white lg:hover:bg-brand-50">
