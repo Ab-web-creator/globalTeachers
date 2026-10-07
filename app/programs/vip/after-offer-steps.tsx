@@ -2,32 +2,31 @@ import LineIcon from "../../services/components/line-icon";
 import { icons } from "../components/icons";
 
 const steps = [
+  { title: "Оффер принят", icon: icons.letter, text: "Предложение принято — начинаем следующий этап вместе." },
   { title: "Документы", icon: icons.document, tone: "bg-violet-100 text-violet-600", text: "Помогаем разобраться, какие документы подготовить с вашей стороны." },
   { title: "Рабочая виза", icon: icons.passport, tone: "bg-sky-100 text-sky-600", text: "Объясняем этапы оформления и действия, которые школа ожидает от вас." },
   { title: "Коммуникация со школой", icon: icons.chat, tone: "bg-rose-100 text-rose-600", text: "Помогаем с вопросами и уточнением следующих шагов." },
   { title: "Подготовка к переезду", icon: icons.truck, tone: "bg-amber-100 text-amber-700", text: "Обсуждаем практические детали и подготовку к новому этапу." },
 ];
 
-const cardTones = [
-  "border-violet-200 bg-violet-50 text-violet-800",
-  "border-sky-200 bg-sky-50 text-sky-800",
-  "border-rose-200 bg-rose-50 text-rose-800",
-  "border-amber-200 bg-amber-50 text-amber-900",
-];
-
 export default function AfterOfferSteps() {
   return (
-    <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-      {steps.map(({ title, icon, tone, text }, index) => (
-        <li key={title} className={`rounded-2xl border p-6 shadow-sm ${cardTones[index]}`}>
-          <div className="flex items-start gap-3">
-            <span aria-hidden="true" className={`flex size-12 shrink-0 items-center justify-center rounded-2xl ${tone}`}>
-              <LineIcon path={icon} className="size-6" />
+    <ol className="grid gap-6 md:grid-cols-5 md:gap-4">
+      {steps.map(({ title, icon, text }, index) => (
+        <li key={title} className="relative flex items-start gap-4 md:flex-col md:items-center md:text-center">
+          <div className="relative flex shrink-0 md:w-full md:justify-center">
+            {index < steps.length - 1 && <span aria-hidden="true" className="absolute top-8 left-1/2 hidden h-px w-full bg-brand-200 md:block" />}
+            <span aria-hidden="true" className={`relative flex size-16 items-center justify-center rounded-full ${index === 1 ? "bg-brand-200 text-brand-600" : "bg-brand-50 text-brand-400"}`}>
+              <LineIcon path={icon} className="size-7" />
             </span>
-            <div className="min-w-0">
-              <h3 className="text-lg font-semibold leading-snug">{title}</h3>
-              <p className="mt-3 leading-relaxed text-neutral-600">{text}</p>
-            </div>
+          </div>
+          <div className="min-w-0">
+            <h3 className={`text-base font-semibold leading-snug ${index === 1 ? "text-brand-600" : "text-brand-950"}`}>{title}</h3>
+            {index === 0 ? (
+              <span className="mt-3 inline-flex items-center gap-2 text-sm text-brand-600"><LineIcon path="M5 12l4 4L19 6" className="size-5" />Принято</span>
+            ) : (
+              <p className="mt-3 text-sm leading-relaxed text-neutral-600">{text}</p>
+            )}
           </div>
         </li>
       ))}

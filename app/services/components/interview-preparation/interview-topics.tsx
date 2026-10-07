@@ -17,7 +17,7 @@ export default function InterviewTopics() {
           <TopicCard key={title} icon={topicIcons[index]} tone={questionIcons[index].tone} title={title} text={text} />
         ))}
       </ul>
-      <div className="mt-8 max-w-2xl">
+      <div className="mt-8 grid gap-4 md:grid-cols-2">
         <ResearchTip label={null}>{interviewTopicsTakeaway}</ResearchTip>
       </div>
     </section>

@@ -15,7 +15,7 @@ export default function BenefitCard({ benefit }: { benefit: Benefit }) {
         />
       </div>
       <div className="relative min-w-0 p-4 @min-[37rem]:px-6 @min-[37rem]:pt-0 @min-[37rem]:pb-7">
-        <div className={`float-right ml-2 flex size-8 items-center justify-center rounded-full shadow-sm [&>svg]:size-5 @min-[37rem]:float-none @min-[37rem]:mx-auto @min-[37rem]:-mt-12 @min-[37rem]:mb-3 @min-[37rem]:size-24 @min-[37rem]:[&>svg]:size-10 ${benefit.iconColor}`}>
+        <div className={`float-right ml-2 flex size-8 items-center justify-center rounded-full shadow-sm [&>svg]:size-5 @min-[37rem]:float-none @min-[37rem]:mx-auto @min-[37rem]:-mt-12 @min-[37rem]:mb-3 @min-[37rem]:size-20 @min-[37rem]:[&>svg]:size-8 ${benefit.iconColor}`}>
           <BenefitIcon name={benefit.id} />
         </div>
         <h3 className="text-lg leading-tight font-bold tracking-tight text-brand-950 @min-[37rem]:text-xl">
