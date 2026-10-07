@@ -34,7 +34,7 @@ export default function InterviewPreparationDetails() {
             <InterviewPractice />
           </div>
         </section>
-        <div className="mt-12"><InterviewSupport /></div>
+        <InterviewSupport />
       </article>
     </main>
   );

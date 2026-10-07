@@ -8,7 +8,7 @@ export default function QuestionRow({ icon, children }: { icon: (typeof question
           <path d={icon.path} />
         </svg>
       </span>
-      <span className="leading-snug text-md text-neutral-700">{children}</span>
+      <span className="leading-snug text-md font-bold text-neutral-500">{children}</span>
     </li>
   );
 }

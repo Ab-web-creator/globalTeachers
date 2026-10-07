@@ -10,6 +10,7 @@ const icons = {
 
 const tones = {
   default: { panel: "border-brand-200 bg-white/60", icon: "bg-brand-100 text-brand-500" },
+  white: { panel: "border-brand-200 bg-white", icon: "bg-brand-100 text-brand-500" },
   yellow: { panel: "border-amber-200 bg-linear-to-br from-yellow-50/50 to-amber-50 shadow-md shadow-amber-900/5", icon: "bg-amber-100 text-amber-700" },
   green: { panel: "border-emerald-200 bg-linear-to-br from-emerald-50 to-green-100 shadow-md shadow-emerald-900/5", icon: "bg-emerald-100 text-emerald-700" },
 } as const;
@@ -34,7 +35,7 @@ export default function IconPanel({ id, title, icon, children, tone = "default",
         </svg>
       </span>
       <div className="min-w-0">
-        {tone === "default" ? (
+        {tone === "default" || tone === "white" ? (
           <SectionHeading id={id} size="small">{title}</SectionHeading>
         ) : (
           <h2 id={id} className="text-xl font-semibold leading-tight tracking-tight text-brand-950">{title}</h2>

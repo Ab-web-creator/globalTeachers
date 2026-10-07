@@ -1,7 +1,7 @@
 import LineIcon from "../../services/components/line-icon";
 import { icons, type IconName } from "./icons";
 
-export default function IconList({ items, cards = false, outlined = false, bold = false }: { items: readonly { label: string; icon: IconName; tone?: string }[]; cards?: boolean; outlined?: boolean; bold?: boolean }) {
+export default function IconList({ items, cards = false, outlined = false, bold = false, textSize = "base" }: { items: readonly { label: string; icon: IconName; tone?: string }[]; cards?: boolean; outlined?: boolean; bold?: boolean; textSize?: "base" | "lg" }) {
   return (
     <ul className="mt-10 grid gap-x-12 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
       {items.map(({ label, icon, tone }) => (
@@ -15,7 +15,7 @@ export default function IconList({ items, cards = false, outlined = false, bold 
               </svg>
             ) : <LineIcon path={icons[icon]} className="size-5" />}
           </span>
-          <span className={`text-base leading-snug text-neutral-700 first-letter:uppercase ${bold ? "font-bold" : ""}`}>{label}</span>
+          <span className={`${textSize === "lg" ? "text-lg" : "text-base"} leading-snug text-neutral-700 first-letter:uppercase ${bold ? "font-bold" : ""}`}>{label}</span>
         </li>
       ))}
     </ul>

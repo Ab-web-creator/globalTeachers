@@ -52,10 +52,10 @@ export default function VerticalStageTabs({ id, label, labels, paths, stages }: 
               <h3 className="text-xl font-semibold leading-snug tracking-tight text-brand-950 sm:text-2xl">{stage.title}</h3>
             </div>
             <div className="mt-4">
-              <div className="space-y-3 text-base leading-relaxed text-neutral-600">
+              <div className="space-y-3 text-lg leading-relaxed text-neutral-600">
                 {stage.paragraphs.map((text) => <p key={text}>{text}</p>)}
               </div>
-              {stage.closing && <p className="mt-5 border-l-2 border-brand-300 pl-4 text-base font-semibold leading-relaxed text-brand-600">{stage.closing}</p>}
+              {stage.closing && <p className="mt-5 border-l-2 border-brand-300 pl-4 text-lg font-semibold leading-relaxed text-brand-600">{stage.closing}</p>}
             </div>
           </div>
         </div>

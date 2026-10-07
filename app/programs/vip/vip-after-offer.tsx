@@ -10,14 +10,14 @@ export default function VipAfterOffer() {
   return (
     <section aria-labelledby="vip-after-offer" className="relative isolate py-12 sm:py-16 lg:py-20">
       <SectionFade tone="violet" direction="down" toWhite />
-      <div className="grid items-center gap-10 md:grid-cols-12 md:gap-8">
-        <div className="md:col-span-7">
+      <div className="grid items-center gap-10 min-[1000px]:grid-cols-12 min-[1000px]:gap-8">
+        <div className="min-[1000px]:col-span-7">
           <SectionLabel>После оффера</SectionLabel>
           <SectionHeading id="vip-after-offer">Предложение принято.<br /><span className="text-brand-500">Что дальше?</span></SectionHeading>
           <Prose paragraphs={afterOffer.paragraphs} />
           <p className="mt-6 text-lg font-semibold leading-relaxed text-neutral-600">{afterOffer.closing}</p>
         </div>
-        <div className="md:col-span-5">
+        <div className="hidden min-[1000px]:col-span-5 min-[1000px]:block">
           <AfterOfferVisual />
         </div>
       </div>
