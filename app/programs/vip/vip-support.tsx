@@ -17,7 +17,7 @@ export default function VipSupport({ children }: { children?: ReactNode }) {
       <ProgramSection id="vip-important" label="Честно о главном" title="Важно">
         <div className="max-w-2xl">
           <Prose paragraphs={important.paragraphs} closing={important.closing} />
-          <p className="mt-6 border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-700">{important.note}</p>
+          <p className="mt-6 border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-600">{important.note}</p>
         </div>
       </ProgramSection>
       {children && <div className="pb-12 sm:pb-0">{children}</div>}

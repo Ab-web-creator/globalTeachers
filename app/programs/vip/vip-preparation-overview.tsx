@@ -13,7 +13,7 @@ export default function VipPreparationOverview() {
         </p>
         <h3 className="mt-4 text-lg font-semibold leading-relaxed text-brand-950">Мы готовим:</h3>
         <IconList items={preparation.items.map((item, index) => ({ ...item, tone: iconTones[index] }))} cards />
-        <p className="mt-10 max-w-lg border-l-2 border-brand-300 pl-5 text-lg leading-relaxed text-neutral-600 sm:mt-12">
+        <p className="mt-10 max-w-lg border-l-2 border-brand-300 pl-5 text-lg leading-relaxed text-brand-600 sm:mt-12">
           {preparation.paragraphs[1]}{" "}
           <strong className="font-semibold text-brand-600">{preparation.closing}</strong>
         </p>

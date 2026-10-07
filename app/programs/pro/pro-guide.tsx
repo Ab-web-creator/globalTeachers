@@ -14,7 +14,8 @@ export default function ProGuide({ children }: { children?: ReactNode }) {
   return (
     <>
       <ProgramSection id="pro-problem" label="Почему нет приглашений" title="Причина не всегда в квалификации" fade="violet" aside={<CheckList items={presentationProblems} icon="alert" />} asideAlign="end">
-        <Prose paragraphs={problem.paragraphs} closing={problem.closing} />
+        <Prose paragraphs={problem.paragraphs} />
+        <p className="mt-5 border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-600">{problem.closing}</p>
       </ProgramSection>
       <ProgramSection id="pro-inclusions" label="Состав программы" title="Что входит в PRO" fade="sky">
         <p className="mt-7 max-w-3xl text-lg leading-relaxed text-neutral-600">{inclusionsIntroduction}</p>

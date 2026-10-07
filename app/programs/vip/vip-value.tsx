@@ -11,7 +11,7 @@ export default function VipValue() {
           <ul className="list-disc space-y-2 pl-5 text-neutral-600">
             {value.notThis.map((text) => <li key={text}>{text}</li>)}
           </ul>
-          <p className="mt-6 font-semibold text-brand-600">{value.statement}</p>
+          <p className="mt-5 border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-600">{value.statement}</p>
         </div>
         <VipSupportMoments />
       </ProgramSection>

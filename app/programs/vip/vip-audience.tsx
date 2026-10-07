@@ -1,6 +1,18 @@
 import LineIcon from "../../services/components/line-icon";
 import ProgramSection from "../components/program-section";
 import { audience } from "./content";
+import { icons } from "../components/icons";
+
+const itemIcons = [icons.clock, icons.compass, icons.globe, icons.home, icons.health, icons.chat];
+
+const itemColors = [
+  { surface: "bg-sky-50 border-sky-200", icon: "bg-sky-500" },
+  { surface: "bg-rose-50 border-rose-200", icon: "bg-rose-500" },
+  { surface: "bg-amber-50 border-amber-200", icon: "bg-amber-500" },
+  { surface: "bg-emerald-50 border-emerald-200", icon: "bg-emerald-500" },
+  { surface: "bg-brand-50 border-brand-200", icon: "bg-brand-500" },
+  { surface: "bg-fuchsia-50 border-fuchsia-200", icon: "bg-fuchsia-500" },
+];
 
 export default function VipAudience() {
   return (
@@ -11,11 +23,11 @@ export default function VipAudience() {
         ))}
         <h3 className="mt-4 text-lg font-semibold leading-relaxed text-brand-950">{audience.itemsTitle}</h3>
       </div>
-      <ul className="mt-10 grid gap-x-12 gap-y-6 sm:grid-cols-2">
-        {audience.items.map((text) => (
-          <li key={text} className="flex items-start gap-4">
-            <span aria-hidden="true" className="mt-1 flex size-7 shrink-0 items-center justify-center rounded-full bg-brand-100/60 text-brand-600">
-              <LineIcon path="M5 12l4 4 10-10" className="size-4" />
+      <ul className="mt-10 grid gap-4 sm:grid-cols-2">
+        {audience.items.map((text, index) => (
+          <li key={text} className={`flex items-start gap-4 rounded-2xl border p-5 ${itemColors[index].surface}`}>
+            <span aria-hidden="true" className={`mt-1 flex size-7 shrink-0 items-center justify-center rounded-full text-white ${itemColors[index].icon}`}>
+              <LineIcon path={itemIcons[index]} className="size-4" />
             </span>
             <span className="max-w-lg text-lg leading-relaxed text-neutral-600 first-letter:uppercase">
               {text.replace(/[;.]$/, "")}

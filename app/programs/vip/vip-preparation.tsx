@@ -9,8 +9,11 @@ import VipPreparationOverview from "./vip-preparation-overview";
 export default function VipPreparation() {
   return (
     <>
-      <ProgramSection id="vip-difference" label="Отличие VIP" title={<>Не консультация.<br />Не просто подготовка.<br /><span className="text-brand-500">Сопровождение.</span></>} asideAlign="end" aside={<Image src="/images/vip-guided-journey-tall-palms.webp" alt="" width={1536} height={1024} sizes="(min-width: 1280px) 448px, 384px" className="ml-auto hidden h-auto w-full max-w-md object-contain mask-r-from-98% mask-b-from-98% mask-l-from-98% lg:block" />}>
-        <Prose paragraphs={difference.paragraphs} closing={difference.closing} />
+      <ProgramSection id="vip-difference" label="Отличие VIP" title={<>Не консультация.<br />Не просто подготовка.<br /><span className="text-brand-500">Сопровождение.</span></>} aside={<Image src="/images/vip-career-guidance-professional.webp" alt="" width={1254} height={1254} sizes="(min-width: 1280px) 448px, 384px" className="ml-auto hidden h-auto w-full max-w-md object-contain lg:block" />}>
+        <Prose paragraphs={difference.paragraphs} />
+        <p className="mt-10 max-w-lg border-l-2 border-brand-300 pl-5 text-lg font-semibold leading-relaxed text-brand-600 sm:mt-12">
+          {difference.closing}
+        </p>
       </ProgramSection>
       <VipStrategy />
       <VipPreparationOverview />

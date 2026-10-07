@@ -15,7 +15,7 @@ export default function VipAfterOffer() {
           <SectionLabel>После оффера</SectionLabel>
           <SectionHeading id="vip-after-offer">Предложение принято.<br /><span className="text-brand-500">Что дальше?</span></SectionHeading>
           <Prose paragraphs={afterOffer.paragraphs} />
-          <p className="mt-6 text-lg font-semibold leading-relaxed text-brand-600">{afterOffer.closing}</p>
+          <p className="mt-6 text-lg font-semibold leading-relaxed text-neutral-600">{afterOffer.closing}</p>
         </div>
         <div className="md:col-span-5">
           <AfterOfferVisual />

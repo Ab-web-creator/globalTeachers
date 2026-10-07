@@ -24,6 +24,7 @@ export default function VipOffer() {
         }))}
         cards
         outlined
+        bold
       />
 
       <p className="mt-10 max-w-lg border-l-2 border-brand-300 pl-5 text-lg font-semibold leading-relaxed text-brand-600 sm:mt-12">

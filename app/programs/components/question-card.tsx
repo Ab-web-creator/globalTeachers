@@ -8,8 +8,7 @@ export default function QuestionCard({ lead, question }: { lead: string; questio
         </svg>
       </span>
       <p className="max-w-sm text-base leading-relaxed text-neutral-600">{lead}</p>
-      <p className="mt-5 max-w-sm text-2xl font-semibold leading-snug tracking-tight text-brand-500">{question}</p>
-      <span aria-hidden="true" className="mt-7 h-1 w-12 rounded-full bg-brand-300" />
+      <p className="mt-5 max-w-sm border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-600">{question}</p>
     </div>
   );
 }

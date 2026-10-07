@@ -1,5 +1,5 @@
 import { heroQuote } from "./content";
 
 export default function CvQuote() {
-  return <p className="mt-5 border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-700">{heroQuote}</p>;
+  return <p className="mt-5 border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-600">{heroQuote}</p>;
 }

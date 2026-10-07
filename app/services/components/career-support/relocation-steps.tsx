@@ -13,7 +13,7 @@ export default function RelocationSteps() {
           <SectionLabel>После оффера</SectionLabel>
           <SectionHeading id="support-relocation">И после предложения наша<br />работа ещё не заканчивается</SectionHeading>
           {relocation.paragraphs.map((text, index) => <p key={text} className={`${index === 0 ? "mt-7" : "mt-4"} max-w-2xl text-lg leading-relaxed text-neutral-600`}>{text}</p>)}
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-brand-600">{relocation.help}</p>
+          <p className="mt-5 max-w-2xl border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-600">{relocation.help}</p>
         </div>
         <RelocationIllustration />
       </div>
