@@ -2,11 +2,23 @@
 
 import { useEffect, useState, type RefObject } from "react";
 
-export default function useCompactHeader(headerRef: RefObject<HTMLElement | null>) {
+export default function useCompactHeader(headerRef: RefObject<HTMLElement | null>, homepage: boolean) {
   const [compact, setCompact] = useState(false);
   const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
+    if (!homepage) {
+      const desktop = window.matchMedia("(min-width: 768px)");
+      const update = () => setHidden(desktop.matches && window.scrollY > 200);
+      update();
+      window.addEventListener("scroll", update, { passive: true });
+      desktop.addEventListener("change", update);
+      return () => {
+        window.removeEventListener("scroll", update);
+        desktop.removeEventListener("change", update);
+      };
+    }
+
     let current = false;
     let hero: HTMLElement | null = null;
     let expandedHeight = headerRef.current?.getBoundingClientRect().height ?? 0;
@@ -42,7 +54,7 @@ export default function useCompactHeader(headerRef: RefObject<HTMLElement | null
       observer.disconnect();
       mountObserver.disconnect();
     };
-  }, [headerRef]);
+  }, [headerRef, homepage]);
 
   return { compact, hidden };
 }

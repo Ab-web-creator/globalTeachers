@@ -25,7 +25,7 @@ export default function ProPreparationSteps() {
               <LineIcon path={badges[index].path} className="size-6" />
             )}
           </span>
-          <span className="text-lg font-medium leading-snug text-brand-950">{text}</span>
+          <span className="text-lg font-normal leading-snug text-brand-950">{text}</span>
         </li>
       ))}
     </ol>

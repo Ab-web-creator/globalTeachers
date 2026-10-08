@@ -14,9 +14,9 @@ export default function SiteHeader({ inFlow = false }: { inFlow?: boolean }) {
   const pathname = usePathname();
   const homepage = pathname === "/";
   const backHref = pathname.startsWith("/services/") ? "/#categories" : pathname.startsWith("/programs/") ? "/#programs" : undefined;
-  const headerState = useCompactHeader(headerRef);
+  const headerState = useCompactHeader(headerRef, homepage);
   const compact = !homepage || headerState.compact;
-  const hidden = homepage && headerState.hidden;
+  const hidden = headerState.hidden;
   const hideHeader = hidden && !menuOpen;
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 

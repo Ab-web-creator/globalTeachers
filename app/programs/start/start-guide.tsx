@@ -31,7 +31,8 @@ export default function StartGuide({ children }: { children?: ReactNode }) {
         </section>
       </div>
       <StartOutcomes flow={approach.outcome} />
-      <ProgramSection id="start-inclusions" label="Состав программы" title="Что входит в START" fade="violet" fadeDirection="down">
+      <ProgramSection id="start-inclusions" label="Состав программы" title="Что входит в START" fade="violet" fadeDirection="down" fadeQuarterHeight>
+        <p className="mt-7 max-w-3xl text-lg leading-relaxed text-neutral-600">Всё необходимое для уверенного старта: оценка вашего опыта, ответы на ключевые вопросы и пошаговый план самостоятельного поиска работы.</p>
         <StartInclusions />
       </ProgramSection>
       {children && <div className="pb-12 sm:pb-0">{children}</div>}
