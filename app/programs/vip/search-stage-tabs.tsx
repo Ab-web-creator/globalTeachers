@@ -6,6 +6,7 @@ export default function SearchStageTabs() {
   return (
     <VerticalStageTabs
       id="vip-search"
+      autoPreview
       label="Этапы поиска"
       labels={["Вакансии", "Заявки", "Интервью"]}
       paths={[icons.search, icons.document, icons.chat]}

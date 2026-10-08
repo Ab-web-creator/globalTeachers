@@ -18,13 +18,8 @@ import ProgramsSection from "./categories/programs-section";
 
 export default function HomePage() {
   useScrollReveal();
-  const [panel, setPanel] = useState<Panel>("Courses");
+  const [panel] = useState<Panel>("Courses");
   const dialog = useRef<HTMLDialogElement>(null);
-
-  function openPanel(next: Panel) {
-    setPanel(next);
-    dialog.current?.showModal();
-  }
 
   return (
     <>
@@ -40,7 +35,7 @@ export default function HomePage() {
         <ProgramsSection />
         <FaqSection />
       </main>
-      <SiteFooter openPanel={openPanel} />
+      <SiteFooter />
       <PreviewDialog dialog={dialog} panel={panel} />
     </>
   );

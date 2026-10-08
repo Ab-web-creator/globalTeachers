@@ -20,7 +20,9 @@ export default function Hero() {
         </Link>
         <a href="#programs" className="hidden rounded-2xl sm:rounded-full border border-brand-200/60 px-6 py-2.5 sm:py-4 text-base font-semibold text-white transition hover:bg-white/10 sm:inline-flex sm:font-medium">Выбрать программу</a>
       </div>
-      <p className="mt-6 hidden text-sm font-semibold leading-normal text-brand-200 sm:block sm:font-normal">Понятный план. Личная поддержка. Ваш следующий шаг.</p>
+      <p className="mt-6 hidden text-base font-semibold leading-normal text-brand-200 sm:block sm:text-lg sm:font-normal">
+        Понятный план <span aria-hidden="true" className="mx-2 inline-block align-middle text-2xl">•</span> Личная поддержка <span aria-hidden="true" className="mx-2 inline-block align-middle text-2xl">•</span> Ваш следующий шаг.
+      </p>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { getImageProps } from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useImperativeHandle, useRef, useState, type Ref } from "react";
 import HeroAirplanes from "./hero-airplanes";
 
 const slides = [
@@ -10,10 +10,16 @@ const slides = [
   { desktop: "/images/hero-airport-family-v2.webp", mobile: "/images/hero-airport-family-mobile.webp", airport: true },
 ];
 
-export default function HeroImage({ paused }: { paused: boolean }) {
+export type HeroImageHandle = { next: () => void };
+
+export default function HeroImage({ paused, ref }: { paused: boolean; ref?: Ref<HeroImageHandle> }) {
   const [active, setActive] = useState(0);
   const loaded = useRef(slides.map(() => false));
   const images = useRef<(HTMLImageElement | null)[]>([]);
+
+  useImperativeHandle(ref, () => ({
+    next: () => setActive((current) => (current + 1) % slides.length),
+  }), []);
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");

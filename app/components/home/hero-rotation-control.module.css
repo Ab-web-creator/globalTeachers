@@ -1,0 +1,6 @@
+@media (min-width: 1280px) {
+  .control {
+    top: min(calc(100dvh - 4rem), calc(100% - 4rem));
+    bottom: auto;
+  }
+}
