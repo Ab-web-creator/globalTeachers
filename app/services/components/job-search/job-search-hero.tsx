@@ -1,7 +1,7 @@
 import PageTitle from "../page-title";
 import ServiceHero from "../service-hero";
 import SectionLabel from "./section-label";
-import { introduction } from "./content";
+import { introduction, vacancyFitIntroduction } from "./content";
 
 export default function JobSearchHero() {
   return (
@@ -10,6 +10,7 @@ export default function JobSearchHero() {
         <SectionLabel>Поиск работы за рубежом</SectionLabel>
         <PageTitle>Где искать вакансии в международных школах?</PageTitle>
         <p className="mt-7 text-base leading-relaxed text-neutral-600 sm:text-lg">{introduction}</p>
+        <p className="mt-4 text-base leading-relaxed text-neutral-600 sm:text-lg">{vacancyFitIntroduction}</p>
         <p className="mt-5 border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-600">Главное — понимать, где искать, когда начинать и на какие позиции откликаться.</p>
       </ServiceHero>
     </div>

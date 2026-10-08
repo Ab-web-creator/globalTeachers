@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
-import CheckList from "../components/check-list";
+import AnimatedQuestions from "./animated-questions";
 import StartOutcomes from "./start-outcomes";
 import StartInclusions from "./start-inclusions";
 import IconPanel from "../../services/components/cv-portfolio/icon-panel";
 import ProgramSection from "../components/program-section";
-import { approach, audience, questions } from "./content";
+import { approach, audience } from "./content";
 
 export default function StartGuide({ children }: { children?: ReactNode }) {
   return (
@@ -14,7 +14,7 @@ export default function StartGuide({ children }: { children?: ReactNode }) {
           <ProgramSection id="start-questions" label="Знакомо?" title="Хотите начать, но есть вопросы?">
             <p className="mt-7 max-w-3xl text-lg leading-relaxed text-neutral-600">Вы хотите работать в международной школе, но пока не уверены, с чего начать. Возможно, вас волнуют такие вопросы:</p>
             <div className="mt-10 text-lg">
-              <CheckList items={questions} icon="question" columns />
+              <AnimatedQuestions />
             </div>
           </ProgramSection>
         </div>

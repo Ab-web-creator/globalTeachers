@@ -1,6 +1,7 @@
 import Image from "next/image";
 import SectionHeading from "../../services/components/section-heading";
 import SectionLabel from "../../services/components/job-search/section-label";
+import VaseDocumentAnimation from "./vase-document-animation";
 import ProPreparationSteps from "./pro-preparation-steps";
 import { approach } from "./content";
 
@@ -18,8 +19,9 @@ export default function ProApproach() {
         ))}
         <ProPreparationSteps />
       </div>
-      <div style={{ aspectRatio: "25 / 23" }} className="relative mt-12 hidden w-full max-w-xs justify-self-center lg:col-span-2 lg:block">
-        <Image src="/images/pro-application-kit-illustration.webp" alt="Профессиональный комплект: CV, портфолио, сопроводительное письмо и профиль" fill sizes="320px" className="object-contain" />
+      <div style={{ aspectRatio: "2 / 3" }} className="relative mt-12 hidden w-full max-w-sm justify-self-center lg:col-span-2 lg:block">
+        <Image src="/images/pro-document-vase-bouquet-v2.png" alt="Ваза с декором в виде CV, портфолио и сопроводительного письма, с букетом живых цветов" fill sizes="(min-width: 1024px) 384px, 0px" className="object-contain" />
+        <VaseDocumentAnimation />
       </div>
     </section>
   );

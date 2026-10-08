@@ -26,7 +26,7 @@ export default function SearchStageCard({ id, title, paragraphs, closing, index 
         <div className="space-y-4 text-base leading-relaxed text-neutral-600">
           {paragraphs.map((text) => <p key={text}>{text}</p>)}
         </div>
-        <p className="mt-6 border-l-2 border-brand-200 pl-4 text-base font-medium leading-relaxed text-brand-600">{closing}</p>
+        <p className="mt-6 border-l-2 border-brand-300 pl-4 text-base font-medium leading-relaxed text-brand-600">{closing}</p>
       </div>
     </li>
   );

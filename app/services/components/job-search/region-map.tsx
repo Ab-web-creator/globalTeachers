@@ -58,7 +58,7 @@ export default function RegionMap() {
       {regions.map(({ name, label, pin }, index) => (
         <span key={name}>
           <span
-            className={`absolute ${label} rounded-lg border border-brand-200 bg-white px-2 py-1 text-center text-xs font-medium leading-tight transition-colors motion-reduce:text-brand-600 motion-reduce:transition-none ${fadingOut ? "duration-1000 ease-in" : "duration-500 ease-out"} ${lit === index ? "text-yellow-700" : "text-brand-500"}`}
+            className={`absolute ${label} rounded-lg border border-brand-200 bg-white px-2 py-1 text-center text-xs font-medium leading-tight transition-colors motion-reduce:text-brand-600 motion-reduce:transition-none ${fadingOut ? "duration-1000 ease-in" : "duration-500 ease-out"} ${lit === index ? "text-red-600" : "text-brand-500"}`}
           >
             {name}
           </span>

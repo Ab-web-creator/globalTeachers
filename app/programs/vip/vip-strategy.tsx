@@ -8,7 +8,7 @@ const strategyIcons: IconName[] = ["globe", "school", "target", "calendar", "doc
 
 export default function VipStrategy() {
   return (
-    <ProgramSection id="vip-strategy" label="Стратегия" title={<>Сначала — <span className="text-brand-500">стратегия</span></>}>
+    <ProgramSection id="vip-strategy" label="Стратегия" title={<>Сначала — <span className="text-brand-500">стратегия</span> вашего<br />международного поиска</>}>
       <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-linear-to-b from-violet-50 to-violet-50/0 to-25%" />
       {strategy.paragraphs.map((text) => (
         <p key={text} className="mt-7 max-w-lg text-lg leading-relaxed text-neutral-600">{text}</p>
@@ -19,7 +19,7 @@ export default function VipStrategy() {
         icon: strategyIcons[index],
         tone: iconTones[index],
       }))} cards outlined textSize="lg" />
-      <p className="mt-10 max-w-lg border-l-2 border-brand-300 pl-5 text-lg font-semibold leading-relaxed text-brand-600 sm:mt-12">
+      <p className="mt-10 max-w-lg border-l-2 border-brand-300 pl-4 text-lg font-semibold leading-relaxed text-brand-600 sm:mt-12">
         {strategy.closing}
       </p>
     </ProgramSection>

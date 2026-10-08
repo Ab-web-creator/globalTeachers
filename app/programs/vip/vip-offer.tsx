@@ -12,8 +12,7 @@ export default function VipOffer() {
           <strong className="font-semibold text-brand-600">{offer.paragraphs[1]}</strong>
         </p>
         <p className="max-w-lg text-lg leading-relaxed text-neutral-600">
-          <strong className="font-semibold text-brand-950">{offer.itemsTitle.replace(/:$/, ".")}</strong>{" "}
-          Один оффер — смотрим на все условия вместе.
+          <strong className="font-semibold text-brand-950">Мы смотрим на предложение целиком — разбираем все условия контракта вместе с вами.</strong>
         </p>
       </div>
 
@@ -27,7 +26,7 @@ export default function VipOffer() {
         bold
       />
 
-      <p className="mt-10 max-w-lg border-l-2 border-brand-300 pl-5 text-lg font-semibold leading-relaxed text-brand-600 sm:mt-12">
+      <p className="mt-10 max-w-lg border-l-2 border-brand-300 pl-4 text-lg font-semibold leading-relaxed text-brand-600 sm:mt-12">
         {offer.closing}
       </p>
     </ProgramSection>

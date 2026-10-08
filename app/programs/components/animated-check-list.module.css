@@ -1,0 +1,11 @@
+.letter {
+  position: relative;
+  display: inline-block;
+}
+
+.visible {
+  position: absolute;
+  inset: 0;
+  font-weight: 400;
+}
+
