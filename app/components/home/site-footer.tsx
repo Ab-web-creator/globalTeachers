@@ -13,8 +13,8 @@ export default function SiteFooter() {
             <Link href="/#home" aria-label="GlobalTeacherHub — на главную" className="relative -top-3 inline-flex items-center gap-3 rounded-sm">
               <Logo className="w-48 text-white sm:w-52" aria-hidden="true" />
             </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/90 xl:mt-auto xl:pt-4">
-              Ваша работа мечты может быть в любой точке мира. Найдите её вместе с нами, вместе с GlobalTeacherHub.
+            <p className="mt-4 max-w-64 text-sm leading-relaxed text-white/90 xl:mt-auto xl:pt-4">
+              Ваша работа мечты может быть в любой точке мира. Найдите её вместе с нами, вместе с GlobalTeacherHub. Начнём этот путь.
             </p>
           </div>
           <div className="min-w-0 lg:col-span-2">

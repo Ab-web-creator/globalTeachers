@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ServiceHoverArt from "./service-hover-art";
 import ServiceIllustration from "../../service-illustration";
 
 type CourseCategoryCardProps = {
@@ -11,8 +12,10 @@ type CourseCategoryCardProps = {
 export default function CourseCategoryCard({ title, description, imageBounds, slug }: CourseCategoryCardProps) {
   return (
     <li data-reveal>
-      <Link href={`/services/${slug}`} className="group flex h-full w-full flex-row items-start gap-3 rounded-3xl bg-white px-4 py-4 text-left transition hover:shadow-lg motion-safe:hover:-translate-y-1 sm:flex-col sm:items-stretch sm:gap-0 sm:px-7 sm:py-5">
-        <ServiceIllustration bounds={imageBounds} className="mt-2 block aspect-5/4 w-1/4 shrink-0 overflow-hidden sm:mx-auto sm:mb-5 sm:w-3/4" />
+      <Link href={`/services/${slug}`} className="group flex h-full w-full flex-row items-start gap-3 rounded-3xl bg-white px-4 py-4 text-left transition hover:shadow-lg sm:flex-col sm:items-stretch sm:gap-0 sm:px-7 sm:py-5">
+        <ServiceIllustration bounds={imageBounds} className="mt-2 block aspect-5/4 w-1/4 shrink-0 overflow-hidden sm:mx-auto sm:mb-5 sm:w-3/4">
+          <ServiceHoverArt slug={slug} />
+        </ServiceIllustration>
         <span className="flex min-w-0 flex-1 flex-col">
           <span className="text-base font-medium tracking-tight group-hover:text-brand-500">{title}</span>
           <span className="mt-2 text-base leading-normal text-neutral-600">{description}</span>
