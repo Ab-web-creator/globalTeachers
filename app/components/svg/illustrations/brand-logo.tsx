@@ -9,7 +9,7 @@ export function BrandLogo({ className = "w-52", ...props }: LogoProps) {
       viewBox="0 0 240 64"
       role="img"
       aria-label="Global Teacher Hub"
-      className={`h-auto -translate-x-[4.754%] ${className}`}
+      className={`h-auto translate-x-[-4.754%] ${className}`}
       {...props}
     >
       <g transform="translate(10 10) scale(0.7)" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

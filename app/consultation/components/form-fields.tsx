@@ -14,11 +14,11 @@ export type Answers = {
 export const emptyAnswers: Answers = {
   name: "", country: "", email: "", contact: "", subject: "", experience: "", education: "", qualification: "", international: "", english: "Не говорю по-английски", priority: "", destinations: "", timing: "", goals: "",
 };
-const fieldClass = "w-full rounded-xl border border-brand-200 bg-white/80 px-4 py-3 text-base text-brand-700 placeholder:text-neutral-400 focus:border-brand-500 focus:outline-1 focus:-outline-offset-2 focus:outline-brand-300";
+const fieldClass = "w-full rounded-xl border border-brand-200 bg-white/80 px-4 py-3 text-base text-brand-700 placeholder:font-normal placeholder:text-neutral-400 focus:border-brand-500 focus:outline-1 focus:-outline-offset-2 focus:outline-brand-300";
 type Field = { name: keyof Answers; label: string; placeholder?: string; type?: string; autocomplete?: string; options?: string[]; multiline?: boolean; optional?: boolean };
 const fields: Field[] = [
   { name: "country", label: "Страна проживания", placeholder: "Выберите страну", autocomplete: "country-name", options: countries },
-  { name: "email", label: "Email", placeholder: "name@email.com", type: "email", autocomplete: "email" },
+  { name: "email", label: "Email", placeholder: "name@example.com", type: "email", autocomplete: "email" },
 ];
 
 export default function FormFields({ step, answers, onChange }: { step: number; answers: Answers; onChange: (name: keyof Answers, value: string) => void }) {

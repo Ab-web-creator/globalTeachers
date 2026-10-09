@@ -18,11 +18,11 @@ type PlatformCardProps = {
 };
 
 const cardVisuals = [
-  { background: "bg-linear-to-br from-brand-300 to-violet-100", image: "/images/platforms/international-school-campus.webp" },
-  { background: "bg-linear-to-br from-accent-200 to-teal-50", image: "/images/benefits/development.webp" },
-  { background: "bg-linear-to-br from-amber-200 to-orange-50", image: "/images/benefits/education-classroom.jpg" },
-  { background: "bg-linear-to-br from-rose-200 to-pink-50", image: "/images/benefits/relocation.webp" },
-  { background: "bg-linear-to-br from-sky-200 to-indigo-50", image: "/images/benefits/flights.jpg" },
+  { background: "bg-linear-to-br from-brand-100 to-violet-100 hover:from-brand-300", image: "/images/platforms/international-school-campus.webp" },
+  { background: "bg-linear-to-br from-accent-100 to-teal-50 hover:from-accent-200", image: "/images/benefits/development.webp" },
+  { background: "bg-linear-to-br from-amber-100 to-orange-50 hover:from-amber-200", image: "/images/benefits/education-classroom.jpg" },
+  { background: "bg-linear-to-br from-rose-100 to-pink-50 hover:from-rose-200", image: "/images/benefits/relocation.webp" },
+  { background: "bg-linear-to-br from-sky-100 to-indigo-50 hover:from-sky-200", image: "/images/benefits/flights.jpg" },
 ];
 
 export default function RecruitmentPlatforms() {
@@ -32,7 +32,7 @@ export default function RecruitmentPlatforms() {
         <div className="max-w-3xl">
           <SectionLabel>Полезные ресурсы</SectionLabel>
           <SectionHeading id="recruitment-platforms" className="text-brand-950">
-            Полезные платформы для поиска вакансий
+            Полезные платформы для<br />поиска вакансий
           </SectionHeading>
           <p className="mt-7 text-lg leading-relaxed text-neutral-600">
             Существует несколько веб-платформ, на которых международные школы из разных стран публикуют вакансии. Используйте их, чтобы найти позиции, которые соответствуют вашему опыту, предмету и желаемой стране.
@@ -46,7 +46,7 @@ export default function RecruitmentPlatforms() {
             <PlatformCard {...platform} {...cardVisuals[index]} />
           </li>))}
           <li className="flex">
-            <PlatformCard name="И другие" text={"Также стоит проверять платформы конкретных образова­тельных групп и сетей школ."} background="bg-linear-to-br from-accent-300 to-accent-100" ornament />
+            <PlatformCard name="И другие" text={"Также стоит проверять платформы конкретных образова­тельных групп и сетей школ."} background="bg-linear-to-br from-purple-300 to-purple-200" ornament />
           </li>
         </ul>
       </div>

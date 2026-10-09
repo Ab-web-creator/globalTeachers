@@ -22,6 +22,7 @@ export default function ConsultationForm() {
   const heading = useRef<HTMLHeadingElement>(null);
   const scrollArea = useRef<HTMLDivElement>(null);
   const errorMessage = useRef<HTMLParagraphElement>(null);
+  const isEnglishStep = consultationSteps[step].fields[0] === "english";
 
   function resetScroll() {
     scrollArea.current?.scrollTo({ top: 0, behavior: "instant" });
@@ -85,12 +86,12 @@ export default function ConsultationForm() {
         <fieldset disabled={sending} aria-describedby={error ? "step-error" : undefined} className="flex min-h-0 min-w-0 flex-1 flex-col">
           <div ref={scrollArea} className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
             <div className="flex min-h-full flex-col">
-              <div className="bg-white px-4 py-5 lg:p-8 xl:p-10">
+              <div className={`bg-white px-4 lg:px-8 xl:px-10 ${isEnglishStep ? "pt-5 pb-4 lg:pt-8 xl:pt-10" : "py-5 lg:py-8 xl:py-10"}`}>
                 <StepIndicator step={step} />
                 <h2 ref={heading} tabIndex={-1} id="form-heading" className="mt-5 text-2xl font-semibold tracking-tight outline-none sm:mt-8">{consultationSteps[step].title}</h2>
                 {consultationSteps[step].description && <p id="step-description" className="mt-2 text-sm leading-relaxed text-neutral-500">{consultationSteps[step].description}</p>}
               </div>
-              <div className="flex min-w-0 flex-1 flex-col gap-6 bg-white px-4 py-6 lg:p-8 xl:p-10">
+              <div className={`flex min-w-0 flex-1 flex-col gap-6 bg-white px-4 lg:px-8 xl:px-10 ${isEnglishStep ? "pt-5.25 pb-6 lg:pb-8 xl:pb-10" : "py-6 lg:py-8 xl:py-10"}`}>
                 <div>
                   {consultationSteps[step].fields[0] === "name"
                     ? <NameFields value={teacherName} error={error} errorField={errorField} errorRef={errorMessage} onChange={(value) => { setError(""); setTeacherName(value); }} />
