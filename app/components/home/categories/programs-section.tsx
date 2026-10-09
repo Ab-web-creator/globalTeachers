@@ -52,7 +52,7 @@ function ProgramCardFooter({ program }: ProgramCardFooterProps) {
             <span className="text-base lg:text-xs leading-normal text-neutral-600">единоразовая</span>
           </span>)}
         </p>
-        <Link href={`/programs/${program.tier.toLowerCase()}`} className="shrink-0 rounded-2xl sm:rounded-full bg-linear-to-r from-blue-100 to-violet-200 px-5 py-2.5 sm:py-3 text-base lg:text-sm font-medium whitespace-nowrap text-brand-700 transition hover:from-blue-200 hover:to-violet-300 hover:shadow-md" aria-label={`Подробнее о программе ${program.tier}`}>
+        <Link href={`/programs/${program.tier.toLowerCase()}`} className="shrink-0 rounded-2xl sm:rounded-full bg-linear-to-r from-blue-100 to-violet-200 px-5 py-2.5 sm:py-3 text-base lg:text-sm font-medium whitespace-nowrap text-brand-700 transition hover:from-blue-200 hover:to-violet-300 hover:shadow-md after:absolute after:inset-0 after:rounded-2xl" aria-label={`Подробнее о программе ${program.tier}`}>
           Подробнее
         </Link>
       </div>

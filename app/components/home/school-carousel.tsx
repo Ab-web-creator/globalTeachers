@@ -33,12 +33,12 @@ export default function SchoolCarousel() {
       onTouchCancel={() => { touchStart.current = null; }}
       className="mt-5 overflow-hidden rounded-xl touch-pan-y focus-visible:-outline-offset-2 sm:mt-6"
     >
-      <div ref={track} className="flex w-max py-2">
+      <div ref={track} className="flex w-max py-2 mix-blend-multiply">
         {[0, 1, 2].map((copy) => (
           <ul key={copy} aria-hidden={copy !== 1 ? true : undefined} aria-label={copy === 1 ? "Логотипы международных школ" : undefined} className="flex shrink-0 items-center gap-4 pr-4 sm:gap-6 sm:pr-6">
             {schoolPartners.map(({ name, image }) => (
               <li key={image} className="relative h-14 w-20 shrink-0 sm:h-24 sm:w-32 lg:w-40">
-                <Image src={`/images/collaboration/${image}.jpeg`} alt={copy === 1 ? name : ""} fill sizes="(min-width: 1024px) 160px, (min-width: 640px) 128px, 80px" className="object-contain mix-blend-multiply" />
+                <Image src={`/images/collaboration/${image}.jpeg`} alt={copy === 1 ? name : ""} fill sizes="(min-width: 1024px) 160px, (min-width: 640px) 128px, 80px" className="object-contain" />
               </li>
             ))}
           </ul>

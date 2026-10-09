@@ -5,12 +5,12 @@ import { audience } from "./content";
 const itemIcons = [programIconPaths.clock, programIconPaths.compass, programIconPaths.globe, programIconPaths.home, programIconPaths.health, programIconPaths.chat];
 
 const itemColors = [
-  { surface: "bg-sky-50 border-sky-200", icon: "bg-sky-500" },
-  { surface: "bg-rose-50 border-rose-200", icon: "bg-rose-500" },
-  { surface: "bg-amber-50 border-amber-200", icon: "bg-amber-500" },
-  { surface: "bg-emerald-50 border-emerald-200", icon: "bg-emerald-500" },
-  { surface: "bg-brand-50 border-brand-200", icon: "bg-brand-500" },
-  { surface: "bg-fuchsia-50 border-fuchsia-200", icon: "bg-fuchsia-500" },
+  { icon: "bg-sky-500" },
+  { icon: "bg-rose-500" },
+  { icon: "bg-amber-500" },
+  { icon: "bg-emerald-500" },
+  { icon: "bg-brand-500" },
+  { icon: "bg-fuchsia-500" },
 ];
 
 export default function VipAudience() {
@@ -24,7 +24,7 @@ export default function VipAudience() {
       </div>
       <ul className="mt-10 grid gap-4 sm:grid-cols-2">
         {audience.items.map((text, index) => (
-          <li key={text} className={`flex items-start gap-4 rounded-2xl border p-5 ${itemColors[index].surface}`}>
+          <li key={text} className="flex items-start gap-4 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm">
             <span aria-hidden="true" className={`mt-1 flex size-7 shrink-0 items-center justify-center rounded-full text-white ${itemColors[index].icon}`}>
               <StrokeIcon path={itemIcons[index]} className="size-4" />
             </span>

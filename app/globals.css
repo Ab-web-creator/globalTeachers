@@ -83,7 +83,7 @@ button {
 }
 
 ::selection {
-  background: var(--color-brand-100);
+  background: var(--color-yellow-200);
   color: var(--color-black);
 }
 
