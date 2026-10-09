@@ -3,11 +3,11 @@ import PageTitle from "../../services/components/page-title";
 import SectionLabel from "../../services/components/job-search/section-label";
 import ServiceHero from "../../services/components/service-hero";
 
-type Props = { tier: string; image: string; title: ReactNode; intro: readonly string[]; highlight: string; imageAspectRatio?: string; imageHeightScale?: number };
+type Props = { tier: string; image: string; title: ReactNode; intro: readonly string[]; highlight: string; imageAspectRatio?: string; imageHeightScale?: number; imageTopCrop?: number; matchTextHeight?: boolean };
 
-export default function ProgramHero({ tier, image, title, intro, highlight, imageAspectRatio, imageHeightScale }: Props) {
+export default function ProgramHero({ tier, image, title, intro, highlight, imageAspectRatio, imageHeightScale, imageTopCrop, matchTextHeight }: Props) {
   return (
-    <ServiceHero image={image} backHref="/#programs" imageAspectRatio={imageAspectRatio} stretchImage={!imageAspectRatio} imageHeightScale={imageHeightScale}>
+    <ServiceHero image={image} backHref="/#programs" imageAspectRatio={imageAspectRatio} stretchImage={!imageAspectRatio} imageHeightScale={imageHeightScale} imageTopCrop={imageTopCrop} matchTextHeight={matchTextHeight}>
       <SectionLabel>Программа {tier}</SectionLabel>
       <PageTitle>{title}</PageTitle>
       <div className="mt-6 space-y-5">

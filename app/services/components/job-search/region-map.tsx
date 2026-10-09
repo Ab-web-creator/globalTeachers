@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 const regions = [
   { name: "Северная Америка", label: "left-[6%] top-[14%]", pin: "left-[22%] top-[32%]" },
-  { name: "Латинская Америка", label: "left-[2%] top-[58%]", pin: "left-[28%] top-[70%]" },
+  { name: "Латинская Америка", label: "left-[10%] top-[53%]", pin: "left-[28%] top-[70%]" },
   { name: "Европа", label: "left-[46%] top-[6%]", pin: "left-[51%] top-[20%]" },
   { name: "Африка", label: "left-[42%] top-[40%]", pin: "left-[50%] top-[52%]" },
   { name: "Ближний Восток", label: "left-[58%] top-[26%]", pin: "left-[58%] top-[40%]" },

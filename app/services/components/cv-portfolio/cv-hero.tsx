@@ -6,7 +6,7 @@ import CvQuote from "./cv-quote";
 
 export default function CvHero() {
   return (
-    <ServiceHero image="/images/startPackage.webp" imageHeightScale={0.95}>
+    <ServiceHero image="/images/cv-portfolio-hero.webp" imageHeightScale={0.95}>
       <SectionLabel>CV и портфолио</SectionLabel>
       <PageTitle>
         Как представить свой опыт <span className="text-brand-500">международной школе?</span>

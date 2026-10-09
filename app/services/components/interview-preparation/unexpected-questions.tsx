@@ -2,7 +2,6 @@ import { InterviewNotesIllustration, InterviewQuestionIcon, interviewQuestionIco
 import SectionLabel from "../job-search/section-label";
 import SectionHeading from "../section-heading";
 import { interviewQuestions, unexpectedQuestionsIntroduction, unexpectedQuestionsTip } from "./content";
-import ResearchTip from "./research-tip";
 
 export default function UnexpectedQuestions() {
   return (
@@ -14,9 +13,11 @@ export default function UnexpectedQuestions() {
         <ul className="mt-10 grid gap-4 md:grid-cols-2">
           {interviewQuestions.map((question, index) => (<QuestionRow key={question} icon={interviewQuestionIcons[index]}>{question}</QuestionRow>))}
         </ul>
-        <div className="mt-8">
-          <ResearchTip>{unexpectedQuestionsTip}</ResearchTip>
-        </div>
+        <aside className="mt-8 border-l-2 border-brand-300 pl-4">
+          <p className="text-lg font-medium leading-relaxed text-brand-600">
+            <strong className="font-semibold">Совет:</strong> {unexpectedQuestionsTip}
+          </p>
+        </aside>
       </div>
       <div className="relative hidden self-stretch lg:block">
         <InterviewNotesIllustration />

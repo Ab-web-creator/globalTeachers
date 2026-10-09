@@ -3,7 +3,7 @@ import { important } from "./content";
 
 export default function VipImportant() {
   return (
-    <ProgramSection id="vip-important" label="Честно о главном" title="Важно">
+    <ProgramSection id="vip-important" label="О главном" title="Что важно знать о программе VIP">
       <div className="max-w-2xl">
         {important.paragraphs.map((text) => (
           <p key={text} className="mt-7 text-lg leading-relaxed text-neutral-600">

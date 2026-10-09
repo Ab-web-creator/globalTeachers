@@ -1,7 +1,7 @@
 import { JobSearchStepIcon, jobSearchStepPaths, StepConnectorArrowIcon } from "@/app/components/svg";
 import type { ReactNode } from "react";
 import SectionHeading from "../section-heading";
-import { firstSteps, firstStepsIntroduction } from "./content";
+import { firstSteps, firstStepsIntroduction, firstStepsOutcome } from "./content";
 import SectionLabel from "./section-label";
 
 const stepAccents = [
@@ -22,7 +22,10 @@ export default function FirstSteps({ children }: {
       <SectionLabel>Первые шаги</SectionLabel>
       <div className="flex flex-col gap-7">
         <SectionHeading id="job-search-first-steps">С чего начать?</SectionHeading>
-        <p className="max-w-3xl text-lg leading-relaxed text-neutral-600">{firstStepsIntroduction}</p>
+        <div className="max-w-3xl text-lg leading-relaxed text-neutral-600">
+          <p>{firstStepsIntroduction}</p>
+          <p className="mt-4">{firstStepsOutcome}</p>
+        </div>
       </div>
       <div className="mt-10 lg:-mx-4 lg:mt-4 lg:overflow-x-auto lg:px-4 lg:pt-6 lg:pb-4">
         <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-[repeat(4,minmax(13rem,1fr)_auto)_minmax(13rem,1fr)] lg:gap-3">

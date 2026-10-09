@@ -14,10 +14,10 @@ import VipStrategy from "./vip-strategy";
 import VipValue from "./vip-value";
 
 export default function VipDetails({ program }: { program: Program; }) {
-  const title = <>Вы занимаетесь своей работой. Мы помогаем вам <span className="text-brand-500">строить следующую карьеру</span>.</>;
+  const title = <>От первого шага до предложения</>;
 
   return (
-    <ProgramPageLayout bottomPadding="60px" hero={<ProgramHero tier="VIP" image="/images/vip-personal-support-hero-cropped.webp" title={title} intro={hero.intro} highlight={hero.highlight} imageHeightScale={0.95} />}>
+    <ProgramPageLayout bottomPadding="60px" hero={<ProgramHero tier="VIP" image="/images/vip-personal-support-hero-cropped.webp" title={title} intro={hero.intro} highlight={hero.highlight} matchTextHeight />}>
       <VipDifference />
       <VipStrategy />
       <VipPreparationOverview />

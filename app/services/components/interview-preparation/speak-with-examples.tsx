@@ -1,17 +1,16 @@
-import { InterviewAnswerIllustration } from "@/app/components/svg";
+import Image from "next/image";
 import SectionFade from "../cv-portfolio/section-fade";
 import SectionLabel from "../job-search/section-label";
 import SectionHeading from "../section-heading";
 import AnswerExample from "./answer-example";
 import { speakWithExamples } from "./content";
-import ResearchTip from "./research-tip";
 
 export default function SpeakWithExamples() {
   return (
     <section aria-labelledby="interview-examples" className="relative isolate grid items-center gap-10 lg:grid-cols-5 lg:gap-20 py-12 sm:py-16 lg:py-20">
       <SectionFade tone="violet" direction="down" toWhite halfHeight />
       <div className="hidden justify-items-center lg:col-span-2 lg:grid">
-        <InterviewAnswerIllustration />
+        <Image src="/images/interview-example-notes.webp" alt="Карточки подготовки ответа: Ситуация, Мои действия, Результат" width={800} height={1200} sizes="(min-width: 1600px) 448px, 35vw" className="h-auto w-full max-w-md" />
       </div>
       <div className="lg:col-span-3">
         <SectionLabel>Сильные ответы</SectionLabel>
@@ -25,9 +24,11 @@ export default function SpeakWithExamples() {
           <ExampleSteps steps={speakWithExamples.steps} />
         </div>
         <p className="mt-8 max-w-3xl text-lg leading-relaxed text-neutral-600">{speakWithExamples.outcome}</p>
-        <div className="mt-8">
-          <ResearchTip>{speakWithExamples.tip}</ResearchTip>
-        </div>
+        <aside className="mt-8 border-l-2 border-brand-300 pl-4">
+          <p className="text-lg font-medium leading-relaxed text-brand-600">
+            <strong className="font-semibold">Совет:</strong> {speakWithExamples.tip}
+          </p>
+        </aside>
       </div>
     </section>
   );
