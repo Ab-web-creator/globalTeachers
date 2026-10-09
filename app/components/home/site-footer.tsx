@@ -1,7 +1,7 @@
+import { BrandLogo } from "@/app/components/svg";
 import Link from "next/link";
-import Logo from "../Logo";
-import FooterLinks from "./footer/footer-links";
 import styles from "./footer/footer-background.module.css";
+import FooterLinks from "./footer/footer-links";
 
 export default function SiteFooter() {
   return (
@@ -11,7 +11,7 @@ export default function SiteFooter() {
         <div className="grid gap-10 py-10 sm:py-12 lg:grid-cols-3 lg:gap-x-24 lg:gap-y-10">
           <div className="max-w-md xl:flex xl:flex-col xl:items-start">
             <Link href="/#home" aria-label="GlobalTeacherHub — на главную" className="relative -top-3 inline-flex items-center gap-3 rounded-sm">
-              <Logo className="w-48 text-white sm:w-52" aria-hidden="true" />
+              <BrandLogo className="w-48 text-white sm:w-52" aria-hidden="true" />
             </Link>
             <p className="mt-4 max-w-64 text-sm leading-relaxed text-white/90 xl:mt-auto xl:pt-4">
               Ваша работа мечты может быть в любой точке мира. Найдите её вместе с нами, вместе с GlobalTeacherHub. Начнём этот путь.

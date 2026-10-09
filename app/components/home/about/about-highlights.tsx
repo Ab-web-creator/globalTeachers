@@ -1,7 +1,7 @@
+import type { AchievementKind } from "@/app/components/svg";
 import AchievementCard from "./achievement-card";
-import type { AchievementKind } from "./achievement-icon";
 
-const highlights: { kind: AchievementKind; title: string; description: string }[] = [
+const highlights: { kind: AchievementKind; title: string; description: string; }[] = [
   { kind: "trophy", title: "Практические рекомендации", description: "от специалиста с международным опытом" },
   { kind: "medal", title: "Подготовка CV, портфолио и интервью", description: "по международным стандартам" },
   { kind: "flag", title: "Индивидуальная стратегия поиска", description: "с учётом вашего опыта и целей" },

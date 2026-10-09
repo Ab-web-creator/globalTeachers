@@ -1,5 +1,6 @@
 "use client";
 
+import { SchoolMapPinIcon } from "@/app/components/svg";
 import { useEffect, useState } from "react";
 
 const regions = [
@@ -13,8 +14,11 @@ const regions = [
 ];
 
 const fadeInMs = 500;
+
 const holdMs = 3000;
+
 const fadeOutMs = 1000;
+
 const pauseMs = 1500;
 
 export default function RegionMap() {
@@ -53,7 +57,7 @@ export default function RegionMap() {
     <div className="relative aspect-[95/52] w-full text-brand-400">
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(circle,currentColor_1.1px,transparent_1.3px)] bg-size-[7px_7px] mask-contain mask-center mask-no-repeat [-webkit-mask-image:url(/images/world-map.svg)] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain] [mask-image:url(/images/world-map.svg)]"
+        className="absolute inset-0 bg-[radial-gradient(circle,currentColor_1.1px,transparent_1.3px)] bg-size-[7px_7px] mask-contain mask-center mask-no-repeat [-webkit-mask-image:url(/svg/maps/world-map.svg)] [-webkit-mask-position:center] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:contain] [mask-image:url(/svg/maps/world-map.svg)]"
       />
       {regions.map(({ name, label, pin }, index) => (
         <span key={name}>
@@ -62,9 +66,7 @@ export default function RegionMap() {
           >
             {name}
           </span>
-          <svg viewBox="0 0 24 24" aria-hidden="true" className={`absolute ${pin} size-5 text-brand-600`}>
-            <path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z" />
-          </svg>
+          <SchoolMapPinIcon className={`absolute ${pin} size-5 text-brand-600`} />
         </span>
       ))}
     </div>

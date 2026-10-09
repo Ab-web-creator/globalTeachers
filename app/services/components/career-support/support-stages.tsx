@@ -1,9 +1,10 @@
-import SectionHeading from "../section-heading";
+import { careerStageIconPaths } from "@/app/components/svg";
+import Image from "next/image";
 import SectionFade from "../cv-portfolio/section-fade";
 import SectionLabel from "../job-search/section-label";
+import SectionHeading from "../section-heading";
 import VerticalStageTabs from "../vertical-stage-tabs";
 import { stagesIntroduction, supportSections } from "./content";
-import { stageIcons } from "./icons";
 
 export default function SupportStages() {
   return (
@@ -20,7 +21,7 @@ export default function SupportStages() {
               autoPreview
               label="Этапы сопровождения"
               labels={["Стратегия", "Вакансии", "Заявки", "Интервью"]}
-              paths={stageIcons}
+              paths={careerStageIconPaths}
               stages={supportSections}
             />
           </div>
@@ -32,4 +33,3 @@ export default function SupportStages() {
     </section>
   );
 }
-import Image from "next/image";

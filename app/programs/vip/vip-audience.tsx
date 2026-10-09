@@ -1,9 +1,8 @@
-import LineIcon from "../../services/components/line-icon";
+import { programIconPaths, StrokeIcon } from "@/app/components/svg";
 import ProgramSection from "../components/program-section";
 import { audience } from "./content";
-import { icons } from "../components/icons";
 
-const itemIcons = [icons.clock, icons.compass, icons.globe, icons.home, icons.health, icons.chat];
+const itemIcons = [programIconPaths.clock, programIconPaths.compass, programIconPaths.globe, programIconPaths.home, programIconPaths.health, programIconPaths.chat];
 
 const itemColors = [
   { surface: "bg-sky-50 border-sky-200", icon: "bg-sky-500" },
@@ -27,7 +26,7 @@ export default function VipAudience() {
         {audience.items.map((text, index) => (
           <li key={text} className={`flex items-start gap-4 rounded-2xl border p-5 ${itemColors[index].surface}`}>
             <span aria-hidden="true" className={`mt-1 flex size-7 shrink-0 items-center justify-center rounded-full text-white ${itemColors[index].icon}`}>
-              <LineIcon path={itemIcons[index]} className="size-4" />
+              <StrokeIcon path={itemIcons[index]} className="size-4" />
             </span>
             <span className="max-w-lg text-lg leading-relaxed text-neutral-600 first-letter:uppercase">
               {text.replace(/[;.]$/, "")}

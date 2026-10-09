@@ -1,6 +1,6 @@
-import AchievementIcon, { type AchievementKind } from "./achievement-icon";
+import { AchievementIcon, type AchievementKind } from "@/app/components/svg";
 
-type AchievementCardProps = { title: string; description: string; kind: AchievementKind };
+type AchievementCardProps = { title: string; description: string; kind: AchievementKind; };
 
 export default function AchievementCard({ title, description, kind }: AchievementCardProps) {
   return (

@@ -1,4 +1,4 @@
-import type { IconName } from "../components/icons";
+import type { ProgramIconName } from "@/app/components/svg";
 
 export const hero = {
   intro: [
@@ -25,7 +25,7 @@ export const approach = {
   outcome: "куда подаваться → что подготовить → что улучшить → где искать → что делать дальше.",
 };
 
-export const inclusions: { title: string; text: string; icon: IconName }[] = [
+export const inclusions: { title: string; text: string; icon: ProgramIconName }[] = [
   { icon: "profile", title: "Анализ вашего профиля", text: "Разберём образование, квалификацию, опыт и сильные стороны." },
   { icon: "globe", title: "Страны и школы", text: "Определим направления, которые имеет смысл рассматривать именно с вашим профилем." },
   { icon: "chat", title: "Персональная консультация 60–90 минут", text: "Разберём ваши вопросы и выстроим последовательность дальнейших действий." },

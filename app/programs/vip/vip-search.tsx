@@ -1,8 +1,9 @@
+import { programIconPaths } from "@/app/components/svg";
 import Image from "next/image";
-import SectionHeading from "../../services/components/section-heading";
 import SectionLabel from "../../services/components/job-search/section-label";
-import { searchIntroduction } from "./content";
-import SearchStageTabs from "./search-stage-tabs";
+import SectionHeading from "../../services/components/section-heading";
+import VerticalStageTabs from "../../services/components/vertical-stage-tabs";
+import { searchIntroduction, searchStages } from "./content";
 
 export default function VipSearch() {
   return (
@@ -13,7 +14,7 @@ export default function VipSearch() {
           <SectionHeading id="vip-search">Когда поиск <span className="text-brand-500">уже начался</span></SectionHeading>
           <p className="mt-7 text-lg leading-relaxed text-neutral-600">{searchIntroduction}</p>
           <div className="mt-10">
-            <SearchStageTabs />
+            <VerticalStageTabs id="vip-search" autoPreview label="Этапы поиска" labels={["Вакансии", "Заявки", "Интервью"]} paths={[programIconPaths.search, programIconPaths.document, programIconPaths.chat]} stages={searchStages} />
           </div>
         </div>
         <div className="hidden w-full min-[1000px]:col-span-4 min-[1000px]:mt-40 min-[1000px]:block">

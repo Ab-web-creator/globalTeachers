@@ -1,5 +1,8 @@
-import CvGuide from "./cv-guide";
+import CvExperience from "./cv-experience";
 import CvHero from "./cv-hero";
+import CvStructure from "./cv-structure";
+import QualitySection from "./quality-section";
+import TeacherPortfolio from "./teacher-portfolio";
 
 export default function CvPortfolioDetails() {
   return (
@@ -7,7 +10,10 @@ export default function CvPortfolioDetails() {
       <article>
         <CvHero />
         <div>
-          <CvGuide />
+          <CvStructure />
+          <CvExperience />
+          <TeacherPortfolio />
+          <QualitySection />
         </div>
       </article>
     </main>

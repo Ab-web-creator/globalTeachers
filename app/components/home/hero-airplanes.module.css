@@ -1,6 +1,6 @@
 .windows {
   /* Match each image's crop and positioning. */
-  mask-image: url("/images/hero-window-mask-mobile.svg");
+  mask-image: url("/svg/masks/hero-window-mobile.svg");
   mask-size: cover;
   mask-position: 80% center;
   mask-repeat: no-repeat;
@@ -8,7 +8,7 @@
 
 @media (min-width: 40rem) {
   .windows {
-    mask-image: url("/images/hero-window-mask.svg");
+    mask-image: url("/svg/masks/hero-window.svg");
     mask-position: center;
   }
 }

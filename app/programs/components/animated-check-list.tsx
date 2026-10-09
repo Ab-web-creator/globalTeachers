@@ -1,12 +1,11 @@
 "use client";
 
+import { programIconPaths, StrokeIcon, type ProgramIconName } from "@/app/components/svg";
 import { useEffect, useMemo, useRef, useState } from "react";
-import LineIcon from "../../services/components/line-icon";
-import { icons, type IconName } from "./icons";
 import styles from "./animated-check-list.module.css";
 
 export default function AnimatedCheckList({ items, icon = "question", columns = false }: {
-  items: readonly string[]; icon?: IconName; columns?: boolean;
+  items: readonly string[]; icon?: ProgramIconName; columns?: boolean;
 }) {
   const questions = useMemo(() => items.map((text) => text.replace(/[;.]$/, "")), [items]);
   const container = useRef<HTMLDivElement>(null);
@@ -53,7 +52,7 @@ export default function AnimatedCheckList({ items, icon = "question", columns = 
           return (
             <li key={question} className="flex items-start gap-4">
               <span aria-hidden="true" className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-500">
-                <LineIcon path={icons[icon]} className="size-4" />
+                <StrokeIcon path={programIconPaths[icon]} className="size-4" />
               </span>
               <span aria-label={question} className="leading-relaxed text-neutral-700">
                 <span aria-hidden="true">

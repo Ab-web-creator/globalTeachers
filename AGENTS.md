@@ -10,9 +10,17 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Component structure
 
-- Always keep files short by extracting cohesive UI sections and reusable elements into focused components wherever possible.
-- Keep page files focused on composing components; put supporting content and interaction logic in small, dedicated modules or components.
-- Reduce file length through component extraction, not by compressing readable code onto fewer lines.
+- Keep page files focused on importing and composing section components in display order.
+- Use sections as the main component boundary. Keep section-specific cards, copy, notes, and illustrations inside the section file; small local helpers are fine when they avoid repetition.
+- Extract deeper components only for elements shared across sections or substantial interactive controls and animations. Keep content data and hooks in dedicated modules where useful.
+- Keep code readable; do not shorten files by compressing code or splitting a section into many tiny component files.
+
+## SVG assets
+
+- Keep SVG markup and path data in `app/components/svg`, grouped into icons, illustrations, masks, and data modules.
+- Export SVG components by descriptive names through `app/components/svg/index.ts`. Use names that describe the graphic, with `Icon`, `Illustration`, or `Mask` where appropriate.
+- Import SVG components into sections instead of embedding raw SVG markup. Keep interaction state in the owning UI component and pass it to the SVG when needed.
+- Keep standalone `.svg` files in `public/svg`, grouped by purpose. Export their public URLs from `app/components/svg/assets.ts`; CSS may reference those URLs directly.
 
 ## Tailwind CSS
 

@@ -1,4 +1,4 @@
-import type { IconName } from "../components/icons";
+import type { ProgramIconName } from "@/app/components/svg";
 
 export const hero = {
   intro: ["Вы уже знаете, что хотите работать в международной школе: понимаете, в каком направлении двигаться, какие страны и школы вам интересны, и готовы начать откликаться на вакансии."],
@@ -32,7 +32,7 @@ export const approach = {
 
 export const inclusionsIntroduction = "Сначала мы анализируем ваш опыт, образование и квалификацию и выстраиваем стратегию поиска. А затем начинается полноценная подготовка: CV, сопроводительное письмо, Teacher Portfolio и LinkedIn, ориентированные на международные школы.";
 
-export const inclusions: { title: string; paragraphs: string[]; icon: IconName }[] = [
+export const inclusions: { title: string; paragraphs: string[]; icon: ProgramIconName }[] = [
   {
     icon: "compass",
     title: "Всё из START",
@@ -105,7 +105,7 @@ export const practice = {
         "Мы проведём полноценное mock interview, после которого разберём ответы и определим, что стоит улучшить перед настоящим собеседованием.",
       ],
     },
-  ] satisfies { title: string; paragraphs: string[]; icon: IconName }[],
+  ] satisfies { title: string; paragraphs: string[]; icon: ProgramIconName }[],
 };
 
 export const preparationQuestions = [

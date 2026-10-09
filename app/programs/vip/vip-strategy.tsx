@@ -1,10 +1,10 @@
+import type { ProgramIconName } from "@/app/components/svg";
 import IconList from "../components/icon-list";
 import { iconTones } from "../components/icon-tones";
-import type { IconName } from "../components/icons";
 import ProgramSection from "../components/program-section";
 import { strategy } from "./content";
 
-const strategyIcons: IconName[] = ["globe", "school", "target", "calendar", "document", "profile"];
+const strategyIcons: ProgramIconName[] = ["globe", "school", "target", "calendar", "document", "profile"];
 
 export default function VipStrategy() {
   return (

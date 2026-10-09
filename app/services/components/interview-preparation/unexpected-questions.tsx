@@ -1,9 +1,8 @@
-import SectionHeading from "../section-heading";
+import { InterviewNotesIllustration, InterviewQuestionIcon, interviewQuestionIcons } from "@/app/components/svg";
 import SectionLabel from "../job-search/section-label";
-import QuestionRow from "./question-row";
-import ResearchTip from "./research-tip";
+import SectionHeading from "../section-heading";
 import { interviewQuestions, unexpectedQuestionsIntroduction, unexpectedQuestionsTip } from "./content";
-import { questionIcons } from "./question-icons";
+import ResearchTip from "./research-tip";
 
 export default function UnexpectedQuestions() {
   return (
@@ -13,19 +12,29 @@ export default function UnexpectedQuestions() {
         <SectionHeading id="unexpected-questions">Будьте готовы к неожиданным вопросам</SectionHeading>
         <p className="mt-7 max-w-2xl text-lg leading-relaxed text-neutral-600">{unexpectedQuestionsIntroduction}</p>
         <ul className="mt-10 grid gap-4 md:grid-cols-2">
-          {interviewQuestions.map((question, index) => (
-            <QuestionRow key={question} icon={questionIcons[index]}>{question}</QuestionRow>
-          ))}
+          {interviewQuestions.map((question, index) => (<QuestionRow key={question} icon={interviewQuestionIcons[index]}>{question}</QuestionRow>))}
         </ul>
         <div className="mt-8">
           <ResearchTip>{unexpectedQuestionsTip}</ResearchTip>
         </div>
       </div>
       <div className="relative hidden self-stretch lg:block">
-        <svg aria-hidden="true" viewBox="0 88 1024 1380" preserveAspectRatio="xMidYMax meet" className="absolute inset-0 h-full w-full">
-          <image href="/images/interview-notes-cutout.webp" width="1024" height="1536" style={{ maskImage: "url(/images/interview-notes-mask.svg)", maskSize: "100% 100%", maskRepeat: "no-repeat" }} />
-        </svg>
+        <InterviewNotesIllustration />
       </div>
     </div>
+  );
+}
+
+function QuestionRow({ icon, children }: {
+  icon: (typeof interviewQuestionIcons)[number];
+  children: string;
+}) {
+  return (
+    <li className="flex items-center gap-4 rounded-2xl border border-brand-100 bg-white/70 px-3 py-3 sm:px-4">
+      <span aria-hidden="true" className={`flex size-9 shrink-0 items-center justify-center rounded-full ${icon.tone}`}>
+        <InterviewQuestionIcon path={icon.path} />
+      </span>
+      <span className="leading-snug text-md font-bold text-neutral-500">{children}</span>
+    </li>
   );
 }

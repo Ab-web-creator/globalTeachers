@@ -1,13 +1,13 @@
 "use client";
 
+import { AboutDissolveMask } from "@/app/components/svg";
 import Image from "next/image";
 import { useId, useState } from "react";
-import AboutDissolveMask from "./about-dissolve-mask";
 import styles from "./about-carousel.module.css";
 
-type Photo = { src: string; alt: string };
+type Photo = { src: string; alt: string; };
 
-export default function AboutCarousel({ active, photos, sizes }: { active: number; photos: readonly Photo[]; sizes: string }) {
+export default function AboutCarousel({ active, photos, sizes }: { active: number; photos: readonly Photo[]; sizes: string; }) {
   const maskId = useId().replace(/:/g, "");
   const [slide, setSlide] = useState({ current: active, previous: null as number | null, transition: 0 });
   if (slide.current !== active) {

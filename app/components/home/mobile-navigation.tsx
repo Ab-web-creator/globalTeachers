@@ -1,10 +1,11 @@
+import { MobileMenuCloseIcon } from "@/app/components/svg";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import MenuLanguages from "./menu-languages";
 import { navigationItems } from "./navigation-items";
 import styles from "./site-header.module.css";
 
-type MobileNavigationProps = { onClose: () => void };
+type MobileNavigationProps = { onClose: () => void; };
 
 export default function MobileNavigation({ onClose }: MobileNavigationProps) {
   const dialog = useRef<HTMLDialogElement>(null);
@@ -37,7 +38,7 @@ export default function MobileNavigation({ onClose }: MobileNavigationProps) {
         <div className="flex items-center justify-between gap-4 px-5 pt-5 sm:px-7 sm:pt-7">
           <MenuLanguages />
           <button type="button" onClick={onClose} aria-label="Закрыть меню" autoFocus className="flex size-11 items-center justify-center rounded-2xl sm:rounded-full text-brand-500 transition hover:bg-brand-50">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="size-6" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6" /></svg>
+            <MobileMenuCloseIcon />
           </button>
         </div>
         <div aria-hidden="true" className="mx-7 my-6 flex items-center gap-4 text-brand-300">

@@ -1,4 +1,4 @@
-import type { IconName } from "../components/icons";
+import type { ProgramIconName } from "@/app/components/svg";
 
 export const hero = {
   intro: [
@@ -36,7 +36,7 @@ export const preparation = {
     { label: "LinkedIn-профиль", icon: "link" },
     { label: "подготовку к интервью", icon: "mic" },
     { label: "пробное собеседование", icon: "chat" },
-  ] satisfies { label: string; icon: IconName }[],
+  ] satisfies { label: string; icon: ProgramIconName }[],
   closing: "Именно здесь начинается главное отличие VIP.",
 };
 
@@ -88,7 +88,7 @@ export const offer = {
     { label: "продолжительность контракта", icon: "calendar" },
     { label: "испытательный срок", icon: "clock" },
     { label: "другие условия", icon: "more" },
-  ] satisfies { label: string; icon: IconName }[],
+  ] satisfies { label: string; icon: ProgramIconName }[],
   closing: "Помогаем понять, какие вопросы необходимо задать школе до подписания договора. А если предложений несколько — спокойно сравниваем их.",
 };
 
@@ -110,7 +110,7 @@ export const value = {
     { title: "Приглашение на интервью", text: "Вы знаете, как готовиться к разговору со школой.", icon: "mic" },
     { title: "Предложение от школы", text: "Есть с кем спокойно разобрать условия.", icon: "letter" },
     { title: "Возник вопрос?", text: "Вы не ищете ответы в одиночку и не начинаете каждый раз с нуля.", icon: "question" },
-  ] satisfies { title: string; text: string; icon: IconName }[],
+  ] satisfies { title: string; text: string; icon: ProgramIconName }[],
 };
 
 export const audience = {

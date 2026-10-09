@@ -1,9 +1,8 @@
-import LineIcon from "../../services/components/line-icon";
-import { icons, type IconName } from "./icons";
+import { checkListTickIconPath, programIconPaths, StrokeIcon, type ProgramIconName } from "@/app/components/svg";
 
 // A card listing short items, each with a check (or another) icon.
-export default function CheckList({ title, items, icon = "checklist", columns = false }: { title?: string; items: readonly string[]; icon?: IconName; columns?: boolean }) {
-  const path = icon === "checklist" ? "M5 12l4 4 10-10" : icons[icon];
+export default function CheckList({ title, items, icon = "checklist", columns = false }: { title?: string; items: readonly string[]; icon?: ProgramIconName; columns?: boolean; }) {
+  const path = icon === "checklist" ? checkListTickIconPath : programIconPaths[icon];
 
   return (
     <div className="rounded-3xl border border-brand-100 bg-white/80 p-6 sm:p-8">
@@ -12,7 +11,7 @@ export default function CheckList({ title, items, icon = "checklist", columns = 
         {items.map((item) => (
           <li key={item} className="flex items-start gap-4">
             <span aria-hidden="true" className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-500">
-              <LineIcon path={path} className="size-4" />
+              <StrokeIcon path={path} className="size-4" />
             </span>
             <span className="leading-relaxed text-neutral-700 first-letter:uppercase">{item.replace(/[;.]$/, "")}</span>
           </li>

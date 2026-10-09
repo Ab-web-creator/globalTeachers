@@ -1,9 +1,9 @@
+import { ServiceCategoryIllustration } from "@/app/components/svg";
 import Link from "next/link";
-import ServiceIllustration from "../../components/service-illustration";
 import type { Service } from "../services";
 import BackLink from "./back-link";
 
-export default function ServiceDetails({ service }: { service: Service }) {
+export default function ServiceDetails({ service }: { service: Service; }) {
   return (
     <main className="mx-auto max-w-6xl px-6 py-12 sm:px-10 lg:py-20">
       <BackLink />
@@ -14,7 +14,7 @@ export default function ServiceDetails({ service }: { service: Service }) {
           <p className="mt-6 text-lg leading-relaxed text-neutral-600">{service.introduction}</p>
         </div>
         <div className="rounded-3xl bg-white p-6">
-          <ServiceIllustration bounds={service.imageBounds} className="mx-auto aspect-5/4 w-full max-w-xs overflow-hidden" />
+          <ServiceCategoryIllustration bounds={service.imageBounds} className="mx-auto aspect-5/4 w-full max-w-xs overflow-hidden" />
         </div>
       </header>
       <section aria-labelledby="service-topics" className="py-12 sm:py-16 lg:py-20">

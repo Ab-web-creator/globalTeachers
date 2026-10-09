@@ -1,4 +1,4 @@
-import type { FaqIconName } from "./faq-icon";
+import type { FaqIconName } from "@/app/components/svg";
 
 export const faqItems: { question: string; answer: string; icon: FaqIconName }[] = [
   {

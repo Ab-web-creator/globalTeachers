@@ -1,3 +1,5 @@
+import { tesLogoUrl, schroleLogoUrl } from "@/app/components/svg";
+
 export const introduction = "Поиск работы в международной школе отличается от привычного поиска вакансий внутри своей страны. Школы набирают педагогов со всего мира, а вакансии размещают как на собственных сайтах, так и на специализированных международных платформах.";
 
 export const vacancyFitIntroduction = "Прежде чем откликаться, важно понять, насколько вакансия соответствует вашему профилю. Сопоставьте требования к предмету, опыту и квалификации с вашими сильными сторонами — это поможет сосредоточиться на школах, где ваша заявка будет наиболее убедительной.";
@@ -23,8 +25,8 @@ export const recruitmentPlatformsIntroduction = "Например, сущест�
 
 export const recruitmentPlatforms = [
   { name: "Teacher Horizons", text: "Вакансии в школах по всему миру", href: "https://www.teacherhorizons.com/jobs", logo: "/images/platforms/teacher-horizons.png", logoClass: "h-12" },
-  { name: "TES", text: "Одна из крупнейших платформ для педагогов", href: "https://www.tes.com/jobs", logo: "/images/platforms/tes.svg", logoClass: "h-10" },
-  { name: "Schrole", text: "Вакансии и управление заявками", href: "https://www.schrole.com/jobs-for-teachers/", logo: "/images/platforms/schrole.svg", logoClass: "h-9" },
+  { name: "TES", text: "Одна из крупнейших платформ для педагогов", href: "https://www.tes.com/jobs", logo: tesLogoUrl, logoClass: "h-10" },
+  { name: "Schrole", text: "Вакансии и управление заявками", href: "https://www.schrole.com/jobs-for-teachers/", logo: schroleLogoUrl, logoClass: "h-9" },
   { name: "Search Associates", text: "Для опытных педагогов", href: "https://www.searchassociates.com/Candidates/Get-Started.aspx", logo: "/images/platforms/search-associates.png", logoClass: "h-14" },
   { name: "ISS", text: "Вакансии, ярмарки и ресурсы", href: "https://www.iss.edu/for-individuals/find-a-job/find-a-teaching-job", logo: "/images/platforms/iss.png", logoClass: "h-11" },
 ];

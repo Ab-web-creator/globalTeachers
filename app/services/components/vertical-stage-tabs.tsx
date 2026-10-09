@@ -1,7 +1,7 @@
 "use client";
 
+import { StrokeIcon } from "@/app/components/svg";
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
-import LineIcon from "./line-icon";
 import useStagePreview from "./use-stage-preview";
 import styles from "./vertical-stage-tabs.module.css";
 
@@ -51,7 +51,7 @@ export default function VerticalStageTabs({ id, label, labels, paths, stages, au
       <div role="tablist" aria-label={label} aria-orientation={vertical ? "vertical" : "horizontal"} className="flex gap-2 rounded-t-2xl border border-b-0 border-brand-200 bg-brand-50 px-2 pt-2 sm:w-48 sm:flex-col sm:rounded-t-none sm:rounded-l-2xl sm:border-r-0 sm:border-b sm:py-2 sm:pr-0 lg:w-52">
         {labels.map((label, index) => (
           <button key={label} ref={(element) => { buttons.current[index] = element; }} type="button" role="tab" id={`${id}-tab-${index}`} aria-selected={active === index} aria-controls={`${id}-panel-${index}`} tabIndex={active === index ? 0 : -1} onClick={() => select(index)} onKeyDown={(event) => navigate(event, index)} className={`relative flex min-w-0 flex-1 flex-col items-center gap-2 rounded-t-xl border px-2 py-4 sm:flex-none sm:rounded-t-none sm:rounded-l-xl sm:px-3 text-xs font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500 sm:flex-row sm:gap-3 sm:text-base lg:px-5 lg:text-lg ${active === index ? "z-10 -mb-px border-brand-200 border-b-white bg-white text-brand-600 sm:mb-0 sm:-mr-px sm:border-r-white sm:border-b-brand-200" : "mb-2 border-transparent bg-brand-100 sm:mb-0 sm:mr-2 text-neutral-600 hover:bg-brand-200 hover:text-brand-600"}`}>
-            <LineIcon path={paths[index]} className="size-5 shrink-0 sm:size-6" />
+            <StrokeIcon path={paths[index]} className="size-5 shrink-0 sm:size-6" />
             {label}
           </button>
         ))}
