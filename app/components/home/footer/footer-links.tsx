@@ -9,7 +9,6 @@ const groups = [
       { label: "О нас", href: "/#about" },
       { label: "Программы", href: "/#programs" },
       { label: "Вакансии", href: "/jobs" },
-      { label: "Видеопрезентация", href: "/video" },
     ],
   },
   {
