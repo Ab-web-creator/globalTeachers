@@ -1,5 +1,13 @@
 import type { SVGProps } from "react";
 
+export function CardChevronIcon(svgProps: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...svgProps}>
+      <path d="m9 4 8 8-8 8" />
+    </svg>
+  );
+}
+
 export function HeaderBackArrowIcon(svgProps: SVGProps<SVGSVGElement>) {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" {...svgProps}><path fill="currentColor" d="M11 6 4 12l7 6v-4h9v-4h-9z" /></svg>

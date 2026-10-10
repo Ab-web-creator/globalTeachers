@@ -1,4 +1,4 @@
-import { ServiceCategoryHoverArt, ServiceCategoryIllustration } from "@/app/components/svg";
+import { CardChevronIcon, ServiceCategoryHoverArt, ServiceCategoryIllustration } from "@/app/components/svg";
 import Link from "next/link";
 import { services } from "../../../services/services";
 
@@ -38,13 +38,18 @@ export default function CategoriesSection() {
 function CourseCategoryCard({ title, description, imageBounds, slug }: CourseCategoryCardProps) {
   return (
     <li data-reveal>
-      <Link href={`/services/${slug}`} className="group flex h-full w-full flex-row items-start gap-3 rounded-3xl bg-white px-4 py-4 text-left transition hover:shadow-lg sm:flex-col sm:items-stretch sm:gap-0 sm:px-7 sm:py-5">
-        <ServiceCategoryIllustration bounds={imageBounds} className="mt-2 block aspect-5/4 w-1/4 shrink-0 overflow-hidden sm:mx-auto sm:mb-5 sm:w-3/4">
-          <ServiceCategoryHoverArt slug={slug} />
+      <Link href={`/services/${slug}`} className="group grid h-full w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-3xl bg-white px-4 py-4 text-left transition hover:shadow-lg sm:flex sm:flex-col sm:items-stretch sm:gap-0 sm:px-7 sm:py-5">
+        <ServiceCategoryIllustration bounds={imageBounds} className="block aspect-5/4 w-14 shrink-0 overflow-hidden sm:mx-auto sm:mt-2 sm:mb-5 sm:w-3/4">
+          <g className="hidden sm:block">
+            <ServiceCategoryHoverArt slug={slug} />
+          </g>
         </ServiceCategoryIllustration>
         <span className="flex min-w-0 flex-1 flex-col">
           <span className="text-base font-medium tracking-tight group-hover:text-brand-500">{title}</span>
           <span className="mt-2 text-base leading-normal text-neutral-600">{description}</span>
+        </span>
+        <span className="flex w-6 shrink-0 self-stretch items-center justify-center sm:hidden">
+          <CardChevronIcon className="size-6 text-purple-500" />
         </span>
       </Link>
     </li>

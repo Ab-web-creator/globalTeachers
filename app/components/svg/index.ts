@@ -19,7 +19,7 @@ export { HandwrittenHeartIcon, HandwrittenNoteUnderline, MentorSignatureUnderlin
 export { RelocationDocumentsIllustration } from "./illustrations/relocation-documents";
 export { JobSearchStepIcon, StepConnectorArrowIcon, PlatformExternalLinkIcon, SchoolMapPinIcon } from "./icons/job-search-steps";
 export { SubjectTagRemoveIcon, ConsultationDetailIcon, SubjectPickerChevronIcon, SubjectListRemoveIcon, SubjectSelectedCheckIcon, FormSelectChevronIcon } from "./icons/form";
-export { HeaderBackArrowIcon, MenuToggleIcon, BackLinkArrowIcon, FaqToggleIcon, MobileMenuCloseIcon, SlideshowPlaybackIcon, PortfolioCarouselArrowIcon } from "./icons/navigation";
+export { CardChevronIcon, HeaderBackArrowIcon, MenuToggleIcon, BackLinkArrowIcon, FaqToggleIcon, MobileMenuCloseIcon, SlideshowPlaybackIcon, PortfolioCarouselArrowIcon } from "./icons/navigation";
 export { EditApplicationIcon, DeleteApplicationIcon, ApplicationDetailsChevronIcon } from "./icons/admin";
 export { HeroAirplaneIllustration } from "./illustrations/hero-airplane";
 export { StrategyRouteIllustration } from "./illustrations/strategy-route";
