@@ -20,10 +20,10 @@ export const scenes = [
   {
     title: "Личное обращение",
     image: "/images/about-teacher.webp",
-    alt: "Основатель GlobalTeacherHub за рабочим столом",
+    alt: "Основатель TeacherNavigator за рабочим столом",
     seconds: timings[2],
     caption: "Вы не одни на этом пути",
-    narration: "Я сам прошёл этот путь. Поэтому создал GlobalTeacherHub — чтобы помогать педагогам готовиться к международной карьере с понятным планом и поддержкой.",
+    narration: "Я сам прошёл этот путь. Поэтому создал TeacherNavigator — чтобы помогать педагогам готовиться к международной карьере с понятным планом и поддержкой.",
   },
   {
     title: "Понятный план",
@@ -62,8 +62,8 @@ export const scenes = [
     image: "/images/benefits/flights.jpg",
     alt: "Крыло самолёта над облаками",
     seconds: timings[7],
-    caption: "GlobalTeacherHub · Начните с консультации",
-    narration: "Расскажите нам о своём опыте. Обсудим ваши возможности и следующий шаг. GlobalTeacherHub — возможно, именно сейчас начинается ваша международная история.",
+    caption: "TeacherNavigator · Начните с консультации",
+    narration: "Расскажите нам о своём опыте. Обсудим ваши возможности и следующий шаг. TeacherNavigator — возможно, именно сейчас начинается ваша международная история.",
   },
 ];
 

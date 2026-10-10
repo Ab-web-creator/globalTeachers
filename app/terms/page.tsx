@@ -3,7 +3,7 @@ import LegalDocument from "../legal/components/legal-document";
 import { termsDocument } from "../legal/terms-content";
 
 export const metadata: Metadata = {
-  title: "Пользовательское соглашение — GlobalTeacherHub",
+  title: "Пользовательское соглашение — TeacherNavigator",
   description: termsDocument.description,
   robots: { index: false, follow: true },
 };

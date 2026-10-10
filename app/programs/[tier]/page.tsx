@@ -21,7 +21,7 @@ async function getProgram(params: Props["params"]) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const program = await getProgram(params);
-  return { title: `${program.tier} — Global Teacher Hub`, description: program.description };
+  return { title: `${program.tier} — TeacherNavigator`, description: program.description };
 }
 
 export default async function ProgramPage({ params }: Props) {

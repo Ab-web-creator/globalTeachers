@@ -3,8 +3,8 @@ import Link from "next/link";
 import PageHeader from "../components/page-header";
 
 export const metadata: Metadata = {
-  title: "Вакансии — Global Teacher Hub",
-  description: "Работа в международных школах: подготовьтесь к поиску вакансий с Global Teacher Hub.",
+  title: "Вакансии — TeacherNavigator",
+  description: "Работа в международных школах: подготовьтесь к поиску вакансий с TeacherNavigator.",
 };
 
 export default function JobsPage() {

@@ -38,7 +38,7 @@ export default function MentorNote() {
             </div>
             <div>
               <div data-reveal className="mt-10">
-                <p className="text-sm font-semibold tracking-widest text-neutral-900 uppercase">Основатель GlobalTeacherHub</p>
+                <p className="text-sm font-semibold tracking-widest text-neutral-900 uppercase">Основатель TeacherNavigator</p>
                 <p className="mt-1 text-base text-neutral-500">Ваш наставник на пути к международной карьере</p>
               </div>
             </div>

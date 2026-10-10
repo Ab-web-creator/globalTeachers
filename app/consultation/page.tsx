@@ -6,7 +6,7 @@ import ConsultationLayout from "./components/consultation-layout";
 import ConsultationAside from "./components/consultation-aside";
 
 export const metadata: Metadata = {
-  title: "Консультация — Global Teacher Hub",
+  title: "Консультация — TeacherNavigator",
   description: "Расскажите о своём педагогическом опыте и целях — по одному вопросу за шаг. Начните путь к работе в международной школе.",
 };
 

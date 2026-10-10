@@ -25,8 +25,8 @@ export async function POST(request: Request) {
     const link = `${origin}/consultation/confirm#${token}`;
     await sendEmail({
       to: answers.email,
-      subject: "Подтвердите email — GlobalTeacherHub",
-      text: `Спасибо за обращение в GlobalTeacherHub!\n\nЧтобы подтвердить ваш email и отправить заявку на консультацию, откройте ссылку:\n\n${link}\n\nСсылка действительна 24 часа. После подтверждения мы получим вашу заявку и свяжемся с вами, чтобы обсудить следующие шаги.\n\nЕсли вы не оставляли заявку, просто проигнорируйте это письмо.`,
+      subject: "Подтвердите email — TeacherNavigator",
+      text: `Спасибо за обращение в TeacherNavigator!\n\nЧтобы подтвердить ваш email и отправить заявку на консультацию, откройте ссылку:\n\n${link}\n\nСсылка действительна 24 часа. После подтверждения мы получим вашу заявку и свяжемся с вами, чтобы обсудить следующие шаги.\n\nЕсли вы не оставляли заявку, просто проигнорируйте это письмо.`,
     });
     return Response.json({ ok: true });
   } catch {

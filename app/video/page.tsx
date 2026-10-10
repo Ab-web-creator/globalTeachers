@@ -6,7 +6,7 @@ import Storyboard from "./components/storyboard";
 import { totalSeconds, voiceover } from "./scenes";
 
 export const metadata: Metadata = {
-  title: "Видеопрезентация — GlobalTeacherHub",
+  title: "Видеопрезентация — TeacherNavigator",
   description: "Сценарий рекламного ролика: изображения по порядку и текст озвучки на русском языке.",
 };
 
@@ -16,7 +16,7 @@ export default function VideoPage() {
       <div className="mx-auto max-w-5xl">
         <Link href="/" className="text-sm font-medium text-brand-500 hover:underline">← На главную</Link>
         <header className="mt-8">
-          <p className="text-sm font-semibold tracking-widest text-brand-500 uppercase">GlobalTeacherHub · Видеопрезентация</p>
+          <p className="text-sm font-semibold tracking-widest text-brand-500 uppercase">TeacherNavigator · Видеопрезентация</p>
           <h1 className="mt-4 text-4xl leading-tight font-semibold tracking-wide sm:text-5xl">Ваша международная история</h1>
           <p className="mt-4 max-w-3xl text-lg leading-normal text-neutral-600">Личное обращение к педагогам: от сомнений к понятному следующему шагу. 8 кадров · около {Math.round(totalSeconds)} секунд · озвучка от первого лица.</p>
         </header>

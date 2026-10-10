@@ -31,7 +31,7 @@ async function getService(params: Props["params"]) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const service = await getService(params);
-  return { title: `${service.title} — Global Teacher Hub`, description: service.description };
+  return { title: `${service.title} — TeacherNavigator`, description: service.description };
 }
 
 export default async function ServicePage({ params }: Props) {

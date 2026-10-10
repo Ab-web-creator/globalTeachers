@@ -3,7 +3,7 @@ import LegalDocument from "../legal/components/legal-document";
 import { privacyDocument } from "../legal/privacy-content";
 
 export const metadata: Metadata = {
-  title: "Политика конфиденциальности — GlobalTeacherHub",
+  title: "Политика конфиденциальности — TeacherNavigator",
   description: privacyDocument.description,
   robots: { index: false, follow: true },
 };

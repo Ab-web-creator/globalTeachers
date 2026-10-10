@@ -6,13 +6,13 @@ export default function FinishedVideo() {
         controls
         playsInline
         preload="metadata"
-        aria-label="Видеопрезентация GlobalTeacherHub на русском языке"
+        aria-label="Видеопрезентация TeacherNavigator на русском языке"
         className="aspect-video w-full rounded-3xl bg-brand-900"
       >
-        <source src="/video/globalteacherhub-ru.mp4" type="video/mp4" />
-        <track default kind="captions" src="/video/globalteacherhub-ru.vtt" srcLang="ru" label="Русский" />
+        <source src="/video/teachernavigator-ru.mp4" type="video/mp4" />
+        <track default kind="captions" src="/video/teachernavigator-ru.vtt" srcLang="ru" label="Русский" />
       </video>
-      <a href="/video/globalteacherhub-ru.mp4" download className="mt-4 inline-flex rounded-2xl sm:rounded-full bg-brand-500 px-6 py-2.5 sm:py-3 font-medium text-white hover:bg-brand-600">
+      <a href="/video/teachernavigator-ru.mp4" download className="mt-4 inline-flex rounded-2xl sm:rounded-full bg-brand-500 px-6 py-2.5 sm:py-3 font-medium text-white hover:bg-brand-600">
         Скачать видео MP4
       </a>
       <p className="mt-3 text-sm text-neutral-600">Единый видеофайл с демонстрационной синтетической озвучкой. 1280 × 720 · русский язык.</p>

@@ -30,7 +30,7 @@ export default function VideoPreview() {
         ref={audio}
         controls
         preload="metadata"
-        aria-label="Русская озвучка GlobalTeacherHub"
+        aria-label="Русская озвучка TeacherNavigator"
         className="mt-4 w-full"
         onTimeUpdate={(event) => {
           const time = event.currentTarget.currentTime;
@@ -39,12 +39,12 @@ export default function VideoPreview() {
           setIndex(next);
         }}
       >
-        <source src="/audio/globalteacherhub-ru.mp3" type="audio/mpeg" />
+        <source src="/audio/teachernavigator-ru.mp3" type="audio/mpeg" />
       </audio>
       <div className="mt-4 flex flex-wrap items-center gap-3">
         <button type="button" disabled={index === 0} onClick={() => seek(index - 1)} className="rounded-2xl sm:rounded-full bg-brand-100 px-4 py-2.5 sm:py-3 text-brand-600 disabled:opacity-40">Назад</button>
         <button type="button" disabled={index === scenes.length - 1} onClick={() => seek(index + 1)} className="rounded-2xl sm:rounded-full bg-brand-100 px-4 py-2.5 sm:py-3 text-brand-600 disabled:opacity-40">Далее</button>
-        <a href="/audio/globalteacherhub-ru.mp3" download className="text-brand-500 underline underline-offset-4">Скачать озвучку MP3</a>
+        <a href="/audio/teachernavigator-ru.mp3" download className="text-brand-500 underline underline-offset-4">Скачать озвучку MP3</a>
       </div>
       <p className="mt-4 text-base leading-relaxed text-neutral-700">{scene.narration}</p>
       <p className="mt-2 text-sm text-neutral-500">Демонстрационная синтетическая озвучка: русский голос Milena. Слайды синхронизированы с аудио. Это не запись голоса основателя.</p>

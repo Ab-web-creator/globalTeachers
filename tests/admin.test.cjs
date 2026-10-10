@@ -73,10 +73,10 @@ test('local host aliases work without allowing cross-site login; redirects keep 
     })), null);
     assert.equal(trustedRequestOrigin(new Request('http://localhost:3000/admin/login')), null);
     process.env.NODE_ENV = 'production';
-    process.env.SITE_URL = 'https://globalteacherhub.com';
+    process.env.SITE_URL = 'https://teachernavigator.com';
     assert.equal(trustedRequestOrigin(new Request('http://localhost:3000/admin/login', {
-      headers: { origin: 'https://globalteacherhub.com' },
-    })), 'https://globalteacherhub.com');
+      headers: { origin: 'https://teachernavigator.com' },
+    })), 'https://teachernavigator.com');
     assert.equal(trustedRequestOrigin(new Request('http://localhost:3000/admin/login', {
       headers: { origin: 'https://attacker.example', host: 'attacker.example' },
     })), null);

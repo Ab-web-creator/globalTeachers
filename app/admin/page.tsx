@@ -8,7 +8,7 @@ import ApplicationsList from "./components/applications-list";
 import { listApplications } from "../../lib/admin/applications";
 
 // Native login/logout forms need an Origin header for the server's CSRF check.
-export const metadata: Metadata = { title: "Заявки — GlobalTeacherHub", robots: { index: false, follow: false }, referrer: "same-origin" };
+export const metadata: Metadata = { title: "Заявки — TeacherNavigator", robots: { index: false, follow: false }, referrer: "same-origin" };
 export const dynamic = "force-dynamic";
 
 export default async function AdminPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
@@ -23,7 +23,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
     <main className="min-h-dvh bg-brand-50 px-6 py-8 text-brand-700 sm:px-10">
       <div className="mx-auto max-w-5xl">
         <div className="flex items-center justify-between gap-4">
-          <Link href="/" className="text-sm text-brand-600">← GlobalTeacherHub</Link>
+          <Link href="/" className="text-sm text-brand-600">← TeacherNavigator</Link>
           {authenticated && !developmentAccess && <form action="/admin/logout" method="post"><button className="rounded-xl border border-brand-200 bg-white px-4 py-2 text-sm">Выйти</button></form>}
         </div>
         {!authenticated ? <AdminLogin configured={adminConfigured()} failed={params.error === "login"} /> : (

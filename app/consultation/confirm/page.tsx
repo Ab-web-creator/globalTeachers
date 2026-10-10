@@ -3,7 +3,7 @@ import PageHeader from "../../components/page-header";
 import ConfirmationResult from "./confirmation-result";
 
 export const metadata: Metadata = {
-  title: "Подтверждение email — GlobalTeacherHub",
+  title: "Подтверждение email — TeacherNavigator",
   robots: { index: false, follow: false },
   referrer: "no-referrer",
 };

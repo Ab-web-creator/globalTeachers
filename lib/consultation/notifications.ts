@@ -27,7 +27,7 @@ export async function deliverNotification(id?: string) {
     await sendEmail({
       to: recipient,
       reply_to: application.answers.email,
-      subject: "Подтверждённая заявка на консультацию — GlobalTeacherHub",
+      subject: "Подтверждённая заявка на консультацию — TeacherNavigator",
       text: `Email подтверждён.\n\n${summarize(application.answers)}`,
     }, `consultation-${application.id}`);
     await database().query(
