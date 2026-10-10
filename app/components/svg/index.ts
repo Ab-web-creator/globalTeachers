@@ -48,3 +48,4 @@ export { supportCalendarIconPath } from "./data/content-icon-paths";
 export { heroWindowMaskUrl, heroMobileWindowMaskUrl, interviewNotesMaskUrl, worldMapSilhouetteUrl, tesLogoUrl, schroleLogoUrl } from "./assets";
 export { AboutGraduationIllustration, PreparationDocumentsIllustration } from "./illustrations/program-decorations";
 export { FaqRouteMapIllustration } from "./illustrations/faq-route-map";
+export { FaqConversationIllustration } from "./illustrations/faq-conversation";

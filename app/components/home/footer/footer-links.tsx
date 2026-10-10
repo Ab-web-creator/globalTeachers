@@ -26,9 +26,9 @@ export default function FooterLinks() {
   return (
     <nav aria-label="Страницы сайта" className="grid grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-10">
       {groups.map((group, index) => (
-        <div key={group.title} className={index === 1 ? "col-span-2 row-start-2 sm:col-span-1 sm:row-start-auto" : index === 0 ? "xl:flex xl:flex-col" : undefined}>
-          <h2 className="text-base font-semibold text-white">{group.title}</h2>
-          <ul className={`mt-5 space-y-1.5 ${index === 0 ? "xl:mt-auto xl:pt-5" : ""}`}>
+        <div key={group.title} className={index === 1 ? "col-span-2 row-start-2 sm:col-span-1 sm:row-start-auto" : undefined}>
+          <h2 className="text-base font-semibold text-white xl:flex xl:h-14 xl:items-end">{group.title}</h2>
+          <ul className="mt-2 space-y-1.5 sm:mt-5 xl:space-y-0.5">
             {group.links.map((link) => (
               <li key={link.href}>
                 <Link href={link.href} className="text-sm leading-relaxed text-white/90 underline-offset-4 transition hover:text-white hover:underline">{link.label}</Link>

@@ -10,11 +10,12 @@ export default function SiteFooter() {
       <div className="mx-auto max-w-400 px-6 sm:px-10 lg:px-16 xl:px-20">
         <div className="grid gap-10 py-10 sm:py-12 lg:grid-cols-3 lg:gap-x-24 lg:gap-y-10">
           <div className="max-w-md xl:flex xl:flex-col xl:items-start">
-            <Link href="/#home" aria-label="TeacherNavigator — на главную" className="relative -top-3 inline-flex items-center gap-3 rounded-sm">
+            <Link href="/#home" aria-label="TeacherNavigator — на главную" className="relative -top-3 inline-flex items-center gap-3 rounded-sm xl:top-0 xl:h-14 xl:items-end">
               <BrandLogo className="w-48 text-white sm:w-52" aria-hidden="true" />
             </Link>
-            <p className="mt-4 max-w-64 text-sm leading-relaxed text-white/90 xl:mt-auto xl:pt-4">
-              Ваша работа мечты может быть в любой точке мира. Найдите её вместе с нами, вместе с TeacherNavigator. Начнём этот путь.
+            <p className="-mt-3 max-w-64 text-sm leading-relaxed text-white/90 sm:mt-1 xl:mt-5 xl:leading-6.5">
+              <span className="sm:hidden">Помогаем учителям открывать новые карьерные возможности в международных школах по всему миру.</span>
+              <span className="hidden sm:inline">Ваша работа мечты может быть в любой точке мира. Найдите её вместе с нами, вместе с TeacherNavigator. Начнём этот путь.</span>
             </p>
           </div>
           <div className="min-w-0 lg:col-span-2">
