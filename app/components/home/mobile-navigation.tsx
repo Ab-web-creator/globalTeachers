@@ -51,7 +51,6 @@ export default function MobileNavigation({ onClose }: MobileNavigationProps) {
           {navigationItems.map(({ label, href }) => (
             <Link key={label} href={href} onClick={onClose} className="rounded-xl px-4 py-3 transition hover:bg-brand-50 hover:text-brand-500">{label}</Link>
           ))}
-          <Link href="/#programs" onClick={onClose} className="rounded-xl px-4 py-3 transition hover:bg-brand-50 hover:text-brand-500">Программы</Link>
           <Link href="/consultation" onClick={onClose} className="rounded-xl px-4 py-3 transition hover:bg-brand-50 hover:text-brand-500">Получить консультацию</Link>
         </nav>
       </div>
