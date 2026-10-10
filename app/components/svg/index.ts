@@ -25,6 +25,7 @@ export { HeroAirplaneIllustration } from "./illustrations/hero-airplane";
 export { StrategyRouteIllustration } from "./illustrations/strategy-route";
 export { VipSupportJourneyIllustration } from "./illustrations/vip-support-journey";
 export { SearchDocumentsIllustration } from "./illustrations/search-documents";
+export { TreePotOverlay } from "./illustrations/tree-pot-overlay";
 export { CareerBenefitIcon } from "./icons/career-benefit-icon";
 export { ProgramCardIllustration } from "./illustrations/program-card-illustration";
 export { ServiceCategoryHoverArt } from "./illustrations/service-category-hover-art";

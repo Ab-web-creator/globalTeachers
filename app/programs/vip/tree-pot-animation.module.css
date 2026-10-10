@@ -1,0 +1,21 @@
+.firstPanel,
+.secondPanel {
+  animation: documentHue 4s ease-in-out infinite;
+}
+
+.secondPanel {
+  animation-delay: -2s;
+}
+
+@keyframes documentHue {
+  0%, 100% { filter: hue-rotate(0deg); }
+  33% { filter: hue-rotate(70deg); }
+  66% { filter: hue-rotate(210deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .firstPanel,
+  .secondPanel {
+    animation: none;
+  }
+}
