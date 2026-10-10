@@ -18,8 +18,8 @@ export default function QualitySection() {
           </IconPanel>
           <IconPanel as="div" id="portfolio-quality" title="Главное — качество, а не количество" icon="gem" tone="white">
             <p className="mt-5 max-w-[64ch] text-lg leading-relaxed text-neutral-600">Не стоит собирать десятки страниц документов и фотографий только для того, чтобы портфолио выглядело большим.</p>
-            <p className="mt-3 max-w-[64ch] text-lg leading-relaxed text-neutral-600">Каждый материал должен помогать школе лучше понять вас как специалиста.</p>
-            <p className="mt-5 border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-600">CV говорит о вашем опыте. Портфолио показывает его.</p>
+            <p className="mt-3 max-w-[64ch] text-lg leading-relaxed text-neutral-600">У представителей школ ограничено время на просмотр заявок. Перегруженное портфолио может скорее утомить, чем заинтересовать.</p>
+            <p className="mt-5 border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-600">Каждый материал должен быть уместным, содержательным и помогать школе лучше понять вас как специалиста.</p>
           </IconPanel>
         </section>
         <div className="lg:col-span-2"><SupportBanner id="cv-pro-support" label="Программа PRO" title="Хотите профессионально подготовить CV и портфолио?" text="В программе PRO мы поможем представить ваш опыт в формате, понятном международным школам, подготовить профессиональное CV и собрать Teacher Portfolio." image="/images/proPackage.webp">

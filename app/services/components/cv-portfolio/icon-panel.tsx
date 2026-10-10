@@ -22,7 +22,7 @@ export default function IconPanel({ id, title, icon, children, tone = "default",
   const colors = tones[tone];
 
   return (
-    <Container aria-labelledby={Container === "section" ? id : undefined} className={`flex flex-col gap-5 rounded-3xl border p-6 sm:flex-row sm:gap-6 sm:p-8 ${colors.panel}`}>
+    <Container aria-labelledby={Container === "section" ? id : undefined} className={`flex flex-col gap-5 rounded-3xl border p-5 sm:flex-row sm:gap-6 sm:p-6 ${colors.panel}`}>
       <span aria-hidden="true" className={`flex size-14 shrink-0 items-center justify-center rounded-full ${colors.icon}`}>
         <PanelTopicIcon path={panelIconPaths[icon]} />
       </span>
