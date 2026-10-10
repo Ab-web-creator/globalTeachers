@@ -27,6 +27,11 @@ Fill in `RESEND_API_KEY`, a verified `CONSULTATION_EMAIL_FROM`, and a reachable
 must be shared separately. Read `ADMIN_PASSWORD` in that file to use `/admin`.
 `SITE_URL=http://localhost:3000` works for local testing.
 
+If you set up the Docker database before the TeacherNavigator rename, delete the
+`DATABASE_URL`, `LOCAL_DATABASE_MANAGED` and `LOCAL_DATABASE_PASSWORD` lines from
+`.env.local` and rerun `npm run db:setup`; this creates a fresh, empty
+`teachernavigator` database (the old `globalteachers-local` volume is left untouched).
+
 On later days, start Docker Desktop and run `npm run db:start`. Use `npm run
 db:stop` to stop the database without deleting records. After code updates, rerun
 `npm run db:setup` to apply new migrations. Port 55433 is used for Docker; change

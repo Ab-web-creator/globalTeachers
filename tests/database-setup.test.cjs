@@ -6,7 +6,7 @@ test('fresh collaborator configuration creates credentials and preserves mail se
   const { prepareDatabaseEnvironment } = await import('../scripts/database-environment.mjs');
   const initial = 'RESEND_API_KEY=test-key\nDATABASE_URL=\nADMIN_PASSWORD=\n';
   const first = prepareDatabaseEnvironment(initial, { RESEND_API_KEY: 'test-key' });
-  assert.match(first.values.DATABASE_URL, /^postgresql:\/\/globalteachers:[a-f0-9]{64}@127\.0\.0\.1:55433\/globalteachers$/);
+  assert.match(first.values.DATABASE_URL, /^postgresql:\/\/teachernavigator:[a-f0-9]{64}@127\.0\.0\.1:55433\/teachernavigator$/);
   assert.equal(first.values.LOCAL_DATABASE_MANAGED, 'docker');
   assert.equal(first.values.ADMIN_PASSWORD.length, 64);
   assert.match(first.text, /RESEND_API_KEY=test-key/);

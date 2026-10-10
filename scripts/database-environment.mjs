@@ -11,7 +11,7 @@ export function prepareDatabaseEnvironment(text, values) {
     additions.LOCAL_DATABASE_PASSWORD = password;
     additions.LOCAL_DATABASE_PORT = port;
     additions.LOCAL_DATABASE_MANAGED = "docker";
-    additions.DATABASE_URL = `postgresql://globalteachers:${encodeURIComponent(password)}@127.0.0.1:${port}/globalteachers`;
+    additions.DATABASE_URL = `postgresql://teachernavigator:${encodeURIComponent(password)}@127.0.0.1:${port}/teachernavigator`;
   }
   for (const key of ["ADMIN_PASSWORD", "ADMIN_SESSION_SECRET", "CRON_SECRET"]) {
     if (!values[key]?.trim()) additions[key] = randomBytes(32).toString("hex");
