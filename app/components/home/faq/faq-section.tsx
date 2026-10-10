@@ -1,8 +1,7 @@
 "use client";
 
-import { FaqToggleIcon, FaqTopicIcon, type FaqIconName } from "@/app/components/svg";
+import { FaqRouteMapIllustration, FaqToggleIcon, FaqTopicIcon, type FaqIconName } from "@/app/components/svg";
 import Link from "next/link";
-import Image from "next/image";
 import { useState } from "react";
 import { faqItems } from "./faq-content";
 
@@ -15,8 +14,8 @@ type FaqItemProps = {
 export default function FaqSection() {
   const [expanded, setExpanded] = useState(false);
   return (
-    <section id="faq" aria-labelledby="faq-title" className="relative isolate scroll-mt-24 overflow-hidden px-6 sm:px-10 lg:px-16 py-12 sm:py-16 lg:py-20">
-      <Image src="/images/faq-flower-garden-v2.png" alt="" fill sizes="100vw" className="-z-20 object-cover object-right" />
+    <section id="faq" aria-labelledby="faq-title" className="relative isolate scroll-mt-24 overflow-hidden bg-linear-to-br from-white via-brand-50 to-violet-50 px-6 sm:px-10 lg:px-16 py-12 sm:py-16 lg:py-20">
+      <FaqRouteMapIllustration preserveAspectRatio="xMaxYMin meet" className="absolute top-16 right-0 -z-20 hidden w-2/3 max-w-5xl lg:block" />
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-r from-white/95 from-25% via-white/50 via-50% to-transparent to-75%" />
       <div className="mx-auto max-w-400 xl:px-4">
         <div className="max-w-6xl">
