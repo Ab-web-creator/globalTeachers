@@ -1,6 +1,7 @@
 "use client";
 
-import { FaqRouteMapIllustration, FaqToggleIcon, FaqTopicIcon, type FaqIconName } from "@/app/components/svg";
+import { FaqToggleIcon, FaqTopicIcon, type FaqIconName } from "@/app/components/svg";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { faqItems } from "./faq-content";
@@ -14,17 +15,23 @@ type FaqItemProps = {
 export default function FaqSection() {
   const [expanded, setExpanded] = useState(false);
   return (
-    <section id="faq" aria-labelledby="faq-title" className="relative isolate scroll-mt-24 overflow-hidden bg-linear-to-br from-white via-brand-50 to-violet-50 px-6 sm:px-10 lg:px-16 py-12 sm:py-16 lg:py-20">
-      <FaqRouteMapIllustration preserveAspectRatio="xMaxYMin meet" className="absolute top-16 right-0 -z-20 hidden w-2/3 max-w-5xl lg:block" />
-      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-r from-white/95 from-25% via-white/50 via-50% to-transparent to-75%" />
+    <section id="faq" aria-labelledby="faq-title" className="relative isolate scroll-mt-24 overflow-hidden bg-linear-to-t from-white via-brand-50 to-violet-50 px-6 sm:px-10 lg:px-16 py-12 sm:py-16 lg:py-20">
+      <Image
+        src="/images/home/faq-teacher-school.png"
+        alt=""
+        width={1536}
+        height={1024}
+        sizes="40vw"
+        className="pointer-events-none absolute right-16 bottom-56 hidden h-auto w-2/5 max-w-2xl lg:block"
+      />
       <div className="mx-auto max-w-400 xl:px-4">
-        <div className="max-w-6xl">
+        <div className="relative lg:w-1/2 lg:pr-8">
         <header data-reveal className="mb-10 text-left">
           <p className="mb-4 text-sm font-semibold tracking-widest text-brand-500 uppercase sm:text-base">Полезно знать</p>
           <h2 id="faq-title" className="text-4xl leading-none font-semibold tracking-wide text-brand-700 sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl">Часто задаваемые<br />вопросы</h2>
-          <p className="mt-7 max-w-[55ch] text-lg leading-relaxed text-neutral-900">Ответы на основные вопросы о работе в международных школах, подготовке к поиску и нашей поддержке.</p>
+          <p className="mt-7 max-w-[55ch] text-lg font-normal leading-relaxed text-neutral-600">Ответы на основные вопросы о работе в международных школах, подготовке к поиску и нашей поддержке.</p>
         </header>
-        <div id="faq-questions" className="grid grid-cols-1 items-start gap-4 lg:grid-cols-2">
+        <div id="faq-questions" className="grid grid-cols-1 items-start gap-4">
           {faqItems.map((item, index) => (<div key={item.question} className={!expanded && index >= 4 ? "hidden" : ""}>
             <FaqItem {...item} />
           </div>))}
