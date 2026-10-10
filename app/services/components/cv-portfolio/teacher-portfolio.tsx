@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { BackLinkArrowIcon } from "@/app/components/svg";
 import SectionLabel from "../job-search/section-label";
 import SectionHeading from "../section-heading";
+import { portfolioItems } from "./content";
 import { portfolioExamples } from "./portfolio-examples";
 import PortfolioSpread from "./portfolio-spread";
 import SectionFade from "./section-fade";
@@ -22,7 +24,20 @@ export default function TeacherPortfolio() {
           <p>Портфолио дополняет CV и позволяет показать вашу работу более наглядно. Оно особенно полезно, если вы можете показать результат своей работы, а не только рассказать о нём. В него могут входить:</p>
         </div>
       </div>
-      <div className="mt-10">
+      <ul className="mt-10 space-y-6 sm:hidden">
+        {portfolioItems.map(({ title, text, image }) => (
+          <li key={title} className="overflow-hidden rounded-3xl border border-brand-100 bg-white">
+            <div className="relative aspect-video">
+              <Image src={image} alt="" fill sizes="100vw" className="object-cover" />
+            </div>
+            <div className="p-5">
+              <h3 className="text-xl font-semibold leading-snug">{title}</h3>
+              <p className="mt-3 text-base leading-relaxed text-neutral-600">{text}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <div className="mt-10 hidden sm:block">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-sm font-semibold tracking-widest text-brand-600 uppercase">Пример портфолио</p>
@@ -31,13 +46,13 @@ export default function TeacherPortfolio() {
           <p className="text-sm tabular-nums text-neutral-500">Раздел {active + 1} из {count}</p>
         </div>
         <div className="relative mt-6 rounded-2xl border border-brand-200 bg-brand-100 p-2 shadow-sm sm:p-3">
-          <div className="flex items-start gap-3 pb-2">
-          <div role="tablist" aria-label="Разделы портфолио" className="flex min-w-0 flex-1 flex-wrap gap-2">
-            {portfolioExamples.map(({ tab }, index) => (<button key={tab} type="button" role="tab" id={`portfolio-tab-${index}`} aria-selected={active === index} aria-controls="portfolio-spread" onClick={() => setActive(index)} className={`rounded-t-lg border px-4 py-2 text-sm font-medium transition-colors ${active === index ? "border-white bg-white text-brand-600" : "border-brand-200 bg-brand-50 text-neutral-600 hover:bg-white"}`}>
+          <div className="flex flex-col items-stretch gap-3 pb-2 sm:flex-row sm:items-start">
+          <div role="tablist" aria-label="Разделы портфолио" className="grid min-w-0 grid-cols-2 gap-2 sm:flex sm:flex-1 sm:flex-wrap">
+            {portfolioExamples.map(({ tab }, index) => (<button key={tab} type="button" role="tab" id={`portfolio-tab-${index}`} aria-selected={active === index} aria-controls="portfolio-spread" onClick={() => setActive(index)} className={`rounded-lg border px-2 py-2 text-sm font-medium sm:rounded-none sm:rounded-t-lg sm:px-4 transition-colors ${active === index ? "border-white bg-white text-brand-600" : "border-brand-200 bg-brand-50 text-neutral-600 hover:bg-white"}`}>
               {tab}
             </button>))}
           </div>
-          <div className="ml-auto flex shrink-0 gap-2">
+          <div className="flex shrink-0 justify-between gap-2 sm:ml-auto sm:justify-start">
             <button type="button" aria-label="Предыдущий раздел" aria-controls="portfolio-spread" onClick={() => setActive((active + count - 1) % count)} className="group inline-flex items-center gap-1 rounded-xl bg-white/90 py-1 pr-4 pl-1 text-sm text-brand-500 shadow-sm">
               <span className="flex size-8 items-center justify-center rounded-full transition-colors duration-200 motion-reduce:transition-none group-hover:bg-neutral-200 group-hover:text-brand-600">
                 <BackLinkArrowIcon />

@@ -6,7 +6,7 @@ import TeacherPortfolio from "./teacher-portfolio";
 
 export default function CvPortfolioDetails() {
   return (
-    <main className="mx-auto max-w-400 px-6 pt-6 pb-12 sm:px-10 sm:pb-16 lg:px-16 lg:pt-0 lg:pb-20 xl:px-20">
+    <main className="mx-auto max-w-400 px-6 pt-6 pb-0 sm:px-10 sm:pb-16 lg:px-16 lg:pt-0 lg:pb-20 xl:px-20">
       <article>
         <CvHero />
         <div>

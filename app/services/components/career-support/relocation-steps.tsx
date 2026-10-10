@@ -9,7 +9,7 @@ export default function RelocationSteps() {
       <div className="grid items-center gap-10 lg:grid-cols-3 lg:gap-12">
         <div className="lg:col-span-2">
           <SectionLabel>После оффера</SectionLabel>
-          <SectionHeading id="support-relocation">И после предложения наша<br />работа ещё не заканчивается</SectionHeading>
+          <SectionHeading id="support-relocation">И после предложения наша{" "}<br className="hidden sm:block" />работа ещё не заканчивается</SectionHeading>
           {relocation.paragraphs.map((text, index) => <p key={text} className={`${index === 0 ? "mt-7" : "mt-4"} max-w-2xl text-lg leading-relaxed text-neutral-600`}>{text}</p>)}
           <p className="mt-5 max-w-2xl border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-600">{relocation.help}</p>
         </div>

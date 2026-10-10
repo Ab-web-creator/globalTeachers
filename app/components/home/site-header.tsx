@@ -25,7 +25,7 @@ export default function SiteHeader({ inFlow = false }: { inFlow?: boolean; }) {
       <div className={`mx-auto flex max-w-400 items-center justify-between gap-6 px-6 transition-[min-height] duration-200 motion-reduce:transition-none sm:px-10 lg:px-16 xl:px-20 ${compact ? "min-h-14 lg:min-h-16" : "min-h-16 lg:min-h-18"}`}>
         <div className="flex min-w-0 items-center gap-2 sm:gap-3">
           {backHref && (
-            <Link href={backHref} aria-label="Назад" className="flex size-9 shrink-0 items-center justify-center rounded-xl text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-brand-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500 md:hidden">
+            <Link href={backHref} aria-label="Назад" className="-ml-2 flex size-9 shrink-0 items-center justify-center rounded-xl text-neutral-500 sm:ml-0 transition-colors hover:bg-neutral-100 hover:text-brand-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500 md:hidden">
               <HeaderBackArrowIcon />
             </Link>
           )}

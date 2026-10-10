@@ -32,7 +32,7 @@ export default function RecruitmentPlatforms() {
         <div className="max-w-3xl">
           <SectionLabel>Полезные ресурсы</SectionLabel>
           <SectionHeading id="recruitment-platforms" className="text-brand-950">
-            Полезные платформы для<br />поиска вакансий
+            Полезные платформы для{" "}<br className="hidden sm:block" />поиска вакансий
           </SectionHeading>
           <p className="mt-7 text-lg leading-relaxed text-neutral-600">
             Существует несколько веб-платформ, на которых международные школы из разных стран публикуют вакансии. Используйте их, чтобы найти позиции, которые соответствуют вашему опыту, предмету и желаемой стране.

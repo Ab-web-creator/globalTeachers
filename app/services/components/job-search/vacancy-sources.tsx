@@ -7,7 +7,7 @@ import RegionMap from "./region-map";
 export default function VacancySources() {
   return (
     <section aria-labelledby="vacancy-sources" className="py-12 sm:py-16 lg:py-20">
-      <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-14">
+      <div className="grid items-start gap-10 xl:grid-cols-2 xl:gap-14">
         <div>
           <SectionLabel>Источники вакансий</SectionLabel>
           <SectionHeading id="vacancy-sources">Так где же искать вакансии?</SectionHeading>
@@ -24,9 +24,9 @@ export default function VacancySources() {
           ))}
           </ul>
         </div>
-        <div className="mx-auto flex w-5/6 flex-col gap-6 lg:self-center">
+        <div className="mx-auto hidden w-5/6 flex-col gap-6 xl:flex xl:self-center">
           <div className="isolate mx-auto w-5/6 bg-brand-500">
-            <Image src="/images/job_search_illust.jpeg" alt="" width={1600} height={533} sizes="(min-width: 1024px) 32vw, 69vw" className="h-auto w-full object-contain mix-blend-screen grayscale" />
+            <Image src="/images/job_search_illust.jpeg" alt="" width={1600} height={533} sizes="32vw" className="h-auto w-full object-contain mix-blend-screen grayscale" />
           </div>
           <RegionMap />
         </div>
