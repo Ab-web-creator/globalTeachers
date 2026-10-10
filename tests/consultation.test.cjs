@@ -66,7 +66,7 @@ test('PostgreSQL application lifecycle', { skip: !process.env.TEST_DATABASE_URL 
   process.env.DATABASE_URL = process.env.TEST_DATABASE_URL;
   process.env.RESEND_API_KEY = 'test-only';
   process.env.CONSULTATION_EMAIL_FROM = 'noreply@example.com';
-  process.env.CONSULTATION_EMAIL_TO = 'team@example.com';
+  process.env.CONSULTATION_EMAIL_TO = 'team@example.com, second@example.com';
   process.env.SITE_URL = 'https://example.com';
   process.env.CRON_SECRET = 'test-scheduler-secret';
   const admin = new Pool({ connectionString: process.env.TEST_DATABASE_URL });
@@ -102,7 +102,7 @@ test('PostgreSQL application lifecycle', { skip: !process.env.TEST_DATABASE_URL 
       assert.equal(await count('consultation_pending'), 0);
       assert.equal(await count('consultation_applications'), 1);
       assert.equal(calls.length, 2, 'one user email and one team notification');
-      assert.equal(calls[1].body.to, 'team@example.com');
+      assert.deepEqual(calls[1].body.to, ['team@example.com', 'second@example.com']);
       assert.equal((await confirm(request({ token }))).status, 200);
       assert.equal(calls.length, 2, 'repeat confirmation does not resend');
     });
