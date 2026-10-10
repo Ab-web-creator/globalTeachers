@@ -14,7 +14,7 @@ export default function SupportBanner({ id, label, title, text, image, imageClas
       <div className="relative isolate p-5 sm:p-6 md:col-span-3">
         <div aria-hidden="true" className={styles.ornament} />
         <SectionLabel>{label}</SectionLabel>
-        <h2 id={id} className="text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">{title}</h2>
+        <h2 id={id} className="max-w-[36ch] text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">{title}</h2>
         <p className="mt-3 max-w-[68ch] text-base leading-relaxed text-neutral-600">{text}</p>
         <div className="mt-4 flex flex-wrap items-center gap-3">{children}</div>
       </div>
