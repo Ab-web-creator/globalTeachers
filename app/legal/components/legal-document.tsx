@@ -5,7 +5,7 @@ import { operator, type LegalDocument as Document } from "../content";
 export default function LegalDocument({ document }: { document: Document }) {
   return (
     <div className="min-h-dvh bg-white text-brand-950">
-      <PageHeader inFlow />
+      <PageHeader />
       <main className="mx-auto max-w-4xl px-6 py-12 sm:px-10 sm:py-16 lg:py-20">
         <Link href="/" className="text-sm text-brand-600 underline underline-offset-4">На главную</Link>
         <h1 className="mt-7 text-3xl font-semibold tracking-tight sm:text-4xl">{document.title}</h1>

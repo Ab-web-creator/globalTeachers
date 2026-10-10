@@ -8,15 +8,18 @@ export default function useCompactHeader(headerRef: RefObject<HTMLElement | null
 
   useEffect(() => {
     if (!homepage) {
-      const desktop = window.matchMedia("(min-width: 768px)");
-      const update = () => setHidden(desktop.matches && window.scrollY > 200);
-      update();
-      window.addEventListener("scroll", update, { passive: true });
-      desktop.addEventListener("change", update);
-      return () => {
-        window.removeEventListener("scroll", update);
-        desktop.removeEventListener("change", update);
+      // Hide while scrolling down past the threshold; reveal as soon as the user scrolls back up.
+      let lastY = window.scrollY;
+      const update = () => {
+        const y = Math.max(window.scrollY, 0);
+        const delta = y - lastY;
+        // Ignore tiny movements (momentum, iOS bounce) so the header does not flicker.
+        if (Math.abs(delta) < 8) return;
+        setHidden(delta > 0 && y > 200);
+        lastY = y;
       };
+      window.addEventListener("scroll", update, { passive: true });
+      return () => window.removeEventListener("scroll", update);
     }
 
     let current = false;
