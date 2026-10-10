@@ -2,6 +2,7 @@
 
 import { FaqToggleIcon, FaqTopicIcon, type FaqIconName } from "@/app/components/svg";
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { faqItems } from "./faq-content";
 
@@ -14,28 +15,32 @@ type FaqItemProps = {
 export default function FaqSection() {
   const [expanded, setExpanded] = useState(false);
   return (
-    <section id="faq" aria-labelledby="faq-title" className="scroll-mt-24 border-t border-neutral-200 bg-neutral-50 px-6 sm:px-10 lg:px-16 py-12 sm:py-16 lg:py-20">
-      <div className="mx-auto max-w-6xl">
-        <header data-reveal className="mb-10 sm:mb-12 text-left sm:text-center">
+    <section id="faq" aria-labelledby="faq-title" className="relative isolate scroll-mt-24 overflow-hidden px-6 sm:px-10 lg:px-16 py-12 sm:py-16 lg:py-20">
+      <Image src="/images/faq-flower-garden-v2.png" alt="" fill sizes="100vw" className="-z-20 object-cover object-right" />
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-r from-white/95 from-25% via-white/50 via-50% to-transparent to-75%" />
+      <div className="mx-auto max-w-400 xl:px-4">
+        <div className="max-w-6xl">
+        <header data-reveal className="mb-10 text-left">
           <p className="mb-4 text-sm font-semibold tracking-widest text-brand-500 uppercase sm:text-base">Полезно знать</p>
-          <h2 id="faq-title" className="text-4xl leading-none font-semibold tracking-wide text-brand-700 sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl">Часто задаваемые вопросы</h2>
+          <h2 id="faq-title" className="text-4xl leading-none font-semibold tracking-wide text-brand-700 sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl">Часто задаваемые<br />вопросы</h2>
+          <p className="mt-7 max-w-[55ch] text-lg leading-relaxed text-neutral-900">Ответы на основные вопросы о работе в международных школах, подготовке к поиску и нашей поддержке.</p>
         </header>
-        <div id="faq-questions" className="grid items-start gap-3 lg:grid-cols-2 lg:gap-4">
-          {faqItems.map((item, index) => (<div key={item.question} className={!expanded && index >= 3 ? (index === 3 ? "hidden lg:block" : "hidden") : ""}>
+        <div id="faq-questions" className="grid grid-cols-1 items-start gap-4 lg:grid-cols-2">
+          {faqItems.map((item, index) => (<div key={item.question} className={!expanded && index >= 4 ? "hidden" : ""}>
             <FaqItem {...item} />
           </div>))}
         </div>
         {!expanded && (<div className="mt-0 pl-6 text-left sm:pl-8">
-          <button type="button" aria-expanded={false} aria-controls="faq-questions" onClick={() => setExpanded(true)} className="rounded-none border-0 bg-transparent px-0 py-2.5 sm:py-3 text-lg font-medium text-neutral-600 transition hover:text-neutral-800 hover:underline underline-offset-4">
+          <button type="button" aria-expanded={false} aria-controls="faq-questions" onClick={() => setExpanded(true)} className="rounded-none border-0 bg-transparent px-0 py-2.5 sm:py-3 text-lg font-medium text-neutral-600 transition hover:text-neutral-800 underline underline-offset-4">
             Показать все вопросы
           </button>
         </div>)}
-        <div className="mx-auto mt-8 w-full max-w-lg rounded-3xl bg-linear-to-br from-orange-100 via-sky-50 to-violet-100 p-6 text-center sm:p-8">
-          <h3 className="text-xl leading-tight font-semibold text-brand-700">Не нашли ответ на свой вопрос?</h3>
-          <p className="mt-3 text-base leading-normal text-neutral-600">Расскажите нам о своей ситуации — мы поможем разобраться.</p>
-          <Link href="/consultation" className="mt-5 inline-flex items-center justify-center gap-3 rounded-2xl sm:rounded-full max-lg:action-gradient-outline px-6 py-2.5 sm:py-4 text-base font-semibold text-brand-700 transition hover:shadow-md lg:border-2 lg:border-gray-400 lg:bg-white lg:hover:bg-brand-50">
+        <div className="mt-8 text-left">
+          <p className="max-w-[45ch] border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-600">Не нашли ответ на свой вопрос? Расскажите нам о своей ситуации — мы поможем разобраться.</p>
+          <Link href="/consultation" className="action-gradient mt-5 inline-flex items-center justify-center gap-3 rounded-full px-6 py-3 text-base font-semibold text-white">
             Получить консультацию
           </Link>
+        </div>
         </div>
       </div>
     </section>
