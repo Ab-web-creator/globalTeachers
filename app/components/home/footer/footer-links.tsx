@@ -7,6 +7,7 @@ const groups = [
     title: "Навигация",
     links: [
       { label: "О нас", href: "/#about" },
+      { label: "Как мы помогаем", href: "/#categories" },
       { label: "Программы", href: "/#programs" },
       { label: "Вакансии", href: "/services/job-search#job-platforms" },
     ],
