@@ -1,4 +1,7 @@
+"use client";
+
 import { JobSearchStepIcon, jobSearchStepPaths, StepConnectorArrowIcon } from "@/app/components/svg";
+import useScrollReveal from "@/app/components/home/use-scroll-reveal";
 import type { ReactNode } from "react";
 import SectionHeading from "../section-heading";
 import { firstSteps, firstStepsIntroduction, firstStepsOutcome } from "./content";
@@ -17,6 +20,7 @@ type Accent = (typeof stepAccents)[number];
 export default function FirstSteps({ children }: {
   children?: ReactNode;
 }) {
+  useScrollReveal("#job-search-step-cards [data-reveal]", true);
   return (
     <section aria-labelledby="job-search-first-steps" className="py-12 sm:py-16 lg:py-20">
       <SectionLabel>Первые шаги</SectionLabel>
@@ -28,10 +32,10 @@ export default function FirstSteps({ children }: {
         </div>
       </div>
       <div className="mt-10 lg:-mx-4 lg:mt-4 lg:overflow-x-auto lg:px-4 lg:pt-6 lg:pb-4">
-        <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-[repeat(4,minmax(13rem,1fr)_auto)_minmax(13rem,1fr)] lg:gap-3">
+        <ol id="job-search-step-cards" className="grid gap-6 sm:grid-cols-2 lg:grid-cols-[repeat(4,minmax(13rem,1fr)_auto)_minmax(13rem,1fr)] lg:gap-3">
           {firstSteps.map(({ title, text }, index) => (<li key={title} className="lg:contents">
             <StepCard number={index + 1} title={title} text={text} accent={stepAccents[index]} />
-            {index < firstSteps.length - 1 && <StepConnector />}
+            {index < firstSteps.length - 1 && <StepConnector index={index} />}
           </li>))}
         </ol>
       </div>
@@ -47,7 +51,7 @@ function StepCard({ number, title, text, accent }: {
   accent: Accent;
 }) {
   return (
-    <div className="relative flex h-full gap-4 overflow-hidden rounded-3xl bg-white py-4 pr-5 pl-3 shadow-card shadow-neutral-300/60 ring-1 ring-neutral-100 sm:flex-col sm:gap-0 sm:p-5 sm:pb-7">
+    <div data-reveal className="relative flex h-full gap-4 overflow-hidden rounded-3xl bg-white py-4 pr-5 pl-3 shadow-card shadow-neutral-300/60 ring-1 ring-neutral-100 sm:flex-col sm:gap-0 sm:p-5 sm:pb-7">
       <div className="flex shrink-0 items-start gap-3">
         <span className={`flex size-10 shrink-0 items-center justify-center rounded-full text-lg font-bold sm:bg-neutral-100 sm:text-neutral-500 ${accent.badge}`}>{number}</span>
         <span className={`hidden size-20 items-center justify-center rounded-full sm:flex ${accent.circle}`}>
@@ -63,9 +67,9 @@ function StepCard({ number, title, text, accent }: {
   );
 }
 
-function StepConnector() {
+function StepConnector({ index }: { index: number }) {
   return (
-    <span aria-hidden="true" className="hidden items-center lg:flex">
+    <span data-reveal="arrow" data-reveal-delay={1500 + index * 250} aria-hidden="true" className="hidden items-center lg:flex">
       <span className="flex size-9 items-center justify-center rounded-full bg-sky-500 text-white shadow-md shadow-sky-200">
         <StepConnectorArrowIcon />
       </span>

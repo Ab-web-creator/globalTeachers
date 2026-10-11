@@ -1,10 +1,14 @@
+"use client";
+
 import Image from "next/image";
+import useScrollReveal from "@/app/components/home/use-scroll-reveal";
 import SectionHeading from "../section-heading";
 import SectionLabel from "./section-label";
 import { vacancySources, vacancySourcesIntroduction } from "./content";
 import RegionMap from "./region-map";
 
 export default function VacancySources() {
+  useScrollReveal("#vacancy-sources-descriptions [data-reveal]", true);
   return (
     <section aria-labelledby="vacancy-sources" className="py-12 sm:py-16 lg:py-20">
       <div className="grid items-start gap-10 xl:grid-cols-2 xl:gap-14">
@@ -12,9 +16,9 @@ export default function VacancySources() {
           <SectionLabel>Источники вакансий</SectionLabel>
           <SectionHeading id="vacancy-sources">Так где же искать вакансии?</SectionHeading>
           <p className="mt-7 max-w-2xl text-lg leading-relaxed text-neutral-600">{vacancySourcesIntroduction}</p>
-          <ul className="mt-10 space-y-6">
+          <ul id="vacancy-sources-descriptions" className="mt-10 space-y-6">
           {vacancySources.map(({ title, text }) => (
-            <li key={title} className="flex gap-4">
+            <li data-reveal key={title} className="flex gap-4">
               <span aria-hidden="true" className="mt-2.5 size-2 shrink-0 rounded-full bg-brand-500" />
               <div>
                 <h3 className="text-lg font-semibold leading-snug">{title}</h3>

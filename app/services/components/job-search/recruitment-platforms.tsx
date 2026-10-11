@@ -1,4 +1,7 @@
+"use client";
+
 import { PlatformExternalLinkIcon } from "@/app/components/svg";
+import useScrollReveal from "@/app/components/home/use-scroll-reveal";
 import Image from "next/image";
 import SectionHeading from "../section-heading";
 import { recruitmentPlatforms } from "./content";
@@ -34,6 +37,7 @@ const desktopLogoHeights: Record<string, string> = {
 };
 
 export default function RecruitmentPlatforms() {
+  useScrollReveal("#recruitment-platform-cards [data-reveal]", true);
   return (
     <section id="job-platforms" aria-labelledby="recruitment-platforms" className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden bg-linear-to-t from-violet-50 via-sky-50/60 to-transparent py-12 sm:py-16 lg:py-20">
       <div className="mx-auto max-w-400 px-6 sm:px-10 lg:px-16 xl:px-20">
@@ -49,11 +53,11 @@ export default function RecruitmentPlatforms() {
             <strong className="font-semibold text-brand-950">Совет:</strong> создайте профиль на нескольких платформах и настройте уведомления о новых вакансиях — так вы не пропустите подходящие возможности.
           </p>
         </div>
-        <ul className="mt-10 grid gap-4 sm:gap-6 md:grid-cols-2 lg:gap-8 xl:grid-cols-3">
-          {recruitmentPlatforms.map((platform, index) => (<li key={platform.name} className="flex">
+        <ul id="recruitment-platform-cards" className="mt-10 grid gap-4 sm:gap-6 md:grid-cols-2 lg:gap-8 xl:grid-cols-3">
+          {recruitmentPlatforms.map((platform, index) => (<li data-reveal key={platform.name} className="flex">
             <PlatformCard {...platform} {...cardVisuals[index]} />
           </li>))}
-          <li className="flex">
+          <li data-reveal className="flex">
             <PlatformCard name="И другие" text={"Также стоит проверять платформы конкретных образова­тельных групп и сетей школ."} background="bg-linear-to-br from-purple-300 to-purple-200" ornament />
           </li>
         </ul>

@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 
-export default function useScrollReveal() {
+export default function useScrollReveal(selector = "[data-reveal]", desktopOnly = false) {
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const desktop = window.matchMedia("(min-width: 1024px)");
     if (!("IntersectionObserver" in window)) return;
 
     const animations = new Set<Animation>();
@@ -37,18 +38,21 @@ export default function useScrollReveal() {
             return;
           }
           const isBadge = element.dataset.reveal === "badge";
+          const isArrow = element.dataset.reveal === "arrow";
           const badgeIndex = Array.from(element.parentElement?.children ?? []).indexOf(element);
           const animation = element.animate(
             isBadge ? [
               { opacity: 0, transform: "translateX(40px) scale(0.94)" },
               { opacity: 1, transform: "translateX(0) scale(1)" },
             ] : [
-              { opacity: 0, translate: "0 48px" },
+              { opacity: 0, translate: isArrow ? "0 6px" : "0 48px" },
               { opacity: 1, translate: "0 0" },
             ],
             {
-              duration: isBadge ? 1000 : 900,
-              delay: isBadge ? 180 + badgeIndex * 180 : Math.min(index, 3) * 120,
+              duration: isArrow ? 250 : isBadge ? 1000 : 900,
+              delay: element.dataset.revealDelay !== undefined
+                ? Number(element.dataset.revealDelay)
+                : isBadge ? 180 + badgeIndex * 180 : Math.min(index, 3) * 120,
               easing: "cubic-bezier(0.22, 1, 0.36, 1)",
               fill: "backwards",
             },
@@ -66,8 +70,9 @@ export default function useScrollReveal() {
         rootMargin: `0px 0px -${Math.round(window.innerHeight * 0.2)}px 0px`,
       });
 
-      document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((element) => {
+      document.querySelectorAll<HTMLElement>(selector).forEach((element) => {
         // Never fade out content the visitor can already see.
+        if (desktopOnly && !desktop.matches) return;
         if (preference.matches || element.dataset.revealed || element.getBoundingClientRect().top < window.innerHeight) {
           element.dataset.revealed = "true";
           return;
@@ -92,13 +97,15 @@ export default function useScrollReveal() {
 
     start();
     preference.addEventListener("change", start);
+    if (desktopOnly) desktop.addEventListener("change", start);
     document.addEventListener("focusin", revealFocusedContent);
     return () => {
       observer?.disconnect();
       animations.forEach((animation) => animation.cancel());
       pending.forEach((_, element) => restore(element));
       preference.removeEventListener("change", start);
+      if (desktopOnly) desktop.removeEventListener("change", start);
       document.removeEventListener("focusin", revealFocusedContent);
     };
-  }, []);
+  }, [selector, desktopOnly]);
 }
