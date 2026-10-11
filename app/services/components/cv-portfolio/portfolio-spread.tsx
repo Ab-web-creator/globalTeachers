@@ -7,6 +7,7 @@ export default function PortfolioSpread({ active }: { active: number }) {
   const item = portfolioItems[active];
   const example = portfolioExamples[active];
   const sample = portfolioSampleTexts[active];
+  const prioritizeTeacher = item.image === "/images/portfolio/achievements-teacher.webp" || item.image === "/images/portfolio/leadership.webp";
 
   return (
     <div className="relative grid overflow-hidden rounded-xl bg-white shadow-lg lg:grid-cols-2">
@@ -33,9 +34,9 @@ export default function PortfolioSpread({ active }: { active: number }) {
         </div>
         <figure className="mt-8">
           <div className="relative rotate-1 border border-neutral-200 bg-white p-2 shadow-md">
-            <span aria-hidden="true" className="absolute -top-3 left-1/2 z-10 h-6 w-20 -translate-x-1/2 -rotate-6 bg-amber-100/80" />
+            <span aria-hidden="true" className={`absolute -top-3 z-10 h-6 w-20 -translate-x-1/2 -rotate-6 bg-amber-100/80 ${prioritizeTeacher ? "left-1/4" : "left-1/2"}`} />
             <div className="relative aspect-video overflow-hidden bg-brand-50 lg:aspect-2/1">
-              <Image src={item.image} alt={`Иллюстрация раздела «${example.tab}»`} fill sizes="(min-width: 1024px) 40vw, 90vw" className="object-cover" />
+              <Image src={item.image} alt={`Иллюстрация раздела «${example.tab}»`} fill sizes="(min-width: 1024px) 40vw, 90vw" className={`object-cover ${prioritizeTeacher ? "object-top" : ""}`} />
             </div>
           </div>
           <figcaption className="mt-5 text-base leading-relaxed text-neutral-500">{sample.caption}</figcaption>

@@ -31,9 +31,12 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: url("/images/footer-reference-pattern.webp") center right / cover no-repeat;
   transform: scale(1.5);
   transform-origin: right center;
+}
+
+:global(html[data-page-images]) .ornament::before {
+  background: url("/images/footer-reference-pattern.webp") center right / cover no-repeat;
 }
 
 @media (width >= 64rem) {

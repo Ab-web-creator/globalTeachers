@@ -1,7 +1,7 @@
 "use client";
 
 import { CareerBenefitIcon } from "@/app/components/svg";
-import Image from "next/image";
+import QueuedImage from "@/app/components/queued-image";
 import { useState } from "react";
 import type { Benefit } from "./benefits/benefits-content";
 import { benefits } from "./benefits/benefits-content";
@@ -42,9 +42,9 @@ function BenefitCard({ benefit }: {
   benefit: Benefit;
 }) {
   return (
-    <li data-reveal className={`relative isolate grid w-full grid-cols-1 overflow-hidden rounded-3xl text-left shadow-lg shadow-slate-900/10 sm:grid-cols-[1fr_3fr] @min-[37rem]:block @min-[37rem]:max-w-64 @min-[37rem]:justify-self-center @min-[37rem]:text-center ${benefit.color}`}>
+    <li data-reveal className={`relative isolate grid w-full grid-cols-1 overflow-hidden rounded-3xl text-left shadow-none sm:grid-cols-[1fr_3fr] sm:shadow-lg sm:shadow-slate-900/10 @min-[37rem]:block @min-[37rem]:max-w-64 @min-[37rem]:justify-self-center @min-[37rem]:text-center ${benefit.color}`}>
       <div className="relative hidden min-h-32 sm:block @min-[37rem]:aspect-5/2 @min-[37rem]:min-h-0">
-        <Image src={benefit.image} alt="" fill sizes="(max-width: 671px) 25vw, 256px" className="object-cover" />
+        <QueuedImage src={benefit.image} alt="" fill sizes="(max-width: 671px) 25vw, 256px" className="object-cover" />
       </div>
       <div className="relative grid min-w-0 grid-cols-[auto_minmax(0,1fr)] gap-x-4 p-4 sm:block @min-[37rem]:px-6 @min-[37rem]:pt-0 @min-[37rem]:pb-7">
         <div className={`row-span-3 flex size-10 items-center justify-center rounded-full shadow-sm [&>svg]:size-5 sm:float-right sm:ml-2 sm:size-8 @min-[37rem]:float-none @min-[37rem]:mx-auto @min-[37rem]:-mt-12 @min-[37rem]:mb-3 @min-[37rem]:size-20 @min-[37rem]:[&>svg]:size-8 ${benefit.iconColor}`}>

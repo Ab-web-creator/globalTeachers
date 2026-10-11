@@ -1,12 +1,12 @@
 import type { CSSProperties } from "react";
 import styles from "../../home/categories/service-hover-art.module.css";
 
-export function ServiceCategoryHoverArt({ slug }: { slug: string; }) {
+export function ServiceCategoryHoverArt({ slug, image = "/images/course-categories-four-colors.webp" }: { slug: string; image?: string; }) {
   if (slug === "job-search") return (
     <g className={styles.checklist}>
       <circle cx="381" cy="235" r="46" fill="#fdfdfd" />
       <svg x="335" y="189" width="92" height="92" viewBox="335 189 92 92" className={styles.profile}>
-        <image href="/images/course-categories-four-colors.webp" width="1254" height="1254" />
+        {image ? <image href={image} width="1254" height="1254" /> : null}
       </svg>
       {[[340, 324], [337, 386], [333, 448]].map(([x, y], index) => (
         <g key={y} transform={`rotate(3 ${x + 20} ${y + 21})`}>

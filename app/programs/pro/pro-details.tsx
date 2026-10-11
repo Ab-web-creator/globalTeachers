@@ -21,7 +21,7 @@ export default function ProDetails({ program }: { program: Program; }) {
       <div className="relative isolate">
         <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-linear-to-b from-sky-50 via-brand-100/40 via-20% to-white to-70%" />
         <ProFit />
-        <ProgramCta tier="PRO" price={program.price} title={cta.title} text={cta.text} image="/images/pro-development-wide.jpg" imageClassName="object-top md:object-center" imageContainerClassName="aspect-3/2 md:aspect-auto md:h-full" />
+        <ProgramCta tier="PRO" price={program.price} title={cta.title} text={cta.text} image="/images/pro-development-wide.webp" imageClassName="object-top md:object-center" imageContainerClassName="aspect-3/2 md:aspect-auto md:h-full" />
       </div>
     </ProgramPageLayout>
   );

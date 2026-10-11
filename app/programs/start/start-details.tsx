@@ -17,7 +17,7 @@ export default function StartDetails({ program }: { program: Program; }) {
       <StartAudience />
       <StartOutcomes flow={approach.outcome} />
       <StartIncluded />
-      <ProgramCta tier="START" price={program.price} title={cta.title} text={cta.text} image="/images/start-career-options-wide.jpg" imageClassName="object-center" imageContainerClassName="aspect-4/3 md:aspect-auto md:h-full" />
+      <ProgramCta tier="START" price={program.price} title={cta.title} text={cta.text} image="/images/start-career-options-wide.webp" imageClassName="object-center" imageContainerClassName="aspect-4/3 md:aspect-auto md:h-full" />
     </ProgramPageLayout>
   );
 }

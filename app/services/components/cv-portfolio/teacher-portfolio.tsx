@@ -49,7 +49,7 @@ export default function TeacherPortfolio() {
         {portfolioItems.map(({ title, text, image }) => (
           <li key={title} className="overflow-hidden rounded-3xl border border-brand-100 bg-white">
             <div className="relative aspect-video">
-              <Image src={image} alt="" fill sizes="100vw" className="object-cover" />
+              <Image src={image} alt="" fill sizes="100vw" className={`object-cover ${image === "/images/portfolio/achievements-teacher.webp" || image === "/images/portfolio/leadership.webp" ? "object-top" : ""}`} />
             </div>
             <div className="p-5">
               <h3 className="text-xl font-semibold leading-snug">{title}</h3>

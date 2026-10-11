@@ -1,5 +1,5 @@
 import { AboutBenefitCheckIcon, AboutGraduationIllustration } from "@/app/components/svg";
-import Image from "next/image";
+import QueuedImage from "@/app/components/queued-image";
 import Link from "next/link";
 
 const benefits = [
@@ -33,10 +33,10 @@ export default function AboutSection() {
 
         <div className="mx-auto grid w-full max-w-2xl grid-cols-2 gap-3 px-6 sm:gap-5 sm:px-0 sm:max-lg:max-w-none">
           <div data-reveal className="relative col-span-2 aspect-4/3 overflow-hidden rounded-2xl bg-brand-50 min-[550px]:col-span-1 min-[550px]:aspect-6/5 sm:rounded-3xl">
-            <Image src="/images/educators-colorful-wide.webp" alt="Педагоги работают вместе в библиотеке" fill sizes="(max-width: 549px) 100vw, (max-width: 639px) 45vw, (max-width: 1023px) calc((100vw - 100px) / 2), 22vw" className="object-cover object-center" />
+            <QueuedImage src="/images/educators-colorful-wide.webp" alt="Педагоги работают вместе в библиотеке" fill sizes="(max-width: 549px) 100vw, (max-width: 639px) 45vw, (max-width: 1023px) calc((100vw - 100px) / 2), 22vw" className="object-cover object-center" />
           </div>
           <div data-reveal className="relative hidden aspect-5/6 min-w-0 overflow-hidden min-[550px]:block min-[550px]:col-start-2 min-[550px]:row-span-2 min-[550px]:row-start-1 min-[550px]:aspect-auto rounded-2xl bg-brand-50 sm:rounded-3xl">
-            <Image src="/images/about-career-mentoring-bright.webp" alt="Педагог и наставник вместе обсуждают план международной карьеры" fill sizes="(max-width: 639px) 45vw, (max-width: 1023px) calc((100vw - 100px) / 2), 22vw" className="object-cover object-center" />
+            <QueuedImage src="/images/about-career-mentoring-bright.webp" alt="Педагог и наставник вместе обсуждают план международной карьеры" fill sizes="(max-width: 639px) 45vw, (max-width: 1023px) calc((100vw - 100px) / 2), 22vw" className="object-cover object-center" />
           </div>
           <div className="col-span-2 flex min-[550px]:col-span-1 min-[550px]:col-start-1 min-[550px]:row-start-2">
             <div data-reveal className="relative isolate flex flex-1 flex-col justify-between gap-4 overflow-hidden rounded-2xl bg-linear-to-br from-brand-500 to-brand-600 p-4 text-white sm:gap-6 sm:rounded-3xl sm:px-6 sm:py-5">

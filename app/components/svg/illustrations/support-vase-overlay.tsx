@@ -17,7 +17,7 @@ export function SupportVaseOverlay({ turn }: { turn: { selected: number[]; count
       </defs>
       {panels.map((path, index) => (
         <g key={path} clipPath={`url(#${id}-${index})`}>
-          <image key={turn.count} href="/images/career-support-stage-vase-v12.png" width="1024" height="1536" className={turn.selected.includes(index) ? styles.artwork : undefined} />
+          <image key={turn.count} href="/images/career-support-stage-vase-v12.webp" width="1024" height="1536" className={turn.selected.includes(index) ? styles.artwork : undefined} />
         </g>
       ))}
     </svg>

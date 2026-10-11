@@ -23,7 +23,7 @@ export default function SchoolResearch() {
           </p>
         </aside>
       </div>
-      <Image src="/images/school-research-flowers-small-hibiscus.png" alt="Педагог изучает сайт международной школы; рядом с ноутбуком стоит ваза с цветами" width={1000} height={1250} sizes="(min-width: 1600px) 576px, 40vw" className="hidden h-112 w-2/5 max-w-xl shrink-0 rounded-3xl object-cover lg:block lg:self-end" />
+      <Image src="/images/school-research-flowers-small-hibiscus.webp" alt="Педагог изучает сайт международной школы; рядом с ноутбуком стоит ваза с цветами" width={1000} height={1250} sizes="(min-width: 1600px) 576px, 40vw" className="hidden h-112 w-2/5 max-w-xl shrink-0 rounded-3xl object-cover lg:block lg:self-end" />
     </section>
   );
 }

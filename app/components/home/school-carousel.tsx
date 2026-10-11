@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import QueuedImage from "@/app/components/queued-image";
 import { useRef } from "react";
 import { schoolPartners } from "./school-partners";
 import useScrollLogos from "./use-scroll-logos";
@@ -20,7 +20,7 @@ export default function SchoolCarousel() {
       onKeyDown={(event) => {
         if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
           event.preventDefault();
-          move(event.key === "ArrowRight" ? 160 : -160);
+          move(event.key === "ArrowRight" ? 200 : -200);
         }
       }}
       onTouchStart={(event) => { touchStart.current = event.touches[0].clientX; }}
@@ -37,8 +37,8 @@ export default function SchoolCarousel() {
         {[0, 1, 2].map((copy) => (
           <ul key={copy} aria-hidden={copy !== 1 ? true : undefined} aria-label={copy === 1 ? "Логотипы международных школ" : undefined} className="flex shrink-0 items-center gap-4 pr-4 sm:gap-6 sm:pr-6">
             {schoolPartners.map(({ name, image }) => (
-              <li key={image} className="relative h-14 w-20 shrink-0 sm:h-24 sm:w-32 lg:w-40">
-                <Image src={`/images/collaboration/${image}.jpeg`} alt={copy === 1 ? name : ""} fill sizes="(min-width: 1024px) 160px, (min-width: 640px) 128px, 80px" className="object-contain" />
+              <li key={image} className="relative h-16 w-24 shrink-0 sm:h-28 sm:w-40 lg:h-32 lg:w-48">
+                <QueuedImage src={`/images/collaboration/${image}.jpeg`} alt={copy === 1 ? name : ""} fill sizes="(min-width: 1024px) 192px, (min-width: 640px) 160px, 96px" className="object-contain" />
               </li>
             ))}
           </ul>

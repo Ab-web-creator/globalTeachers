@@ -27,7 +27,7 @@ export default function ProApproach() {
         <ProPreparationSteps />
       </div>
       <div style={{ aspectRatio: "2 / 3" }} className="relative mt-12 hidden w-full max-w-sm justify-self-center lg:col-span-2 lg:block">
-        <Image src="/images/pro-document-vase-bouquet-v2.png" alt="Ваза с декором в виде CV, портфолио и сопроводительного письма, с букетом живых цветов" fill sizes="(min-width: 1024px) 384px, 0px" className="object-contain" />
+        <Image src="/images/pro-document-vase-bouquet-v2.webp" alt="Ваза с декором в виде CV, портфолио и сопроводительного письма, с букетом живых цветов" fill sizes="(min-width: 1024px) 384px, 0px" className="object-contain" />
         <VaseDocumentAnimation />
       </div>
     </section>

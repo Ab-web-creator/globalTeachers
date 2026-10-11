@@ -1,4 +1,4 @@
-import Image from "next/image";
+import QueuedImage from "@/app/components/queued-image";
 import { MentorSignatureUnderline } from "@/app/components/svg";
 
 export default function MentorNote() {
@@ -9,7 +9,7 @@ export default function MentorNote() {
           <div aria-hidden="true" className="absolute inset-5 translate-x-3 translate-y-2 rotate-1 rounded-3xl bg-purple-100 shadow-md shadow-purple-950/10" />
           <figure className="relative -rotate-3 rounded-xl bg-white p-3 shadow-xl shadow-brand-950/10">
             <div className="relative aspect-4/5 overflow-hidden rounded-lg">
-              <Image src="/images/myImage-brighter-background.png" alt="Основатель TeacherNavigator за рабочим столом" fill sizes="(min-width: 1024px) 320px, 100vw" className="object-cover object-center brightness-110" />
+              <QueuedImage src="/images/myImage-brighter-background.webp" alt="Основатель TeacherNavigator за рабочим столом" fill sizes="(min-width: 1024px) 320px, 100vw" className="object-cover object-center brightness-110" />
             </div>
             <figcaption style={{ fontFamily: '"Segoe Print", "Bradley Hand", cursive' }} className="px-2 pt-4 pb-2 text-center text-xl italic leading-relaxed text-brand-600">
               Я тоже начинал<br />с первого шага
@@ -38,13 +38,13 @@ export default function MentorNote() {
               </p>
             </div>
             <div>
-              <div className="mt-8 flex items-center gap-3 sm:hidden">
-                <Image src="/images/myImage-brighter-background.png" alt="Основатель TeacherNavigator" width={64} height={64} className="size-16 shrink-0 rounded-full object-cover brightness-110" />
-                <p className="text-sm font-semibold text-brand-700">Основатель<br />TeacherNavigator</p>
-              </div>
-              <div className="mt-6 text-brand-600 sm:hidden">
-                <p style={{ fontFamily: '\"Segoe Print\", \"Bradley Hand\", cursive' }} className="text-xl italic">С вами на каждом шаге</p>
-                <MentorSignatureUnderline />
+              <div className="mt-9 flex items-start gap-4 sm:hidden">
+                <QueuedImage src="/images/myImage-brighter-background.webp" alt="Основатель TeacherNavigator" width={80} height={80} className="size-20 shrink-0 rounded-full object-cover brightness-110" />
+                <div className="pt-1">
+                  <p className="text-base font-semibold text-brand-700">Основатель<br />TeacherNavigator</p>
+                  <p style={{ fontFamily: '"Segoe Print", "Bradley Hand", cursive' }} className="mt-2 text-lg italic text-brand-600">С вами на каждом шаге</p>
+                  <MentorSignatureUnderline />
+                </div>
               </div>
               <div data-reveal className="mt-10 hidden sm:block lg:mt-7">
                 <p className="text-sm font-semibold tracking-widest text-neutral-900 lg:text-lg">Основатель TeacherNavigator</p>

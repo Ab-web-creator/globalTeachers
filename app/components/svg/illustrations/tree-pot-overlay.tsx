@@ -15,10 +15,10 @@ export function TreePotOverlay() {
         </clipPath>
       </defs>
       <g clipPath={`url(#${id}-cv)`}>
-        <image href="/images/vip-career-tree-box-v6.png" width="971" height="1620" className={styles.firstPanel} />
+        <image href="/images/vip-career-tree-box-v6.webp" width="971" height="1620" className={styles.firstPanel} />
       </g>
       <g clipPath={`url(#${id}-school)`}>
-        <image href="/images/vip-career-tree-box-v6.png" width="971" height="1620" className={styles.secondPanel} />
+        <image href="/images/vip-career-tree-box-v6.webp" width="971" height="1620" className={styles.secondPanel} />
       </g>
     </svg>
   );

@@ -19,7 +19,7 @@ export function VaseDocumentOverlay({ turn }: { turn: { selected: number[]; coun
       </defs>
       {vaseDocumentClipPaths.map((path, index) => (
         <g key={path} clipPath={`url(#vase-document-${index})`}>
-          <image href="/images/pro-document-vase-bouquet-v2.png" width="1024" height="1536" key={turn.count} className={turn.selected.includes(index) ? styles.artwork : undefined} />
+          <image href="/images/pro-document-vase-bouquet-v2.webp" width="1024" height="1536" key={turn.count} className={turn.selected.includes(index) ? styles.artwork : undefined} />
         </g>
       ))}
     </svg>

@@ -16,13 +16,13 @@ export default function HeroSection() {
     setPaused(!paused);
   }
   return (
-    <section aria-labelledby="hero-title" className={`${styles.mobileBackground} relative isolate flex flex-col overflow-hidden bg-brand-900 pt-16 sm:block sm:min-h-0 lg:pt-18 xl:flex xl:min-h-dvh xl:justify-center`}>
-      <div className="relative isolate aspect-9/10 shrink-0 sm:aspect-auto sm:absolute sm:inset-0 sm:-z-20 sm:min-h-0">
+    <section aria-labelledby="hero-title" className={`${styles.mobileBackground} relative isolate flex h-dvh flex-col overflow-hidden bg-brand-900 pt-16 sm:block sm:h-auto sm:min-h-0 lg:pt-18 xl:flex xl:min-h-dvh xl:justify-center`}>
+      <div className="relative isolate min-h-0 flex-1 sm:absolute sm:inset-0 sm:-z-20 sm:flex-none">
         <HeroImage ref={image} paused={paused} />
         <div aria-hidden="true" className={`${styles.imageFade} pointer-events-none absolute inset-x-0 bottom-0 h-20 sm:hidden`} />
       </div>
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 hidden sm:block bg-linear-to-r from-blue-950/90 via-violet-900/60 via-35% to-transparent to-75%" />
-      <div className="relative isolate mx-auto w-full max-w-400 px-6 sm:px-10 lg:px-16 xl:px-20">
+      <div className="relative isolate mx-auto w-full max-w-400 shrink-0 px-6 sm:px-10 lg:px-16 xl:px-20">
         <div className="relative z-10 max-w-3xl pt-2 pb-10 text-left sm:py-16 lg:py-24 xl:py-28">
           <p className="mb-4 text-[10px] font-semibold tracking-widest text-brand-50 uppercase sm:text-sm">Международная карьера педагога</p>
           <h1 id="hero-title" className={`${styles.heading} text-4xl leading-none font-semibold tracking-wide text-white sm:text-5xl xl:text-6xl 2xl:text-7xl`}>

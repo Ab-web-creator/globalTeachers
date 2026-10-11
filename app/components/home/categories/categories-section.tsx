@@ -1,5 +1,9 @@
+"use client";
+
+import { whenHeroSlidesReady } from "@/app/components/image-schedule";
 import { CardChevronIcon, ServiceCategoryHoverArt, ServiceCategoryIllustration } from "@/app/components/svg";
 import Link from "next/link";
+import { useLayoutEffect, useState } from "react";
 import { services } from "../../../services/services";
 
 type CourseCategoryCardProps = {
@@ -36,12 +40,14 @@ export default function CategoriesSection() {
 }
 
 function CourseCategoryCard({ title, description, imageBounds, slug }: CourseCategoryCardProps) {
+  const [image, setImage] = useState("");
+  useLayoutEffect(() => whenHeroSlidesReady(() => setImage("/images/course-categories-four-colors.webp")), []);
   return (
     <li data-reveal>
       <Link href={`/services/${slug}`} className="group grid h-full w-full grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-3 rounded-3xl bg-white px-4 py-4 text-left transition hover:shadow-lg sm:flex sm:flex-col sm:items-stretch sm:gap-0 sm:px-7 sm:py-5">
-        <ServiceCategoryIllustration bounds={imageBounds} className="block aspect-5/4 w-20 shrink-0 overflow-hidden sm:mx-auto sm:mt-2 sm:mb-5 sm:w-3/4">
+        <ServiceCategoryIllustration bounds={imageBounds} image={image} className="block aspect-5/4 w-20 shrink-0 overflow-hidden sm:mx-auto sm:mt-2 sm:mb-5 sm:w-3/4">
           <g className="hidden sm:block">
-            <ServiceCategoryHoverArt slug={slug} />
+            <ServiceCategoryHoverArt slug={slug} image={image} />
           </g>
         </ServiceCategoryIllustration>
         <span className="flex min-w-0 flex-1 flex-col">

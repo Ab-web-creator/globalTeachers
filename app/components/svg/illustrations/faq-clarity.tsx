@@ -7,13 +7,13 @@ const topics = [
   { title: "Наша поддержка", text: "Понятные шаги и помощь рядом", icon: "chat" },
 ] as const;
 
-export function FaqClarityIllustration(props: SVGProps<SVGSVGElement>) {
+export function FaqClarityIllustration({ ornament = "/images/footer-reference-pattern.webp", ...props }: SVGProps<SVGSVGElement> & { ornament?: string; }) {
   return (
     <svg viewBox="0 0 440 532" fill="none" aria-hidden="true" {...props}>
       <rect data-faq-panel x="1" y="1" width="406" height="530" rx="28" className="fill-white stroke-brand-200" />
       <text data-faq-eyebrow x="204" y="40" textAnchor="middle" dominantBaseline="central" className="fill-brand-600" fontSize="12" fontWeight="600" letterSpacing="1.5">ПОЛЕЗНО ЗНАТЬ</text>
       <g transform="translate(0 40)">
-      <image data-faq-ornament href="/images/footer-reference-pattern.webp" x="160" y="180" width="246" height="298" preserveAspectRatio="xMaxYMax slice" />
+      {ornament ? <image data-faq-ornament href={ornament} x="160" y="180" width="246" height="298" preserveAspectRatio="xMaxYMax slice" /> : null}
       <g data-faq-intro>
         <rect x="32" y="30" width="344" height="72" rx="18" className="fill-brand-50" />
         <path d="m64 102-8 15 32-15" className="fill-brand-50" />

@@ -1,7 +1,8 @@
 "use client";
 
+import { markHeroSlidesReady } from "@/app/components/image-schedule";
 import { getImageProps } from "next/image";
-import { useEffect, useImperativeHandle, useRef, useState, type Ref } from "react";
+import { useEffect, useImperativeHandle, useLayoutEffect, useRef, useState, type Ref } from "react";
 import HeroAirplanes from "./hero-airplanes";
 
 const slides = [
@@ -14,26 +15,43 @@ export type HeroImageHandle = { next: () => void };
 
 export default function HeroImage({ paused, ref }: { paused: boolean; ref?: Ref<HeroImageHandle> }) {
   const [active, setActive] = useState(0);
+  const [showFollowers, setShowFollowers] = useState(false);
+  const [canRotate, setCanRotate] = useState(false);
   const loaded = useRef(slides.map(() => false));
   const images = useRef<(HTMLImageElement | null)[]>([]);
 
+  function noteLoaded(index: number) {
+    if (loaded.current[index]) return;
+    loaded.current[index] = true;
+    if (index === 0) setShowFollowers(true);
+    if (loaded.current.every(Boolean)) {
+      setCanRotate(true);
+      markHeroSlidesReady();
+    }
+  }
+
   useImperativeHandle(ref, () => ({
-    next: () => setActive((current) => (current + 1) % slides.length),
+    next: () => setActive((current) => {
+      const next = (current + 1) % slides.length;
+      return loaded.current[next] ? next : current;
+    }),
   }), []);
 
+  useLayoutEffect(() => {
+    images.current.forEach((image, index) => {
+      if (image?.complete && image.naturalWidth > 0) noteLoaded(index);
+    });
+  }, [showFollowers]);
+
   useEffect(() => {
+    if (!canRotate) return;
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     let timer: ReturnType<typeof setInterval> | undefined;
     function updateTimer() {
       clearInterval(timer);
       if (paused || media.matches || document.hidden) return;
       timer = setInterval(() => {
-        setActive((current) => {
-          const next = (current + 1) % slides.length;
-          const image = images.current[next];
-          const ready = loaded.current[next] || Boolean(image?.complete && image.naturalWidth > 0);
-          return ready ? next : current;
-        });
+        setActive((current) => (current + 1) % slides.length);
       }, 7000);
     }
     updateTimer();
@@ -44,11 +62,12 @@ export default function HeroImage({ paused, ref }: { paused: boolean; ref?: Ref<
       media.removeEventListener("change", updateTimer);
       document.removeEventListener("visibilitychange", updateTimer);
     };
-  }, [paused]);
+  }, [paused, canRotate]);
 
   return (
     <>
       {slides.map((slide, index) => {
+        if (index > 0 && !showFollowers) return null;
         const common = { alt: "", fill: true, sizes: "100vw", loading: "eager" as const, fetchPriority: index === 0 ? "high" as const : "low" as const };
         const { props: desktop } = getImageProps({ ...common, src: slide.desktop });
         const { props: mobile } = getImageProps({ ...common, src: slide.mobile });
@@ -56,7 +75,7 @@ export default function HeroImage({ paused, ref }: { paused: boolean; ref?: Ref<
           <div key={slide.desktop} aria-hidden="true" className={`absolute inset-0 -z-30 transition-opacity duration-1000 motion-reduce:transition-none ${active === index ? "opacity-100" : "opacity-0"}`}>
             <picture>
               <source media="(min-width: 40rem)" srcSet={desktop.srcSet} sizes="100vw" />
-              <img {...mobile} alt="" ref={(element) => { images.current[index] = element; }} onLoad={() => { loaded.current[index] = true; }} className={slide.airport ? "-scale-x-100 object-cover object-[80%_center] sm:scale-x-100 sm:object-center lg:object-right" : "object-cover object-[70%_center] sm:object-center lg:object-right"} />
+              <img {...mobile} alt="" ref={(element) => { images.current[index] = element; }} onLoad={() => noteLoaded(index)} className={slide.airport ? "-scale-x-100 object-cover object-[80%_center] sm:scale-x-100 sm:object-center lg:object-right" : "object-cover object-[70%_center] sm:object-center lg:object-right"} />
             </picture>
             {slide.airport && <HeroAirplanes />}
           </div>

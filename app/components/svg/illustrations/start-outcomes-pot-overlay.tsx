@@ -21,7 +21,7 @@ export function StartOutcomesPotOverlay() {
       </defs>
       {surfaces.map((path, index) => (
         <g key={path} clipPath={`url(#${id}-surface-${index})`}>
-          <image href="/images/start-outcomes-flower-stand-v15.png" width="1024" height="1536" className={styles.surface} style={{ animationDelay: `${index * -2}s` }} />
+          <image href="/images/start-outcomes-flower-stand-v15.webp" width="1024" height="1536" className={styles.surface} style={{ animationDelay: `${index * -2}s` }} />
         </g>
       ))}
     </svg>
