@@ -9,7 +9,7 @@ export default function ApplicationsList({ filter, search, data }: { filter: App
   const url = (next: number) => `/admin?${new URLSearchParams({ status: filter, q: search, page: String(next) })}`;
   return (
     <>
-      <p className="mt-6 mb-4 text-sm text-neutral-500">Найдено: {data.total}. Нажмите на заголовок карточки, чтобы увидеть все ответы.</p>
+      <p className="mt-6 mb-4 text-sm text-neutral-500">Найдено адресов: {data.total}. Откройте карточку пользователя, чтобы сравнить ответы всех попыток.</p>
       <div className="grid items-start gap-4 sm:grid-cols-2">
         {data.applications.map((application) => <ApplicationCard key={application.id} application={application} />)}
         {!data.total && <p className="rounded-2xl border border-brand-100 bg-white p-8 text-center text-neutral-500 sm:col-span-2">Заявок пока нет или ничего не найдено по вашему запросу.</p>}

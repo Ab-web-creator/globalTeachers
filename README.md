@@ -121,6 +121,12 @@ issued encrypted links are incompatible: submit again to receive a new link.
 
 ### Verification
 
+The consultation form has eight steps. Migration
+`002_remove_consultation_steps.sql` removes the retired experience, international
+experience, timing, destinations, and priority answers from pending and confirmed
+records. Run `npm run db:migrate` against each database when deploying this change.
+Application records, confirmation tokens, and notification metadata are preserved.
+
 Run `npm run lint`, `npx tsc --noEmit`, and `npm test`.
 Integration tests require a dedicated empty PostgreSQL test database:
 
@@ -134,8 +140,10 @@ Without `TEST_DATABASE_URL`, database integration tests are explicitly skipped.
 ## Private application viewer
 
 Open `/admin` to view pending and confirmed applications, search names/emails,
-and expand a record to see all submitted answers. Results are paginated (20 per
-page); expired pending rows are marked as awaiting cleanup. Viewing is read-only.
+and expand a record to see all submitted answers. Results are grouped by email and paginated (20 addresses per page). Open a card
+to visit its private `/admin/applications/[id]` page and compare dated attempts side by side; changed fields are highlighted. Editing
+updates the latest live application while preserving original submission snapshots.
+Deleting a card removes all attempts and live records for that email.
 
 Set `ADMIN_PASSWORD` (at least 16 characters) and `ADMIN_SESSION_SECRET` (at least
 32 characters) in server environment settings. Generate strong values with
@@ -162,3 +170,111 @@ locally installed PostgreSQL tools; they are not production deployment commands.
 The application role owns its database and has no PostgreSQL superuser rights.
 The protected maintenance endpoint still needs a scheduler for unattended expiry
 cleanup and notification retries.
+
+### Repeat consultation submissions
+
+Run `npm run db:migrate` to apply `003_consultation_attempt_history.sql` before
+deploying the history UI. Existing pending and confirmed records are backfilled.
+Answers overwritten before this migration cannot be recovered.
+
+Every accepted submission creates an original snapshot in `consultation_attempts`.
+The existing one-minute pending cooldown still rejects rapid retries without
+creating attempts. Replacing a pending submission invalidates its old link while
+retaining its answers with a superseded status. Confirmation and expiry update
+the snapshot status. Expiry cleanup removes the pending token record, but retains
+the attempt history, including unconfirmed submissions. Email grouping ignores
+letter case; admin search includes answers from every attempt. Status filters
+and counts describe whether the email has ever been confirmed. A later pending
+or expired attempt does not remove that confirmation. Individual attempt statuses
+remain visible in the history.
+
+### Incomplete consultation forms
+
+Apply `004_consultation_drafts.sql` before deploying draft saving. Saving starts
+only after a nonempty email has been entered, without verifying the address or
+requiring final submission. Changes are saved after a short pause and flushed
+when the page is hidden or closed. Draft writes send no emails. Network failures
+are retried while the page is open; closing before any request succeeds cannot
+guarantee a saved draft.
+
+Admin includes an unfinished-form filter, partial answers, and the last step
+reached. Draft updates use a private browser-generated token and increasing
+revision numbers. Final submission converts the owned draft into the same attempt;
+late draft writes cannot overwrite submitted answers. Drafts are retained until
+admin deletion and do not expire with confirmation links. Entering an email is
+not proof that the visitor owns it.
+
+### START qualification followup
+
+Apply `005_qualification_followups.sql`. Selecting «Нет» opens the qualification
+notice. When that answer is saved with a correctly formatted email, a START
+followup is temporarily due four minutes later, including for unconfirmed draft addresses.
+Correcting the qualification answer cancels unsent followups. Delivery happens
+once per email, with leased jobs, stable Resend idempotency keys, and bounded
+retries. Existing records are not emailed retroactively.
+
+`scripts/deploy.sh` starts/restarts `teachernavigator-maintenance` under PM2 and
+saves the process list. The worker calls the protected maintenance endpoint every
+minute on `127.0.0.1:${PORT:-3000}` using `CRON_SECRET`. Delivery occurs on the
+first successful check after the four-minute deadline; server downtime or email
+provider failures delay it. Configure PM2 startup on the VPS for reboot recovery.
+For local testing, run `node scripts/consultation-maintenance.mjs` alongside the
+app only when you want to deliver real queued emails. Integration tests mock mail.
+
+The temporary four-minute delay is set by `007_temporary_four_minute_followups.sql`.
+Admin displays a reminder to restore four hours. Use a new migration to restore
+both column defaults and the cancelled-job requeue delay in `queue_qualification_followup`.
+
+### Subject-specific emails
+
+Apply `008_subject_followups.sql`. Subject selections containing A or B queue one
+email per address, due four minutes after the first eligible selection is saved.
+A is early education/primary/English; B contains national languages and the
+Modern Languages option; C contains the remaining subjects. Email variants cover
+A, B, AB, AC, BC, and ABC (the combined AC/BC message). C alone queues no email.
+The latest saved selection determines the variant before first delivery; changing
+to C alone cancels an unsent job. Templates retain their original emphasis in HTML
+and include plain-text alternatives. A has no START link; other variants link to
+`/programs/start`. Retries reuse the saved message and idempotency key.
+
+These emails include unconfirmed drafts and are separate from the qualification
+START email. Existing records are not emailed retroactively. The same maintenance
+worker delivers them. Restore this migration's four-minute delay along with the
+qualification delay when ending the temporary test period.
+
+### Secondary vocational education followup
+
+Migration `009_education_followups.sql` queues a four-minute START recommendation
+when «Среднее специальное» is saved. The popup explains that degree requirements
+vary by school, country, and role. Emails include unconfirmed drafts, are sent
+once per address, and cancel when the education answer changes. The maintenance
+worker delivers them. Existing records are not mailed retroactively. Restore
+this temporary delay alongside the other followups after testing.
+
+### Beginner English followup
+
+Migration `010_english_followups.sql` queues the English preparation email four
+minutes after either «Не говорю по-английски» or «Базовый — могу общаться на простые
+темы» is saved. Selecting either option opens a popup recommending language
+preparation and START. English has no preselected answer. Emails include
+unconfirmed drafts, are sent once per address, and cancel when the answer changes
+to a higher level. The maintenance worker delivers them; existing records are
+not mailed retroactively. Restore this temporary delay alongside the other
+followups after testing.
+
+### Answer-change warnings
+
+Migration `011_answer_change_warnings.sql` records changes to subjects, education,
+and English, including changes between eligible answers and reversals within a
+single draft. Qualification keeps its existing audit. Admin cards show amber
+warnings and user profiles show the previous answer, new answer, and timestamp.
+These choices save immediately in order once an email has been entered. Initial
+empty fields are not changes; deleting the user also deletes their audit records.
+Existing differences between saved attempts are recovered by the migration.
+
+### Email maintenance in development
+
+`npm run dev` starts the maintenance worker when `CRON_SECRET` is configured.
+It uses the port reported by Next.js, including when the default port is busy,
+and checks due email queues every minute. Stopping the development server stops
+its worker. Production uses the PM2 worker configured by `scripts/deploy.sh`.

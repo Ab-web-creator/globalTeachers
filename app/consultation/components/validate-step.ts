@@ -7,18 +7,13 @@ const requiredMessages: Record<string, string> = {
   country: "Выберите страну проживания.",
   email: "Укажите ваш email.",
   qualification: "Выберите вариант ответа о педагогической квалификации.",
-  experience: "Выберите ваш педагогический стаж.",
   education: "Выберите ваше образование.",
-  international: "Укажите, есть ли у вас опыт работы в международной школе.",
   english: "Выберите ваш уровень английского.",
-  timing: "Выберите, когда вы готовы начать работу.",
-  priority: "Выберите ваш главный приоритет.",
 };
 
 export function validateStep(form: HTMLFormElement, field: keyof Answers, answers: Answers): { field: string; message: string } | null {
   if (field === "subject" && !answers.subject) return { field, message: "Выберите хотя бы один предмет." };
   if (field === "subject" && answers.subject.split("; ").length > MAX_SUBJECTS) return { field, message: `Выберите не более ${MAX_SUBJECTS} предметов.` };
-  if (field === "destinations" && !answers.destinations) return { field, message: "Выберите хотя бы один регион." };
   if (field === "email" && answers.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(answers.email.trim())) {
     return { field, message: "Укажите корректный email, например name@example.com." };
   }

@@ -7,11 +7,13 @@ export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   if (!trustedRequestOrigin(request)) return Response.json({ error: "Недопустимый запрос." }, { status: 403 });
-  let answers;
+  let answers, draft;
   try {
     const body = await request.text();
     if (body.length > 20000) throw new Error("Too large");
-    answers = parseAnswers(JSON.parse(body));
+    const input = JSON.parse(body);
+    answers = parseAnswers(input);
+    draft = input.draft;
   } catch (error) {
     if (error instanceof AnswerValidationError) return Response.json({ error: error.message, field: error.field }, { status: 400 });
     return Response.json({ error: "Проверьте заполнение всех полей заявки." }, { status: 400 });
@@ -19,14 +21,14 @@ export async function POST(request: Request) {
   try {
     const { origin } = emailConfig();
     await removeExpiredApplications();
-    const token = await savePendingApplication(answers);
+    const token = await savePendingApplication(answers, draft);
     if (!token) return Response.json({ error: "Подождите минуту перед повторной отправкой." }, { status: 429 });
     // Only a random token goes into the link; personal data stays in the database.
     const link = `${origin}/consultation/confirm#${token}`;
     await sendEmail({
       to: answers.email,
       subject: "Подтвердите email — TeacherNavigator",
-      text: `Спасибо за обращение в TeacherNavigator!\n\nЧтобы подтвердить ваш email и отправить заявку на консультацию, откройте ссылку:\n\n${link}\n\nСсылка действительна 24 часа. После подтверждения мы получим вашу заявку и свяжемся с вами, чтобы обсудить следующие шаги.\n\nЕсли вы не оставляли заявку, просто проигнорируйте это письмо.`,
+      text: `Спасибо за обращение в наш вебсайт!\n\nЧтобы подтвердить ваш email и отправить заявку на консультацию, откройте ссылку:\n\n${link}\n\nСсылка действительна 24 часа. После подтверждения мы получим вашу заявку и свяжемся с вами, чтобы обсудить следующие шаги.\n\nЕсли вы не оставляли заявку, просто проигнорируйте это письмо.`,
     });
     return Response.json({ ok: true });
   } catch {

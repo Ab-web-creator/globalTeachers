@@ -4,9 +4,9 @@ import { DeleteApplicationIcon } from "@/app/components/svg";
 import { useRouter } from "next/navigation";
 import { useRef, useState, useTransition } from "react";
 
-type Props = { id: string; status: "pending" | "confirmed"; name: string; };
+type Props = { id: string; status: "pending" | "confirmed"; name: string; returnToList?: boolean; };
 
-export default function DeleteApplicationButton({ id, status, name }: Props) {
+export default function DeleteApplicationButton({ id, status, name, returnToList = false }: Props) {
   const router = useRouter();
   const busy = useRef(false);
   const [deleting, setDeleting] = useState(false);
@@ -14,7 +14,7 @@ export default function DeleteApplicationButton({ id, status, name }: Props) {
   const [error, setError] = useState("");
 
   async function remove() {
-    if (busy.current || !window.confirm(`Удалить заявку «${name}» навсегда? Это действие нельзя отменить.`)) return;
+    if (busy.current || !window.confirm(`Удалить все заявки и историю попыток «${name}» навсегда? Это действие нельзя отменить.`)) return;
     busy.current = true;
     setDeleting(true);
     setError("");
@@ -24,7 +24,7 @@ export default function DeleteApplicationButton({ id, status, name }: Props) {
         const result = await response.json().catch(() => null);
         throw new Error(result?.error || "Не удалось удалить заявку. Обновите страницу и попробуйте снова.");
       }
-      startTransition(() => router.refresh());
+      startTransition(() => returnToList ? router.replace("/admin") : router.refresh());
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Не удалось удалить заявку.");
     } finally {
@@ -35,7 +35,7 @@ export default function DeleteApplicationButton({ id, status, name }: Props) {
 
   return (
     <div className="flex flex-col items-end gap-2">
-      <button type="button" onClick={remove} disabled={deleting || refreshing} aria-label={`Удалить заявку: ${name}`} title="Удалить навсегда" className="flex size-10 items-center justify-center rounded-xl text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-700 disabled:cursor-wait disabled:opacity-50">
+      <button type="button" onClick={remove} disabled={deleting || refreshing} aria-label={`Удалить все попытки: ${name}`} title="Удалить все попытки навсегда" className="flex size-10 items-center justify-center rounded-xl text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-700 disabled:cursor-wait disabled:opacity-50">
         <DeleteApplicationIcon />
       </button>
       {error && <p role="alert" className="text-sm text-red-700">{error}</p>}

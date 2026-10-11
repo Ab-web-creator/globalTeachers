@@ -6,7 +6,8 @@ import type { ApplicationFilter } from "../../../lib/admin/applications";
 
 const statuses = [
   { value: "all", label: "Все заявки" },
-  { value: "pending", label: "Временные" },
+  { value: "draft", label: "Незавершённые" },
+  { value: "pending", label: "Неподтверждённые" },
   { value: "confirmed", label: "Подтверждённые" },
 ] as const;
 
@@ -23,7 +24,7 @@ export default function ApplicationFilters({ filter, search }: { filter: Applica
       const params = new URLSearchParams(window.location.search);
       setQuery(params.get("q") ?? "");
       const next = params.get("status");
-      setStatus(next === "pending" || next === "confirmed" ? next : "all");
+      setStatus(next === "draft" || next === "pending" || next === "confirmed" ? next : "all");
     }
     window.addEventListener("popstate", restoreFilters);
     return () => {

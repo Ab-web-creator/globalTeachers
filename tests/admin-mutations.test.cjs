@@ -31,7 +31,7 @@ test('admin mutations authorize, validate and target only the chosen record', as
     } };
     const token = createSession();
     const id = '11111111-1111-4111-8111-111111111111';
-    const answers = { name: 'Test Teacher', email: 'test@example.com', country: 'Test', contact: '', subject: subjects[0], experience: '2–5 лет', education: 'Магистр', qualification: 'Да', international: 'Нет', english: 'Свободный', priority: 'Найти вакансии', destinations: 'Азия', timing: 'Как можно скорее', goals: '' };
+    const answers = { name: 'Test Teacher', email: 'test@example.com', country: 'Test', contact: '', subject: subjects[0], education: 'Магистр', qualification: 'Да', english: 'Свободный', packagePreference: '', goals: '' };
     const body = { id, status: 'pending', answers, originalAnswers: answers };
     const request = (body, cookie = token, origin = 'https://example.com') => new NextRequest('https://example.com/admin/edit', {
       method: 'POST', headers: { origin, cookie: cookie ? `gth_admin=${cookie}` : '' }, body: JSON.stringify(body),
@@ -45,10 +45,12 @@ test('admin mutations authorize, validate and target only the chosen record', as
     assert.equal((await edit(request({ ...body, answers: { ...answers, email: 'invalid' } }))).status, 400);
     assert.equal(calls.length, 0);
     assert.equal((await remove(request(body))).status, 204);
-    assert.equal(calls.at(-1).sql, 'DELETE FROM consultation_pending WHERE id = $1');
-    assert.deepEqual(calls.at(-1).values, [id]);
+    assert.match(calls.at(-1).sql, /DELETE FROM consultation_attempts/);
+    assert.match(calls.at(-1).sql, /lower\(email\).*SELECT lower\(email\)/s);
+    assert.deepEqual(calls.at(-1).values, [id, 'pending']);
     assert.equal((await remove(request({ ...body, status: 'confirmed' }))).status, 204);
-    assert.equal(calls.at(-1).sql, 'DELETE FROM consultation_applications WHERE id = $1');
+    assert.match(calls.at(-1).sql, /DELETE FROM consultation_attempts/);
+    assert.deepEqual(calls.at(-1).values, [id, 'confirmed']);
     assert.equal((await edit(request({ ...body, answers: { ...answers, name: "Updated O'Connor" } }))).status, 204);
     assert.match(calls.at(-1).sql, /UPDATE consultation_pending.*WHERE id = \$3 AND answers = \$4::jsonb/);
     assert.equal(JSON.parse(calls.at(-1).values[1]).name, "Updated O'Connor");

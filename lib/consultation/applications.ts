@@ -2,25 +2,40 @@ import { randomUUID } from "node:crypto";
 import type { Answers } from "../../app/consultation/components/form-fields";
 import { database } from "./database";
 import { createToken, hashToken } from "./token";
+import { draftIdentity, draftTokenHash } from "./drafts";
 
 export async function removeExpiredApplications() {
   const result = await database().query("DELETE FROM consultation_pending WHERE expires_at <= now()");
   return result.rowCount ?? 0;
 }
 
-export async function savePendingApplication(answers: Answers) {
+export async function savePendingApplication(answers: Answers, draftInput?: unknown) {
   const token = createToken();
-  const result = await database().query(
-    `INSERT INTO consultation_pending (id, email, answers, token_hash)
-     VALUES ($1, $2, $3, $4)
-     ON CONFLICT (email) DO UPDATE SET
-       id = EXCLUDED.id, answers = EXCLUDED.answers, token_hash = EXCLUDED.token_hash,
-       created_at = now(), expires_at = now() + interval '24 hours'
-     WHERE consultation_pending.created_at <= now() - interval '60 seconds'
-     RETURNING id`,
-    [randomUUID(), answers.email.toLowerCase(), JSON.stringify(answers), hashToken(token)],
-  );
-  return result.rowCount ? token : null;
+  const identity = draftIdentity(draftInput);
+  const client = identity ? await database().connect() : null;
+  try {
+    let id = randomUUID();
+    if (client && identity) {
+      await client.query("BEGIN");
+      const draft = await client.query("SELECT id FROM consultation_attempts WHERE id = $1 AND draft_token_hash = $2 AND status = 'draft' FOR UPDATE", [identity.id, draftTokenHash(identity.token)]);
+      if (draft.rowCount) id = draft.rows[0].id;
+    }
+    const result = await (client ?? database()).query(
+      `INSERT INTO consultation_pending (id, email, answers, token_hash)
+       VALUES ($1, $2, $3, $4)
+       ON CONFLICT (email) DO UPDATE SET
+         id = EXCLUDED.id, answers = EXCLUDED.answers, token_hash = EXCLUDED.token_hash,
+         created_at = now(), expires_at = now() + interval '24 hours'
+       WHERE consultation_pending.created_at <= now() - interval '60 seconds'
+       RETURNING id`,
+      [id, answers.email.toLowerCase(), JSON.stringify(answers), hashToken(token)],
+    );
+    if (client) await client.query("COMMIT");
+    return result.rowCount ? token : null;
+  } catch (error) {
+    if (client) await client.query("ROLLBACK");
+    throw error;
+  } finally { client?.release(); }
 }
 
 export async function confirmApplication(tokenHash: string): Promise<string | null> {

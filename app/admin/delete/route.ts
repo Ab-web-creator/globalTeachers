@@ -15,10 +15,9 @@ export async function POST(request: NextRequest) {
     return new Response("Invalid application", { status: 400 });
   }
   try {
-    const sql = input.status === "pending"
-      ? "DELETE FROM consultation_pending WHERE id = $1"
-      : "DELETE FROM consultation_applications WHERE id = $1";
-    const result = await database().query(sql, [input.id]);
+    const result = await database().query(`DELETE FROM consultation_attempts
+      WHERE lower(email) = (SELECT lower(email) FROM consultation_attempts WHERE id = $1
+        AND CASE WHEN status = 'confirmed' THEN 'confirmed' ELSE 'pending' END = $2)`, [input.id, input.status]);
     if (!result.rowCount) return Response.json({ error: "Заявка уже удалена или её статус изменился. Обновите страницу." }, { status: 404 });
     return new Response(null, { status: 204 });
   } catch {

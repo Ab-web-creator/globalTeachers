@@ -48,11 +48,3 @@ export function SlideshowPlaybackIcon({ paused, ...svgProps }: SVGProps<SVGSVGEl
     </svg>
   );
 }
-
-export function PortfolioCarouselArrowIcon({ className, ...svgProps }: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true" {...svgProps}>
-      <path d="M5 12h14m-6-6 6 6-6 6" />
-    </svg>
-  );
-}

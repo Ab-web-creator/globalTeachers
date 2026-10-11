@@ -9,6 +9,7 @@ import NameFields, { type TeacherName } from "./name-fields";
 
 import { consultationSteps } from "./consultation-steps";
 import { validateStep } from "./validate-step";
+import useDraftSave from "./use-draft-save";
 
 export default function ConsultationForm() {
   const [step, setStep] = useState(0);
@@ -23,6 +24,9 @@ export default function ConsultationForm() {
   const scrollArea = useRef<HTMLDivElement>(null);
   const errorMessage = useRef<HTMLParagraphElement>(null);
   const isEnglishStep = consultationSteps[step].fields[0] === "english";
+
+  const completeAnswers = { ...answers, name: `${teacherName.firstName.trim()} ${teacherName.lastName.trim()}`.trim() };
+  const draft = useDraftSave(completeAnswers, step, sending || sent);
 
   function resetScroll() {
     scrollArea.current?.scrollTo({ top: 0, behavior: "instant" });
@@ -51,10 +55,11 @@ export default function ConsultationForm() {
     setSending(true);
     setError("");
     try {
+      await draft.waitForSave();
       const response = await fetch("/api/consultation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...answers, name: `${teacherName.firstName.trim()} ${teacherName.lastName.trim()}` }),
+        body: JSON.stringify({ ...completeAnswers, draft: draft.getIdentity() }),
       });
       const result = await response.json();
       if (!response.ok && result.field) {
@@ -80,7 +85,7 @@ export default function ConsultationForm() {
   return (
     <section className="consultation-form flex h-full min-h-0 min-w-0 flex-col overflow-hidden bg-white lg:rounded-3xl lg:shadow-surround lg:shadow-brand-950/8" aria-labelledby="form-heading">
       {sent ? <div className="min-h-0 overflow-y-auto overscroll-contain px-4 py-5 lg:p-8 xl:p-10">
-        <EmailPending email={answers.email} onEdit={() => { setSent(false); changeStep(0); }} />
+        <EmailPending email={answers.email} onEdit={() => { draft.startNew(); setSent(false); changeStep(0); }} />
         <p className="mt-5 flex items-start gap-2 text-xs leading-relaxed text-neutral-500"><span aria-hidden="true">◇</span>Ваши данные используются только для рассмотрения заявки и связи с вами.</p>
       </div> : <form noValidate onSubmit={submit} className="flex min-h-0 flex-1 flex-col">
         <fieldset disabled={sending} aria-describedby={error ? "step-error" : undefined} className="flex min-h-0 min-w-0 flex-1 flex-col">

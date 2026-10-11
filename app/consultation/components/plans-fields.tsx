@@ -1,7 +1,11 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { englishNotice, isBeginnerEnglish } from "./english-notice";
 import type { Answers } from "./form-fields";
 import ChoiceField from "./choice-field";
 
-const questions: { name: keyof Answers; label: string; options: string[]; multiple?: boolean }[] = [
+const questions: { name: keyof Answers; label: string; options: string[] }[] = [
   {
     name: "english",
     label: "Как вы оцениваете свой уровень английского?",
@@ -12,21 +16,26 @@ const questions: { name: keyof Answers; label: string; options: string[]; multip
       "Уверенный — могу работать на английском",
     ],
   },
-  { name: "timing", label: "Когда вы хотели бы начать работу за рубежом?", options: ["Как можно скорее", "В следующем учебном году", "Через 1–2 года", "Пока изучаю возможности"] },
-  { name: "destinations", label: "Какие страны или регионы вы рассматриваете?", options: ["Европа", "Америка", "Африка", "Азия", "Океания"], multiple: true },
-  { name: "priority", label: "Что для вас сейчас самое важное?", options: ["Понять свои шансы", "Выбрать страны и школы", "Найти вакансии", "Подготовить CV и портфолио", "Подготовиться к интервью", "Получить сопровождение до оффера"] },
 ];
 
 export default function PlansFields({ names, answers, onChange }: { names: readonly string[]; answers: Answers; onChange: (name: keyof Answers, value: string) => void }) {
+  const [noticeOpen, setNoticeOpen] = useState(false);
+  const notice = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    if (noticeOpen && !notice.current?.open) notice.current?.showModal();
+  }, [noticeOpen]);
   return (
     <>
       {questions.filter((question) => names.includes(question.name)).map((question) => {
-        return <ChoiceField key={question.name} {...question} value={answers[question.name]} onChange={(value) => onChange(question.name, value)} />;
+        return <ChoiceField key={question.name} {...question} value={answers[question.name]} onChange={(value) => { onChange(question.name, value); if (question.name === "english" && isBeginnerEnglish(value)) setNoticeOpen(true); }} />;
       })}
-      {names.includes("goals") && <label htmlFor="consultation-goals" className="block text-sm font-medium">
-        <span className="sr-only">Расскажите немного о своей ситуации (необязательно)</span>
-        <textarea id="consultation-goals" name="goals" aria-describedby="step-description" value={answers.goals} onChange={(event) => onChange("goals", event.target.value)} rows={5} maxLength={1500} placeholder="Например: где вы сейчас работаете, какую работу ищете или какие вопросы хотели бы обсудить." className="block w-full resize-y rounded-xl border border-brand-200 bg-white/80 px-4 py-3 text-base font-normal text-brand-700 placeholder:text-neutral-400 focus:border-brand-500 focus:outline-1 focus:-outline-offset-2 focus:outline-brand-300" />
-      </label>}
+      {names.includes("packagePreference") && <ChoiceField name="packagePreference" label="Какая программа вас интересует?" options={["Start", "Pro", "VIP", { value: "", label: "Пока не выбираю" }]} value={answers.packagePreference} required={false} onChange={(value) => onChange("packagePreference", value)} />}
+      <dialog ref={notice} onClose={() => setNoticeOpen(false)} aria-labelledby="english-notice-title" className="fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-3xl bg-white p-6 text-brand-700 shadow-xl backdrop:bg-brand-950/50 sm:p-8">
+        <h3 id="english-notice-title" className="text-xl font-semibold">{englishNotice.title}</h3>
+        <p className="mt-7 text-base leading-relaxed">{englishNotice.reason}</p>
+        <p className="mt-4 text-base leading-relaxed">{englishNotice.recommendation}</p>
+        <button type="button" onClick={() => notice.current?.close()} className="mt-6 rounded-xl bg-brand-500 px-5 py-3 font-medium text-white hover:bg-brand-600">Продолжить заполнение</button>
+      </dialog>
     </>
   );
 }
