@@ -1,9 +1,9 @@
 .art [data-faq-eyebrow] {
-  transform-origin: 204px 38px;
+  transform-origin: 204px 40px;
   animation: eyebrow 4s 0.8s linear both, align-eyebrow 0.8s 11.4s ease-in-out forwards;
 }
 .art [data-faq-panel] {
-  animation: appear 0.8s 4s ease-out both;
+  animation: opening-panel 4s 0.8s linear both;
 }
 .art [data-faq-intro] {
   animation: appear 0.8s 4.8s ease-out both;
@@ -29,6 +29,7 @@
   animation: ornament 1.2s 10.2s ease-out both;
 }
 .art:not([data-started="true"]) [data-faq-eyebrow],
+.art:not([data-started="true"]) [data-faq-panel],
 .art:not([data-started="true"]) [data-faq-note] {
   visibility: hidden;
 }
@@ -41,8 +42,13 @@
 }
 @keyframes eyebrow {
   0% { opacity: 0; transform: translateY(222px) scale(2); }
-  30%, 55% { opacity: 1; transform: translateY(222px) scale(2); }
-  70%, 100% { opacity: 1; transform: translateY(0) scale(1); }
+  30%, 70% { opacity: 1; transform: translateY(222px) scale(2); }
+  85%, 100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes opening-panel {
+  0% { opacity: 0; y: 222px; height: 80px; }
+  30%, 55% { opacity: 1; y: 222px; height: 80px; }
+  70%, 100% { opacity: 1; y: 1px; height: 530px; }
 }
 @keyframes align-eyebrow {
   from { transform: translateX(0) scale(1); }
@@ -72,5 +78,6 @@
   .art [data-faq-ornament] { opacity: 0.1; }
   .art [data-faq-separator] { transform: scaleX(var(--faq-separator-scale, 0.8)); }
   .art:not([data-started="true"]) [data-faq-eyebrow],
+  .art:not([data-started="true"]) [data-faq-panel],
   .art:not([data-started="true"]) [data-faq-note] { visibility: visible; }
 }

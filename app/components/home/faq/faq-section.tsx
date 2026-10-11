@@ -28,7 +28,7 @@ export default function FaqSection() {
             <FaqItem {...item} />
           </div>))}
         </div>
-        {!expanded && (<div className="mt-0 pl-6 text-left sm:pl-8">
+        {!expanded && (<div className="mt-0 text-left">
           <button type="button" aria-expanded={false} aria-controls="faq-questions" onClick={() => setExpanded(true)} className="rounded-none border-0 bg-transparent px-0 py-2.5 sm:py-3 text-lg font-medium text-neutral-600 transition hover:text-neutral-800 underline underline-offset-4">
             Показать все вопросы
           </button>

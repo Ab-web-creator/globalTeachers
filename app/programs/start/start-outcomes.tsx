@@ -18,7 +18,7 @@ export default function StartOutcomes({ flow }: { flow: string }) {
       </div>
       <div className="overflow-hidden hidden w-full max-w-sm justify-self-center lg:col-span-2 lg:block">
         <div className="relative -mt-[0.5%] -mb-[20%]">
-        <Image src="/images/start-outcomes-flower-stand-v13.png" alt="Круглый сиреневый горшок с изогнутыми бумажными панелями «Что?», «Где?», «Куда?» на деревянном столике с красными гладиолусами, оранжевыми маками и фиолетовыми колокольчиками, ниспадающими вдоль столика над полом" width={1024} height={1536} sizes="384px" className="h-auto w-full object-contain" />
+        <Image src="/images/start-outcomes-flower-stand-v15.png" alt="Круглый сиреневый горшок с изогнутыми бумажными панелями «Что?», «Где?», «Куда?» на деревянном столике с красными гладиолусами, оранжевыми маками и фиолетовыми колокольчиками, ниспадающими вдоль столика над полом" width={1024} height={1536} sizes="384px" className="h-auto w-full object-contain" />
         <StartOutcomesPotOverlay />
         </div>
       </div>

@@ -30,9 +30,10 @@ export default function InterviewPreparationDetails() {
         <section aria-labelledby="unexpected-questions" className="relative isolate py-12 sm:py-16 lg:py-20">
           <SectionFade direction="down" halfHeight />
           <UnexpectedQuestions />
-          <div className="mt-12 sm:mt-16 lg:mt-20">
-            <InterviewPractice />
-          </div>
+        </section>
+        <section aria-label="Практическая подготовка к интервью" className="relative isolate py-12 sm:py-16 lg:py-20">
+          <SectionFade direction="down" halfHeight />
+          <InterviewPractice />
         </section>
         <InterviewSupport />
       </article>

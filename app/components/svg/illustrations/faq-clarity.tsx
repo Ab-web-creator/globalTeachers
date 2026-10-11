@@ -11,7 +11,7 @@ export function FaqClarityIllustration(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 440 532" fill="none" aria-hidden="true" {...props}>
       <rect data-faq-panel x="1" y="1" width="406" height="530" rx="28" className="fill-white stroke-brand-200" />
-      <text data-faq-eyebrow x="204" y="38" textAnchor="middle" className="fill-brand-600" fontSize="12" fontWeight="600" letterSpacing="1.5">ПОЛЕЗНО ЗНАТЬ</text>
+      <text data-faq-eyebrow x="204" y="40" textAnchor="middle" dominantBaseline="central" className="fill-brand-600" fontSize="12" fontWeight="600" letterSpacing="1.5">ПОЛЕЗНО ЗНАТЬ</text>
       <g transform="translate(0 40)">
       <image data-faq-ornament href="/images/footer-reference-pattern.webp" x="160" y="180" width="246" height="298" preserveAspectRatio="xMaxYMax slice" />
       <g data-faq-intro>
