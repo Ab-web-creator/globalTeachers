@@ -1,9 +1,13 @@
+"use client";
+
+import useScrollReveal from "@/app/components/home/use-scroll-reveal";
 import { careerStageIconTones, RelocationDocumentsIllustration, relocationIconPaths, StrokeIcon } from "@/app/components/svg";
 import SectionLabel from "../job-search/section-label";
 import SectionHeading from "../section-heading";
 import { relocation } from "./content";
 
 export default function RelocationSteps() {
+  useScrollReveal("#career-relocation-cards [data-reveal]", true);
   return (
     <section aria-labelledby="support-relocation" className="py-12 sm:py-16 lg:py-20">
       <div className="grid items-center gap-10 lg:grid-cols-3 lg:gap-12">
@@ -15,8 +19,8 @@ export default function RelocationSteps() {
         </div>
         <RelocationDocumentsIllustration />
       </div>
-      <ol className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {relocation.steps.map(({ title, text }, index) => (<li key={title} className="group flex items-start gap-4 rounded-3xl border border-brand-100 bg-white p-4 shadow-sm transition-colors duration-200 hover:border-brand-300 hover:bg-violet-50 motion-reduce:transition-none sm:p-6">
+      <ol id="career-relocation-cards" className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {relocation.steps.map(({ title, text }, index) => (<li key={title} data-reveal className="group flex items-start gap-4 rounded-3xl border border-brand-100 bg-white p-4 shadow-sm transition-colors duration-200 hover:border-brand-300 hover:bg-violet-50 motion-reduce:transition-none sm:p-6">
           <span aria-hidden="true" className={`flex size-12 shrink-0 items-center justify-center rounded-2xl ${careerStageIconTones[index]}`}>
             <StrokeIcon path={relocationIconPaths[index]} className="size-6" />
           </span>

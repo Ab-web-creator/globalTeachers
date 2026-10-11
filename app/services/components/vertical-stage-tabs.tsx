@@ -15,13 +15,14 @@ type Stage = {
 type Props = {
   id: string;
   autoPreview?: boolean;
+  reservePanelHeight?: boolean;
   label: string;
   labels: readonly string[];
   paths: readonly string[];
   stages: readonly Stage[];
 };
 
-export default function VerticalStageTabs({ id, label, labels, paths, stages, autoPreview = false }: Props) {
+export default function VerticalStageTabs({ id, label, labels, paths, stages, autoPreview = false, reservePanelHeight = false }: Props) {
   const { container, active, exiting, select, stopPreview } = useStagePreview(autoPreview, stages.length);
   const [vertical, setVertical] = useState(false);
 
@@ -57,7 +58,7 @@ export default function VerticalStageTabs({ id, label, labels, paths, stages, au
         ))}
       </div>
       {stages.map((stage, index) => (
-        <div key={stage.id} role="tabpanel" id={`${id}-panel-${index}`} aria-labelledby={`${id}-tab-${index}`} hidden={active !== index} tabIndex={0} className="min-w-0 rounded-b-3xl sm:rounded-bl-none sm:rounded-r-3xl border border-brand-200 bg-white p-4 focus-visible:outline-2 focus-visible:outline-brand-500 sm:p-6">
+        <div key={stage.id} role="tabpanel" id={`${id}-panel-${index}`} aria-labelledby={`${id}-tab-${index}`} hidden={reservePanelHeight ? undefined : active !== index} aria-hidden={active !== index} inert={active !== index} data-inactive={active !== index ? "true" : undefined} tabIndex={0} className="min-w-0 rounded-b-3xl sm:rounded-bl-none sm:rounded-r-3xl border border-brand-200 bg-white p-4 focus-visible:outline-2 focus-visible:outline-brand-500 sm:p-6">
           <div key={active} className={autoPreview ? (exiting ? styles.exiting : styles.content) : undefined}>
             <div>
               <p className="mb-4 text-sm font-medium tracking-widest text-brand-400">0{index + 1} / {String(stages.length).padStart(2, "0")}</p>

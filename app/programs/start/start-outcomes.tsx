@@ -14,8 +14,8 @@ export default function StartOutcomes({ flow }: { flow: string }) {
           <NumberedSteps flow={flow} />
         </div>
       </div>
-      <div style={{ aspectRatio: "25 / 23" }} className="relative hidden w-full max-w-sm justify-self-center lg:col-span-2 lg:block">
-        <Image src="/images/start-search-plan-illustration-v2.webp" alt="Иллюстрация плана поиска работы, списка школ и CV" fill sizes="384px" className="object-contain" />
+      <div className="relative overflow-hidden hidden w-full max-w-sm justify-self-center lg:col-span-2 lg:block">
+        <Image src="/images/start-outcomes-flower-stand-v6.png" alt="Круглый сиреневый горшок на деревянном столике с красными гладиолусами, оранжевыми маками и фиолетовыми колокольчиками, ниспадающими вдоль столика над полом" width={1024} height={1536} sizes="384px" className="-mt-[18%] -mb-[12%] h-auto w-full object-contain" />
       </div>
     </section>
   );

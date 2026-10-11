@@ -1,0 +1,23 @@
+.stableTabs [role="tabpanel"][data-inactive] {
+  display: none;
+}
+
+@media (min-width: 1000px) {
+  /* Stack panels in one grid cell so the tallest sets a stable height. */
+  .stableTabs [role="tablist"] {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .stableTabs [role="tabpanel"] {
+    display: block;
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .stableTabs [role="tabpanel"][data-inactive] {
+    display: block;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}

@@ -5,6 +5,8 @@ import SectionLabel from "../job-search/section-label";
 import SectionHeading from "../section-heading";
 import VerticalStageTabs from "../vertical-stage-tabs";
 import { stagesIntroduction, supportSections } from "./content";
+import SupportVaseAnimation from "./support-vase-animation";
+import styles from "./support-stages.module.css";
 
 export default function SupportStages() {
   return (
@@ -15,10 +17,11 @@ export default function SupportStages() {
           <SectionLabel>Этапы сопровождения</SectionLabel>
           <SectionHeading id="support-stages">Как проходит <span className="text-brand-500">сопровождение?</span></SectionHeading>
           <p className="mt-7 text-lg leading-relaxed text-neutral-600">{stagesIntroduction}</p>
-          <div className="mt-10 [&_[role=tab]]:py-2 [&_[role=tab]_svg]:hidden sm:[&_[role=tab]]:py-4 sm:[&_[role=tab]_svg]:block">
+          <div className={`${styles.stableTabs} mt-10 [&_[role=tab]]:py-2 [&_[role=tab]_svg]:hidden sm:[&_[role=tab]]:py-4 sm:[&_[role=tab]_svg]:block`}>
             <VerticalStageTabs
               id="career-support-stages"
               autoPreview
+              reservePanelHeight
               label="Этапы сопровождения"
               labels={["Стратегия", "Вакансии", "Заявки", "Интервью"]}
               paths={careerStageIconPaths}
@@ -26,8 +29,9 @@ export default function SupportStages() {
             />
           </div>
         </div>
-        <div className="hidden w-full min-[1000px]:col-span-4 min-[1000px]:mt-40 min-[1000px]:block">
-          <Image src="/images/career-support-plan-transparent.webp" alt="План поиска работы, школы и документы кандидата" width={1254} height={1254} sizes="30vw" className="h-auto w-full object-contain" />
+        <div className="relative hidden w-full max-w-sm justify-self-center min-[1000px]:col-span-4 min-[1000px]:self-end min-[1000px]:-translate-y-24 min-[1000px]:block">
+          <Image src="/images/career-support-stage-vase-v10.png" alt="Букет красных гладиолусов, оранжевых маков и фиолетовых астр в сиреневой вазе с символами стратегии, поиска вакансий, заявок и интервью" width={1024} height={1536} sizes="(min-width: 1280px) 384px, 30vw" className="-mb-[6.9%] h-auto w-full object-contain" />
+          <SupportVaseAnimation />
         </div>
       </div>
     </section>

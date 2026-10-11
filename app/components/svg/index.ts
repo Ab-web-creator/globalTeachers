@@ -42,6 +42,7 @@ export { offerReviewIconTones } from "./data/career-support-icons";
 export { offerReviewIconPaths } from "./data/career-support-icons";
 export { relocationIconPaths } from "./data/career-support-icons";
 export { VaseDocumentOverlay, vaseDocumentClipPaths } from "./illustrations/vase-document-overlay";
+export { SupportVaseOverlay } from "./illustrations/support-vase-overlay";
 export { jobSearchStepPaths } from "./data/job-search-step-paths";
 export { panelIconPaths } from "./data/panel-icon-paths";
 export { weakExperienceIconPath, strongExperienceIconPath, consultationTravelIconPath, consultationCommunityIconPath, consultationLearningIconPath, consultationCompassIconPath, checkListTickIconPath, preparationLightbulbIconPath, preparationCheckIconPath, applicationPointerIconPath, interviewPeopleIconPath, strategyStarIconPath, strategyProgressIconPath, offerAcceptedCheckIconPath } from "./data/content-icon-paths";
