@@ -16,7 +16,7 @@ export default function RelocationSteps() {
         <RelocationDocumentsIllustration />
       </div>
       <ol className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {relocation.steps.map(({ title, text }, index) => (<li key={title} className="group flex items-start gap-4 rounded-3xl border border-brand-100 bg-white p-6 shadow-sm transition-colors duration-200 hover:border-brand-300 hover:bg-violet-50 motion-reduce:transition-none">
+        {relocation.steps.map(({ title, text }, index) => (<li key={title} className="group flex items-start gap-4 rounded-3xl border border-brand-100 bg-white p-4 shadow-sm transition-colors duration-200 hover:border-brand-300 hover:bg-violet-50 motion-reduce:transition-none sm:p-6">
           <span aria-hidden="true" className={`flex size-12 shrink-0 items-center justify-center rounded-2xl ${careerStageIconTones[index]}`}>
             <StrokeIcon path={relocationIconPaths[index]} className="size-6" />
           </span>

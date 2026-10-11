@@ -47,7 +47,7 @@ function StepCard({ number, title, text, accent }: {
   accent: Accent;
 }) {
   return (
-    <div className="relative flex h-full gap-4 overflow-hidden rounded-3xl bg-white p-5 pb-7 shadow-card shadow-neutral-300/60 ring-1 ring-neutral-100 sm:flex-col sm:gap-0">
+    <div className="relative flex h-full gap-4 overflow-hidden rounded-3xl bg-white py-4 pr-5 pl-3 shadow-card shadow-neutral-300/60 ring-1 ring-neutral-100 sm:flex-col sm:gap-0 sm:p-5 sm:pb-7">
       <div className="flex shrink-0 items-start gap-3">
         <span className={`flex size-10 shrink-0 items-center justify-center rounded-full text-lg font-bold sm:bg-neutral-100 sm:text-neutral-500 ${accent.badge}`}>{number}</span>
         <span className={`hidden size-20 items-center justify-center rounded-full sm:flex ${accent.circle}`}>

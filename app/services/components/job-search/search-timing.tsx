@@ -55,9 +55,9 @@ const columns = ["md:col-start-1", "md:col-start-2", "md:col-start-3", "md:col-s
 
 const seasons: SeasonName[] = ["fall", "winter", "spring", "summer"];
 
-const seasonMs = 8000;
+const seasonMs = 6000;
 
-const pauseMs = 2000;
+const pauseMs = 1000;
 
 export default function SearchTiming() {
   const [active, setActive] = useState(0);

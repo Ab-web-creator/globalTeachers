@@ -38,7 +38,7 @@ export default function CategoriesSection() {
 function CourseCategoryCard({ title, description, imageBounds, slug }: CourseCategoryCardProps) {
   return (
     <li data-reveal>
-      <Link href={`/services/${slug}`} className="group grid h-full w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-3xl bg-white px-4 py-4 text-left transition hover:shadow-lg sm:flex sm:flex-col sm:items-stretch sm:gap-0 sm:px-7 sm:py-5">
+      <Link href={`/services/${slug}`} className="group grid h-full w-full grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-3 rounded-3xl bg-white px-4 py-4 text-left transition hover:shadow-lg sm:flex sm:flex-col sm:items-stretch sm:gap-0 sm:px-7 sm:py-5">
         <ServiceCategoryIllustration bounds={imageBounds} className="block aspect-5/4 w-14 shrink-0 overflow-hidden sm:mx-auto sm:mt-2 sm:mb-5 sm:w-3/4">
           <g className="hidden sm:block">
             <ServiceCategoryHoverArt slug={slug} />

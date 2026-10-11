@@ -11,28 +11,31 @@ const tones = {
 
 type IconPanelProps = {
   id: string;
-  title: string;
+  title: ReactNode;
+  headingClassName?: string;
   icon: keyof typeof panelIconPaths;
   children: ReactNode;
   tone?: keyof typeof tones;
   as?: "section" | "div";
 };
 
-export default function IconPanel({ id, title, icon, children, tone = "default", as: Container = "section" }: IconPanelProps) {
+export default function IconPanel({ id, title, headingClassName = "", icon, children, tone = "default", as: Container = "section" }: IconPanelProps) {
   const colors = tones[tone];
 
   return (
-    <Container aria-labelledby={Container === "section" ? id : undefined} className={`flex flex-col gap-5 rounded-3xl border p-5 sm:flex-row sm:gap-6 sm:p-6 ${colors.panel}`}>
+    <Container aria-labelledby={Container === "section" ? id : undefined} className={`grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 rounded-3xl border p-5 sm:flex sm:flex-row sm:gap-6 sm:p-6 ${colors.panel}`}>
       <span aria-hidden="true" className={`flex size-14 shrink-0 items-center justify-center rounded-full ${colors.icon}`}>
         <PanelTopicIcon path={panelIconPaths[icon]} />
       </span>
-      <div className="min-w-0">
-        {tone === "default" || tone === "white" ? (
-          <SectionHeading id={id} size="small">{title}</SectionHeading>
-        ) : (
-          <h2 id={id} className="text-xl font-semibold leading-tight tracking-tight text-brand-950">{title}</h2>
-        )}
-        {children}
+      <div className="contents sm:block sm:min-w-0">
+        <div className="flex min-w-0 items-center sm:block">
+          {tone === "default" || tone === "white" ? (
+            <SectionHeading id={id} size="small" className={headingClassName}>{title}</SectionHeading>
+          ) : (
+            <h2 id={id} className={`text-xl font-semibold leading-tight tracking-tight text-brand-950 ${headingClassName}`}>{title}</h2>
+          )}
+        </div>
+        <div className="col-span-2 min-w-0 pl-4 sm:pl-0">{children}</div>
       </div>
     </Container>
   );

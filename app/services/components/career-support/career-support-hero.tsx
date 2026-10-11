@@ -11,7 +11,7 @@ export default function CareerSupportHero() {
         Когда рядом есть человек, который <span className="text-brand-500">знает весь процесс</span>
       </PageTitle>
       <div className="mt-7 space-y-5">
-        {introduction.map((text) => <p key={text} className="text-base leading-relaxed text-neutral-600 sm:text-lg">{text}</p>)}
+        {introduction.map((text) => <p key={text} className="text-lg leading-relaxed text-neutral-600">{text}</p>)}
       </div>
       <p className="mt-5 border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-600">{heroQuote.join(" ")}</p>
     </ServiceHero>

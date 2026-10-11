@@ -8,7 +8,7 @@ export default function QualitySection() {
     <div className="relative left-1/2 w-screen -translate-x-1/2 bg-linear-to-b from-violet-100 via-blue-50 via-25% to-transparent to-50%">
       <div className="mx-auto grid max-w-400 px-6 sm:px-10 lg:grid-cols-2 lg:px-16 xl:px-20">
         <section aria-labelledby="cv-review portfolio-quality" className="grid gap-6 lg:col-span-2 lg:grid-cols-2 py-12 sm:py-16 lg:py-20">
-          <IconPanel as="div" id="cv-review" title="Перед отправкой проверьте" icon="checklist" tone="white">
+          <IconPanel as="div" id="cv-review" headingClassName="text-xl!" title={<>Перед отправкой проверьте<span className="lg:hidden"> </span><br className="hidden lg:block" />своё CV</>} icon="checklist" tone="white">
             <ol className="mt-5 space-y-2.5 text-lg">
               {reviewQuestions.map((question, index) => (<li key={question} className="flex items-baseline gap-4 leading-relaxed text-neutral-600">
                 <span aria-hidden="true" className="font-semibold tabular-nums text-brand-500">{String(index + 1).padStart(2, "0")}</span>
@@ -16,7 +16,7 @@ export default function QualitySection() {
               </li>))}
             </ol>
           </IconPanel>
-          <IconPanel as="div" id="portfolio-quality" title="Главное — качество, а не количество" icon="gem" tone="white">
+          <IconPanel as="div" id="portfolio-quality" headingClassName="text-xl!" title={<>Главное — качество, а не<span className="lg:hidden"> </span><br className="hidden lg:block" />количество</>} icon="gem" tone="white">
             <p className="mt-5 max-w-[64ch] text-lg leading-relaxed text-neutral-600">Не стоит собирать десятки страниц документов и фотографий только для того, чтобы портфолио выглядело большим.</p>
             <p className="mt-3 max-w-[64ch] text-lg leading-relaxed text-neutral-600">У представителей школ ограничено время на просмотр заявок. Перегруженное портфолио может скорее утомить, чем заинтересовать.</p>
             <p className="mt-5 border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-600">Каждый материал должен быть уместным, содержательным и помогать школе лучше понять вас как специалиста.</p>

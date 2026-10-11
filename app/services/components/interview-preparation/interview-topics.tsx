@@ -28,12 +28,12 @@ function TopicCard({ icon, tone, title, text }: {
 }) {
   return (
     <li className="group flex items-start gap-5 rounded-3xl border border-brand-100 bg-white p-4 transition-colors hover:border-brand-300 hover:shadow-lg hover:shadow-brand-500/10 sm:p-5">
-      <span aria-hidden="true" className={`flex size-12 shrink-0 items-center justify-center rounded-full ${tone}`}>
-        <InterviewTopicIcon path={icon} />
+      <span aria-hidden="true" className={`flex size-10 shrink-0 items-center justify-center rounded-full sm:size-12 ${tone}`}>
+        <InterviewTopicIcon path={icon} className="size-5 sm:size-6" />
       </span>
       <div className="min-w-0">
-        <h3 className="text-xl font-semibold">{title}</h3>
-        <p className="mt-1 max-w-lg leading-relaxed text-neutral-600">{text}</p>
+        <h3 className="text-lg font-semibold sm:text-xl">{title}</h3>
+        <p className="mt-1 max-w-lg text-base leading-relaxed text-neutral-600 lg:text-lg">{text}</p>
       </div>
     </li>
   );

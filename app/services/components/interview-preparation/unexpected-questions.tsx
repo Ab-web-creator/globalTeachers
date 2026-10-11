@@ -35,7 +35,7 @@ function QuestionRow({ icon, children }: {
       <span aria-hidden="true" className={`flex size-9 shrink-0 items-center justify-center rounded-full ${icon.tone}`}>
         <InterviewQuestionIcon path={icon.path} />
       </span>
-      <span className="leading-snug text-md font-bold text-neutral-500">{children}</span>
+      <span className="text-base font-normal leading-snug text-neutral-600 lg:text-lg">{children}</span>
     </li>
   );
 }

@@ -25,6 +25,14 @@ const cardVisuals = [
   { background: "bg-linear-to-br from-sky-100 to-indigo-50 hover:from-sky-200", image: "/images/benefits/flights.jpg" },
 ];
 
+const desktopLogoHeights: Record<string, string> = {
+  "h-9": "sm:h-9",
+  "h-10": "sm:h-10",
+  "h-11": "sm:h-11",
+  "h-12": "sm:h-12",
+  "h-14": "sm:h-14",
+};
+
 export default function RecruitmentPlatforms() {
   return (
     <section id="job-platforms" aria-labelledby="recruitment-platforms" className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden bg-linear-to-t from-violet-50 via-sky-50/60 to-transparent py-12 sm:py-16 lg:py-20">
@@ -41,7 +49,7 @@ export default function RecruitmentPlatforms() {
             <strong className="font-semibold text-brand-950">Совет:</strong> создайте профиль на нескольких платформах и настройте уведомления о новых вакансиях — так вы не пропустите подходящие возможности.
           </p>
         </div>
-        <ul className="mt-10 grid gap-6 md:grid-cols-2 lg:gap-8 xl:grid-cols-3">
+        <ul className="mt-10 grid gap-4 sm:gap-6 md:grid-cols-2 lg:gap-8 xl:grid-cols-3">
           {recruitmentPlatforms.map((platform, index) => (<li key={platform.name} className="flex">
             <PlatformCard {...platform} {...cardVisuals[index]} />
           </li>))}
@@ -56,20 +64,21 @@ export default function RecruitmentPlatforms() {
 
 function PlatformCard({ name, text, href, logo, logoClass, background, image, imageClass = "", ornament = false }: PlatformCardProps) {
   const external = href?.startsWith("https://") ?? false;
-  const className = `group relative isolate flex min-h-48 w-full gap-4 overflow-hidden rounded-3xl p-5 sm:min-h-52 sm:gap-5 sm:p-6 ${background}`;
+  const className = `group relative isolate grid w-full grid-cols-[minmax(0,1fr)_auto] items-start gap-x-4 gap-y-2 overflow-hidden rounded-3xl p-5 sm:flex sm:min-h-52 sm:items-stretch sm:gap-5 sm:p-6 ${background}`;
   const content = (<>
     {ornament && <span aria-hidden="true" className={styles.ornament} />}
-    <span className="flex min-w-0 flex-1 flex-col items-start py-2">
-      <span className="flex min-h-12 w-full items-center">
-        {logo && name !== "Teacher Horizons" ? (<Image src={logo} alt={name} width={240} height={64} className={`max-w-full object-contain object-left ${logoClass} w-auto`} />) : (<span className="text-xl font-semibold leading-tight tracking-tight text-brand-950">{name}</span>)}
+    <span className={`col-start-1 row-span-3 row-start-1 flex min-w-0 flex-col items-start sm:flex-1 sm:py-2 ${image ? "" : "col-span-2"}`}>
+      <span className={`col-start-1 row-start-1 flex min-w-0 w-full items-center sm:min-h-12 ${image ? "" : "col-span-2"}`}>
+        {logo && name !== "Teacher Horizons" ? (<Image src={logo} alt={name} width={240} height={64} className={`h-auto max-h-10 max-w-full object-contain object-left sm:max-h-none ${desktopLogoHeights[logoClass ?? ""] ?? ""} w-auto`} />) : (<span className="text-xl font-semibold leading-tight tracking-tight text-brand-950">{name}</span>)}
       </span>
-      <span className="mt-3 mb-5 text-base leading-relaxed text-neutral-700">{text}</span>
-      {href && (<span aria-hidden="true" className="mt-auto flex size-10 shrink-0 items-center justify-center rounded-full bg-white text-brand-500 shadow-sm sm:size-11">
-        <PlatformExternalLinkIcon />
+      <span className="mt-2 text-base leading-normal text-neutral-700 sm:mt-3 sm:mb-5 sm:leading-relaxed">{text}</span>
+      {href && (<span aria-hidden="true" className="mt-4 flex items-center gap-2 text-sm font-semibold text-brand-500 sm:mt-auto sm:size-11 sm:shrink-0 sm:justify-center sm:rounded-full sm:bg-white sm:shadow-sm">
+        <span className="underline underline-offset-4 sm:hidden">Открыть платформу</span>
+        <span className="hidden sm:block"><PlatformExternalLinkIcon /></span>
       </span>)}
     </span>
-    {image && (<span className="relative w-2/5 shrink-0 overflow-hidden rounded-2xl">
-      <Image src={image} alt="" fill sizes="(min-width: 1600px) 180px, (min-width: 1280px) 13vw, (min-width: 768px) 20vw, 40vw" className={`object-cover ${imageClass}`} />
+    {image && (<span className="relative col-start-2 row-span-2 row-start-1 size-20 shrink-0 overflow-hidden rounded-2xl sm:h-auto sm:w-2/5">
+      <Image src={image} alt="" fill sizes="(min-width: 1600px) 180px, (min-width: 1280px) 13vw, (min-width: 768px) 20vw, (min-width: 640px) 40vw, 80px" className={`object-cover ${imageClass}`} />
       {name === "Teacher Horizons" && logo && (<span className="absolute top-3 right-3 aspect-square w-1/3 max-w-12">
         <Image src={logo} alt="" fill sizes="48px" className="object-contain" />
       </span>)}

@@ -15,7 +15,7 @@ export default function SupportStages() {
           <SectionLabel>Этапы сопровождения</SectionLabel>
           <SectionHeading id="support-stages">Как проходит <span className="text-brand-500">сопровождение?</span></SectionHeading>
           <p className="mt-7 text-lg leading-relaxed text-neutral-600">{stagesIntroduction}</p>
-          <div className="mt-10">
+          <div className="mt-10 [&_[role=tab]]:py-2 [&_[role=tab]_svg]:hidden sm:[&_[role=tab]]:py-4 sm:[&_[role=tab]_svg]:block">
             <VerticalStageTabs
               id="career-support-stages"
               autoPreview
