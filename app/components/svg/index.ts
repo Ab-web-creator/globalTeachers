@@ -24,6 +24,7 @@ export { EditApplicationIcon, DeleteApplicationIcon, ApplicationDetailsChevronIc
 export { HeroAirplaneIllustration } from "./illustrations/hero-airplane";
 export { StrategyRouteIllustration } from "./illustrations/strategy-route";
 export { VipSupportJourneyIllustration } from "./illustrations/vip-support-journey";
+export { FaqClarityIllustration } from "./illustrations/faq-clarity";
 export { SearchDocumentsIllustration } from "./illustrations/search-documents";
 export { TreePotOverlay } from "./illustrations/tree-pot-overlay";
 export { CareerBenefitIcon } from "./icons/career-benefit-icon";

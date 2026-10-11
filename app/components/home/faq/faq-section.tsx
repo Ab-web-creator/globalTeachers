@@ -1,7 +1,7 @@
 "use client";
 
-import { FaqConversationIllustration, FaqToggleIcon, FaqTopicIcon, type FaqIconName } from "@/app/components/svg";
-import Link from "next/link";
+import { FaqToggleIcon, FaqTopicIcon, type FaqIconName } from "@/app/components/svg";
+import FaqClarityAnimation from "./faq-clarity-animation";
 import { useState } from "react";
 import { faqItems } from "./faq-content";
 
@@ -15,10 +15,8 @@ export default function FaqSection() {
   const [expanded, setExpanded] = useState(false);
   return (
     <section id="faq" aria-labelledby="faq-title" style={{ overflowAnchor: "none" }} className="relative isolate scroll-mt-24 overflow-hidden bg-linear-to-t from-white via-brand-50 to-violet-50 px-6 sm:px-10 lg:px-16 py-12 sm:py-16 lg:py-20">
-      <FaqConversationIllustration
-        className={`pointer-events-none absolute top-56 right-4 hidden h-auto w-1/3 max-w-xl ${expanded ? "" : "lg:block"}`}
-      />
-      <div className="mx-auto max-w-400 xl:px-4">
+      <div className="relative mx-auto w-full min-w-0 max-w-400 xl:px-4">
+        <FaqClarityAnimation hidden={expanded} />
         <div className={`relative ${expanded ? "" : "lg:w-1/2 lg:pr-8"}`}>
         <header data-reveal className="mb-10 text-left">
           <p className="mb-4 text-sm font-semibold tracking-widest text-brand-500 uppercase sm:text-base">Полезно знать</p>
@@ -37,9 +35,6 @@ export default function FaqSection() {
         </div>)}
         <div className="mt-8 text-left">
           <p className="max-w-[45ch] border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-600">Не нашли ответ на свой вопрос? Расскажите нам о своей ситуации — мы поможем разобраться.</p>
-          <Link href="/consultation" className="action-gradient mt-5 inline-flex items-center justify-center gap-3 rounded-full px-6 py-3 text-base font-semibold text-white">
-            Получить консультацию
-          </Link>
         </div>
         </div>
       </div>
