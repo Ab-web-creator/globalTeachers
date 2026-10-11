@@ -29,8 +29,8 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
         {!authenticated ? <AdminLogin configured={adminConfigured()} failed={params.error === "login"} /> : (
           <>
             <aside className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900" aria-label="Напоминание о временной задержке писем">
-              <p className="font-semibold">Временно: письма по квалификации, образованию, английскому и выбранным предметам отправляются через 4 минуты.</p>
-              <p className="mt-1">После тестирования верните задержку на 4 часа. Текущие настройки: миграции 007_temporary_four_minute_followups.sql , 008_subject_followups.sql , 009_education_followups.sql и 010_english_followups.sql.</p>
+              <p className="font-semibold">Временно: письма по квалификации, образованию, английскому и выбранным предметам отправляются через 1 минуту.</p>
+              <p className="mt-1">После тестирования верните задержку на 4 часа. Текущие настройки: миграция 012_temporary_one_minute_followups.sql.</p>
             </aside>
             <header className="mt-6 grid items-start gap-4 lg:grid-cols-[1fr_auto] lg:gap-x-8">
               <div>
