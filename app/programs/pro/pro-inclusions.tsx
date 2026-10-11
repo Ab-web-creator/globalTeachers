@@ -8,7 +8,7 @@ export default function ProInclusions() {
   return (
     <ProgramSection id="pro-inclusions" label="Состав программы" title="Что входит в PRO" fade="sky">
       <p className="mt-7 max-w-3xl text-lg leading-relaxed text-neutral-600">{inclusionsIntroduction}</p>
-      <ul className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <ul className="mt-10 grid gap-4 [&>li.group]:p-3 max-sm:[&>li.group>h3]:pt-2 sm:[&>li.group]:p-5 md:grid-cols-2 xl:grid-cols-3">
         {inclusions.map(({ icon, title, paragraphs }) => <IconCard key={title} icon={programIconPaths[icon]} title={title} paragraphs={paragraphs} />)}
         <li>
           <QuestionCard lead={cvQuestion.lead} question={cvQuestion.question} />

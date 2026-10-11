@@ -1,10 +1,6 @@
-import type { ProgramIconName } from "@/app/components/svg";
-import IconList from "../components/icon-list";
-import { iconTones } from "../components/icon-tones";
+import AnimatedStrategyList from "./animated-strategy-list";
 import ProgramSection from "../components/program-section";
 import { strategy } from "./content";
-
-const strategyIcons: ProgramIconName[] = ["globe", "school", "target", "calendar", "document", "profile"];
 
 export default function VipStrategy() {
   return (
@@ -14,11 +10,7 @@ export default function VipStrategy() {
         <p key={text} className="mt-7 max-w-lg text-lg leading-relaxed text-neutral-600">{text}</p>
       ))}
       <h3 className="mt-4 text-lg font-semibold leading-relaxed text-brand-950">Определяем вместе:</h3>
-      <IconList items={strategy.items.map((label, index) => ({
-        label: label.replace(/[;.]$/, ""),
-        icon: strategyIcons[index],
-        tone: iconTones[index],
-      }))} cards outlined textSize="lg" />
+      <AnimatedStrategyList items={strategy.items} />
       <p className="mt-10 max-w-lg border-l-2 border-brand-300 pl-4 text-lg font-semibold leading-relaxed text-brand-600 sm:mt-12">
         {strategy.closing}
       </p>

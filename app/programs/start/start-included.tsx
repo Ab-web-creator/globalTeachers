@@ -41,7 +41,7 @@ export default function StartIncluded() {
   return (
     <ProgramSection id="start-inclusions" label="Состав программы" title="Что входит в START" fade="violet" fadeDirection="down" fadeQuarterHeight>
       <p className="mt-7 max-w-3xl text-lg leading-relaxed text-neutral-600">Всё необходимое для уверенного старта: оценка вашего опыта, ответы на ключевые вопросы и пошаговый план самостоятельного поиска работы.</p>
-      <ul className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <ul className="mt-10 grid gap-4 [&>li>h3]:leading-tight max-sm:[&>li]:gap-y-1 max-sm:[&>li>span]:size-8 max-sm:[&>li>span>svg]:size-4 md:grid-cols-2 xl:grid-cols-3">
         {inclusions.map(({ icon, title, text }) => {
           const colors = cardColors[icon as keyof typeof cardColors];
           return (

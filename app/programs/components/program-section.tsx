@@ -13,6 +13,7 @@ type Props = {
   fadeHalfHeight?: boolean;
   fadeQuarterHeight?: boolean;
   aside?: ReactNode;
+  asideClassName?: string;
   // Decorative art pinned to the section's top right corner on lg, behind the content.
   decoration?: ReactNode;
   // "end" lines the bottom of `aside` up with the bottom of the text column on lg.
@@ -22,7 +23,7 @@ type Props = {
 };
 
 // A full-width page section: optional gradient fade, eyebrow, heading, then content; `aside` sits in a second column on lg.
-export default function ProgramSection({ id, label, title, fade, fadeDirection = "up", fadeToWhite = false, fadeHalfHeight = false, fadeQuarterHeight = false, aside, asideAlign = "center", decoration, children, footer }: Props) {
+export default function ProgramSection({ id, label, title, fade, fadeDirection = "up", fadeToWhite = false, fadeHalfHeight = false, fadeQuarterHeight = false, aside, asideClassName = "", asideAlign = "center", decoration, children, footer }: Props) {
   const header = (
     <>
       <SectionLabel>{label}</SectionLabel>
@@ -37,7 +38,7 @@ export default function ProgramSection({ id, label, title, fade, fadeDirection =
       {aside ? (
         <>
           <div>{header}{children}</div>
-          <div className={asideAlign === "end" ? "lg:self-end" : ""}>{aside}</div>
+          <div className={`${asideAlign === "end" ? "lg:self-end" : ""} ${asideClassName}`}>{aside}</div>
         </>
       ) : (
         <>{header}{children}</>

@@ -22,7 +22,7 @@ export default function RelocationSteps() {
           </span>
           <div className="min-w-0">
             <h3 className="text-lg font-semibold leading-snug text-brand-950">{title}</h3>
-            <p className="mt-3 text-base leading-relaxed text-neutral-600">{text}</p>
+            <p className="mt-1 text-base leading-relaxed text-neutral-600 sm:mt-2">{text}</p>
           </div>
         </li>))}
       </ol>
