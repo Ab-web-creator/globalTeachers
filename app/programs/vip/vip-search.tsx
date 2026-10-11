@@ -18,7 +18,7 @@ export default function VipSearch() {
             <VerticalStageTabs id="vip-search" autoPreview label="Этапы поиска" labels={["Вакансии", "Заявки", "Интервью"]} paths={[programIconPaths.search, programIconPaths.document, programIconPaths.chat]} stages={searchStages} />
           </div>
         </div>
-        <div className="hidden w-full min-[1000px]:col-span-4 min-[1000px]:mt-40 min-[1000px]:self-start min-[1000px]:block">
+        <div className="hidden w-full min-[1000px]:col-span-4 min-[1000px]:mt-24 min-[1000px]:self-start min-[1000px]:block">
           <div className="relative mx-auto w-3/4">
             <Image src="/images/vip-career-tree-box-v6.png" alt="Японский клён в сиреневом горшке с изображениями CV, школы и заметок для интервью" width={971} height={1620} sizes="(min-width: 1600px) 336px, 25vw" className="h-auto w-full object-contain" />
             <TreePotAnimation />

@@ -30,7 +30,7 @@ export default function SupportStages() {
           </div>
         </div>
         <div className="relative hidden w-full max-w-sm justify-self-center min-[1000px]:col-span-4 min-[1000px]:self-end min-[1000px]:-translate-y-24 min-[1000px]:block">
-          <Image src="/images/career-support-stage-vase-v10.png" alt="Букет красных гладиолусов, оранжевых маков и фиолетовых астр в сиреневой вазе с символами стратегии, поиска вакансий, заявок и интервью" width={1024} height={1536} sizes="(min-width: 1280px) 384px, 30vw" className="-mb-[6.9%] h-auto w-full object-contain" />
+          <Image src="/images/career-support-stage-vase-v12.png" alt="Букет красных гладиолусов, оранжевых маков и фиолетовых астр в сиреневой вазе с символами стратегии, поиска вакансий, заявок и интервью" width={1024} height={1536} sizes="(min-width: 1280px) 384px, 30vw" className="-mb-[6.9%] h-auto w-full object-contain" />
           <SupportVaseAnimation />
         </div>
       </div>

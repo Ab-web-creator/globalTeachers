@@ -1,0 +1,9 @@
+.surface {
+  animation: potHue 8s ease-in-out infinite;
+}
+
+@keyframes potHue {
+  0%, 50%, 100% { filter: hue-rotate(0deg); }
+  16.5% { filter: hue-rotate(70deg); }
+  33% { filter: hue-rotate(210deg); }
+}

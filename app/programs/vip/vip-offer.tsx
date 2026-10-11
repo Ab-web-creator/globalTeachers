@@ -15,7 +15,7 @@ export default function VipOffer() {
         </p>
       </div>
 
-      <div className="[&>ul>li:last-child]:bg-violet-50 [&>ul>li:last-child>span:last-child]:text-violet-900">
+      <div className="[&>ul>li]:p-3 sm:[&>ul>li]:p-4 [&>ul>li:last-child]:bg-violet-50 [&>ul>li:last-child>span:last-child]:text-violet-900">
       <IconList
         items={offer.items.map((item, index) => ({
           ...item,

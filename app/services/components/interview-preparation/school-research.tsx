@@ -13,7 +13,7 @@ export default function SchoolResearch() {
         <SectionLabel>Изучите школу</SectionLabel>
         <SectionHeading id="research-school">Почему именно эта школа?</SectionHeading>
         {schoolResearch.paragraphs.map((text, index) => <p key={text} className={`${index === 0 ? "mt-7" : "mt-5"} max-w-3xl text-lg leading-relaxed text-neutral-600`}>{text}</p>)}
-        <div className="mt-8">
+        <div className="mt-8 [&_blockquote]:text-lg">
           <AnswerExample>{schoolResearch.weakAnswer}</AnswerExample>
         </div>
         <p className="mt-6 max-w-3xl text-lg leading-relaxed text-neutral-600">{schoolResearch.verdict} {schoolResearch.better}</p>
@@ -23,7 +23,7 @@ export default function SchoolResearch() {
           </p>
         </aside>
       </div>
-      <Image src="/images/school-research-flowers-tall.webp" alt="Педагог изучает сайт международной школы; рядом с ноутбуком стоит ваза с цветами" width={1000} height={1250} sizes="(min-width: 1600px) 576px, 40vw" className="hidden h-112 w-2/5 max-w-xl shrink-0 rounded-3xl object-cover lg:block lg:self-end" />
+      <Image src="/images/school-research-flowers-small-hibiscus.png" alt="Педагог изучает сайт международной школы; рядом с ноутбуком стоит ваза с цветами" width={1000} height={1250} sizes="(min-width: 1600px) 576px, 40vw" className="hidden h-112 w-2/5 max-w-xl shrink-0 rounded-3xl object-cover lg:block lg:self-end" />
     </section>
   );
 }
