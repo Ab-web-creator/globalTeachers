@@ -11,6 +11,7 @@ export default function ComposeForm({ to = "", subject = "", replyTo, quote = ""
   // One id per draft makes a retried submission idempotent instead of sending twice.
   const [id, setId] = useState(() => crypto.randomUUID());
   const [fields, setFields] = useState({ to, cc: "", subject, text: `\n\nС уважением,\nкоманда TeacherNavigator\n${mailbox}${quote}` });
+  const [showCc, setShowCc] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
 
@@ -40,27 +41,32 @@ export default function ComposeForm({ to = "", subject = "", replyTo, quote = ""
     if (error) { setError(""); setId(crypto.randomUUID()); }
     setFields((previous) => ({ ...previous, [name]: event.target.value }));
   };
-  const input = "mt-2 w-full rounded-xl border border-brand-200 bg-white px-4 py-3 font-normal";
+  const row = "flex items-center gap-3 border-b border-brand-100 px-6";
+  const input = "min-w-0 flex-1 bg-transparent py-3 text-sm outline-none";
   return (
-    <form onSubmit={send} className="mt-6 rounded-3xl border border-brand-100 bg-white p-6">
-      <fieldset disabled={sending} className="space-y-4">
-        <label className="block text-sm font-medium">Кому
+    <form onSubmit={send} className="flex min-h-0 flex-1 flex-col">
+      <fieldset disabled={sending} className="flex min-h-0 flex-1 flex-col">
+        <label className={row}><span className="w-14 shrink-0 text-sm text-neutral-500">Кому</span>
           <input type="text" inputMode="email" required value={fields.to} onChange={update("to")} placeholder="teacher@example.com" className={input} />
+          {!showCc && <button type="button" onClick={() => setShowCc(true)} className="text-sm text-brand-600">Копия</button>}
         </label>
-        <label className="block text-sm font-medium">Копия <span className="font-normal text-neutral-500">— необязательно, через запятую</span>
-          <input type="text" inputMode="email" value={fields.cc} onChange={update("cc")} className={input} />
-        </label>
-        <label className="block text-sm font-medium">Тема
+        {showCc && (
+          <label className={row}><span className="w-14 shrink-0 text-sm text-neutral-500">Копия</span>
+            <input type="text" inputMode="email" value={fields.cc} onChange={update("cc")} placeholder="через запятую" className={input} />
+          </label>
+        )}
+        <label className={row}><span className="w-14 shrink-0 text-sm text-neutral-500">Тема</span>
           <input type="text" required maxLength={300} value={fields.subject} onChange={update("subject")} className={input} />
         </label>
-        <label className="block text-sm font-medium">Текст
-          <textarea required rows={14} maxLength={50000} value={fields.text} onChange={update("text")} className={`${input} leading-normal`} />
-        </label>
+        <textarea required aria-label="Текст письма" maxLength={50000} value={fields.text} onChange={update("text")} className="min-h-80 flex-1 resize-none px-6 py-4 text-sm leading-normal outline-none" />
       </fieldset>
-      {error && <p role="alert" className="mt-4 text-sm text-red-700">{error}</p>}
-      <div className="mt-6 flex justify-end">
-        <button type="submit" disabled={sending} className="rounded-xl bg-brand-500 px-6 py-3 text-sm font-medium text-white hover:bg-brand-600 disabled:opacity-50">{sending ? "Отправляем…" : "Отправить"}</button>
-      </div>
+      <footer className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-t border-brand-100 px-6 py-3">
+        <p className="text-xs text-neutral-500">Отправитель: {mailbox}</p>
+        <div className="flex items-center gap-3">
+          {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
+          <button type="submit" disabled={sending} className="rounded-xl bg-brand-500 px-6 py-2.5 text-sm font-medium text-white hover:bg-brand-600 disabled:opacity-50">{sending ? "Отправляем…" : "Отправить"}</button>
+        </div>
+      </footer>
     </form>
   );
 }
