@@ -30,7 +30,7 @@ export default function SiteHeader({ inFlow = false }: { inFlow?: boolean; }) {
             </Link>
           )}
           <Link href="/" aria-label="TeacherNavigator home" className="shrink-0 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-500">
-            <BrandLogo className={`transition-[width] duration-200 motion-reduce:transition-none ${compact ? "w-36 text-brand-500 sm:w-44 lg:w-48" : "w-40 text-white sm:w-48 lg:w-56"}`} aria-hidden="true" />
+            <BrandLogo variant={compact ? "light" : "dark"} globeScale={0.7} centerWordmark className={`transition-[width] duration-200 motion-reduce:transition-none ${compact ? "w-24 lg:w-28" : "w-28 lg:w-32"}`} aria-hidden="true" />
           </Link>
         </div>
         <DesktopNavigation onHero={!compact} />

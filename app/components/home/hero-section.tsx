@@ -16,7 +16,7 @@ export default function HeroSection() {
     setPaused(!paused);
   }
   return (
-    <section aria-labelledby="hero-title" className={`${styles.mobileBackground} relative isolate flex h-dvh flex-col overflow-hidden bg-brand-900 pt-16 sm:block sm:h-auto sm:min-h-0 lg:pt-18 xl:flex xl:min-h-dvh xl:justify-center`}>
+    <section aria-labelledby="hero-title" className={`${styles.mobileBackground} relative isolate flex h-svh flex-col overflow-hidden bg-brand-900 pt-16 sm:block sm:h-auto sm:min-h-0 lg:pt-18 xl:flex xl:min-h-dvh xl:justify-center`}>
       <div className="relative isolate min-h-0 flex-1 sm:absolute sm:inset-0 sm:-z-20 sm:flex-none">
         <HeroImage ref={image} paused={paused} />
         <div aria-hidden="true" className={`${styles.imageFade} pointer-events-none absolute inset-x-0 bottom-0 h-20 sm:hidden`} />

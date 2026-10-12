@@ -1,29 +1,69 @@
-import type { SVGProps } from "react";
+import { useId, type SVGProps } from "react";
 
-type LogoProps = Omit<SVGProps<SVGSVGElement>, "children">;
+type LogoProps = Omit<SVGProps<SVGSVGElement>, "children"> & {
+  variant?: "light" | "dark";
+  globeScale?: number;
+  centerWordmark?: boolean;
+};
 
-export function BrandLogo({ className = "w-52", ...props }: LogoProps) {
+const logoUrl = "/images/brand/teacher-navigator-light.png";
+
+export function BrandLogo({ className = "w-28", variant = "light", globeScale = 1, centerWordmark = false, ...props }: LogoProps) {
+  const id = useId().replaceAll(":", "");
+  const wordmarkFilter = `${id}-wordmark`;
+  const globeMask = `${id}-globe-mask`;
+  const teacherClip = `${id}-teacher-clip`;
+  const navigatorClip = `${id}-navigator-clip`;
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 240 64"
+      viewBox="0 0 1666 944"
       role="img"
       aria-label="TeacherNavigator"
-      className={`h-auto translate-x-[-4.754%] ${className}`}
+      className={`h-auto ${className}`}
       {...props}
     >
-      <g transform="translate(10 10) scale(0.7)" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M12 39a24 24 0 1 1 44 0" />
-        <circle cx="34" cy="26" r="19" />
-        <ellipse cx="34" cy="26" rx="10" ry="19" />
-        <path d="M34 7v43M17 18q17 9 34 0M15 27q19 7 38 0M19 37q15-8 30 0" />
-        <path d="M34 57C25 44 15 40 4 40l4 10c10 0 18 4 26 10 8-6 16-10 26-10l4-10C53 40 43 44 34 57Z" />
-        <path d="m6 46-4 10c13-2 24 1 32 7 8-6 19-9 32-7l-4-10M9 45c10 1 18 5 25 12 7-7 15-11 25-12" />
+      <defs>
+        <clipPath id={teacherClip}>
+          <rect width="1666" height="640" />
+        </clipPath>
+        <clipPath id={navigatorClip}>
+          <rect y="640" width="1666" height="304" />
+        </clipPath>
+        <mask id={globeMask} maskUnits="userSpaceOnUse" x="0" y="0" width="1666" height="944">
+          <rect width="1666" height="944" fill="white" />
+          {centerWordmark ? (
+            <>
+              <rect x="560" y="335" width="1106" height="205" fill="black" />
+              <rect x="480" y="540" width="1186" height="235" fill="black" />
+            </>
+          ) : (
+            <rect x="560" y="435" width="1106" height="440" fill="black" />
+          )}
+        </mask>
+        {/* Extract the charcoal lettering; the repaired globe is a separate asset. */}
+        <filter id={wordmarkFilter} colorInterpolationFilters="sRGB" x="0" y="0" width="100%" height="100%">
+          <feColorMatrix in="SourceGraphic" type="luminanceToAlpha" />
+          <feComponentTransfer>
+            <feFuncA type="discrete" tableValues="1 1 0 0 0 0 0 0 0 0" />
+          </feComponentTransfer>
+          <feComposite in2="SourceAlpha" operator="in" result="mask" />
+          {variant === "dark" && <feFlood floodColor="white" result="lettering" />}
+          <feComposite in={variant === "dark" ? "lettering" : "SourceGraphic"} in2="mask" operator="in" />
+        </filter>
+      </defs>
+      <g mask={`url(#${globeMask})`} aria-hidden="true">
+        <g transform={`translate(${centerWordmark ? 285 : 495} 472) scale(${globeScale}) translate(-495 -472)`}>
+          <image href="/images/brand/teacher-navigator-globe.png" width="1666" height="944" />
+        </g>
       </g>
-      <text fill="currentColor" fontFamily="Arial, Helvetica, sans-serif" letterSpacing="0.2" aria-hidden="true">
-        <tspan x="64" y="33" fontSize="22" fontWeight="900" textLength="104" lengthAdjust="spacing">TEACHER</tspan>
-        <tspan x="64" y="53" fontSize="18" fontWeight="400" textLength="104" lengthAdjust="spacing">Navigator</tspan>
-      </text>
+      <g transform={centerWordmark ? "translate(0 -100)" : undefined} aria-hidden="true">
+        <image href={logoUrl} width="1666" height="944" clipPath={`url(#${teacherClip})`} filter={`url(#${wordmarkFilter})`} />
+        <g transform={centerWordmark ? "translate(-80 0)" : undefined}>
+          <image href={logoUrl} width="1666" height="944" clipPath={`url(#${navigatorClip})`} filter={`url(#${wordmarkFilter})`} />
+        </g>
+      </g>
     </svg>
   );
 }
