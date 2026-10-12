@@ -1,8 +1,10 @@
-export default function AnswerExample({ label = "Пример ответа", children }: { label?: string; children: string }) {
+import type { ReactNode } from "react";
+
+export default function AnswerExample({ label = "Пример ответа", className = "w-fit", children }: { label?: string; className?: string; children: ReactNode }) {
   return (
-    <figure className="rounded-2xl border border-brand-200 px-5 py-5 sm:px-6 sm:py-6">
-      <figcaption className="text-sm font-semibold text-neutral-500">{label}</figcaption>
-      <blockquote className="mt-3 text-lg leading-relaxed text-brand-600 sm:text-xl">{children}</blockquote>
+    <figure className={`${className} max-w-full rounded-2xl bg-neutral-100/80 px-5 py-4 sm:px-6`}>
+      <figcaption className="text-xs font-semibold uppercase tracking-wider text-neutral-400">{label}</figcaption>
+      <blockquote className="mt-2 text-lg leading-relaxed text-neutral-700">{children}</blockquote>
     </figure>
   );
 }

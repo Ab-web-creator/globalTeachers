@@ -7,7 +7,7 @@ export { FaqTopicIcon } from "./icons/faq-topic-icon";
 export type { FaqIconName } from "./icons/faq-topic-icon";
 export { SupportFlightIllustration } from "./illustrations/support-flight-illustration";
 export { InterviewNotesIllustration } from "./illustrations/interview-art";
-export { ResearchIdeaIcon, InterviewTopicIcon, AboutBenefitCheckIcon, InterviewQuestionIcon, ExperienceIdeaIcon, ExperienceStatusIcon, ProgramListEllipsisIcon, ProgramQuestionIcon, PanelTopicIcon } from "./icons/content";
+export { ResearchIdeaIcon, InterviewTopicIcon, AboutBenefitCheckIcon, InterviewQuestionIcon, ExperienceIdeaIcon, ExperienceStatusIcon, ProgramListEllipsisIcon, ProgramQuestionIcon, PanelTopicIcon, QuoteMarkIcon } from "./icons/content";
 export { MentorSignatureUnderline } from "./illustrations/note-decorations";
 export { RelocationDocumentsIllustration } from "./illustrations/relocation-documents";
 export { JobSearchStepIcon, StepConnectorArrowIcon, PlatformExternalLinkIcon, SchoolMapPinIcon } from "./icons/job-search-steps";

@@ -1,4 +1,4 @@
-import { AboutBenefitCheckIcon, AboutGraduationIllustration } from "@/app/components/svg";
+import { AboutBenefitCheckIcon, QuoteMarkIcon } from "@/app/components/svg";
 import QueuedImage from "@/app/components/queued-image";
 import Link from "next/link";
 
@@ -39,11 +39,11 @@ export default function AboutSection() {
             <QueuedImage src="/images/about-international-teachers.webp" alt="Два педагога общаются в международной школе" fill sizes="(max-width: 639px) 45vw, (max-width: 1023px) calc((100vw - 100px) / 2), 22vw" className="object-cover object-center" />
           </div>
           <div className="col-span-2 flex min-[550px]:col-span-1 min-[550px]:col-start-1 min-[550px]:row-start-2">
-            <div data-reveal className="relative isolate flex flex-1 flex-col justify-between gap-4 overflow-hidden rounded-2xl bg-linear-to-br from-brand-500 to-brand-600 p-4 text-white sm:gap-6 sm:rounded-3xl sm:px-6 sm:py-5">
-              <AboutGraduationIllustration />
-              <p className="text-base font-medium leading-snug sm:text-xl">Поддержка на пути к международной карьере</p>
-              <p className="text-xs leading-relaxed text-white/90 sm:text-sm">Практические рекомендации и индивидуальный план с учётом вашего опыта и целей.</p>
-            </div>
+            <figure data-reveal className="flex flex-1 flex-col justify-center rounded-2xl bg-neutral-100/80 p-5 sm:rounded-3xl sm:p-7">
+              <QuoteMarkIcon />
+              <blockquote className="mt-3 text-lg leading-relaxed text-neutral-700 sm:mt-4 sm:text-xl">У каждого учителя свой путь. Наша задача — помочь найти ваш.</blockquote>
+              <figcaption className="mt-5 text-right text-sm font-semibold uppercase tracking-widest text-brand-500">Основатель TeacherNavigator</figcaption>
+            </figure>
           </div>
         </div>
       </div>

@@ -28,7 +28,7 @@ const laterOptimizedImages: [string, string][] = [
   ["/images/pro-document-vase-bouquet-v2.webp", "(min-width: 1024px) 384px, 0px"],
   ["/images/career-support-stage-vase-v12.webp", "(min-width: 1280px) 384px, 30vw"],
   ["/images/school-research-flowers-small-hibiscus.webp", "(min-width: 1600px) 576px, 40vw"],
-  ["/images/interview-example-notes.webp", "(min-width: 1600px) 448px, 35vw"],
+  ["/images/interview-candidate-conversation.webp", "(min-width: 1600px) 448px, 35vw"],
   ["/images/vip-after-offer-transparent.webp", "(min-width: 640px) 384px, 90vw"],
   ["/images/job_search_illust.jpeg", "32vw"],
   ["/images/portfolio/projects.webp", portfolioSizes],

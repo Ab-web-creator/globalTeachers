@@ -10,14 +10,21 @@ export default function SpeakWithExamples() {
     <section aria-labelledby="interview-examples" className="relative isolate grid items-center gap-10 lg:grid-cols-5 lg:gap-20 py-12 sm:py-16 lg:py-20">
       <SectionFade tone="violet" direction="down" toWhite halfHeight />
       <div className="hidden justify-items-center lg:col-span-2 lg:grid">
-        <Image src="/images/interview-example-notes.webp" alt="Карточки подготовки ответа: Ситуация, Мои действия, Результат" width={800} height={1200} sizes="(min-width: 1600px) 448px, 35vw" className="h-auto w-full max-w-md" />
+        <Image src="/images/interview-candidate-conversation.webp" alt="Кандидат уверенно отвечает на вопросы на собеседовании в международной школе" width={896} height={816} sizes="(min-width: 1600px) 448px, 35vw" className="h-auto w-full max-w-md rounded-3xl" />
       </div>
       <div className="lg:col-span-3">
         <SectionLabel>Сильные ответы</SectionLabel>
         <SectionHeading id="interview-examples">Говорите примерами</SectionHeading>
         <p className="mt-7 text-lg leading-relaxed text-neutral-600">{speakWithExamples.intro}</p>
-        <div className="mt-8 [&_blockquote]:text-lg">
-          <AnswerExample label="Пример фразы">{speakWithExamples.weakPhrase}</AnswerExample>
+        <div className="mt-6">
+          <AnswerExample label="Примеры фраз" className="w-full">
+            <span className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+              {speakWithExamples.weakPhrases.map((phrase, index) => (<span key={phrase} className="contents">
+                {index > 0 && <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400">или</span>}
+                <span>{phrase}</span>
+              </span>))}
+            </span>
+          </AnswerExample>
         </div>
         <p className="mt-8 text-lg leading-relaxed text-neutral-600">{speakWithExamples.stepsIntro}</p>
         <div className="mt-5">
