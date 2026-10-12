@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-// Temporary font-size inspector. Remove this component from RootLayout to disable it.
+// Font-size inspector for local development only; RootLayout renders it when NODE_ENV is "development".
 export default function FontSizeInspector() {
   const tooltip = useRef<HTMLDivElement>(null);
 

@@ -10,9 +10,9 @@ export default function ApplicationsList({ filter, search, data }: { filter: App
   return (
     <>
       <p className="mt-6 mb-4 text-sm text-neutral-500">Найдено адресов: {data.total}. Откройте карточку пользователя, чтобы сравнить ответы всех попыток.</p>
-      <div className="grid items-start gap-4 sm:grid-cols-2">
+      <div className="grid items-start gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {data.applications.map((application) => <ApplicationCard key={application.id} application={application} />)}
-        {!data.total && <p className="rounded-2xl border border-brand-100 bg-white p-8 text-center text-neutral-500 sm:col-span-2">Заявок пока нет или ничего не найдено по вашему запросу.</p>}
+        {!data.total && <p className="rounded-2xl border border-brand-100 bg-white p-8 text-center text-neutral-500 sm:col-span-2 xl:col-span-3">Заявок пока нет или ничего не найдено по вашему запросу.</p>}
       </div>
       <nav aria-label="Страницы заявок" className="mt-6 flex items-center justify-between gap-4 text-sm">
         {data.page > 1 ? <Link href={url(data.page - 1)} className="text-brand-600">← Назад</Link> : <span />}

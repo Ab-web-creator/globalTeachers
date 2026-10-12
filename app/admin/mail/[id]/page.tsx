@@ -11,8 +11,8 @@ export const dynamic = "force-dynamic";
 
 export default async function MailMessagePage({ params }: { params: Promise<{ id: string }> }) {
   const developmentAccess = process.env.NODE_ENV === "development";
-  if (!developmentAccess && !validSession((await cookies()).get(sessionCookie)?.value)) redirect("/admin");
   const { id } = await params;
+  if (!developmentAccess && !validSession((await cookies()).get(sessionCookie)?.value)) redirect(`/admin?${new URLSearchParams({ next: `/admin/mail/${id}` })}`);
   const message = await openMessage(id);
   if (!message) notFound();
   const unread = await unreadCount().catch(() => 0);

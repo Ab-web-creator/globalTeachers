@@ -45,6 +45,13 @@ export default function ComposeForm({ to = "", subject = "", replyTo, quote = ""
   const input = "min-w-0 flex-1 bg-transparent py-3 text-sm outline-none";
   return (
     <form onSubmit={send} className="flex min-h-0 flex-1 flex-col">
+      <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-brand-100 px-6 py-3">
+        <p className="text-xs text-neutral-500">Отправитель: {mailbox}</p>
+        <div className="flex items-center gap-3">
+          {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
+          <button type="submit" disabled={sending} className="rounded-xl bg-brand-500 px-6 py-2.5 text-sm font-medium text-white hover:bg-brand-600 disabled:opacity-50">{sending ? "Отправляем…" : "Отправить"}</button>
+        </div>
+      </div>
       <fieldset disabled={sending} className="flex min-h-0 flex-1 flex-col">
         <label className={row}><span className="w-14 shrink-0 text-sm text-neutral-500">Кому</span>
           <input type="text" inputMode="email" required value={fields.to} onChange={update("to")} placeholder="teacher@example.com" className={input} />
@@ -60,13 +67,6 @@ export default function ComposeForm({ to = "", subject = "", replyTo, quote = ""
         </label>
         <textarea required aria-label="Текст письма" maxLength={50000} value={fields.text} onChange={update("text")} className="min-h-80 flex-1 resize-none px-6 py-4 text-sm leading-normal outline-none" />
       </fieldset>
-      <footer className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-t border-brand-100 px-6 py-3">
-        <p className="text-xs text-neutral-500">Отправитель: {mailbox}</p>
-        <div className="flex items-center gap-3">
-          {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
-          <button type="submit" disabled={sending} className="rounded-xl bg-brand-500 px-6 py-2.5 text-sm font-medium text-white hover:bg-brand-600 disabled:opacity-50">{sending ? "Отправляем…" : "Отправить"}</button>
-        </div>
-      </footer>
     </form>
   );
 }

@@ -85,7 +85,11 @@ test('inbound webhook stores the email once and forwards a copy without looping'
   const message = JSON.parse(forward.options.body);
   assert.deepEqual(message.to, ['copy@gmail.com']);
   assert.equal(message.reply_to, 'Teacher <teacher@example.org>');
-  assert.equal(message.subject, 'Fwd: Hello');
+  assert.equal(message.subject, 'Копия: Hello');
+  assert.match(message.html, /<p style="[^"]*font-weight:bold">Это копия письма, которое получил TeacherNavigator<\/p>/);
+  assert.match(message.html, /«Question»/);
+  assert.match(message.html, new RegExp(`href="https://example.com/admin/mail/view/${stored.get('email-1').id}\\?key=\\d+\\.[\\w-]+"`));
+  assert.match(message.text, /Открыть письмо полностью: https:\/\/example.com\/admin\/mail\/view\//);
   assert.deepEqual(message.attachments, [{ filename: 'cv.pdf', path: 'https://files.example/cv.pdf', content_type: 'application/pdf' }]);
   assert.equal(forward.options.headers['Idempotency-Key'], 'mailbox-forward-email-1');
   const sends = calls.length;
@@ -124,3 +128,62 @@ test('admin send route authorizes, validates and sends replies from the mailbox'
   assert.match(queries.at(-1).sql, /SET resend_id = \$2, sent_at = now\(\)/);
   assert.deepEqual(queries.at(-1).values, [id, 'sent-1']);
 }));
+
+test('admin delete route authorizes, validates and removes only the chosen email', async () => withEnvironment(async () => {
+  const { POST: remove } = require('../app/admin/mail/delete/route.ts');
+  const calls = [];
+  let rowCount = 1;
+  global.consultationPool = { query: async (sql, values) => { calls.push({ sql, values }); return { rowCount }; } };
+  const token = createSession();
+  const id = '44444444-4444-4444-8444-444444444444';
+  const request = (body, cookie = token, origin = 'https://example.com') => new NextRequest('https://example.com/admin/mail/delete', {
+    method: 'POST', headers: { origin, cookie: cookie ? `gth_admin=${cookie}` : '' }, body: JSON.stringify(body),
+  });
+  assert.equal((await remove(request({ id }, ''))).status, 401);
+  assert.equal((await remove(request({ id }, token, 'https://attacker.example'))).status, 403);
+  assert.equal((await remove(request({ id: 'invalid' }))).status, 400);
+  assert.equal(calls.length, 0);
+  assert.equal((await remove(request({ id }))).status, 204);
+  assert.match(calls.at(-1).sql, /DELETE FROM mailbox_messages WHERE id = \$1/);
+  assert.deepEqual(calls.at(-1).values, [id]);
+  rowCount = 0;
+  assert.equal((await remove(request({ id }))).status, 404);
+}));
+
+test('admin unread route marks only inbound emails as unread', async () => withEnvironment(async () => {
+  const { POST: unread } = require('../app/admin/mail/unread/route.ts');
+  const calls = [];
+  global.consultationPool = { query: async (sql, values) => { calls.push({ sql, values }); return { rowCount: 1 }; } };
+  const token = createSession();
+  const id = '55555555-5555-4555-8555-555555555555';
+  const request = (body, cookie = token) => new NextRequest('https://example.com/admin/mail/unread', {
+    method: 'POST', headers: { origin: 'https://example.com', cookie: cookie ? `gth_admin=${cookie}` : '' }, body: JSON.stringify(body),
+  });
+  assert.equal((await unread(request({ id }, ''))).status, 401);
+  assert.equal((await unread(request({ id: 'invalid' }))).status, 400);
+  assert.equal(calls.length, 0);
+  assert.equal((await unread(request({ id }))).status, 204);
+  assert.match(calls.at(-1).sql, /SET read_at = NULL WHERE id = \$1 AND direction = 'inbound'/);
+}));
+
+test('admin login returns only to admin pages', () => {
+  const { safeAdminPath } = require('../lib/admin/session.ts');
+  assert.equal(safeAdminPath('/admin/mail/55555555-5555-4555-8555-555555555555'), '/admin/mail/55555555-5555-4555-8555-555555555555');
+  for (const value of ['https://evil.example', '//evil.example', '/admin//evil', '/administrator', '/admin/mail?x=1', null]) assert.equal(safeAdminPath(value), null);
+});
+
+test('read-only email links open one email only and expire', () => {
+  process.env.ADMIN_PASSWORD = 'test-password-with-sufficient-length';
+  process.env.ADMIN_SESSION_SECRET = 'a'.repeat(64);
+  const { mailViewUrl, validMailViewKey } = require('../lib/mailbox/view-link.ts');
+  const id = '66666666-6666-4666-8666-666666666666';
+  const key = new URL(mailViewUrl('https://example.com', id)).searchParams.get('key');
+  assert.equal(validMailViewKey(id, key), true);
+  assert.equal(validMailViewKey('77777777-7777-4777-8777-777777777777', key), false);
+  assert.equal(validMailViewKey(id, `${key}x`), false);
+  assert.equal(validMailViewKey(id, `${Number(key.split('.')[0]) + 1}.${key.split('.')[1]}`), false);
+  assert.equal(validMailViewKey(id, key, Date.now() + 31 * 24 * 60 * 60 * 1000), false);
+  assert.equal(validMailViewKey(id, undefined), false);
+  process.env.ADMIN_PASSWORD = 'changed-password-with-sufficient-length';
+  assert.equal(validMailViewKey(id, key), false);
+});

@@ -29,7 +29,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col font-sans">
         {children}
-        <FontSizeInspector />
+        {process.env.NODE_ENV === "development" && <FontSizeInspector />}
       </body>
     </html>
   );

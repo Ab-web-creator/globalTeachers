@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { cookies } from "next/headers";
-import { adminConfigured, sessionCookie, validSession } from "../../lib/admin/session";
+import { adminConfigured, safeAdminPath, sessionCookie, validSession } from "../../lib/admin/session";
 import AdminLogin from "./components/admin-login";
 import ApplicationFilters from "./components/application-filters";
 import ApplicationsList from "./components/applications-list";
@@ -23,12 +22,12 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   const data = authenticated ? await listApplications(filter, search, page).catch(() => null) : null;
   const unread = authenticated ? await unreadCount().catch(() => 0) : 0;
   return (
-    <main className="min-h-dvh bg-brand-50 px-6 py-8 text-brand-700 sm:px-10">
-      <div className="mx-auto max-w-5xl">
-        {authenticated ? <AdminNav active="applications" unread={unread} showLogout={!developmentAccess} /> : <Link href="/" className="text-sm text-brand-600">← TeacherNavigator</Link>}
-        {!authenticated ? <AdminLogin configured={adminConfigured()} failed={params.error === "login"} /> : (
+    <div className="min-h-dvh bg-brand-50 text-brand-700">
+      <AdminNav active="applications" unread={unread} showLogout={authenticated && !developmentAccess} showTabs={authenticated} />
+      <main className="mx-auto w-full max-w-400 px-6 sm:px-10 lg:px-16 xl:px-20 py-8">
+        {!authenticated ? <AdminLogin configured={adminConfigured()} failed={params.error === "login"} next={safeAdminPath(params.next)} /> : (
           <>
-            <aside className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900" aria-label="Напоминание о временной задержке писем">
+            <aside className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900" aria-label="Напоминание о временной задержке писем">
               <p className="font-semibold">Временно: письма по квалификации, образованию, английскому и выбранным предметам отправляются через 1 минуту.</p>
               <p className="mt-1">После тестирования верните задержку на 4 часа. Текущие настройки: миграция 012_temporary_one_minute_followups.sql.</p>
             </aside>
@@ -44,7 +43,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
             <ApplicationsList filter={filter} search={search} data={data} />
           </>
         )}
-      </div>
-    </main>
+      </main>
+    </div>
   );
 }

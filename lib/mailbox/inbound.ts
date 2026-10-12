@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { database } from "../consultation/database";
 import { emailConfig, sendEmail } from "../consultation/email";
 import { receivedAttachments, receivedEmail } from "./resend";
+import { mailViewUrl } from "./view-link";
 
 const escape = (value: string) => value.replace(/[&<>"']/g, (character) => `&#${character.charCodeAt(0)};`);
 const list = (value: unknown) => (Array.isArray(value) ? value : value ? [value] : []).map(String);
@@ -42,20 +43,49 @@ type StoredMessage = {
   subject: string; text_body: string | null; html_body: string | null; created_at: Date; attachments: unknown[];
 };
 
+const previewLength = 300;
+
+/** First lines of the email as plain text; the full email is read in the admin. */
+function preview(message: StoredMessage) {
+  const text = message.text_body || (message.html_body ?? "").replace(/<(style|script)[\s\S]*?<\/\1>/gi, " ").replace(/<[^>]+>/g, " ").replace(/&nbsp;/g, " ");
+  const compact = text.replace(/\s+/g, " ").trim();
+  return compact.length > previewLength ? `${compact.slice(0, previewLength).trimEnd()}…` : compact;
+}
+
 async function forward(message: StoredMessage, recipients: string[]) {
+  const { origin } = emailConfig();
+  const link = mailViewUrl(origin, message.id);
+  const heading = "Это копия письма, которое получил TeacherNavigator";
   const details = [
     ["От", message.from_address],
     ["Кому", message.to_addresses.join(", ")],
-    ["Дата", new Date(message.created_at).toUTCString()],
-    ["Тема", message.subject],
+    ["Тема", message.subject || "(без темы)"],
   ];
+  const excerpt = preview(message);
   const attachments = message.attachments.length ? await receivedAttachments(message.resend_id) : [];
+  const files = attachments.filter((file) => file.download_url);
+  const row = ([label, value]: string[]) => `<tr><td style="padding:2px 12px 2px 0;color:#6b7280;vertical-align:top">${label}</td><td style="padding:2px 0;color:#111827">${escape(value)}</td></tr>`;
   await sendEmail({
     to: recipients,
     reply_to: message.reply_to.length ? message.reply_to : message.from_address,
-    subject: `Fwd: ${message.subject}`,
-    text: `---------- Пересланное письмо ----------\n${details.map(([label, value]) => `${label}: ${value}`).join("\n")}\n\n${message.text_body ?? ""}`,
-    html: message.html_body ? `<p style="color:#555">---------- Пересланное письмо ----------<br>${details.map(([label, value]) => `${label}: ${escape(value)}`).join("<br>")}</p>${message.html_body}` : undefined,
-    attachments: attachments.filter((file) => file.download_url).map((file) => ({ filename: file.filename, path: file.download_url!, content_type: file.content_type })),
+    subject: `Копия: ${message.subject || "(без темы)"}`,
+    text: [
+      heading.toUpperCase(),
+      "",
+      ...details.map(([label, value]) => `${label}: ${value}`),
+      "",
+      excerpt ? `«${excerpt}»` : "(письмо без текста)",
+      "",
+      `Открыть письмо полностью: ${link}`,
+      ...(files.length ? ["", `Вложения: ${files.map((file) => file.filename).join(", ")}`] : []),
+    ].join("\n"),
+    html: `<div style="font-family:Arial,sans-serif;font-size:15px;line-height:1.5;color:#111827;max-width:600px">
+<p style="margin:0 0 16px;font-size:18px;font-weight:bold">${heading}</p>
+<table style="border-collapse:collapse;font-size:14px;margin:0 0 16px">${details.map(row).join("")}</table>
+<p style="margin:0 0 20px;padding:12px 16px;background:#f3f4f6;border-radius:8px;color:#374151">${excerpt ? `«${escape(excerpt)}»` : "(письмо без текста)"}</p>
+<p style="margin:0 0 16px"><a href="${escape(link)}" style="display:inline-block;padding:12px 20px;background:#5750cf;color:#ffffff;text-decoration:none;border-radius:10px;font-weight:bold">Открыть письмо полностью</a></p>
+${files.length ? `<p style="margin:0;font-size:13px;color:#6b7280">Вложения: ${files.map((file) => escape(file.filename)).join(", ")}</p>` : ""}
+</div>`,
+    attachments: files.map((file) => ({ filename: file.filename, path: file.download_url!, content_type: file.content_type })),
   }, `mailbox-forward-${message.resend_id}`);
 }

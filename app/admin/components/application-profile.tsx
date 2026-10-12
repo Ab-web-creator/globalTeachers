@@ -6,8 +6,8 @@ import DeleteApplicationButton from "./delete-application-button";
 
 export default function ApplicationProfile({ application }: { application: Application }) {
   return (
-    <main className="min-h-dvh bg-brand-50 px-6 py-8 text-brand-700 sm:px-10">
-      <div className="mx-auto max-w-7xl">
+    <main className="mx-auto w-full max-w-400 px-6 sm:px-10 lg:px-16 xl:px-20 py-8">
+      <div>
         <Link href="/admin" className="text-sm text-brand-600">← Все пользователи</Link>
         <section className="mt-6 rounded-3xl border border-brand-100 bg-white p-5 shadow-sm sm:p-8" aria-labelledby="application-profile-title">
           <header className="flex items-start justify-between gap-4">

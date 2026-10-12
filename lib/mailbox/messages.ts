@@ -39,6 +39,13 @@ export async function unreadCount() {
   return result.rows[0].unread as number;
 }
 
+/** Read-only lookup for the Gmail copy links; unlike opening it in the admin, this keeps it unread. */
+export async function getMessage(id: string) {
+  if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
+  const result = await database().query("SELECT * FROM mailbox_messages WHERE id = $1 AND (direction = 'inbound' OR sent_at IS NOT NULL)", [id]);
+  return (result.rows[0] as MailMessage | undefined) ?? null;
+}
+
 /** Opening an inbound email marks it as read. */
 export async function openMessage(id: string) {
   if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
@@ -91,4 +98,15 @@ export async function sendMessage(mail: OutgoingMail): Promise<SendResult> {
     await database().query("DELETE FROM mailbox_messages WHERE id = $1 AND sent_at IS NULL", [mail.id]);
     return "failed";
   }
+}
+
+/** Permanently remove an email from the admin mailbox. Replies keep existing; their link to it is cleared. */
+export async function deleteMessage(id: string) {
+  const result = await database().query("DELETE FROM mailbox_messages WHERE id = $1", [id]);
+  return result.rowCount === 1;
+}
+
+export async function markUnread(id: string) {
+  const result = await database().query("UPDATE mailbox_messages SET read_at = NULL WHERE id = $1 AND direction = 'inbound'", [id]);
+  return result.rowCount === 1;
 }

@@ -33,3 +33,8 @@ export function validSession(token?: string) {
   const now = Math.floor(Date.now() / 1000);
   return expires > now && expires <= now + sessionLifetime && equal(parts[2], signature(`${parts[0]}.${parts[1]}`));
 }
+
+/** Only allow returning to admin pages after login, never to another site. */
+export function safeAdminPath(value: unknown) {
+  return typeof value === "string" && value.length <= 200 && /^\/admin(\/[A-Za-z0-9/_-]*)?$/.test(value) && !value.includes("//") ? value : null;
+}
