@@ -278,3 +278,31 @@ Existing differences between saved attempts are recovered by the migration.
 It uses the port reported by Next.js, including when the default port is busy,
 and checks due email queues every minute. Stopping the development server stops
 its worker. Production uses the PM2 worker configured by `scripts/deploy.sh`.
+
+### Mailbox (info@teachernavigator.com)
+
+All site email — confirmations, followups, team notifications and admin mail — is
+sent from `CONSULTATION_EMAIL_FROM` (`TeacherNavigator <info@teachernavigator.com>`).
+Apply `013_mailbox.sql`, then open `/admin/mail` to read incoming mail, reply,
+and write new emails. Applicant profiles link to a prefilled compose form.
+
+Incoming mail uses Resend Inbound:
+
+1. In Resend → Domains → teachernavigator.com, enable receiving and copy its MX record.
+2. In Namecheap → Advanced DNS → Mail settings, choose Custom MX and add only
+   Resend's MX record for `@`. This replaces Namecheap email forwarding for every
+   address on the domain. Keep the existing `send` and DKIM records for sending.
+3. In Resend → Webhooks, add `https://teachernavigator.com/api/mail/inbound`
+   with the `email.received` event and copy its signing secret.
+4. Set `RESEND_WEBHOOK_SECRET` (and optionally `MAILBOX_FORWARD_TO`, a
+   comma-separated list that receives a copy of every incoming email) on the server.
+
+The webhook verifies the Svix signature, fetches the full message from Resend's
+Receiving API, and stores it once per Resend email id. Failed processing returns
+500 so Resend retries; a stored email only retries its forward, which uses a
+stable idempotency key. Forwarded copies set Reply-To to the original sender;
+replying from Gmail sends from the Gmail address, so reply from `/admin/mail` to
+answer as info@. Attachments stay in Resend and are opened through a fresh signed
+link. Received HTML is shown in a sandboxed iframe without scripts. Each compose
+form uses one id as the database key and Resend idempotency key, so a repeated
+submission cannot send twice.

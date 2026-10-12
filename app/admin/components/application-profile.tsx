@@ -13,7 +13,7 @@ export default function ApplicationProfile({ application }: { application: Appli
           <header className="flex items-start justify-between gap-4">
             <div className="min-w-0">
               <h1 id="application-profile-title" className="break-words text-3xl font-semibold">{application.answers.name}</h1>
-              <p className="mt-2 break-all text-sm text-neutral-600">{application.email}</p>
+              <p className="mt-2 break-all text-sm text-neutral-600">{application.email} · <Link href={`/admin/mail/new?${new URLSearchParams({ to: application.email })}`} className="text-brand-600">Написать</Link></p>
               <p className="mt-3 text-sm text-brand-600">{application.status === "confirmed" ? "Email подтверждён" : application.status === "draft" ? "Незавершённая форма · Email не подтверждён" : "Email ещё не подтверждён"} · Попыток: {application.attempts.length}</p>
               {application.status === "confirmed" && application.latest_is_draft && <p className="mt-2 text-sm text-amber-800">Последняя форма не завершена</p>}
             </div>

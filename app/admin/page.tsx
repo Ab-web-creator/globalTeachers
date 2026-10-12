@@ -6,6 +6,8 @@ import AdminLogin from "./components/admin-login";
 import ApplicationFilters from "./components/application-filters";
 import ApplicationsList from "./components/applications-list";
 import { listApplications } from "../../lib/admin/applications";
+import { unreadCount } from "../../lib/mailbox/messages";
+import AdminNav from "./components/admin-nav";
 
 // Native login/logout forms need an Origin header for the server's CSRF check.
 export const metadata: Metadata = { title: "Заявки — TeacherNavigator", robots: { index: false, follow: false }, referrer: "same-origin" };
@@ -19,13 +21,11 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   const search = typeof params.q === "string" ? params.q.trim().slice(0, 200) : "";
   const page = typeof params.page === "string" ? Number(params.page) : 1;
   const data = authenticated ? await listApplications(filter, search, page).catch(() => null) : null;
+  const unread = authenticated ? await unreadCount().catch(() => 0) : 0;
   return (
     <main className="min-h-dvh bg-brand-50 px-6 py-8 text-brand-700 sm:px-10">
       <div className="mx-auto max-w-5xl">
-        <div className="flex items-center justify-between gap-4">
-          <Link href="/" className="text-sm text-brand-600">← TeacherNavigator</Link>
-          {authenticated && !developmentAccess && <form action="/admin/logout" method="post"><button className="rounded-xl border border-brand-200 bg-white px-4 py-2 text-sm">Выйти</button></form>}
-        </div>
+        {authenticated ? <AdminNav active="applications" unread={unread} showLogout={!developmentAccess} /> : <Link href="/" className="text-sm text-brand-600">← TeacherNavigator</Link>}
         {!authenticated ? <AdminLogin configured={adminConfigured()} failed={params.error === "login"} /> : (
           <>
             <aside className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900" aria-label="Напоминание о временной задержке писем">

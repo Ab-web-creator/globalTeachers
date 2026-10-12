@@ -8,10 +8,15 @@ export function emailConfig() {
   const from = `TeacherNavigator <${address}>`;
   const url = new URL(origin);
   if (url.protocol !== "https:" && url.hostname !== "localhost") throw new Error("Invalid site URL");
-  return { apiKey, from, recipient, origin: url.origin };
+  return { apiKey, from, address, recipient, origin: url.origin };
 }
 
-export async function sendEmail(message: { to: string | string[]; subject: string; text: string; html?: string; reply_to?: string }, id?: string) {
+export type EmailMessage = {
+  to: string | string[]; subject: string; text: string; html?: string; reply_to?: string | string[]; cc?: string[];
+  headers?: Record<string, string>; attachments?: { filename: string; path: string; content_type?: string }[];
+};
+
+export async function sendEmail(message: EmailMessage, id?: string): Promise<string | undefined> {
   const { apiKey, from } = emailConfig();
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -24,4 +29,6 @@ export async function sendEmail(message: { to: string | string[]; subject: strin
     signal: AbortSignal.timeout(15000),
   });
   if (!response.ok) throw new Error("Email delivery failed");
+  const result = await response.json().catch(() => null);
+  return typeof result?.id === "string" ? result.id : undefined;
 }
