@@ -9,7 +9,7 @@ export default function InterviewPractice() {
         <p>В некоторых школах кандидата могут попросить провести короткий пробный урок или представить его план.</p>
         <p>Здесь оценивается не только знание предмета. Школа может обращать внимание на структуру урока, взаимодействие с учениками, инструкции, темп, assessment, differentiation и вашу способность адаптироваться к ситуации.</p>
       </ProFitCard>
-      <ProFitCard headingLevel="h3" id="before-interview" title="Перед интервью" icon={programIconPaths.checklist} note="Спокойствие начинается с подготовки" variant="checklist">
+      <ProFitCard headingLevel="h3" id="before-interview" title="Перед интервью" icon={programIconPaths.checklist} note="Подготовка даёт уверенность" variant="checklist">
         <ol className="space-y-2">
           {preparationSteps.map((text, index) => (
             <li key={text} className="flex items-baseline gap-4">

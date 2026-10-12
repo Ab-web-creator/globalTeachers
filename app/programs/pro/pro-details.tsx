@@ -10,7 +10,7 @@ import ProPractice from "./pro-practice";
 import ProProblem from "./pro-problem";
 
 export default function ProDetails({ program }: { program: Program; }) {
-  const title = <>Будьте готовы не просто искать работу. Будьте готовы <span className="text-brand-500">её получить</span>.</>;
+  const title = <>Будьте готовы не просто искать работу. Будьте готовы <span className="text-brand-500">её получить</span></>;
 
   return (
     <ProgramPageLayout bottomPadding="60px" hero={<ProgramHero tier="PRO" image="/images/pro-application-hero.webp" title={title} intro={hero.intro} introClassName="text-lg" highlight={hero.highlight} imageAspectRatio="250 / 207" />}>

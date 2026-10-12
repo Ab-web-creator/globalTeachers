@@ -9,7 +9,7 @@ import VacancySources from "./vacancy-sources";
 
 export default function JobSearchDetails() {
   return (
-    <main className="bg-white pb-0 sm:pb-15 text-brand-700">
+    <main className="overflow-x-clip bg-white pb-0 sm:pb-15 text-brand-700">
       <article>
         <JobSearchHero />
         <div className="mx-auto max-w-400 px-6 sm:px-10 lg:px-16 xl:px-20">

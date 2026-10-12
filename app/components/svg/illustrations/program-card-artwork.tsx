@@ -24,7 +24,7 @@ export const programCardArtwork = {
   ),
   lesson: (
     <g stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M220 140C275 115 340 95 400 109V140Z" fill="currentColor" stroke="none" />
+      <ellipse cx="326" cy="130" rx="62" ry="7" fill="currentColor" fillOpacity="0.35" stroke="none" />
       <rect x="268" y="43" width="111" height="64" rx="6" fill="white" />
       <path d="M288 107l-9 23M359 107l9 23M291 63h37M291 76h24M338 89l11-18 14 18Z" />
       <circle cx="352" cy="59" r="5" />
@@ -32,7 +32,7 @@ export const programCardArtwork = {
   ),
   checklist: (
     <g stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M210 140C280 107 335 105 400 119V140Z" fill="currentColor" stroke="none" />
+      <ellipse cx="334" cy="132" rx="52" ry="6" fill="currentColor" fillOpacity="0.35" stroke="none" />
       <rect x="296" y="46" width="76" height="82" rx="7" fill="white" />
       <rect x="317" y="39" width="34" height="13" rx="4" fill="white" />
       <path d="M308 68l4 4 7-8M308 89l4 4 7-8M308 110l4 4 7-8M330 69h28M330 90h28M330 111h20" />
@@ -40,10 +40,12 @@ export const programCardArtwork = {
   ),
   choice: (
     <g stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M285 140v-24c0-28-32-32-32-55M285 116c0-28 63-29 63-55" strokeDasharray="5 6" />
-      <path d="M233 60V39l20-13 20 13v21ZM328 60V39l20-13 20 13v21Z" fill="white" />
-      <path d="M249 60V48h8v12M344 60V48h8v12" />
-      <circle cx="285" cy="126" r="6" fill="currentColor" stroke="none" />
+      <ellipse cx="334" cy="132" rx="56" ry="6" fill="currentColor" fillOpacity="0.35" stroke="none" />
+      <path d="M291 77l39-30 39 30M298 72v53h64V72" fill="white" />
+      <path d="M321 125v-25h18v25M310 85h6M344 85h6" />
+      <circle cx="330" cy="69" r="5" />
+      <circle cx="365" cy="111" r="17" fill="white" />
+      <path d="m357 111 5 5 10-11" />
     </g>
   ),
   search: (

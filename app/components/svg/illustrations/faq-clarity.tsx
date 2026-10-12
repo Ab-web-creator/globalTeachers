@@ -11,7 +11,7 @@ export function FaqClarityIllustration({ ornament = "/images/footer-reference-pa
   return (
     <svg viewBox="0 0 440 532" fill="none" aria-hidden="true" {...props}>
       <rect data-faq-panel x="1" y="1" width="406" height="530" rx="28" className="fill-white stroke-brand-200" />
-      <text data-faq-eyebrow x="204" y="40" textAnchor="middle" dominantBaseline="central" className="fill-brand-600" fontSize="12" fontWeight="600" letterSpacing="1.5">ПОЛЕЗНО ЗНАТЬ</text>
+      <text data-faq-eyebrow x="204" y="40" textAnchor="middle" dominantBaseline="central" className="fill-brand-600" fontSize="12" fontWeight="600" letterSpacing="1.5">ВАШ СЛЕДУЮЩИЙ ШАГ</text>
       <g transform="translate(0 40)">
       {ornament ? <image data-faq-ornament href={ornament} x="160" y="180" width="246" height="298" preserveAspectRatio="xMaxYMax slice" /> : null}
       <g data-faq-intro>

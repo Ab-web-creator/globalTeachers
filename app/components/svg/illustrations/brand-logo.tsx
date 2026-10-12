@@ -6,7 +6,7 @@ type LogoProps = Omit<SVGProps<SVGSVGElement>, "children"> & {
   centerWordmark?: boolean;
 };
 
-const logoUrl = "/images/brand/teacher-navigator-light.png";
+const logoUrl = "/images/brand/teacher-navigator-light.webp";
 
 export function BrandLogo({ className = "w-28", variant = "light", globeScale = 1, centerWordmark = false, ...props }: LogoProps) {
   const id = useId().replaceAll(":", "");
@@ -55,7 +55,7 @@ export function BrandLogo({ className = "w-28", variant = "light", globeScale = 
       </defs>
       <g mask={`url(#${globeMask})`} aria-hidden="true">
         <g transform={`translate(${centerWordmark ? 285 : 495} 472) scale(${globeScale}) translate(-495 -472)`}>
-          <image href="/images/brand/teacher-navigator-globe.png" width="1666" height="944" />
+          <image href="/images/brand/teacher-navigator-globe.webp" width="1666" height="944" />
         </g>
       </g>
       <g transform={centerWordmark ? "translate(0 -100)" : undefined} aria-hidden="true">

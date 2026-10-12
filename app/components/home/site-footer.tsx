@@ -14,8 +14,7 @@ export default function SiteFooter() {
               <BrandLogo variant="dark" className="w-20 sm:w-24" aria-hidden="true" />
             </Link>
             <p className="mt-5 max-w-64 text-sm leading-relaxed text-white/90 xl:leading-6.5">
-              <span className="sm:hidden">Помогаем учителям открывать новые карьерные возможности в международных школах по всему миру.</span>
-              <span className="hidden sm:inline">Ваша работа мечты может быть в любой точке мира. Найдите её вместе с нами, вместе с TeacherNavigator. Начнём этот путь.</span>
+              Помогаем учителям открывать новые карьерные возможности в международных школах по всему миру.
             </p>
           </div>
           <div className="min-w-0 lg:col-span-2">

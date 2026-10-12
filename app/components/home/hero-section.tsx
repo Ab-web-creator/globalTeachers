@@ -26,9 +26,9 @@ export default function HeroSection() {
         <div className="relative z-10 max-w-3xl pt-2 pb-10 text-left sm:py-16 lg:py-24 xl:py-28">
           <p className="mb-4 text-[10px] font-semibold tracking-widest text-brand-50 uppercase sm:text-sm">Международная карьера педагога</p>
           <h1 id="hero-title" className={`${styles.heading} text-4xl leading-none font-semibold tracking-wide text-white sm:text-5xl xl:text-6xl 2xl:text-7xl`}>
-            <span className="hidden sm:inline">Ваш опыт.<br /></span>
-            Новая страна.<br />
-            <span className="text-brand-200">Новые возможности.</span>
+            <span className="hidden sm:inline">Ваш опыт<br /></span>
+            Новая страна<br />
+            <span className="text-brand-200">Новые возможности</span>
           </h1>
           <p className="mt-7 max-w-xl text-base font-normal leading-relaxed text-brand-50 sm:text-lg">
             Помогаем учителям из СНГ строить карьеру за рубежом<span className="sm:hidden">.</span>
