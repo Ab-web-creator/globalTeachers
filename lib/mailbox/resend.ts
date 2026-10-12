@@ -11,7 +11,7 @@ async function receiving<T>(path: string): Promise<T> {
     headers: { Authorization: `Bearer ${apiKey}` },
     signal: AbortSignal.timeout(15000),
   });
-  if (!response.ok) throw new Error("Received email lookup failed");
+  if (!response.ok) throw new Error(`Received email lookup failed (${response.status}): ${(await response.text().catch(() => "")).slice(0, 200)}`);
   return response.json();
 }
 

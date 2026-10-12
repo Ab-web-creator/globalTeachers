@@ -28,7 +28,7 @@ export async function sendEmail(message: EmailMessage, id?: string): Promise<str
     body: JSON.stringify({ from, ...message }),
     signal: AbortSignal.timeout(15000),
   });
-  if (!response.ok) throw new Error("Email delivery failed");
+  if (!response.ok) throw new Error(`Email delivery failed (${response.status}): ${(await response.text().catch(() => "")).slice(0, 200)}`);
   const result = await response.json().catch(() => null);
   return typeof result?.id === "string" ? result.id : undefined;
 }

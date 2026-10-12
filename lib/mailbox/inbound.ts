@@ -4,6 +4,7 @@ import { emailConfig, sendEmail } from "../consultation/email";
 import { receivedAttachments, receivedEmail } from "./resend";
 
 const escape = (value: string) => value.replace(/[&<>"']/g, (character) => `&#${character.charCodeAt(0)};`);
+const list = (value: unknown) => (Array.isArray(value) ? value : value ? [value] : []).map(String);
 
 /** Copies go to MAILBOX_FORWARD_TO, never back to the mailbox itself (that would loop). */
 function forwardRecipients(mailbox: string) {
@@ -24,7 +25,7 @@ export async function receiveEmail(resendId: string) {
          subject, text_body, html_body, attachments, created_at, sent_at)
        VALUES ($1, 'inbound', $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $12)
        ON CONFLICT (resend_id) DO NOTHING`,
-      [randomUUID(), resendId, email.message_id ?? null, email.from, email.to ?? [], email.cc ?? [], email.reply_to ?? [],
+      [randomUUID(), resendId, email.message_id ?? null, String(email.from), list(email.to), list(email.cc), list(email.reply_to),
         email.subject ?? "", email.text, email.html, JSON.stringify(attachments), email.created_at ?? new Date().toISOString()],
     );
     message = (await database().query("SELECT * FROM mailbox_messages WHERE resend_id = $1", [resendId])).rows[0];

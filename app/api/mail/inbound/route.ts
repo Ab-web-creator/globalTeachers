@@ -15,9 +15,9 @@ export async function POST(request: Request) {
   try {
     await receiveEmail(id);
     return new Response(null, { status: 204 });
-  } catch {
+  } catch (error) {
     // A non-2xx response makes Resend retry the webhook later.
-    console.error("Inbound email processing failed.");
+    console.error("Inbound email processing failed:", error instanceof Error ? error.message : error);
     return new Response("Processing failed", { status: 500 });
   }
 }
