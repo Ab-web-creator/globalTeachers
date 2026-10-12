@@ -1,4 +1,5 @@
 import { useId, type SVGProps } from "react";
+import { preload } from "react-dom";
 
 type LogoProps = Omit<SVGProps<SVGSVGElement>, "children"> & {
   variant?: "light" | "dark";
@@ -7,8 +8,12 @@ type LogoProps = Omit<SVGProps<SVGSVGElement>, "children"> & {
 };
 
 const logoUrl = "/images/brand/teacher-navigator-light.webp";
+const globeUrl = "/images/brand/teacher-navigator-globe.webp";
 
 export function BrandLogo({ className = "w-28", variant = "light", globeScale = 1, centerWordmark = false, ...props }: LogoProps) {
+  // SVG <image> files are invisible to the browser's preload scanner, so hint them into <head> ahead of the hero photo.
+  preload(logoUrl, { as: "image", fetchPriority: "high" });
+  preload(globeUrl, { as: "image", fetchPriority: "high" });
   const id = useId().replaceAll(":", "");
   const wordmarkFilter = `${id}-wordmark`;
   const globeMask = `${id}-globe-mask`;
@@ -55,7 +60,7 @@ export function BrandLogo({ className = "w-28", variant = "light", globeScale = 
       </defs>
       <g mask={`url(#${globeMask})`} aria-hidden="true">
         <g transform={`translate(${centerWordmark ? 285 : 495} 472) scale(${globeScale}) translate(-495 -472)`}>
-          <image href="/images/brand/teacher-navigator-globe.webp" width="1666" height="944" />
+          <image href={globeUrl} width="1666" height="944" />
         </g>
       </g>
       <g transform={centerWordmark ? "translate(0 -100)" : undefined} aria-hidden="true">
