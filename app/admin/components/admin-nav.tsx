@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import { adminTimeZoneCookie, validTimeZone } from "../../../lib/admin/timezone";
 import AdminVisitorExclusion from "./admin-visitor-exclusion";
 import styles from "./admin-nav.module.css";
+import IncomingCalls from "./incoming-calls";
 
 type Props = { active?: "applications" | "mail" | "analytics"; unread?: number; showLogout?: boolean; showTabs?: boolean };
 
@@ -23,6 +24,7 @@ export default async function AdminNav({ active, unread = 0, showLogout = false,
     <header className="sticky top-0 z-30 shrink-0 border-b border-brand-100 bg-white/95 backdrop-blur-lg">
       <AdminTimeZoneSync serverTimeZone={timeZone} />
       {showTabs && <AdminVisitorExclusion />}
+      {showTabs && <IncomingCalls />}
       <div className="mx-auto flex w-full max-w-400 flex-wrap items-center justify-between gap-3 px-5 py-4 sm:px-10 lg:px-16 xl:px-20">
         <Link href="/admin" aria-label="Админ — TeacherNavigator" className="flex items-center gap-4">
           <BrandLogo className="w-24" aria-hidden="true" />

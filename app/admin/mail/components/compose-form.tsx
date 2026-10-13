@@ -4,14 +4,14 @@ import { useRouter } from "next/navigation";
 import { useRef, useState, type FormEvent } from "react";
 import styles from "./compose-form.module.css";
 
-type Props = { to?: string; subject?: string; replyTo?: string; quote?: string; mailbox: string };
+type Props = { to?: string; subject?: string; text?: string; replyTo?: string; quote?: string; mailbox: string };
 
-export default function ComposeForm({ to = "", subject = "", replyTo, quote = "", mailbox }: Props) {
+export default function ComposeForm({ to = "", subject = "", text = "", replyTo, quote = "", mailbox }: Props) {
   const router = useRouter();
   const busy = useRef(false);
   // One id per draft makes a retried submission idempotent instead of sending twice.
   const [id, setId] = useState(() => crypto.randomUUID());
-  const [fields, setFields] = useState({ to, cc: "", subject, text: `\n\nС уважением,\nкоманда TeacherNavigator\n${mailbox}${quote}` });
+  const [fields, setFields] = useState({ to, cc: "", subject, text: `${text}\n\nС уважением,\nкоманда TeacherNavigator\n${mailbox}${quote}` });
   const [showCc, setShowCc] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");

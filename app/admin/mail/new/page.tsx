@@ -35,7 +35,7 @@ export default async function NewMailPage({ searchParams }: { searchParams: Prom
         <h1 className="text-xl font-semibold">{original ? "Ответ" : "Новое письмо"}</h1>
         {original && <Link href={`/admin/mail/${original.id}`} className="text-sm text-brand-600">← К письму</Link>}
       </header>
-      <ComposeForm key={original?.id ?? "new"} to={reply?.to ?? to} subject={reply?.subject} quote={reply?.quote} replyTo={original?.id} mailbox={mailbox} />
+      <ComposeForm key={original?.id ?? "new"} to={reply?.to ?? to} subject={reply?.subject ?? (typeof params.subject === "string" ? params.subject.slice(0,300) : "")} text={!original && typeof params.text === "string" ? params.text.slice(0,50000) : ""} quote={reply?.quote} replyTo={original?.id} mailbox={mailbox} />
     </MailShell>
   );
 }
