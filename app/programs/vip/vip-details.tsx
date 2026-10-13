@@ -27,7 +27,7 @@ export default function VipDetails({ program }: { program: Program; }) {
       <VipValue />
       <VipAudience />
       <VipImportant />
-      <ProgramCta tier="VIP" price={program.price} title={cta.title} text={cta.text} image="/images/benefits/flights.jpg" />
+      <ProgramCta tier="VIP" price={program.price} title={cta.title} text={cta.text} image="/images/benefits/flights.webp" />
     </ProgramPageLayout>
   );
 }

@@ -3,12 +3,14 @@
 import { FaqToggleIcon, FaqTopicIcon, type FaqIconName } from "@/app/components/svg";
 import FaqClarityAnimation from "./faq-clarity-animation";
 import { useState } from "react";
+import Link from "next/link";
 import { faqItems } from "./faq-content";
 
 type FaqItemProps = {
   question: string;
   answer: string;
   icon: FaqIconName;
+  action?: { href: string; label: string };
 };
 
 export default function FaqSection() {
@@ -42,7 +44,7 @@ export default function FaqSection() {
   );
 }
 
-function FaqItem({ question, answer, icon }: FaqItemProps) {
+function FaqItem({ question, answer, icon, action }: FaqItemProps) {
   return (
     <details className="group rounded-2xl border border-neutral-200 bg-white transition-colors open:border-brand-500 hover:border-brand-300">
       <summary className="flex cursor-pointer list-none items-start justify-between gap-4 p-2 sm:p-4 text-base leading-normal font-semibold text-neutral-900 sm:px-6 sm:text-lg [&::-webkit-details-marker]:hidden">
@@ -54,7 +56,14 @@ function FaqItem({ question, answer, icon }: FaqItemProps) {
           <FaqToggleIcon />
         </span>
       </summary>
-      <p className="pr-5 pb-5 pl-17 text-base leading-relaxed text-neutral-600 sm:pr-6 sm:pl-18">{answer}</p>
+      <div className="pr-5 pb-5 pl-17 sm:pr-6 sm:pl-18">
+        <p className="text-base leading-relaxed text-neutral-600">{answer}</p>
+        {action && (
+          <Link href={action.href} className="mt-4 inline-flex items-center justify-center rounded-full bg-brand-500 px-6 py-3 text-base font-semibold text-white transition hover:bg-brand-600 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-500">
+            {action.label}
+          </Link>
+        )}
+      </div>
     </details>
   );
 }

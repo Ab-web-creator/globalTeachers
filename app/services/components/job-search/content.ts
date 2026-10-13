@@ -24,11 +24,11 @@ export const vacancySources = [
 export const recruitmentPlatformsIntroduction = "Например, существует несколько веб-платформ, на которых школы из разных стран набирают педагогов.";
 
 export const recruitmentPlatforms = [
-  { name: "Teacher Horizons", text: "Вакансии в школах по всему миру", href: "https://www.teacherhorizons.com/jobs", logo: "/images/platforms/teacher-horizons.png", logoClass: "h-12" },
+  { name: "Teacher Horizons", text: "Вакансии в школах по всему миру", href: "https://www.teacherhorizons.com/jobs", logo: "/images/platforms/teacher-horizons.webp", logoClass: "h-12" },
   { name: "TES", text: "Одна из крупнейших платформ для педагогов", href: "https://www.tes.com/jobs", logo: tesLogoUrl, logoClass: "h-10" },
   { name: "Schrole", text: "Вакансии и управление заявками", href: "https://www.schrole.com/jobs-for-teachers/", logo: schroleLogoUrl, logoClass: "h-9" },
-  { name: "Search Associates", text: "Для опытных педагогов", href: "https://www.searchassociates.com/Candidates/Get-Started.aspx", logo: "/images/platforms/search-associates.png", logoClass: "h-14" },
-  { name: "ISS", text: "Вакансии, ярмарки и ресурсы", href: "https://www.iss.edu/for-individuals/find-a-job/find-a-teaching-job", logo: "/images/platforms/iss.png", logoClass: "h-11" },
+  { name: "Search Associates", text: "Для опытных педагогов", href: "https://www.searchassociates.com/Candidates/Get-Started.aspx", logo: "/images/platforms/search-associates.webp", logoClass: "h-14" },
+  { name: "ISS", text: "Вакансии, ярмарки и ресурсы", href: "https://www.iss.edu/for-individuals/find-a-job/find-a-teaching-job", logo: "/images/platforms/iss.webp", logoClass: "h-11" },
 ];
 
 export const searchTimingIntroduction = "Вакансии в международных школах появляются в течение всего года, но интенсивность найма меняется от сезона к сезону. Поэтому важно понимать, когда школы начинают поиск кандидатов и когда появляется больше всего возможностей.";

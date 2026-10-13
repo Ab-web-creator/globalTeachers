@@ -30,7 +30,7 @@ export default function VacancySources() {
         </div>
         <div className="mx-auto hidden w-5/6 flex-col gap-6 xl:flex xl:self-center">
           <div className="isolate mx-auto w-5/6 bg-brand-500">
-            <Image src="/images/job_search_illust.jpeg" alt="" width={1600} height={533} sizes="32vw" className="h-auto w-full object-contain mix-blend-screen grayscale" />
+            <Image src="/images/job_search_illust.webp" alt="" width={1600} height={533} sizes="32vw" className="h-auto w-full object-contain mix-blend-screen grayscale" />
           </div>
           <RegionMap />
         </div>

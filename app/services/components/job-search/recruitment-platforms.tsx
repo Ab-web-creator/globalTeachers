@@ -25,7 +25,7 @@ const cardVisuals = [
   { background: "bg-linear-to-br from-accent-100 to-teal-50 hover:from-accent-200", image: "/images/benefits/development.webp" },
   { background: "bg-linear-to-br from-amber-100 to-orange-50 hover:from-amber-200", image: "/images/benefits/education-classroom.jpg" },
   { background: "bg-linear-to-br from-rose-100 to-pink-50 hover:from-rose-200", image: "/images/benefits/relocation.webp" },
-  { background: "bg-linear-to-br from-sky-100 to-indigo-50 hover:from-sky-200", image: "/images/benefits/flights.jpg" },
+  { background: "bg-linear-to-br from-sky-100 to-indigo-50 hover:from-sky-200", image: "/images/benefits/flights.webp" },
 ];
 
 const desktopLogoHeights: Record<string, string> = {

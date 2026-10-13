@@ -1,6 +1,6 @@
 import type { FaqIconName } from "@/app/components/svg";
 
-export const faqItems: { question: string; answer: string; icon: FaqIconName }[] = [
+export const faqItems: { question: string; answer: string; icon: FaqIconName; action?: { href: string; label: string } }[] = [
   {
     icon: "experience",
     question: "Нужен ли мне опыт работы в международной школе?",
@@ -50,5 +50,6 @@ export const faqItems: { question: string; answer: string; icon: FaqIconName }[]
     icon: "start",
     question: "С чего начать?",
     answer: "Начните с короткой анкеты. Мы изучим ваш опыт, образование и цели и поможем определить, какие направления международной карьеры стоит рассматривать.",
+    action: { href: "/consultation", label: "Заполнить анкету" },
   },
 ];
