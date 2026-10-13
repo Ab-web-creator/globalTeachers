@@ -14,25 +14,42 @@ export default function FaqClarityAnimation({ hidden }: { hidden: boolean }) {
 
   useEffect(() => {
     const element = container.current;
-    const button = element?.querySelector<HTMLElement>("[data-faq-note]");
-    if (!element || !button) return;
-    function measureSeparator() {
-      if (!element || !button || !element.clientWidth) return;
-      const lineWidth = element.clientWidth * 344 / 440;
-      element.style.setProperty("--faq-separator-scale", `${button.offsetWidth / lineWidth}`);
+    if (!element) return;
+    function measureTextBlocks() {
+      if (!element || !element.clientWidth) return;
+      const summaryText = element.querySelector<SVGTextElement>("[data-faq-summary-text]");
+      const summaryBackground = element.querySelector<SVGRectElement>("[data-faq-summary-background]");
+      if (summaryText && summaryBackground) {
+        summaryBackground.setAttribute("width", `${summaryText.getComputedTextLength() + 24}`);
+      }
+      const introBackground = element.querySelector<SVGRectElement>("[data-faq-intro-background]");
+      const introLines = element.querySelectorAll<SVGTextElement>("[data-faq-intro-text]");
+      if (introBackground && introLines.length) {
+        const textRight = Math.max(...Array.from(introLines, line => {
+          const bounds = line.getBBox();
+          return bounds.x + bounds.width;
+        }));
+        const rightPadding = 24;
+        introBackground.setAttribute("width", `${textRight - introBackground.x.baseVal.value + rightPadding}`);
+      }
     }
-    const observer = new ResizeObserver(measureSeparator);
+    const observer = new ResizeObserver(measureTextBlocks);
     observer.observe(element);
-    observer.observe(button);
-    measureSeparator();
-    return () => observer.disconnect();
+    element.querySelectorAll<SVGTextElement>("[data-faq-intro-text], [data-faq-summary-text]").forEach(text => observer.observe(text));
+    measureTextBlocks();
+    void document.fonts.ready.then(measureTextBlocks);
+    document.fonts.addEventListener("loadingdone", measureTextBlocks);
+    return () => {
+      observer.disconnect();
+      document.fonts.removeEventListener("loadingdone", measureTextBlocks);
+    };
   }, []);
 
   useEffect(() => {
     if (!container.current) return;
     const eyebrow = container.current.querySelector<SVGTextElement>("[data-faq-eyebrow]");
     if (eyebrow) {
-      const offset = 32 - 204 + eyebrow.getComputedTextLength() / 2;
+      const offset = 20 - 208 + eyebrow.getComputedTextLength() / 2;
       container.current.style.setProperty("--faq-eyebrow-offset", `${offset}px`);
     }
     const section = container.current.closest("section");
@@ -56,10 +73,10 @@ export default function FaqClarityAnimation({ hidden }: { hidden: boolean }) {
   }, []);
 
   return (
-    <div ref={container} data-started={started} className={`${styles.art} pointer-events-none absolute right-0 bottom-0 hidden w-1/3 max-w-md overflow-hidden xl:right-4 ${hidden ? "" : "lg:block"}`}>
+    <div ref={container} data-started={started} className={`${styles.art} pointer-events-none absolute right-0 bottom-0 hidden w-5/12 max-w-lg overflow-hidden xl:right-4 ${hidden ? "" : "lg:block"}`}>
       <FaqClarityIllustration ornament={ornament} className="h-auto w-full" />
-      <Link href="/consultation" data-faq-note className="action-gradient pointer-events-auto absolute bottom-[6.67%] left-[7.27%] inline-flex items-center justify-center gap-3 whitespace-nowrap rounded-full px-6 py-3 text-base font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-500">
-        Получить консультацию
+      <Link href="/consultation" data-faq-note className="action-gradient pointer-events-auto absolute top-[85.49%] left-[4.55%] mt-3 inline-flex items-center justify-center gap-3 whitespace-nowrap rounded-full px-6 py-3 text-base font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-500">
+        Начать с консультации
       </Link>
     </div>
   );

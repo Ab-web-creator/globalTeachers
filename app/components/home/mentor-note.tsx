@@ -23,18 +23,21 @@ export default function MentorNote() {
                 Лично от основателя
               </p>
               <h2 id="mentor-note-title" className="text-3xl leading-tight font-semibold tracking-wide text-brand-700 sm:text-5xl sm:leading-none md:text-4xl lg:text-balance lg:leading-tight xl:text-5xl 2xl:text-6xl">
-                Вы не одни на этом пути
+                Мой опыт — ваш уверенный путь к успеху
               </h2>
             </header>
             <div className="mt-7 space-y-4 text-base leading-normal text-neutral-700 sm:text-lg lg:space-y-6 lg:leading-relaxed">
               <p data-reveal>
-                Поиск работы за рубежом может казаться сложным и даже нереальным. Резюме, документы, собеседования, визы, контракты — иногда трудно понять, с чего начать.
+                Когда я только начинал искать работу за рубежом, всё казалось сложным и неопределённым. Резюме, документы, собеседования, визы, контракты — вопросов было много, а понять, с чего начать, было непросто.
               </p>
               <p data-reveal>
-                <span className="font-semibold text-purple-600 sm:font-normal sm:text-inherit lg:font-semibold lg:text-brand-600">Я сам прошёл этот путь</span> и знаю: двигаться вперёд проще, когда есть понятный план и поддержка. Я помогу вам подготовиться к каждому этапу, избежать распространённых ошибок и разобраться с вопросами по ходу дела.
+          
+
+                <span className="font-semibold text-purple-600 sm:font-normal sm:text-inherit lg:font-semibold lg:text-brand-600">Я прошёл этот путь</span> {' '} самостоятельно и на собственном опыте убедился, насколько важно иметь чёткий план и понимать каждый этап. Именно поэтому я создал {' '} <span className="font-semibold text-purple-600 sm:font-normal sm:text-inherit lg:font-semibold lg:text-brand-600">TeacherNavigator </span> {' '}  — чтобы помочь другим учителям избежать распространённых ошибок и увереннее двигаться к своей цели.
+
               </p>
               <p data-reveal className="font-semibold text-brand-600 lg:rounded-2xl lg:border-l-4 lg:border-brand-300 lg:bg-white/60 lg:px-6 lg:py-5">
-                Работа учителем за рубежом реальна. Возможно, именно сейчас начинается ваша международная история.
+                 {' '} <span className="font-semibold text-purple-600 sm:font-normal sm:text-inherit lg:font-semibold lg:text-brand-600"> Международная карьера учителя — это реальная перспектива. </span> И, возможно, именно сейчас начинается ваша история.
               </p>
             </div>
             <div>
@@ -42,7 +45,7 @@ export default function MentorNote() {
                 <QueuedImage src="/images/myImage-brighter-background.webp" alt="Основатель TeacherNavigator" width={80} height={80} className="size-20 shrink-0 rounded-full object-cover brightness-110" />
                 <div className="pt-1">
                   <p className="text-base font-semibold text-brand-700">Основатель<br />TeacherNavigator</p>
-                  <p style={{ fontFamily: '"Segoe Print", "Bradley Hand", cursive' }} className="mt-2 text-lg italic text-brand-600">С вами на каждом шаге</p>
+                  <p style={{ fontFamily: '"Segoe Print", "Bradley Hand", cursive' }} className="mt-2 text-lg italic text-brand-600">С вами на каждом этапе</p>
                   <MentorSignatureUnderline />
                 </div>
               </div>
@@ -50,7 +53,7 @@ export default function MentorNote() {
                 <p className="text-sm font-semibold tracking-widest text-neutral-900 lg:text-lg">Основатель TeacherNavigator</p>
                 <p className="mt-1 text-base text-neutral-500 lg:text-lg">Ваш наставник на пути к международной карьере</p>
                 <div className="mt-4 hidden lg:block">
-                  <p style={{ fontFamily: '\"Segoe Print\", \"Bradley Hand\", cursive' }} className="text-xl italic text-brand-600">С вами на каждом шаге</p>
+                  <p style={{ fontFamily: '\"Segoe Print\", \"Bradley Hand\", cursive' }} className="text-xl italic text-brand-600">С вами на каждом этапе</p>
                   <MentorSignatureUnderline />
                 </div>
               </div>

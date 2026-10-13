@@ -29,6 +29,9 @@ export default function ProgramsSection() {
           <div>
             <p className="mb-4 text-sm font-semibold tracking-widest text-brand-500 uppercase">НАШИ ПРОГРАММЫ</p>
             <h2 id="programs-title" className="max-w-3xl text-4xl sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl leading-none font-semibold tracking-wide text-brand-700">Выберите свой путь<br className="hidden sm:block" /> к международной карьере</h2>
+            <p className="mt-7 max-w-3xl text-base leading-normal text-neutral-600 sm:text-lg">
+              Сравните пакеты START, PRO и VIP и выберите тот, который подходит вашим целям и желаемому уровню поддержки.
+            </p>
           </div>
         </header>
         <ul className="mt-10 grid gap-20 sm:gap-5 lg:grid-cols-3 lg:gap-x-8 xl:gap-x-12">
