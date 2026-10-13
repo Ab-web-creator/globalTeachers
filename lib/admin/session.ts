@@ -2,6 +2,27 @@ import { createHash, createHmac, randomBytes, timingSafeEqual } from "node:crypt
 
 export const sessionCookie = "gth_admin";
 export const sessionLifetime = 8 * 60 * 60;
+export const analyticsAdminCookie = "tn_analytics_admin";
+export const analyticsExclusionLifetime = 365 * 24 * 60 * 60;
+
+function analyticsSignature(payload: string) {
+  return createHmac("sha256", process.env.ADMIN_SESSION_SECRET!).update(`analytics-admin:${process.env.ADMIN_PASSWORD}:${payload}`).digest("base64url");
+}
+
+export function createAnalyticsExclusion() {
+  if (!adminConfigured()) throw new Error("Admin access is not configured");
+  const payload = `${Math.floor(Date.now() / 1000) + analyticsExclusionLifetime}.${randomBytes(16).toString("hex")}`;
+  return `${payload}.${analyticsSignature(payload)}`;
+}
+
+export function validAnalyticsExclusion(token?: string) {
+  if (!adminConfigured() || !token || token.length > 200) return false;
+  const parts = token.split(".");
+  if (parts.length !== 3 || !/^\d+$/.test(parts[0]) || !/^[a-f0-9]{32}$/.test(parts[1])) return false;
+  const now = Math.floor(Date.now() / 1000);
+  const expires = Number(parts[0]);
+  return expires > now && expires <= now + analyticsExclusionLifetime && equal(parts[2], analyticsSignature(`${parts[0]}.${parts[1]}`));
+}
 
 export function adminConfigured() {
   return (process.env.ADMIN_PASSWORD?.length ?? 0) >= 16 && (process.env.ADMIN_SESSION_SECRET?.length ?? 0) >= 32;

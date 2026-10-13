@@ -1,3 +1,4 @@
+import { adminTimeZoneCookie, validTimeZone } from "../../../../lib/admin/timezone";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
@@ -10,12 +11,12 @@ import MailShell from "../components/mail-shell";
 export const metadata: Metadata = { title: "Новое письмо — TeacherNavigator", robots: { index: false, follow: false }, referrer: "same-origin" };
 export const dynamic = "force-dynamic";
 
-function replyDetails(message: MailMessage) {
+function replyDetails(message: MailMessage, timeZone: string) {
   const to = message.direction === "inbound" ? (message.reply_to.length ? message.reply_to : [message.from_address]).map(addressOf).join(", ") : message.to_addresses.join(", ");
   const subject = /^re:/i.test(message.subject) ? message.subject : `Re: ${message.subject}`;
-  const sent = new Intl.DateTimeFormat("ru-RU", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" }).format(new Date(message.created_at));
+  const sent = new Intl.DateTimeFormat("ru-RU", { dateStyle: "medium", timeStyle: "short", timeZone }).format(new Date(message.created_at));
   const quoted = (message.text_body ?? "").trim().split("\n").map((line) => `> ${line}`).join("\n");
-  return { to, subject, quote: quoted ? `\n\n${sent} UTC, ${message.from_address}:\n${quoted}` : "" };
+  return { to, subject, quote: quoted ? `\n\n${sent} (${timeZone}), ${message.from_address}:\n${quoted}` : "" };
 }
 
 export default async function NewMailPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
@@ -23,7 +24,8 @@ export default async function NewMailPage({ searchParams }: { searchParams: Prom
   if (!developmentAccess && !validSession((await cookies()).get(sessionCookie)?.value)) redirect("/admin");
   const params = await searchParams;
   const original = typeof params.reply === "string" ? await openMessage(params.reply) : null;
-  const reply = original ? replyDetails(original) : null;
+  const timeZone = validTimeZone((await cookies()).get(adminTimeZoneCookie)?.value);
+  const reply = original ? replyDetails(original, timeZone) : null;
   const to = typeof params.to === "string" ? params.to.slice(0, 500) : "";
   const mailbox = addressOf(process.env.CONSULTATION_EMAIL_FROM ?? "");
   const unread = await unreadCount().catch(() => 0);

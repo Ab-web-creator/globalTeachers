@@ -1,6 +1,7 @@
 import { trustedRequestOrigin } from "../../../lib/request-origin";
 import { NextResponse } from "next/server";
 import { adminConfigured, createSession, safeAdminPath, sessionCookie, sessionLifetime, validPassword } from "../../../lib/admin/session";
+import { analyticsAdminCookie, analyticsExclusionLifetime, createAnalyticsExclusion } from "../../../lib/admin/session";
 
 export async function POST(request: Request) {
   const origin = trustedRequestOrigin(request);
@@ -18,6 +19,9 @@ export async function POST(request: Request) {
   response.headers.set("Cache-Control", "no-store");
   response.cookies.set(sessionCookie, createSession(), {
     httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "strict", path: "/admin", maxAge: sessionLifetime,
+  });
+  response.cookies.set(analyticsAdminCookie, createAnalyticsExclusion(), {
+    httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "strict", path: "/", maxAge: analyticsExclusionLifetime,
   });
   return response;
 }

@@ -1,10 +1,7 @@
+import LocalTime from "./local-time";
 import type { Application, ApplicationAttempt } from "../../../lib/admin/applications";
 import { consultationSteps } from "../../consultation/components/consultation-steps";
 import { answerLabels } from "../../../lib/consultation/answers";
-
-function date(value: Date | string) {
-  return new Intl.DateTimeFormat("ru-RU", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" }).format(new Date(value));
-}
 
 const attemptStatuses: Record<ApplicationAttempt["status"], string> = {
   draft: "Незавершённая форма",
@@ -18,7 +15,7 @@ export default function ApplicationDetails({ application }: { application: Appli
   return (
     <>
       <p className="mb-5 text-xs leading-relaxed text-neutral-500">
-        {application.email_confirmed_at ? `Email подтверждён: ${date(application.email_confirmed_at)} UTC` : application.expires_at ? `Срок подтверждения: ${date(application.expires_at)} UTC` : null}
+        {application.email_confirmed_at ? <>Email подтверждён: <LocalTime value={application.email_confirmed_at.toISOString()} /></> : application.expires_at ? <>Срок подтверждения: <LocalTime value={application.expires_at.toISOString()} /></> : null}
         {application.latest_status === "confirmed" && <span className="mt-1 block">Письмо команде: {application.notification_sent_at ? "отправлено" : "ещё не отправлено"}</span>}
       </p>
       {application.qualification_changes.length > 0 && <aside aria-label="Изменения педагогической квалификации" className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-900">
@@ -26,7 +23,7 @@ export default function ApplicationDetails({ application }: { application: Appli
         <ul className="mt-3 space-y-2 text-sm">
           {application.qualification_changes.map((change, index) => <li key={index}>
             <span className="font-medium">{change.previous_answer} → {change.new_answer}</span>
-            <time dateTime={change.changed_at} className="ml-2 text-xs">{date(change.changed_at)} UTC</time>
+            <LocalTime value={change.changed_at} className="ml-2 text-xs" />
           </li>)}
         </ul>
       </aside>}
@@ -35,7 +32,7 @@ export default function ApplicationDetails({ application }: { application: Appli
         <ul className="mt-3 space-y-2 text-sm">
           {application.answer_changes.map((change, index) => <li key={index}>
             <span className="font-medium">{answerLabels[change.field]}: {change.previous_answer} → {change.new_answer || "Не указано"}</span>
-            <time dateTime={change.changed_at} className="ml-2 text-xs">{date(change.changed_at)} UTC</time>
+            <LocalTime value={change.changed_at} className="ml-2 text-xs" />
           </li>)}
         </ul>
       </aside>}
@@ -50,7 +47,7 @@ export default function ApplicationDetails({ application }: { application: Appli
               {application.attempts.map((attempt, index) => (
                 <th key={attempt.id} scope="col" className="min-w-56 p-3 align-top font-medium">
                   <span className="block">{index + 1}-я попытка</span>
-                  <time dateTime={attempt.submitted_at} className="mt-1 block text-xs font-normal text-neutral-500">{date(attempt.submitted_at)} UTC</time>
+                  <LocalTime value={attempt.submitted_at} className="mt-1 block text-xs font-normal text-neutral-500" />
                   <span className="mt-1 block text-xs font-normal">{attemptStatuses[attempt.status]}</span>
                   {attempt.status === "draft" && attempt.last_step && <span className="mt-1 block text-xs font-normal text-neutral-500">Последний шаг: {consultationSteps.find((step) => step.fields[0] === attempt.last_step)?.title}</span>}
                 </th>

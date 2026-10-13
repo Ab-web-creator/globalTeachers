@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { adminConfigured, safeAdminPath, sessionCookie, validSession } from "../../lib/admin/session";
 import AdminLogin from "./components/admin-login";
-import ApplicationFilters from "./components/application-filters";
-import ApplicationsList from "./components/applications-list";
+import ApplicationsSection from "./components/applications-section";
 import { listApplications } from "../../lib/admin/applications";
 import { unreadCount } from "../../lib/mailbox/messages";
 import AdminNav from "./components/admin-nav";
@@ -22,26 +21,11 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   const data = authenticated ? await listApplications(filter, search, page).catch(() => null) : null;
   const unread = authenticated ? await unreadCount().catch(() => 0) : 0;
   return (
-    <div className="min-h-dvh bg-brand-50 text-brand-700">
+    <div className="min-h-dvh bg-brand-50 text-lg text-brand-700">
       <AdminNav active="applications" unread={unread} showLogout={authenticated && !developmentAccess} showTabs={authenticated} />
-      <main className="mx-auto w-full max-w-400 px-6 sm:px-10 lg:px-16 xl:px-20 py-8">
+      <main className="mx-auto w-full max-w-400 px-5 py-8 sm:px-10 sm:py-10 lg:px-16 xl:px-20">
         {!authenticated ? <AdminLogin configured={adminConfigured()} failed={params.error === "login"} next={safeAdminPath(params.next)} /> : (
-          <>
-            <aside className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900" aria-label="Напоминание о временной задержке писем">
-              <p className="font-semibold">Временно: письма по квалификации, образованию, английскому и выбранным предметам отправляются через 1 минуту.</p>
-              <p className="mt-1">После тестирования верните задержку на 4 часа. Текущие настройки: миграция 012_temporary_one_minute_followups.sql.</p>
-            </aside>
-            <header className="mt-6 grid items-start gap-4 lg:grid-cols-[1fr_auto] lg:gap-x-8">
-              <div>
-                <h1 className="text-3xl font-semibold">Заявки пользователей</h1>
-                <p className="mt-2 text-sm text-neutral-500">
-                  {data ? `Незавершённые — ${data.counts.draft}. Email: неподтверждённые — ${data.counts.pending}, подтверждённые — ${data.counts.confirmed}.` : "История заявок по email."} Все даты указаны в UTC.
-                </p>
-              </div>
-              <ApplicationFilters filter={filter} search={search} />
-            </header>
-            <ApplicationsList filter={filter} search={search} data={data} />
-          </>
+          <ApplicationsSection data={data} filter={filter} search={search} />
         )}
       </main>
     </div>

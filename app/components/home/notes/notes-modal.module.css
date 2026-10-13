@@ -1,0 +1,6 @@
+.searchField:focus,
+.newNoteButton:focus {
+  border-color: var(--color-brand-500);
+  outline: 1px solid var(--color-brand-500);
+  outline-offset: -4px;
+}

@@ -306,3 +306,96 @@ answer as info@. Attachments stay in Resend and are opened through a fresh signe
 link. Received HTML is shown in a sandboxed iframe without scripts. Each compose
 form uses one id as the database key and Resend idempotency key, so a repeated
 submission cannot send twice.
+
+### Personal browser notes
+
+The homepage's circular **N** button opens a local sticky-note board. All
+visitors can create, edit, search, delete and reorder notes. The whole list is
+saved immediately to `localStorage` under `notes-browser`; this site has no
+visitor accounts, so notes are scoped to the browser rather than a user ID.
+No note content is sent to the server. Other browsers, devices and private
+windows have separate notes, and clearing site data deletes them. There is no
+live synchronization between tabs. Storage failures show a warning and keep
+changes in memory for the current page.
+
+Notes retain one randomly chosen pastel color, their creation time and their
+last-edit timestamp. Blank notes are removed when editing finishes. Only the
+six-dot handle reorders cards (5px pointer threshold); arrow keys on the handle
+also reorder them. Labels support English, German, Dutch, Turkish, Uzbek and
+Russian through the modal's locale prop; dates use Russian. The modal
+defaults to Russian. It supports Escape, backdrop dismissal and native focus
+trapping, and temporarily pauses hero rotation while open.
+
+### Visitor analytics
+
+Admin typography uses 18px eyebrow labels, descriptions, controls and table
+content; 36px page headings; 24px section headings; and 20px card/subsection
+headings. Compact badges, timestamps and chart labels may use 16px. Use the
+standard Tailwind scales consistently across applications, analytics and mail.
+
+Apply migration `014_site_visits.sql` with `npm run db:migrate`. The authenticated
+`/admin/analytics` section reports page views and anonymous visits for an inclusive
+date range (up to 366 days) in each administrator's browser time zone, grouped by
+day or month. It includes popular pages
+and the timestamps of the latest 12 page views. Counts begin after deployment;
+previous visits cannot be recovered.
+
+The admin UI detects the browser's IANA time zone automatically and remembers it
+in an admin-only preference cookie. Application, history and mail timestamps use
+that zone. Analytics date filters and daily/monthly grouping use its local
+midnight boundaries, including daylight-saving transitions. Event timestamps
+remain stored as PostgreSQL `timestamptz`. UTC is the initial fallback until the
+browser preference is available; this does not change any other administrator's
+display settings.
+
+The production-only tracker records initial page loads and client-side navigation
+on an allowlist of public pages. It sends only a random event UUID, a random
+session UUID and the pathname. PostgreSQL assigns the timestamp. A session uses
+tab-scoped `sessionStorage` and rotates after 30 minutes without navigation;
+blocked storage falls back to memory. It is not a count of unique people and is
+not linked to consultation records. No IP addresses, user agents, referrers,
+query strings, confirmation tokens or form answers are stored by analytics.
+Approximate country and city are resolved locally from the proxy's `X-Real-IP`
+header and stored with each event; the address itself is discarded. The location
+tables include unknown results, and the recent-events list shows location next
+to the timestamp. VPNs and mobile networks can distort these estimates.
+Do Not Track and Global Privacy Control signals suppress tracking; obvious bots
+and all admin/API paths are excluded. Event IDs deduplicate repeat submissions,
+and writes are limited to 30 events per minute per session. The public endpoint
+requires a same-origin POST. Ad blockers, disabled JavaScript and spoofed clients
+mean these figures should be treated as estimates. Analytics records currently
+remain in the database; no automatic retention cleanup is configured.
+
+Administrators are excluded while browsing public pages as well. Successful
+login sets a separate signed, HttpOnly exclusion cookie for the whole site
+(one year); it never grants admin access and is retained after logout. Opening
+the authenticated admin section also marks the browser in local storage and
+registers its current anonymous session as excluded. Migration
+`016_excluded_admin_visits.sql` enables removal of that session's previous page
+views and blocks delayed tracking requests from recreating them. Existing
+logged-in administrators should open an admin page once after this update.
+Older unlinked sessions cannot be identified retroactively; no IP or identity
+was stored to associate them with administrators.
+
+Apply `015_visit_locations.sql` and run `npm run geoip:update` to download the
+current monthly [DB-IP City Lite database](https://db-ip.com/db/download/ip-to-city-lite).
+The database lives in ignored `.local/geoip/city.mmdb` (or the path supplied by
+`ANALYTICS_GEOIP_DATABASE`), outside the browser bundle. Attribution appears in
+the analytics dashboard. The deployment script refreshes the database, and
+repeated updates in the same month are skipped. Run the update monthly, or add
+`cd /path/to/globalTeachers && npm run geoip:update` to your server scheduler.
+The reader watches for file updates without keeping the process alive. Failed
+updates preserve an existing database; missing geolocation never blocks visits.
+
+In Nginx's existing proxy location, overwrite the incoming header:
+
+```nginx
+proxy_set_header X-Real-IP $remote_addr;
+```
+
+Bind Next.js to loopback (`next start --hostname 127.0.0.1`) or otherwise restrict
+its port to the trusted proxy, so visitors cannot spoof `X-Real-IP` directly.
+If you later put Cloudflare or another proxy before Nginx, configure Nginx's
+trusted real-IP ranges before using these figures. Local requests and older
+events without geodata are shown as unknown; locations cannot be backfilled
+because IP addresses were never stored.

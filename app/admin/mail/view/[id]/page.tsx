@@ -17,7 +17,7 @@ export default async function MailViewPage({ params, searchParams }: { params: P
   const message = await getMessage(id);
   if (!message) notFound();
   return (
-    <div className="flex min-h-dvh flex-col bg-brand-50 text-brand-700 lg:h-dvh">
+    <div className="flex min-h-dvh flex-col bg-brand-50 text-base text-brand-700 lg:h-dvh">
       <AdminNav showTabs={false} />
       <main className="mx-auto flex min-h-0 w-full max-w-400 flex-1 flex-col px-6 py-6 sm:px-10 lg:px-16 xl:px-20">
         <section className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-3xl border border-brand-100 bg-white">

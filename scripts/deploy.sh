@@ -11,6 +11,7 @@ main() {
   git pull --ff-only
   npm ci
   npm run db:migrate
+  npm run geoip:update
 
   rm -rf .next-build
   NEXT_DIST_DIR=.next-build npm run build

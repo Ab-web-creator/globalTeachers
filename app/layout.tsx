@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Roboto, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import FontSizeInspector from "./components/font-size-inspector";
+import VisitTracker from "./components/visit-tracker";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col font-sans">
         {children}
+        <VisitTracker />
         {process.env.NODE_ENV === "development" && <FontSizeInspector />}
       </body>
     </html>

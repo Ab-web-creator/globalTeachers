@@ -6,9 +6,13 @@ import { useRef, useState } from "react";
 import HeroImage, { type HeroImageHandle } from "./hero-image";
 import styles from "./hero-mobile.module.css";
 import HeroRotationControlStyles from "./hero-rotation-control.module.css";
+import NotesModal from "./notes/notes-modal";
+
+const heroControlClassName = "absolute bottom-6 z-20 flex size-10 items-center justify-center rounded-full border border-white/40 bg-brand-950/40 text-white backdrop-blur-sm transition-colors hover:bg-brand-950/70 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white";
 
 export default function HeroSection() {
   const [paused, setPaused] = useState(false);
+  const [notesOpen, setNotesOpen] = useState(false);
   const image = useRef<HeroImageHandle>(null);
   function toggleRotation() {
     if (paused)
@@ -18,7 +22,7 @@ export default function HeroSection() {
   return (
     <section aria-labelledby="hero-title" className={`${styles.mobileBackground} relative isolate flex h-svh flex-col overflow-hidden bg-brand-900 pt-16 sm:block sm:h-auto sm:min-h-0 lg:pt-18 xl:flex xl:min-h-dvh xl:justify-center`}>
       <div className="relative isolate min-h-0 flex-1 sm:absolute sm:inset-0 sm:-z-20 sm:flex-none">
-        <HeroImage ref={image} paused={paused} />
+        <HeroImage ref={image} paused={paused || notesOpen} />
         <div aria-hidden="true" className={`${styles.imageFade} pointer-events-none absolute inset-x-0 bottom-0 h-20 sm:hidden`} />
       </div>
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 hidden sm:block bg-linear-to-r from-blue-950/90 via-violet-900/60 via-35% to-transparent to-75%" />
@@ -46,6 +50,7 @@ export default function HeroSection() {
         </div>
       </div>
       <HeroRotationControl paused={paused} onToggle={toggleRotation} />
+      <NotesModal buttonClassName={`${HeroRotationControlStyles.control} ${heroControlClassName} right-18`} onOpenChange={setNotesOpen} />
     </section>
   );
 }
@@ -55,7 +60,7 @@ function HeroRotationControl({ paused, onToggle }: {
   onToggle: () => void;
 }) {
   return (
-    <button type="button" onClick={onToggle} aria-label={paused ? "Следующее изображение и продолжить смену" : "Приостановить смену изображений"} aria-pressed={paused} className={`${HeroRotationControlStyles.control} absolute right-6 bottom-6 z-20 flex size-10 items-center justify-center rounded-full border border-white/40 bg-brand-950/40 text-white backdrop-blur-sm transition-colors hover:bg-brand-950/70 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white motion-reduce:hidden`}>
+    <button type="button" onClick={onToggle} aria-label={paused ? "Следующее изображение и продолжить смену" : "Приостановить смену изображений"} aria-pressed={paused} className={`${HeroRotationControlStyles.control} ${heroControlClassName} right-6 motion-reduce:hidden`}>
       <SlideshowPlaybackIcon paused={paused} />
     </button>
   );

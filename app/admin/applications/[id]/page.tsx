@@ -19,7 +19,7 @@ export default async function ApplicationPage({ params }: { params: Promise<{ id
   if (!application) notFound();
   const unread = await unreadCount().catch(() => 0);
   return (
-    <div className="min-h-dvh bg-brand-50 text-brand-700">
+    <div className="min-h-dvh bg-brand-50 text-lg text-brand-700">
       <AdminNav active="applications" unread={unread} showLogout={!developmentAccess} />
       <ApplicationProfile application={application} />
     </div>

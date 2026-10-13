@@ -1,10 +1,6 @@
+import LocalTime from "../../components/local-time";
 import Link from "next/link";
 import { mailPageSize, type listMessages, type MailFolder } from "../../../../lib/mailbox/messages";
-
-function date(value: Date) {
-  const sameDay = new Date().toISOString().slice(0, 10) === value.toISOString().slice(0, 10);
-  return new Intl.DateTimeFormat("ru-RU", sameDay ? { timeStyle: "short", timeZone: "UTC" } : { day: "numeric", month: "short", timeZone: "UTC" }).format(value);
-}
 
 // Show "Anna Petrova" rather than "Anna Petrova <anna@example.org>"; the full address is on the message page.
 function displayName(value: string) {
@@ -19,7 +15,7 @@ export default function MailList({ folder, data }: Props) {
     <>
       <header className="flex shrink-0 items-center justify-between gap-4 border-b border-brand-100 px-6 py-4">
         <h1 className="text-xl font-semibold">{folder === "inbox" ? "Входящие" : "Отправленные"}</h1>
-        {!!data?.total && <p className="text-sm text-neutral-500">{(data.page - 1) * mailPageSize + 1}–{Math.min(data.page * mailPageSize, data.total)} из {data.total} · время в UTC</p>}
+        {!!data?.total && <p className="text-sm text-neutral-500">{(data.page - 1) * mailPageSize + 1}–{Math.min(data.page * mailPageSize, data.total)} из {data.total} · местное время</p>}
       </header>
       {!data ? (
         <p role="alert" className="m-6 rounded-2xl border border-amber-200 bg-amber-50 p-6 text-sm">Не удалось загрузить письма. Проверьте DATABASE_URL и выполните npm run db:migrate.</p>
@@ -41,7 +37,7 @@ export default function MailList({ folder, data }: Props) {
                     </span>
                     <span className="flex items-center gap-2 text-sm whitespace-nowrap text-neutral-500">
                       {message.has_attachments && <span aria-label="Есть вложения">📎</span>}
-                      {date(new Date(message.created_at))}
+                      <LocalTime value={new Date(message.created_at).toISOString()} compact />
                     </span>
                   </Link>
                 </li>
@@ -52,7 +48,7 @@ export default function MailList({ folder, data }: Props) {
           {data.pages > 1 && (
             <nav aria-label="Страницы писем" className="flex shrink-0 items-center justify-between gap-4 border-t border-brand-100 px-6 py-3 text-sm">
               {data.page > 1 ? <Link href={url(data.page - 1)} className="text-brand-600">← Назад</Link> : <span />}
-              <span>Страница {data.page} из {data.pages}</span>
+              <span className="text-base">Страница {data.page} из {data.pages}</span>
               {data.page < data.pages ? <Link href={url(data.page + 1)} className="text-brand-600">Далее →</Link> : <span />}
             </nav>
           )}

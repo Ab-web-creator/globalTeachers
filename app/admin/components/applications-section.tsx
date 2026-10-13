@@ -1,0 +1,75 @@
+import type {
+  ApplicationFilter,
+  listApplications,
+} from "../../../lib/admin/applications";
+import ApplicationFilters from "./application-filters";
+import ApplicationsList from "./applications-list";
+import AdminStat from "./admin-stat";
+
+export default function ApplicationsSection({
+  data,
+  filter,
+  search,
+}: {
+  data: Awaited<ReturnType<typeof listApplications>> | null;
+  filter: ApplicationFilter;
+  search: string;
+}) {
+  const counts = data?.counts;
+  return (
+    <section>
+      <header className="flex flex-wrap items-end justify-between gap-5">
+        <div>
+          <p className="text-sm font-semibold tracking-widest text-brand-500 uppercase">
+            TeacherNavigator / Обзор
+          </p>
+          <h1 className="mt-3 text-4xl font-semibold leading-tight tracking-tight">
+            Заявки и обращения
+          </h1>
+          <p className="mt-7 max-w-xl text-lg leading-relaxed text-neutral-500">
+            От первого шага до подтверждённой заявки. Все обращения и история
+            ответов в одном месте.
+          </p>
+        </div>
+      </header>
+      <div className="mt-8 grid gap-4 sm:grid-cols-3">
+        <AdminStat
+          label="Подтверждённые"
+          value={counts?.confirmed ?? "—"}
+          note="Email подтверждён пользователем"
+          featured
+        />
+        <AdminStat
+          label="Ожидают подтверждения"
+          value={counts?.pending ?? "—"}
+          note="Заявки с неподтверждённым email"
+        />
+        <AdminStat
+          label="Незавершённые формы"
+          value={counts?.draft ?? "—"}
+          note="Последняя попытка осталась черновиком"
+        />
+      </div>
+      <div className="mt-8 rounded-3xl border border-brand-100 bg-white p-5 sm:p-6">
+        <div className="grid items-center gap-4 lg:grid-cols-[1fr_auto]">
+          <h2 className="text-2xl font-semibold leading-tight tracking-tight">Все обращения</h2>
+          <ApplicationFilters filter={filter} search={search} />
+        </div>
+        <ApplicationsList filter={filter} search={search} data={data} />
+      </div>
+      <details className="mt-6 rounded-2xl border border-amber-200/70 bg-amber-50/60 px-5 py-4 text-sm text-amber-900">
+        <summary className="cursor-pointer font-medium">
+          Тестовый режим уведомлений
+        </summary>
+        <p className="mt-3 leading-relaxed">
+          Письма по квалификации, образованию, английскому и предметам
+          отправляются через 1 минуту. После тестирования верните задержку на 4
+          часа (миграция 012_temporary_one_minute_followups.sql).
+        </p>
+      </details>
+      <p className="mt-5 text-sm text-neutral-400">
+        Даты и время отображаются в часовом поясе вашего браузера.
+      </p>
+    </section>
+  );
+}

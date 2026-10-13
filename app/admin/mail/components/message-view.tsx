@@ -1,11 +1,8 @@
+import LocalTime from "../../components/local-time";
 import Link from "next/link";
 import type { MailMessage } from "../../../../lib/mailbox/messages";
 import { DeleteApplicationIcon, MarkUnreadIcon } from "@/app/components/svg";
 import MessageActionButton from "./message-action-button";
-
-function date(value: Date) {
-  return new Intl.DateTimeFormat("ru-RU", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" }).format(value);
-}
 
 function size(bytes?: number) {
   if (!bytes) return "";
@@ -53,7 +50,7 @@ export default function MessageView({ message, readOnly = false }: { message: Ma
               <div key={label} className="contents"><dt className="text-neutral-500">{label}</dt><dd className="wrap-break-word">{value}</dd></div>
             ))}
           </dl>
-          <p className="text-neutral-500">{date(new Date(message.created_at))} UTC</p>
+          <p className="text-neutral-500"><LocalTime value={new Date(message.created_at).toISOString()} /></p>
         </div>
         {message.attachments.length > 0 && (
           <ul aria-label="Вложения" className="mt-3 flex flex-wrap gap-2">
