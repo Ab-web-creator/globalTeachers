@@ -14,7 +14,7 @@ export { JobSearchStepIcon, StepConnectorArrowIcon, PlatformExternalLinkIcon, Sc
 export { SubjectTagRemoveIcon, ConsultationDetailIcon, SubjectPickerChevronIcon, SubjectListRemoveIcon, SubjectSelectedCheckIcon, FormSelectChevronIcon } from "./icons/form";
 export { CardChevronIcon, HeaderBackArrowIcon, MenuToggleIcon, BackLinkArrowIcon, FaqToggleIcon, MobileMenuCloseIcon, SlideshowPlaybackIcon } from "./icons/navigation";
 export { EditApplicationIcon, DeleteApplicationIcon, SearchIcon } from "./icons/admin";
-export { InboxIcon, SentMailIcon, ComposeMailIcon, MarkUnreadIcon, EnvelopeIcon } from "./icons/mail";
+export { InboxIcon, SentMailIcon, ComposeMailIcon, MarkUnreadIcon, EnvelopeIcon, VideoCallIcon } from "./icons/mail";
 export { HeroAirplaneIllustration } from "./illustrations/hero-airplane";
 export { VipSupportJourneyIllustration } from "./illustrations/vip-support-journey";
 export { FaqClarityIllustration } from "./illustrations/faq-clarity";

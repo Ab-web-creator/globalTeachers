@@ -5,12 +5,13 @@ import { AdminTimeZoneSync } from "./local-time";
 import { cookies } from "next/headers";
 import { adminTimeZoneCookie, validTimeZone } from "../../../lib/admin/timezone";
 import AdminVisitorExclusion from "./admin-visitor-exclusion";
+import styles from "./admin-nav.module.css";
 
 type Props = { active?: "applications" | "mail" | "analytics"; unread?: number; showLogout?: boolean; showTabs?: boolean };
 
 function Tab({ href, current, children }: { href: string; current: boolean; children: ReactNode }) {
   return (
-    <Link href={href} aria-current={current ? "page" : undefined} className={`flex shrink-0 items-center gap-2 rounded-xl px-3 py-2.5 text-base font-medium transition ${current ? "bg-brand-500 text-white shadow-sm" : "text-neutral-500 hover:bg-brand-50 hover:text-brand-700"}`}>
+    <Link href={href} aria-current={current ? "page" : undefined} className={`${styles.tab} flex shrink-0 items-center gap-2 rounded-xl py-2.5 text-base font-medium transition ${current ? "bg-brand-500 px-5 text-white shadow-sm" : "px-3 text-neutral-500 hover:bg-brand-50 hover:text-brand-700"}`}>
       {children}
     </Link>
   );

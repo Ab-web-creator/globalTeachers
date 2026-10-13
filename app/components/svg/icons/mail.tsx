@@ -1,5 +1,14 @@
 import type { SVGProps } from "react";
 
+export function VideoCallIcon(svgProps: SVGProps<SVGSVGElement>) {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="size-5" {...svgProps}>
+      <rect x="3" y="5" width="12" height="14" rx="2" />
+      <path d="m15 9 6-3v12l-6-3" />
+    </svg>
+  );
+}
+
 export function EnvelopeIcon(svgProps: SVGProps<SVGSVGElement>) {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="size-5" {...svgProps}>

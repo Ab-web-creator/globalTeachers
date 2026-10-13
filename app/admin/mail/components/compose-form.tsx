@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useRef, useState, type FormEvent } from "react";
+import styles from "./compose-form.module.css";
 
 type Props = { to?: string; subject?: string; replyTo?: string; quote?: string; mailbox: string };
 
@@ -42,7 +43,7 @@ export default function ComposeForm({ to = "", subject = "", replyTo, quote = ""
     setFields((previous) => ({ ...previous, [name]: event.target.value }));
   };
   const row = "flex items-center gap-3 border-b border-brand-100 px-6";
-  const input = "min-w-0 flex-1 bg-transparent py-3 text-sm outline-none";
+  const input = `${styles.field} min-w-0 flex-1 bg-transparent py-3 text-sm outline-none`;
   return (
     <form onSubmit={send} className="flex min-h-0 flex-1 flex-col">
       <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-brand-100 px-6 py-3">
@@ -63,9 +64,9 @@ export default function ComposeForm({ to = "", subject = "", replyTo, quote = ""
           </label>
         )}
         <label className={row}><span className="w-14 shrink-0 text-sm text-neutral-500">Тема</span>
-          <input type="text" required maxLength={300} value={fields.subject} onChange={update("subject")} className={input} />
+          <input type="text" autoFocus required maxLength={300} value={fields.subject} onChange={update("subject")} className={input} />
         </label>
-        <textarea required aria-label="Текст письма" maxLength={50000} value={fields.text} onChange={update("text")} className="min-h-80 flex-1 resize-none px-6 py-4 text-sm leading-normal outline-none" />
+        <textarea required aria-label="Текст письма" maxLength={50000} value={fields.text} onChange={update("text")} className={`${styles.field} min-h-80 flex-1 resize-none px-6 py-4 text-sm leading-normal outline-none`} />
       </fieldset>
     </form>
   );

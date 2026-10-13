@@ -5,6 +5,7 @@ import ApplicationDetails from "./application-details";
 import EditApplicationButton from "./edit-application-button";
 import DeleteApplicationButton from "./delete-application-button";
 import BackLink from "../../services/components/back-link";
+import ZoomCallButton from "./zoom-call-button";
 
 export default function ApplicationProfile({ application }: { application: Application }) {
   return (
@@ -18,6 +19,7 @@ export default function ApplicationProfile({ application }: { application: Appli
             </span>
             Написать письмо
           </Link>
+          <ZoomCallButton />
         </div>
         <section className="mt-6 rounded-3xl border border-brand-100 bg-white p-5 shadow-sm sm:p-8" aria-labelledby="application-profile-title">
           <header className="flex items-start justify-between gap-4">
