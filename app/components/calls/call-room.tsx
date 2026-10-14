@@ -83,6 +83,7 @@ export default function CallRoom({
   };
   const [localRatio, setLocalRatio] = useState(4 / 3);
   const [remoteRatio, setRemoteRatio] = useState(4 / 3);
+  const [stageRatio, setStageRatio] = useState(16 / 9);
   const [state, setState] = useState("waiting"),
     [expired, setExpired] = useState(false),
     [error, setError] = useState(""),
@@ -481,6 +482,19 @@ export default function CallRoom({
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = previousOverflow; };
   }, [immersive]);
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!immersive || !stage) return;
+    const observer = new ResizeObserver(([entry]) => {
+      const { width, height } = entry.contentRect;
+      if (width && height) setStageRatio(width / height);
+    });
+    observer.observe(stage);
+    return () => observer.disconnect();
+  }, [immersive]);
+  // Crop to fill only when video and stage share an orientation; a portrait phone
+  // video on a landscape screen (or the reverse) is shown whole with dark bars.
+  const videoFit = (ratio: number) => (ratio >= 1) === (stageRatio >= 1) ? "object-cover" : "object-contain";
   const callActive = ["ringing", "accepted"].includes(state);
   const button =
     "rounded-xl bg-brand-500 px-3 py-2 text-sm text-white hover:bg-brand-600";
@@ -553,7 +567,7 @@ export default function CallRoom({
             {remoteMuted && <span role="img" aria-label="Микрофон выключен"><MicrophoneIcon off className="size-4" /></span>}
             {token ? "Консультант" : "Участник"}
           </span>
-          <video ref={remote} disablePictureInPicture disableRemotePlayback onResize={(event) => { const video = event.currentTarget; if (video.videoWidth && video.videoHeight) setRemoteRatio(video.videoWidth / video.videoHeight); }} autoPlay playsInline onClick={() => void playRemote()} onPlaying={() => setRemoteAudioBlocked(false)} style={immersive && focusedVideo === "remote" ? undefined : { aspectRatio: remoteRatio }} className={`block w-full rounded-xl bg-neutral-900 ${immersive && focusedVideo === "remote" ? "h-full object-cover" : "h-auto"}`} />
+          <video ref={remote} disablePictureInPicture disableRemotePlayback onResize={(event) => { const video = event.currentTarget; if (video.videoWidth && video.videoHeight) setRemoteRatio(video.videoWidth / video.videoHeight); }} autoPlay playsInline onClick={() => void playRemote()} onPlaying={() => setRemoteAudioBlocked(false)} style={immersive && focusedVideo === "remote" ? undefined : { aspectRatio: remoteRatio }} className={`block w-full rounded-xl bg-neutral-900 ${immersive && focusedVideo === "remote" ? `h-full ${videoFit(remoteRatio)}` : "h-auto"}`} />
           </div>
           {remoteAudioBlocked && (
             <button type="button" className={`${button} mt-3`} onClick={() => void playRemote()}>
@@ -571,7 +585,7 @@ export default function CallRoom({
             {muted && <span role="img" aria-label="Микрофон выключен"><MicrophoneIcon off className="size-4" /></span>}
             Ваша камера{!camera && " · выключена"}
           </span>
-          <video ref={local} disablePictureInPicture disableRemotePlayback onResize={(event) => { const video = event.currentTarget; if (video.videoWidth && video.videoHeight) setLocalRatio(video.videoWidth / video.videoHeight); }} autoPlay playsInline muted style={immersive && focusedVideo === "local" ? undefined : { aspectRatio: localRatio }} className={`block w-full rounded-xl bg-neutral-900 ${immersive && focusedVideo === "local" ? "h-full object-cover" : "h-auto"} ${!mediaReady ? "hidden" : ""}`} />
+          <video ref={local} disablePictureInPicture disableRemotePlayback onResize={(event) => { const video = event.currentTarget; if (video.videoWidth && video.videoHeight) setLocalRatio(video.videoWidth / video.videoHeight); }} autoPlay playsInline muted style={immersive && focusedVideo === "local" ? undefined : { aspectRatio: localRatio }} className={`block w-full rounded-xl bg-neutral-900 ${immersive && focusedVideo === "local" ? `h-full ${videoFit(localRatio)}` : "h-auto"} ${!mediaReady ? "hidden" : ""}`} />
           {!mediaReady && (
             <div className="flex aspect-video w-full flex-col items-center justify-center gap-3 rounded-xl bg-brand-50 p-5 text-center text-sm text-neutral-600" role="status">
               <p>{expired || state === "revoked" ? "Приглашение недоступно" : deviceError ? "Камера и микрофон недоступны" : "Подключаем камеру… Разрешите доступ в браузере."}</p>
