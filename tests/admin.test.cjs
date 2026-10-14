@@ -47,7 +47,7 @@ test('login and logout enforce origin and set protected scoped cookies', async (
   assert.equal(good.status, 303);
   assert.match(good.headers.get('set-cookie'), /HttpOnly/i);
   assert.match(good.headers.get('set-cookie'), /SameSite=strict/i);
-  assert.match(good.headers.get('set-cookie'), /Path=\/admin/i);
+  assert.match(good.headers.get('set-cookie'), /gth_admin=[^;]*; Path=\/;/i);
   assert.equal(good.headers.get('cache-control'), 'no-store');
   const exited = await logout(req(''));
   assert.match(exited.headers.get('set-cookie'), /Max-Age=0/i);

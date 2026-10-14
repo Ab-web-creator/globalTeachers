@@ -18,7 +18,7 @@ export async function POST(request: Request) {
   const response = NextResponse.redirect(new URL(next ?? "/admin", origin), 303);
   response.headers.set("Cache-Control", "no-store");
   response.cookies.set(sessionCookie, createSession(), {
-    httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "strict", path: "/admin", maxAge: sessionLifetime,
+    httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "strict", path: "/", maxAge: sessionLifetime,
   });
   response.cookies.set(analyticsAdminCookie, createAnalyticsExclusion(), {
     httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "strict", path: "/", maxAge: analyticsExclusionLifetime,
