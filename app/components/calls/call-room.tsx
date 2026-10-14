@@ -101,7 +101,7 @@ export default function CallRoom({
   const [remoteAudioBlocked, setRemoteAudioBlocked] = useState(false);
   const [remoteMuted, setRemoteMuted] = useState<boolean | null>(null);
   const muteChannel = useRef<RTCDataChannel | null>(null);
-  // Recent microphone levels, oldest first; new samples enter on the right and scroll left.
+  // Recent microphone levels, newest first; new samples enter on the left and scroll right.
   const [micLevels, setMicLevels] = useState<number[]>(() => Array(micBarCount).fill(0));
   const mediaRequest = useRef<Promise<MediaStream> | null>(null);
   const mediaGeneration = useRef(0);
@@ -279,7 +279,7 @@ export default function CallRoom({
       analyser.getByteTimeDomainData(samples);
       const energy = samples.reduce((sum, sample) => sum + ((sample - 128) / 128) ** 2, 0) / samples.length;
       const level = Math.min(100, Math.round(Math.sqrt(energy) * 400));
-      setMicLevels((levels) => [...levels.slice(1), level]);
+      setMicLevels((levels) => [level, ...levels.slice(0, -1)]);
     }, 100);
     void context.resume().catch(() => {});
     return () => {
@@ -607,7 +607,7 @@ export default function CallRoom({
           {!minimized && mediaReady && state !== "accepted" && (
             <div className="mt-3">
               <p id="microphone-level-label" className="text-sm text-neutral-600">{muted ? "Микрофон выключен" : "Скажите несколько слов — индикатор должен двигаться"}</p>
-              <div id="microphone-level" role="meter" aria-valuemin={0} aria-valuemax={100} aria-valuenow={muted ? 0 : micLevels[micLevels.length - 1]} aria-labelledby="microphone-level-label" className="mt-2 flex h-8 items-center gap-1">
+              <div id="microphone-level" role="meter" aria-valuemin={0} aria-valuemax={100} aria-valuenow={muted ? 0 : micLevels[0]} aria-labelledby="microphone-level-label" className="mt-2 flex h-8 items-center gap-1">
                 {micLevels.map((level, index) => (
                   <span key={index} style={{ height: `${muted ? 12 : Math.max(12, level)}%` }} className={`min-w-0 flex-1 rounded-full transition-[height] duration-100 ease-out motion-reduce:transition-none ${muted ? "bg-neutral-300" : "bg-brand-500"}`} />
                 ))}
