@@ -499,6 +499,13 @@ export default function CallRoom({
   // Crop to fill only when video and stage share an orientation; a portrait phone
   // video on a landscape screen (or the reverse) is shown whole with dark bars.
   const videoFit = (ratio: number) => (ratio >= 1) === (stageRatio >= 1) ? "object-cover" : "object-contain";
+  // Bottom-left corner of the visible picture, which object-contain centres between bars.
+  const pictureCorner = (ratio: number, focused: boolean): CSSProperties => {
+    const letterboxed = focused && videoFit(ratio) === "object-contain";
+    const sideBars = letterboxed && ratio < stageRatio ? (1 - ratio / stageRatio) * 50 : 0;
+    const topBars = letterboxed && ratio > stageRatio ? (1 - stageRatio / ratio) * 50 : 0;
+    return { left: `calc(${sideBars}% + 0.75rem)`, bottom: `calc(${topBars}% + 0.75rem)` };
+  };
   const callActive = ["ringing", "accepted"].includes(state);
   const button =
     "rounded-xl bg-brand-500 px-3 py-2 text-sm text-white hover:bg-brand-600";
@@ -567,10 +574,9 @@ export default function CallRoom({
           {state === "accepted" && focusedVideo === "local" && (
             <button type="button" onPointerDown={startInsetDrag} onPointerMove={moveInset} onPointerUp={() => { drag.current = null; }} onPointerCancel={() => { drag.current = null; suppressInsetClick.current = true; }} onClick={(event) => { if (event.detail === 0 || !suppressInsetClick.current) setFocusedVideo("remote"); suppressInsetClick.current = false; }} aria-label="Показать видео собеседника крупно" className="absolute inset-0 z-30 touch-none cursor-grab rounded-xl active:cursor-grabbing focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500" />
           )}
-          <span className={`pointer-events-none absolute bottom-3 left-3 z-10 items-center gap-2 rounded-full bg-neutral-950/60 px-3 py-1 text-xs font-medium text-white ${state === "accepted" && focusedVideo === "local" ? "hidden" : "inline-flex"}`}>
-            {remoteMuted && <span role="img" aria-label="Микрофон выключен"><MicrophoneIcon off className="size-4" /></span>}
-            {token ? "Консультант" : "Участник"}
-          </span>
+          {remoteMuted && !(state === "accepted" && focusedVideo === "local") && (
+            <span role="img" aria-label="Микрофон собеседника выключен" style={pictureCorner(remoteRatio, immersive && focusedVideo === "remote")} className="pointer-events-none absolute z-10 flex size-8 items-center justify-center rounded-full bg-neutral-950/60 text-white"><MicrophoneIcon off className="size-4" /></span>
+          )}
           <video ref={remote} disablePictureInPicture disableRemotePlayback onResize={(event) => { const video = event.currentTarget; if (video.videoWidth && video.videoHeight) setRemoteRatio(video.videoWidth / video.videoHeight); }} autoPlay playsInline onClick={() => void playRemote()} onPlaying={() => setRemoteAudioBlocked(false)} style={immersive && focusedVideo === "remote" ? undefined : { aspectRatio: remoteRatio }} className={`block w-full rounded-xl ${immersive && focusedVideo === "remote" ? `h-full ${videoFit(remoteRatio)}` : "h-auto bg-neutral-900"}`} />
           </div>
           {remoteAudioBlocked && (
@@ -585,10 +591,9 @@ export default function CallRoom({
           {state === "accepted" && focusedVideo === "remote" && (
             <button type="button" onPointerDown={startInsetDrag} onPointerMove={moveInset} onPointerUp={() => { drag.current = null; }} onPointerCancel={() => { drag.current = null; suppressInsetClick.current = true; }} onClick={(event) => { if (event.detail === 0 || !suppressInsetClick.current) setFocusedVideo("local"); suppressInsetClick.current = false; }} aria-label="Показать свою камеру крупно" className="absolute inset-0 z-30 touch-none cursor-grab rounded-xl active:cursor-grabbing focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500" />
           )}
-          <span className={`pointer-events-none absolute bottom-3 left-3 z-10 items-center gap-2 rounded-full bg-neutral-950/60 px-3 py-1 text-xs font-medium text-white ${state === "accepted" && focusedVideo === "remote" ? "hidden" : "inline-flex"}`}>
-            {muted && <span role="img" aria-label="Микрофон выключен"><MicrophoneIcon off className="size-4" /></span>}
-            Ваша камера{!camera && " · выключена"}
-          </span>
+          {muted && mediaReady && !(state === "accepted" && focusedVideo === "remote") && (
+            <span role="img" aria-label="Ваш микрофон выключен" style={pictureCorner(localRatio, immersive && focusedVideo === "local")} className="pointer-events-none absolute z-10 flex size-8 items-center justify-center rounded-full bg-neutral-950/60 text-white"><MicrophoneIcon off className="size-4" /></span>
+          )}
           <video ref={local} disablePictureInPicture disableRemotePlayback onResize={(event) => { const video = event.currentTarget; if (video.videoWidth && video.videoHeight) setLocalRatio(video.videoWidth / video.videoHeight); }} autoPlay playsInline muted style={immersive && focusedVideo === "local" ? undefined : { aspectRatio: localRatio }} className={`block w-full rounded-xl ${immersive && focusedVideo === "local" ? `h-full ${videoFit(localRatio)}` : "h-auto bg-neutral-900"} ${!mediaReady ? "hidden" : ""}`} />
           {!mediaReady && (
             <div className="flex aspect-video w-full flex-col items-center justify-center gap-3 rounded-xl bg-brand-50 p-5 text-center text-sm text-neutral-600" role="status">
