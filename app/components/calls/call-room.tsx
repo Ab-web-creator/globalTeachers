@@ -43,7 +43,15 @@ export default function CallRoom({
   const [received, setReceived] = useState(0);
   const [seen, setSeen] = useState(0);
   const unread = chatOpen ? 0 : received - seen;
+  const chatLog = useRef<HTMLDivElement>(null);
+  const chatAtBottom = useRef(true);
+  useEffect(() => {
+    const log = chatLog.current;
+    // Follow new messages unless the reader has scrolled up; always follow one's own message.
+    if (log && (chatAtBottom.current || messages.at(-1)?.own)) log.scrollTop = log.scrollHeight;
+  }, [messages, chatOpen]);
   function showChat(open: boolean) {
+    if (open) chatAtBottom.current = true;
     setSeen(received);
     setChatOpen(open);
   }
@@ -667,9 +675,9 @@ export default function CallRoom({
       {immersive && chatOpen && (
         <aside id="call-chat" aria-label="Чат звонка" className="absolute inset-y-0 right-0 z-40 flex w-full flex-col border-l border-slate-700 bg-[#121826] p-4 text-white sm:w-80">
           <div className="flex items-center justify-between"><button type="button" aria-expanded={chatOpen} aria-controls="call-chat" onClick={() => showChat(false)} className="inline-flex items-center gap-2 rounded-xl bg-slate-700 px-3 py-2 text-sm text-white transition hover:bg-slate-600"><CallChatIcon className="size-4" />Chat tab</button><button type="button" onClick={() => showChat(false)} aria-label="Закрыть чат"><CallWindowCloseIcon className="size-5" /></button></div>
-          <div role="log" aria-live="polite" className="my-3 min-h-0 flex-1 space-y-2 overflow-y-auto">
+          <div ref={chatLog} onScroll={(event) => { const log = event.currentTarget; chatAtBottom.current = log.scrollHeight - log.scrollTop - log.clientHeight < 40; }} role="log" aria-live="polite" className="my-3 min-h-0 flex-1 space-y-2 overflow-y-auto">
             {messages.length === 0 && <p className="text-sm text-slate-400">Сообщения доступны во время звонка.</p>}
-            {messages.map((message, index) => <p key={index} className={`break-words rounded-lg p-2 text-sm ${message.own ? "bg-brand-700" : "bg-slate-700"}`}><span className="mb-1 block text-xs text-white/70">{message.own ? "Вы" : token ? "Консультант" : "Участник"}</span>{message.text}</p>)}
+            {messages.map((message, index) => <p key={index} className={`break-words rounded-lg p-2 text-base ${message.own ? "bg-brand-700" : "bg-slate-700"}`}><span className="mb-1 block text-sm text-white/70">{message.own ? "Вы" : token ? "Консультант" : "Участник"}</span>{message.text}</p>)}
           </div>
           <form onSubmit={(event) => {
             event.preventDefault();
