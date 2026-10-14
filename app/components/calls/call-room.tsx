@@ -507,6 +507,18 @@ export default function CallRoom({
     return { left: `calc(${sideBars}% + 0.75rem)`, bottom: `calc(${topBars}% + 0.75rem)` };
   };
   const callActive = ["ringing", "accepted"].includes(state);
+  const statusText = connected
+    ? "Соединение установлено"
+    : ({
+        waiting: "Можно начать звонок",
+        ringing: "Ожидаем ответа консультанта",
+        accepted: "Подключаемся…",
+        declined: "Звонок отклонён",
+        ended: "Звонок завершён",
+        revoked: "Приглашение отменено",
+      } as Record<string, string>)[state];
+  // Before the call the client's details sit over their own camera preview.
+  const infoOnVideo = !!token && mediaReady && state !== "accepted" && !minimized;
   const button =
     "rounded-xl bg-brand-500 px-3 py-2 text-sm text-white hover:bg-brand-600";
   return (
@@ -516,24 +528,15 @@ export default function CallRoom({
     >
       <div className={minimized || immersive ? "hidden" : ""}>
       <h1 className="text-2xl font-semibold sm:text-3xl">Видеоконсультация</h1>
-      <p className="mt-3 text-lg">{name}</p>
-      <p suppressHydrationWarning className="mt-2 text-sm text-neutral-500">
-        Приглашение действует до {new Date(expires).toLocaleString("ru-RU")}
-      </p>
-      <p className="mt-4" role="status">
-        {connected
-          ? "Соединение установлено"
-          : (
-              {
-                waiting: "Можно начать звонок",
-                ringing: "Ожидаем ответа консультанта",
-                accepted: "Подключаемся…",
-                declined: "Звонок отклонён",
-                ended: "Звонок завершён",
-              revoked: "Приглашение отменено",
-              } as Record<string, string>
-            )[state]}
-      </p>
+      {!infoOnVideo && (
+        <>
+          <p className="mt-3 text-lg">{token ? `Вы: ${name}` : name}</p>
+          <p suppressHydrationWarning className="mt-2 text-sm text-neutral-500">
+            Приглашение действует до {new Date(expires).toLocaleString("ru-RU")}
+          </p>
+          <p className="mt-4" role="status">{statusText}</p>
+        </>
+      )}
       {error && (
         <p className="mt-3 text-red-700" role="alert">
           {error}
@@ -590,6 +593,15 @@ export default function CallRoom({
           <div className={`relative overflow-hidden rounded-xl ${immersive && focusedVideo === "local" ? "h-full" : ""}`}>
           {state === "accepted" && focusedVideo === "remote" && (
             <button type="button" onPointerDown={startInsetDrag} onPointerMove={moveInset} onPointerUp={() => { drag.current = null; }} onPointerCancel={() => { drag.current = null; suppressInsetClick.current = true; }} onClick={(event) => { if (event.detail === 0 || !suppressInsetClick.current) setFocusedVideo("local"); suppressInsetClick.current = false; }} aria-label="Показать свою камеру крупно" className="absolute inset-0 z-30 touch-none cursor-grab rounded-xl active:cursor-grabbing focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500" />
+          )}
+          {infoOnVideo && (
+            <div className="pointer-events-none absolute inset-x-0 top-0 z-10 rounded-t-xl bg-linear-to-b from-neutral-950/70 to-transparent p-4 pb-10 text-white">
+              <p className="text-lg font-medium">Вы: {name}</p>
+              <p suppressHydrationWarning className="mt-1 text-sm text-white/80">
+                Приглашение действует до {new Date(expires).toLocaleString("ru-RU")}
+              </p>
+              {!waitingForConsultant && <p className="mt-2" role="status">{statusText}</p>}
+            </div>
           )}
           {muted && mediaReady && !(state === "accepted" && focusedVideo === "remote") && (
             <span role="img" aria-label="Ваш микрофон выключен" style={pictureCorner(localRatio, immersive && focusedVideo === "local")} className="pointer-events-none absolute z-10 flex size-8 items-center justify-center rounded-full bg-neutral-950/60 text-white"><MicrophoneIcon off className="size-4" /></span>
