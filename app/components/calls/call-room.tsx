@@ -528,7 +528,7 @@ export default function CallRoom({
       className={minimized ? "fixed right-4 bottom-4 z-50 w-72 max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-slate-800 bg-[#121826] p-2 shadow-2xl" : immersive ? "fixed inset-0 z-60 flex h-dvh w-full flex-col gap-3 overflow-hidden bg-[#121826] p-3 sm:p-4" : "mx-auto w-full bg-white px-4 py-6 sm:max-w-(--call-max-width) sm:rounded-3xl sm:border sm:border-brand-100 sm:p-6 sm:shadow-sm"}
     >
       <div className={minimized || immersive ? "hidden" : ""}>
-      <h1 className="text-2xl font-semibold sm:text-3xl">Видеоконсультация</h1>
+      {!infoOnVideo && <h1 className="text-2xl font-semibold sm:text-3xl">Видеоконсультация</h1>}
       {!infoOnVideo && (
         <>
           <p className="mt-3 text-lg">{token ? `Вы: ${name}` : name}</p>
@@ -566,7 +566,7 @@ export default function CallRoom({
       {immersive && error && <p role="alert" className="absolute top-3 right-3 z-50 max-w-xs rounded-lg bg-red-950/90 p-2 text-sm text-white">{error}</p>}
       <div className={immersive ? `relative flex min-h-0 flex-1 gap-3 ${chatOpen ? "sm:mr-80" : ""}` : "contents"}>
       <div className={immersive ? "flex min-h-0 min-w-0 flex-1 items-center justify-center" : "contents"}>
-      <div ref={stageRef} style={state === "accepted" && !immersive ? { aspectRatio: focusedVideo === "local" ? localRatio : remoteRatio } : undefined} className={`relative ${immersive ? "h-full w-full" : ""} fullscreen:mt-0 fullscreen:h-full fullscreen:w-full fullscreen:aspect-auto ${state === "accepted" ? `${minimized || immersive ? "" : "mt-4"} overflow-hidden rounded-2xl ${immersive ? "bg-[#121826]" : "bg-neutral-950"}` : "mt-6 grid w-full grid-cols-1 gap-4"} ${!token && !mediaReady && state !== "accepted" ? "hidden" : ""}`}>
+      <div ref={stageRef} style={state === "accepted" && !immersive ? { aspectRatio: focusedVideo === "local" ? localRatio : remoteRatio } : undefined} className={`relative ${immersive ? "h-full w-full" : ""} fullscreen:mt-0 fullscreen:h-full fullscreen:w-full fullscreen:aspect-auto ${state === "accepted" ? `${minimized || immersive ? "" : "mt-4"} overflow-hidden rounded-2xl ${immersive ? "bg-[#121826]" : "bg-neutral-950"}` : `${infoOnVideo && !error ? "" : "mt-6"} grid w-full grid-cols-1 gap-4`} ${!token && !mediaReady && state !== "accepted" ? "hidden" : ""}`}>
         {callActive && minimized && (
           <div className="pointer-events-none absolute inset-x-0 top-0 z-40 flex items-start justify-between p-3">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-red-600 px-2 py-1 text-xs font-semibold text-white"><span className="size-1.5 rounded-full bg-white" />LIVE</span>
@@ -597,7 +597,8 @@ export default function CallRoom({
           )}
           {infoOnVideo && (
             <div className="pointer-events-none absolute inset-x-3 top-3 z-10 w-fit rounded-2xl bg-neutral-950/55 px-4 py-3 text-white shadow-lg ring-1 ring-white/10 backdrop-blur-md sm:inset-x-4 sm:top-4 sm:px-5 sm:py-4">
-              <p className="text-base font-semibold leading-snug sm:text-lg"><span className="font-normal text-white/60">Вы:</span> {name}</p>
+              <h1 className="text-lg font-semibold leading-snug sm:text-xl">Видеоконсультация</h1>
+              <p className="mt-2 text-base leading-snug"><span className="text-white/60">Вы:</span> <span className="font-medium">{name}</span></p>
               <p className="mt-1 text-sm text-white/70">Приглашение действует до {expiresLabel}</p>
               {!waitingForConsultant && (
                 <p role="status" className="mt-3 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-sm font-medium">
