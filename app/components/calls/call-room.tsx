@@ -506,6 +506,11 @@ export default function CallRoom({
     const topBars = letterboxed && ratio > stageRatio ? (1 - stageRatio / ratio) * 50 : 0;
     return { left: `calc(${sideBars}% + 0.75rem)`, bottom: `calc(${topBars}% + 0.75rem)` };
   };
+  function toggleCamera() {
+    cameraEnabled.current = !camera;
+    stream.current?.getVideoTracks().forEach((t) => (t.enabled = !camera));
+    setCamera(!camera);
+  }
   const callActive = ["ringing", "accepted"].includes(state);
   const expiresLabel = new Date(expires).toLocaleString("ru-RU", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
   const statusText = connected
@@ -595,6 +600,15 @@ export default function CallRoom({
           {state === "accepted" && focusedVideo === "remote" && (
             <button type="button" onPointerDown={startInsetDrag} onPointerMove={moveInset} onPointerUp={() => { drag.current = null; }} onPointerCancel={() => { drag.current = null; suppressInsetClick.current = true; }} onClick={(event) => { if (event.detail === 0 || !suppressInsetClick.current) setFocusedVideo("local"); suppressInsetClick.current = false; }} aria-label="Показать свою камеру крупно" className="absolute inset-0 z-30 touch-none cursor-grab rounded-xl active:cursor-grabbing focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500" />
           )}
+          {mediaReady && !camera && !sharingScreen && !waitingForConsultant && (state === "accepted" && focusedVideo === "remote" ? (
+            <span role="img" aria-label="Ваша камера выключена" className="pointer-events-none absolute inset-0 flex items-center justify-center text-white/70"><CameraIcon off className="size-6" /></span>
+          ) : (
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center text-white">
+              <span className="flex size-14 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/15"><CameraIcon off className="size-7" /></span>
+              <p role="status" className="text-base font-medium">Камера выключена</p>
+              <button type="button" onClick={toggleCamera} className="rounded-xl bg-white/15 px-4 py-2 text-sm font-medium backdrop-blur-md transition hover:bg-white/25">Включить камеру</button>
+            </div>
+          ))}
           {infoOnVideo && (
             <div className="pointer-events-none absolute inset-x-3 top-3 z-10 w-fit rounded-2xl bg-neutral-950/55 px-4 py-3 text-white shadow-lg ring-1 ring-white/10 backdrop-blur-md sm:inset-x-4 sm:top-4 sm:px-5 sm:py-4">
               <h1 className="text-lg font-semibold leading-snug sm:text-xl">Видеоконсультация</h1>
@@ -706,13 +720,7 @@ export default function CallRoom({
               aria-label={`Камера: ${camera ? "включена" : "выключена"}`}
               aria-pressed={camera}
               className={`inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-white ${camera ? "bg-brand-500 hover:bg-brand-600" : "bg-red-600 hover:bg-red-700"}`}
-              onClick={() => {
-                cameraEnabled.current = !camera;
-                stream.current
-                  ?.getVideoTracks()
-                  .forEach((t) => (t.enabled = !camera));
-                setCamera(!camera);
-              }}
+              onClick={toggleCamera}
             >
               <CameraIcon off={!camera} className="size-4 shrink-0" />
               <span className={minimized ? "hidden" : "hidden sm:inline"}>Камера</span>
