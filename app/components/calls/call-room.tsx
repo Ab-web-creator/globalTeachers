@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState, type PointerEvent } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type PointerEvent } from "react";
 import { useRouter } from "next/navigation";
 import { CameraIcon, MicrophoneIcon, PhoneCallIcon, CallWindowCloseIcon, CallWindowMinimizeIcon, CallWindowFullscreenIcon, VideoExpandIcon, CallChatIcon, ScreenShareIcon, ChatSendIcon } from "@/app/components/svg";
 import useCallRingtone from "./use-call-ringtone";
@@ -39,6 +39,8 @@ export default function CallRoom({
   const [messages, setMessages] = useState<{ text: string; own: boolean }[]>([]);
   const [chatReady, setChatReady] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
+  // iPhone Safari has no element fullscreen, so the button is hidden there.
+  const fullscreenSupported = useSyncExternalStore(() => () => {}, () => !!document.fullscreenEnabled, () => false);
   useEffect(() => {
     const syncFullscreen = () => setFullscreen(document.fullscreenElement === callFrameRef.current);
     document.addEventListener("fullscreenchange", syncFullscreen);
@@ -524,7 +526,7 @@ export default function CallRoom({
         <div className="flex gap-2">
           <button type="button" aria-label="Завершить звонок" title="Завершить звонок" onClick={() => { if (callActive) void action("end"); else { cleanup(); onDismiss?.(); } }} className="flex size-6 items-center justify-center rounded-full transition duration-200 ease-out hover:scale-110 active:scale-95 motion-reduce:transition-none motion-reduce:transform-none bg-red-500 text-white hover:bg-red-600"><CallWindowCloseIcon className="size-4" /></button>
           <button type="button" aria-label={minimized ? "Вернуться к звонку" : "Свернуть звонок"} title={minimized ? "Вернуться к звонку" : "Свернуть звонок"} onClick={async () => { if (document.fullscreenElement) await document.exitFullscreen(); if (minimized) onRestore?.(); else onMinimize?.(); }} className="group flex size-6 items-center justify-center rounded-full transition duration-200 ease-out hover:scale-110 active:scale-95 motion-reduce:transition-none motion-reduce:transform-none bg-yellow-400 text-neutral-900 hover:bg-yellow-500"><CallWindowMinimizeIcon className="size-4 opacity-0 transition-opacity duration-200 motion-reduce:transition-none group-hover:opacity-100 group-focus-visible:opacity-100" /></button>
-          <button type="button" aria-label={fullscreen ? "Выйти из полноэкранного режима" : "Полноэкранный режим"} title={fullscreen ? "Выйти из полноэкранного режима" : "Полноэкранный режим"} onClick={() => { void (document.fullscreenElement ? document.exitFullscreen() : callFrameRef.current?.requestFullscreen())?.catch(() => setError("Полноэкранный режим недоступен в этом браузере.")); }} className="flex size-6 items-center justify-center rounded-full transition duration-200 ease-out hover:scale-110 active:scale-95 motion-reduce:transition-none motion-reduce:transform-none bg-green-500 text-white hover:bg-green-600"><CallWindowFullscreenIcon expanded={fullscreen} className="size-4" /></button>
+          {fullscreenSupported && <button type="button" aria-label={fullscreen ? "Выйти из полноэкранного режима" : "Полноэкранный режим"} title={fullscreen ? "Выйти из полноэкранного режима" : "Полноэкранный режим"} onClick={() => { void (document.fullscreenElement ? document.exitFullscreen() : callFrameRef.current?.requestFullscreen())?.catch(() => setError("Полноэкранный режим недоступен в этом браузере.")); }} className="flex size-6 items-center justify-center rounded-full transition duration-200 ease-out hover:scale-110 active:scale-95 motion-reduce:transition-none motion-reduce:transform-none bg-green-500 text-white hover:bg-green-600"><CallWindowFullscreenIcon expanded={fullscreen} className="size-4" /></button>}
         </div>
 
           {!chatOpen && <button type="button" aria-expanded={chatOpen} aria-controls="call-chat" onClick={() => setChatOpen(!chatOpen)} className="inline-flex items-center gap-2 rounded-xl bg-slate-700 px-3 py-2 text-sm text-white transition hover:bg-slate-600">
