@@ -24,6 +24,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Tailwind CSS
 
+- Form fields (`input`, `textarea`, `select`) must use `text-base` (16px) on mobile, set explicitly on the field rather than inherited; smaller text makes iPhone Safari zoom in on focus. Phones in landscape exceed the `sm` breakpoint, so do not shrink field text below `lg`.
 - Dropdown arrows must always have right padding. Use a custom arrow inset from the right edge (normally `right-4`) and reserve text space with `pr-12`; native select arrows do not reliably respect padding.
 - In content sections, use `mt-7` (28px) between the main heading and its description. Keep spacing between subsequent paragraphs separate.
 - Use a 40px gap (`mt-10` or equivalent) before main card grids.
