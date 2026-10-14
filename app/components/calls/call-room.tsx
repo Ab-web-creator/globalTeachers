@@ -636,13 +636,13 @@ export default function CallRoom({
         {token && !expired && state !== "revoked" && (
           <button
             type="button"
-            aria-label={callActive ? "Завершить" : "Позвонить консультанту"}
+            aria-label={callActive ? "Завершить" : "Позвонить"}
             disabled={!callActive && (!mediaReady || checking)}
             className={`order-last ml-auto inline-flex w-fit items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm text-white disabled:opacity-50 ${callActive ? "bg-red-600 hover:bg-red-700" : "bg-brand-500 hover:bg-brand-600"}`}
             onClick={() => void action(callActive ? "end" : "ring")}
           >
             <PhoneCallIcon className="size-4 shrink-0" />
-            <span className={minimized ? "hidden" : ""}>{callActive ? "Завершить" : state === "waiting" ? "Позвонить консультанту" : "Позвонить снова"}</span>
+            <span className={minimized ? "hidden" : ""}>{callActive ? "Завершить" : "Позвонить"}</span>
           </button>
         )}
         {!token && state === "ringing" && (

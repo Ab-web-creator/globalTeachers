@@ -119,7 +119,7 @@ export default function VideoCallInvitation({ applicationId }: { applicationId: 
               <button type="button" disabled={revoking !== null} onClick={() => void revokeInvitation(invitation.id)} className="text-red-700 disabled:opacity-50">{revoking === invitation.id ? "Отменяем…" : "Отменить приглашение"}</button>
             </div>
             {invitation.url && (
-              <a className="mt-3 block text-brand-600" href={`/admin/mail/new?${new URLSearchParams({ to: invitation.email, subject: "Приглашение на видеоконсультацию", text: `Здравствуйте!\n\nДля видеоконсультации откройте личную ссылку:\n${invitation.url}\n\nПриглашение действует до ${new Date(invitation.expiresAt).toLocaleString("ru-RU")}. После открытия нажмите «Позвонить консультанту».` })}`}>Подготовить письмо</a>
+              <a className="mt-3 block text-brand-600" href={`/admin/mail/new?${new URLSearchParams({ to: invitation.email, subject: "Приглашение на видеоконсультацию", text: `Здравствуйте!\n\nДля видеоконсультации откройте личную ссылку:\n${invitation.url}\n\nПриглашение действует до ${new Date(invitation.expiresAt).toLocaleString("ru-RU")}. После открытия нажмите «Позвонить».` })}`}>Подготовить письмо</a>
             )}
             {copyStatus?.id === invitation.id && <p role="status" className="mt-2 text-neutral-600">{copyStatus.message}</p>}
           </div>
