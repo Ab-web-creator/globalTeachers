@@ -555,7 +555,7 @@ export default function CallRoom({
       {immersive && error && <p role="alert" className="absolute top-3 right-3 z-50 max-w-xs rounded-lg bg-red-950/90 p-2 text-sm text-white">{error}</p>}
       <div className={immersive ? `relative flex min-h-0 flex-1 gap-3 ${chatOpen ? "sm:mr-80" : ""}` : "contents"}>
       <div className={immersive ? "flex min-h-0 min-w-0 flex-1 items-center justify-center" : "contents"}>
-      <div ref={stageRef} style={state === "accepted" && !immersive ? { aspectRatio: focusedVideo === "local" ? localRatio : remoteRatio } : undefined} className={`relative ${immersive ? "h-full w-full" : ""} fullscreen:mt-0 fullscreen:h-full fullscreen:w-full fullscreen:aspect-auto ${state === "accepted" ? `${minimized || immersive ? "" : "mt-4"} overflow-hidden rounded-2xl bg-neutral-950` : "mt-6 grid w-full grid-cols-1 gap-4"} ${!token && !mediaReady && state !== "accepted" ? "hidden" : ""}`}>
+      <div ref={stageRef} style={state === "accepted" && !immersive ? { aspectRatio: focusedVideo === "local" ? localRatio : remoteRatio } : undefined} className={`relative ${immersive ? "h-full w-full" : ""} fullscreen:mt-0 fullscreen:h-full fullscreen:w-full fullscreen:aspect-auto ${state === "accepted" ? `${minimized || immersive ? "" : "mt-4"} overflow-hidden rounded-2xl ${immersive ? "bg-[#121826]" : "bg-neutral-950"}` : "mt-6 grid w-full grid-cols-1 gap-4"} ${!token && !mediaReady && state !== "accepted" ? "hidden" : ""}`}>
         {callActive && minimized && (
           <div className="pointer-events-none absolute inset-x-0 top-0 z-40 flex items-start justify-between p-3">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-red-600 px-2 py-1 text-xs font-semibold text-white"><span className="size-1.5 rounded-full bg-white" />LIVE</span>
@@ -571,7 +571,7 @@ export default function CallRoom({
             {remoteMuted && <span role="img" aria-label="Микрофон выключен"><MicrophoneIcon off className="size-4" /></span>}
             {token ? "Консультант" : "Участник"}
           </span>
-          <video ref={remote} disablePictureInPicture disableRemotePlayback onResize={(event) => { const video = event.currentTarget; if (video.videoWidth && video.videoHeight) setRemoteRatio(video.videoWidth / video.videoHeight); }} autoPlay playsInline onClick={() => void playRemote()} onPlaying={() => setRemoteAudioBlocked(false)} style={immersive && focusedVideo === "remote" ? undefined : { aspectRatio: remoteRatio }} className={`block w-full rounded-xl bg-neutral-900 ${immersive && focusedVideo === "remote" ? `h-full ${videoFit(remoteRatio)}` : "h-auto"}`} />
+          <video ref={remote} disablePictureInPicture disableRemotePlayback onResize={(event) => { const video = event.currentTarget; if (video.videoWidth && video.videoHeight) setRemoteRatio(video.videoWidth / video.videoHeight); }} autoPlay playsInline onClick={() => void playRemote()} onPlaying={() => setRemoteAudioBlocked(false)} style={immersive && focusedVideo === "remote" ? undefined : { aspectRatio: remoteRatio }} className={`block w-full rounded-xl ${immersive && focusedVideo === "remote" ? `h-full ${videoFit(remoteRatio)}` : "h-auto bg-neutral-900"}`} />
           </div>
           {remoteAudioBlocked && (
             <button type="button" className={`${button} mt-3`} onClick={() => void playRemote()}>
@@ -589,7 +589,7 @@ export default function CallRoom({
             {muted && <span role="img" aria-label="Микрофон выключен"><MicrophoneIcon off className="size-4" /></span>}
             Ваша камера{!camera && " · выключена"}
           </span>
-          <video ref={local} disablePictureInPicture disableRemotePlayback onResize={(event) => { const video = event.currentTarget; if (video.videoWidth && video.videoHeight) setLocalRatio(video.videoWidth / video.videoHeight); }} autoPlay playsInline muted style={immersive && focusedVideo === "local" ? undefined : { aspectRatio: localRatio }} className={`block w-full rounded-xl bg-neutral-900 ${immersive && focusedVideo === "local" ? `h-full ${videoFit(localRatio)}` : "h-auto"} ${!mediaReady ? "hidden" : ""}`} />
+          <video ref={local} disablePictureInPicture disableRemotePlayback onResize={(event) => { const video = event.currentTarget; if (video.videoWidth && video.videoHeight) setLocalRatio(video.videoWidth / video.videoHeight); }} autoPlay playsInline muted style={immersive && focusedVideo === "local" ? undefined : { aspectRatio: localRatio }} className={`block w-full rounded-xl ${immersive && focusedVideo === "local" ? `h-full ${videoFit(localRatio)}` : "h-auto bg-neutral-900"} ${!mediaReady ? "hidden" : ""}`} />
           {!mediaReady && (
             <div className="flex aspect-video w-full flex-col items-center justify-center gap-3 rounded-xl bg-brand-50 p-5 text-center text-sm text-neutral-600" role="status">
               <p>{expired || state === "revoked" ? "Приглашение недоступно" : deviceError ? "Камера и микрофон недоступны" : "Подключаем камеру… Разрешите доступ в браузере."}</p>
