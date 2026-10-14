@@ -681,7 +681,7 @@ export default function CallRoom({
               setChatDraft("");
             } catch { setError("Не удалось отправить сообщение."); }
           }} className="flex items-center gap-2 rounded-full border border-slate-600 bg-slate-800 p-1.5">
-            <input aria-label="Сообщение" placeholder="Сообщение…" maxLength={2000} value={chatDraft} onChange={(event) => setChatDraft(event.target.value)} className="min-w-0 flex-1 bg-transparent py-2 pl-4 text-sm text-white outline-none focus:ring-0 placeholder:text-slate-500" />
+            <input aria-label="Сообщение" placeholder="Сообщение…" maxLength={2000} value={chatDraft} onChange={(event) => setChatDraft(event.target.value)} className="min-w-0 flex-1 bg-transparent py-2 pl-4 text-sm text-white outline-none! placeholder:text-slate-500" />
             <button type="submit" aria-label="Отправить сообщение" disabled={!chatReady || !chatDraft.trim()} className="flex size-9 shrink-0 items-center justify-center rounded-full bg-yellow-400 text-slate-900 transition hover:bg-yellow-300 disabled:bg-yellow-400/25 disabled:text-slate-500"><ChatSendIcon className="size-5" /></button>
           </form>
         </aside>
