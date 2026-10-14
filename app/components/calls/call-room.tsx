@@ -543,7 +543,9 @@ export default function CallRoom({
   // Before the call the client's details sit over their own camera preview.
   // Before the call the microphone check sits along the bottom of the own preview.
   const micCheck = !minimized && mediaReady && state !== "accepted";
-  const cameraOff = mediaReady && !camera && !sharingScreen && !waitingForConsultant;
+  // A disabled camera track renders black frames, so hide the video and show a coloured box instead.
+  const cameraHidden = mediaReady && !camera && !sharingScreen;
+  const cameraOff = cameraHidden && !waitingForConsultant;
   const infoOnVideo = !!token && mediaReady && state !== "accepted" && !minimized;
   const button =
     "rounded-xl bg-brand-500 px-3 py-2 text-sm text-white hover:bg-brand-600";
@@ -617,7 +619,7 @@ export default function CallRoom({
           {!connected && <p className="mt-2 text-sm text-neutral-600">Подключаем видео собеседника…</p>}
         </div>
         <div style={state === "accepted" && focusedVideo === "remote" ? insetStyle : undefined} className={state === "accepted" ? focusedVideo === "remote" ? "absolute z-20 w-1/4 max-w-40 rounded-xl border-2 border-white/70 shadow-lg" : focusedVideo === "local" ? "absolute inset-0" : "min-w-0" : "w-full"}>
-          <div className={`relative overflow-hidden rounded-xl ${immersive && focusedVideo === "local" ? "h-full" : ""}`}>
+          <div className={`relative overflow-hidden rounded-xl ${immersive && focusedVideo === "local" ? "h-full" : ""} ${cameraHidden ? "bg-yellow-900" : ""}`}>
           {state === "accepted" && focusedVideo === "remote" && (
             <button type="button" onPointerDown={startInsetDrag} onPointerMove={moveInset} onPointerUp={() => { drag.current = null; }} onPointerCancel={() => { drag.current = null; suppressInsetClick.current = true; }} onClick={(event) => { if (event.detail === 0 || !suppressInsetClick.current) setFocusedVideo("local"); suppressInsetClick.current = false; }} aria-label="Показать свою камеру крупно" className="absolute inset-0 z-30 touch-none cursor-grab rounded-xl active:cursor-grabbing focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500" />
           )}
@@ -664,7 +666,7 @@ export default function CallRoom({
           {muted && mediaReady && !micCheck && !(state === "accepted" && focusedVideo === "remote") && (
             <span role="img" aria-label="Ваш микрофон выключен" style={pictureCorner(localRatio, immersive && focusedVideo === "local")} className="pointer-events-none absolute z-10 flex size-8 items-center justify-center rounded-full bg-neutral-950/60 text-white"><MicrophoneIcon off className="size-4" /></span>
           )}
-          <video ref={local} disablePictureInPicture disableRemotePlayback onResize={(event) => { const video = event.currentTarget; if (video.videoWidth && video.videoHeight) setLocalRatio(video.videoWidth / video.videoHeight); }} autoPlay playsInline muted style={immersive && focusedVideo === "local" ? undefined : { aspectRatio: localRatio }} className={`block w-full rounded-xl ${immersive && focusedVideo === "local" ? `h-full ${videoFit(localRatio)}` : "h-auto bg-neutral-900 max-sm:max-h-[calc(100dvh-7rem)] max-sm:object-cover"} ${!mediaReady ? "hidden" : ""}`} />
+          <video ref={local} disablePictureInPicture disableRemotePlayback onResize={(event) => { const video = event.currentTarget; if (video.videoWidth && video.videoHeight) setLocalRatio(video.videoWidth / video.videoHeight); }} autoPlay playsInline muted style={immersive && focusedVideo === "local" ? undefined : { aspectRatio: localRatio }} className={`block w-full rounded-xl ${immersive && focusedVideo === "local" ? `h-full ${videoFit(localRatio)}` : `h-auto max-sm:max-h-[calc(100dvh-7rem)] max-sm:object-cover ${cameraHidden ? "" : "bg-neutral-900"}`} ${!mediaReady ? "hidden" : ""} ${cameraHidden ? "invisible" : ""}`} />
           {!mediaReady && (
             <div className="flex aspect-video w-full flex-col items-center justify-center gap-3 rounded-xl bg-brand-50 p-5 text-center text-sm text-neutral-600" role="status">
               <p>{expired || state === "revoked" ? "Приглашение недоступно" : deviceError ? "Камера и микрофон недоступны" : "Подключаем камеру… Разрешите доступ в браузере."}</p>
