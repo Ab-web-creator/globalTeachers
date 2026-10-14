@@ -543,6 +543,7 @@ export default function CallRoom({
   // Before the call the client's details sit over their own camera preview.
   // Before the call the microphone check sits along the bottom of the own preview.
   const micCheck = !minimized && mediaReady && state !== "accepted";
+  const cameraOff = mediaReady && !camera && !sharingScreen && !waitingForConsultant;
   const infoOnVideo = !!token && mediaReady && state !== "accepted" && !minimized;
   const button =
     "rounded-xl bg-brand-500 px-3 py-2 text-sm text-white hover:bg-brand-600";
@@ -620,35 +621,43 @@ export default function CallRoom({
           {state === "accepted" && focusedVideo === "remote" && (
             <button type="button" onPointerDown={startInsetDrag} onPointerMove={moveInset} onPointerUp={() => { drag.current = null; }} onPointerCancel={() => { drag.current = null; suppressInsetClick.current = true; }} onClick={(event) => { if (event.detail === 0 || !suppressInsetClick.current) setFocusedVideo("local"); suppressInsetClick.current = false; }} aria-label="Показать свою камеру крупно" className="absolute inset-0 z-30 touch-none cursor-grab rounded-xl active:cursor-grabbing focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500" />
           )}
-          {mediaReady && !camera && !sharingScreen && !waitingForConsultant && (state === "accepted" && focusedVideo === "remote" ? (
+          {cameraOff && state === "accepted" && focusedVideo === "remote" && (
             <span role="img" aria-label="Ваша камера выключена" className="pointer-events-none absolute inset-0 flex items-center justify-center text-white/70"><CameraIcon off className="size-6" /></span>
-          ) : (
-            <div className={`absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center text-white ${micCheck ? "pb-24" : ""}`}>
-              <span className="flex size-14 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/15"><CameraIcon off className="size-7" /></span>
-              <p role="status" className="text-base font-medium">Камера выключена</p>
-              <button type="button" onClick={toggleCamera} className="rounded-xl bg-white/15 px-4 py-2 text-sm font-medium backdrop-blur-md transition hover:bg-white/25">Включить камеру</button>
-            </div>
-          ))}
-          {micCheck && (
-            <div className="absolute inset-x-0 bottom-0 z-10 rounded-b-xl bg-neutral-950/65 px-4 py-3 text-white backdrop-blur-md">
-              <p id="microphone-level-label" className="text-sm text-white/80">{muted ? "Микрофон выключен" : "Говорите — индикатор должен двигаться"}</p>
-              <div id="microphone-level" role="meter" aria-valuemin={0} aria-valuemax={100} aria-valuenow={muted ? 0 : micLevels[0]} aria-labelledby="microphone-level-label" className="mt-2 flex h-6 items-center gap-1">
-                {micLevels.map((level, index) => (
-                  <span key={index} style={{ height: `${muted ? 12 : Math.max(12, level)}%` }} className={`min-w-0 flex-1 rounded-full transition-[height] duration-100 ease-out motion-reduce:transition-none ${muted ? "bg-white/30" : "bg-brand-300"}`} />
-                ))}
-              </div>
-            </div>
           )}
-          {infoOnVideo && (
-            <div className="pointer-events-none absolute inset-x-3 top-3 z-10 w-fit rounded-2xl bg-neutral-950/55 px-4 py-3 text-white shadow-lg ring-1 ring-white/10 backdrop-blur-md sm:inset-x-4 sm:top-4 sm:px-5 sm:py-4">
-              <h1 className="text-lg font-semibold leading-snug sm:text-xl">Видеоконсультация</h1>
-              <p className="mt-2 text-base leading-snug"><span className="text-white/60">Вы:</span> <span className="font-medium">{name}</span></p>
-              <p className="mt-1 text-sm text-white/70">Приглашение действует до {expiresLabel}</p>
-              {!waitingForConsultant && (
-                <p role="status" className="mt-3 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-sm font-medium">
-                  <span className={`size-2 shrink-0 rounded-full ${state === "waiting" ? "bg-brand-400" : "bg-white/50"}`} />
-                  {statusText}
-                </p>
+          {(infoOnVideo || micCheck || (cameraOff && !(state === "accepted" && focusedVideo === "remote"))) && (
+            // Details on top, microphone check at the bottom, camera notice centred in the space between.
+            <div className="pointer-events-none absolute inset-0 z-10 flex flex-col text-white">
+              {infoOnVideo && (
+                <div className="m-3 w-fit rounded-2xl bg-neutral-950/55 px-4 py-3 shadow-lg ring-1 ring-white/10 backdrop-blur-md sm:m-4 sm:px-5 sm:py-4">
+                  <h1 className="text-lg font-semibold leading-snug sm:text-xl">Видеоконсультация</h1>
+                  <p className="mt-2 text-base leading-snug"><span className="text-white/60">Вы:</span> <span className="font-medium">{name}</span></p>
+                  <p className="mt-1 text-sm text-white/70">Приглашение действует до {expiresLabel}</p>
+                  {!waitingForConsultant && (
+                    <p role="status" className="mt-3 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-sm font-medium">
+                      <span className={`size-2 shrink-0 rounded-full ${state === "waiting" ? "bg-brand-400" : "bg-white/50"}`} />
+                      {statusText}
+                    </p>
+                  )}
+                </div>
+              )}
+              <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-3 overflow-hidden p-4 text-center">
+                {cameraOff && !(state === "accepted" && focusedVideo === "remote") && (
+                  <>
+                    <span className="flex size-14 shrink-0 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/15"><CameraIcon off className="size-7" /></span>
+                    <p role="status" className="text-base font-medium">Камера выключена</p>
+                    <button type="button" onClick={toggleCamera} className="pointer-events-auto rounded-xl bg-white/15 px-4 py-2 text-sm font-medium backdrop-blur-md transition hover:bg-white/25">Включить камеру</button>
+                  </>
+                )}
+              </div>
+              {micCheck && (
+                <div className="rounded-b-xl bg-neutral-950/65 px-4 py-3 backdrop-blur-md">
+                  <p id="microphone-level-label" className="text-sm text-white/80">{muted ? "Микрофон выключен" : "Говорите — индикатор должен двигаться"}</p>
+                  <div id="microphone-level" role="meter" aria-valuemin={0} aria-valuemax={100} aria-valuenow={muted ? 0 : micLevels[0]} aria-labelledby="microphone-level-label" className="mt-2 flex h-6 items-center gap-1">
+                    {micLevels.map((level, index) => (
+                      <span key={index} style={{ height: `${muted ? 12 : Math.max(12, level)}%` }} className={`min-w-0 flex-1 rounded-full transition-[height] duration-100 ease-out motion-reduce:transition-none ${muted ? "bg-white/30" : "bg-brand-300"}`} />
+                    ))}
+                  </div>
+                </div>
               )}
             </div>
           )}
