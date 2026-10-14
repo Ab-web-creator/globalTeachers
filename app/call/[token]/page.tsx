@@ -23,7 +23,7 @@ export default async function Page({
     : null;
   const call = result?.rows[0];
   return (
-    <main className="min-h-screen bg-white sm:bg-brand-50 sm:px-5 sm:py-12">
+    <main className="min-h-dvh bg-white sm:bg-brand-50 sm:px-5 sm:py-12">
       {call ? (
         <CallSession
           id={call.id}
