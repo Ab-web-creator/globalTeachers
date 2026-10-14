@@ -507,6 +507,7 @@ export default function CallRoom({
     return { left: `calc(${sideBars}% + 0.75rem)`, bottom: `calc(${topBars}% + 0.75rem)` };
   };
   const callActive = ["ringing", "accepted"].includes(state);
+  const expiresLabel = new Date(expires).toLocaleString("ru-RU", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
   const statusText = connected
     ? "Соединение установлено"
     : ({
@@ -532,7 +533,7 @@ export default function CallRoom({
         <>
           <p className="mt-3 text-lg">{token ? `Вы: ${name}` : name}</p>
           <p suppressHydrationWarning className="mt-2 text-sm text-neutral-500">
-            Приглашение действует до {new Date(expires).toLocaleString("ru-RU")}
+            Приглашение действует до {expiresLabel}
           </p>
           <p className="mt-4" role="status">{statusText}</p>
         </>
@@ -598,7 +599,7 @@ export default function CallRoom({
             <div className="pointer-events-none absolute inset-x-0 top-0 z-10 rounded-t-xl bg-linear-to-b from-neutral-950/70 to-transparent p-4 pb-10 text-white">
               <p className="text-lg font-medium">Вы: {name}</p>
               <p suppressHydrationWarning className="mt-1 text-sm text-white/80">
-                Приглашение действует до {new Date(expires).toLocaleString("ru-RU")}
+                Приглашение действует до {expiresLabel}
               </p>
               {!waitingForConsultant && <p className="mt-2" role="status">{statusText}</p>}
             </div>
