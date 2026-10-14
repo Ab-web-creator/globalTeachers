@@ -43,3 +43,38 @@ test('private tokens are hashed and TURN secrets are exchanged for temporary cre
     }
   }
 });
+
+test('saved invitations are admin-only and list recoverable and legacy links for the selected user', async () => {
+  const dbModule = require('../lib/consultation/database.ts');
+  const applications = require('../lib/admin/applications.ts');
+  const savedDatabase = dbModule.database;
+  const savedApplication = applications.getApplication;
+  const savedEnvironment = process.env.NODE_ENV;
+  try {
+    process.env.NODE_ENV = 'production';
+    assert.equal((await GET(new NextRequest('https://example.com/api/calls?applicationId=user'))).status, 401);
+    process.env.NODE_ENV = 'development';
+    applications.getApplication = async (id) => id === 'user' ? { email: 'user@example.com' } : null;
+    dbModule.database = () => ({ query: async (sql, params) => {
+      assert.deepEqual(params, ['user@example.com']);
+      assert.match(sql, /expires_at>now\(\)/);
+      assert.match(sql, /state<>'revoked'/);
+      assert.match(sql, /lower\(email\)=lower\(\$1\)/);
+      return { rows: [
+        { id: 'new', invitation_token: 'private-token', email: 'user@example.com', expires_at: '2026-12-01T00:00:00Z' },
+        { id: 'legacy', invitation_token: null, email: 'user@example.com', expires_at: '2026-12-01T00:00:00Z' },
+      ] };
+    } });
+    const response = await GET(new NextRequest('https://example.com/api/calls?applicationId=user'));
+    assert.equal(response.headers.get('cache-control'), 'no-store');
+    const invitations = await response.json();
+    assert.equal(invitations[0].url, '/call/private-token');
+    assert.equal(invitations[1].url, null);
+    assert.equal('invitation_token' in invitations[0], false);
+    assert.equal((await GET(new NextRequest('https://example.com/api/calls?applicationId=missing'))).status, 404);
+  } finally {
+    dbModule.database = savedDatabase;
+    applications.getApplication = savedApplication;
+    process.env.NODE_ENV = savedEnvironment;
+  }
+});

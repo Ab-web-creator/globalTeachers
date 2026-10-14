@@ -5,12 +5,12 @@ This uses native WebRTC, not Zoom. No Zoom account or additional npm dependency 
 ## Local testing
 
 1. Run `npm run db:migrate` and `npm run dev`.
-2. Open a user card in admin, click **Видеозвонок**, select an expiration period and create an invitation.
+2. Open a user card in admin, click **Пригласить на видеозвонок**, select an expiration period and create an invitation.
 3. Copy the private link into another browser window, or use **Подготовить письмо** to review and send an invitation through the existing mailbox. Creating an invitation does not send email automatically.
 4. On the private page click **Позвонить консультанту**. Keep an admin page open; its incoming-call popup has a **Принять** button that accepts the call and opens the call screen.
 5. Allow camera/microphone access in both browsers; no second acceptance is required. Test mute, camera toggle and hangup. Headphones prevent feedback during local testing.
 
-Use one tab per participant per invitation. Clients can call again using the same unexpired invitation after a 20-second cooldown. Rejected, ended or disconnected calls can be retried; revoked invitations cannot. Unanswered calls time out after about 60 seconds. Both participants must keep their call page open. Incoming admin calls display a modal and play a repeating ringtone. Browser audio restrictions can require clicking “Включить звук звонка”. Push notifications are not implemented.
+Use one tab per participant per invitation. Clients can call again using the same unexpired invitation immediately by clicking the call button. The client’s local preview stays ready after hangup; no call starts automatically. Rejected, ended or disconnected calls can be retried; revoked invitations cannot. Unanswered calls time out after about 60 seconds. Calls are hosted in the shared site layout. The yellow video control minimizes the call to a floating thumbnail while navigating within the site; clicking it again restores the call page. The red control ends the call and the green control toggles browser fullscreen. Reloading the page, closing the tab, or navigating outside the site ends the local connection. Incoming admin calls display a modal and play a repeating ringtone. Browser audio restrictions can require clicking “Включить звук звонка”. Push notifications are not implemented.
 
 ## Deployment
 
@@ -27,7 +27,9 @@ Without TURN, local or direct peer connections may work, but remote calls across
 
 ## Storage and access
 
-Private links contain 256-bit random bearer tokens; only their SHA-256 hashes are stored. Anyone holding the link can access the invitation. Pages are non-indexable and use a no-referrer policy. Expiration is checked on the server for page access and all signaling requests. Admin operations require the existing admin session in production; development follows the site's existing local admin bypass.
+Private links contain 256-bit random bearer tokens; their SHA-256 hashes are used for access checks. New invitations also retain the bearer token in PostgreSQL so authenticated administrators can copy the same link later; database access and backups must protect these private links. Anyone holding the link can access the invitation. Pages are non-indexable and use a no-referrer policy. Expiration is checked on the server for page access and all signaling requests. Admin operations require the existing admin session in production; development follows the site's existing local admin bypass.
+
+The user profile lists all unexpired, unrevoked invitations matched by email, including invitations created before link retention was added. Older invitations can be revoked, but their links cannot be recovered. Apply migration `019_persistent_call_invitations.sql` before deploying this feature.
 
 PostgreSQL stores invitation details, call states, SDP and ICE signaling. Media is not recorded or stored by the app; it travels peer-to-peer or through TURN. Signaling can contain network metadata. Expired rows can be removed using `DELETE FROM browser_calls WHERE expires_at < now() - interval '7 days';`; associated signals cascade. Schedule this cleanup on the VPS according to your retention requirements.
 

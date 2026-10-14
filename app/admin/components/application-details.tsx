@@ -14,10 +14,10 @@ const attemptStatuses: Record<ApplicationAttempt["status"], string> = {
 export default function ApplicationDetails({ application }: { application: Application }) {
   return (
     <>
-      <p className="mb-5 text-xs leading-relaxed text-neutral-500">
+      {(application.email_confirmed_at || application.expires_at || application.latest_status === "confirmed") && <p className="mb-5 text-xs leading-relaxed text-neutral-500">
         {application.email_confirmed_at ? <>Email подтверждён: <LocalTime value={application.email_confirmed_at.toISOString()} /></> : application.expires_at ? <>Срок подтверждения: <LocalTime value={application.expires_at.toISOString()} /></> : null}
         {application.latest_status === "confirmed" && <span className="mt-1 block">Письмо команде: {application.notification_sent_at ? "отправлено" : "ещё не отправлено"}</span>}
-      </p>
+      </p>}
       {application.qualification_changes.length > 0 && <aside aria-label="Изменения педагогической квалификации" className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-900">
         <p className="font-semibold">⚠ Данный юзер изменил свой ответ о педагогической квалификации</p>
         <ul className="mt-3 space-y-2 text-sm">
@@ -36,6 +36,7 @@ export default function ApplicationDetails({ application }: { application: Appli
           </li>)}
         </ul>
       </aside>}
+      <div id={`video-invitations-${application.id}`} />
       <h3 className="text-base font-semibold">История ответов</h3>
       <p className="mt-2 text-xs leading-relaxed text-neutral-500">Исходные ответы каждой попытки. Изменения относительно предыдущей попытки выделены цветом. Редактирование заявки не меняет историю.</p>
       <div className="mt-4 overflow-x-auto rounded-xl border border-brand-100">

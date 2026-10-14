@@ -24,6 +24,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Tailwind CSS
 
+- Dropdown arrows must always have right padding. Use a custom arrow inset from the right edge (normally `right-4`) and reserve text space with `pr-12`; native select arrows do not reliably respect padding.
 - In content sections, use `mt-7` (28px) between the main heading and its description. Keep spacing between subsequent paragraphs separate.
 - Use a 40px gap (`mt-10` or equivalent) before main card grids.
 - Normal content sections use `py-12 sm:py-16 lg:py-20` for vertical padding.

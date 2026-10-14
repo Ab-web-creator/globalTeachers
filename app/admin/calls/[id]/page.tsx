@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { redirect, notFound } from "next/navigation";
 import { validSession, sessionCookie } from "../../../../lib/admin/session";
 import { findCall } from "../../../../lib/calls/server";
-import CallRoom from "../../../components/calls/call-room";
+import CallSession from "../../../components/calls/call-session";
 import AdminNav from "../../components/admin-nav";
 export default async function Page({
   params,
@@ -22,7 +22,7 @@ export default async function Page({
     <>
       <AdminNav />
       <main className="bg-brand-50 px-5 py-10">
-        <CallRoom
+        <CallSession
           id={call.id}
           name={call.name}
           expires={call.expires_at.toISOString()}

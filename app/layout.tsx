@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Roboto, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import FontSizeInspector from "./components/font-size-inspector";
+import { CallSessionProvider } from "./components/calls/call-session";
 import VisitTracker from "./components/visit-tracker";
 
 const roboto = Roboto({
@@ -29,7 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${roboto.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">
-        {children}
+        <CallSessionProvider>{children}</CallSessionProvider>
         <VisitTracker />
         {process.env.NODE_ENV === "development" && <FontSizeInspector />}
       </body>

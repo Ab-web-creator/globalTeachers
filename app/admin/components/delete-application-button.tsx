@@ -35,8 +35,9 @@ export default function DeleteApplicationButton({ id, status, name, returnToList
 
   return (
     <div className="flex flex-col items-end gap-2">
-      <button type="button" onClick={remove} disabled={deleting || refreshing} aria-label={`Удалить все попытки: ${name}`} title="Удалить все попытки навсегда" className="flex size-10 items-center justify-center rounded-xl text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-700 disabled:cursor-wait disabled:opacity-50">
+      <button type="button" onClick={remove} disabled={deleting || refreshing} aria-label={`Удалить этого пользователя: ${name}`} title="Удалить этого пользователя" className="flex min-h-10 items-center justify-center gap-2 rounded-xl px-3 text-sm text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-700 disabled:cursor-wait disabled:opacity-50">
         <DeleteApplicationIcon />
+        <span>Удалить этого пользователя</span>
       </button>
       {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
     </div>

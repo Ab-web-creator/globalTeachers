@@ -7,6 +7,7 @@ import { adminTimeZoneCookie, validTimeZone } from "../../../lib/admin/timezone"
 import AdminVisitorExclusion from "./admin-visitor-exclusion";
 import styles from "./admin-nav.module.css";
 import IncomingCalls from "./incoming-calls";
+import AdminMobileMenu from "./admin-mobile-menu";
 
 type Props = { active?: "applications" | "mail" | "analytics"; unread?: number; showLogout?: boolean; showTabs?: boolean };
 
@@ -31,7 +32,7 @@ export default async function AdminNav({ active, unread = 0, showLogout = false,
           <span className="hidden border-l border-brand-200 pl-4 text-sm font-medium tracking-widest text-neutral-400 uppercase lg:block">Рабочее пространство</span>
         </Link>
         {showTabs && (
-          <nav aria-label="Разделы администратора" className="order-3 flex w-full gap-1 overflow-x-auto rounded-2xl bg-brand-50 p-1 sm:order-none sm:w-auto">
+          <nav aria-label="Разделы администратора" className="hidden gap-1 overflow-x-auto rounded-2xl bg-brand-50 p-1 sm:flex sm:w-auto">
             <Tab href="/admin" current={active === "applications"}>Заявки</Tab>
             <Tab href="/admin/analytics" current={active === "analytics"}>Посещаемость</Tab>
             <Tab href="/admin/mail" current={active === "mail"}>
@@ -40,8 +41,9 @@ export default async function AdminNav({ active, unread = 0, showLogout = false,
           </nav>
         )}
         <div className="flex items-center gap-2">
-          <Link href="/" className="hidden rounded-xl px-3 py-2 text-base font-medium text-neutral-500 hover:bg-brand-50 hover:text-brand-700 md:block">На сайт ↗</Link>
           {showLogout && <form action="/admin/logout" method="post"><button className="rounded-xl border border-brand-200 px-4 py-2 text-base font-medium hover:bg-brand-50">Выйти</button></form>}
+          <Link href="/" className="whitespace-nowrap rounded-xl px-3 py-2 text-sm font-medium text-neutral-500 hover:bg-brand-50 hover:text-brand-700 sm:text-base">На сайт ↗</Link>
+          {showTabs && <AdminMobileMenu />}
         </div>
       </div>
     </header>

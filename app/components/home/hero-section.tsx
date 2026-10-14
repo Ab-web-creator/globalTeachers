@@ -40,7 +40,7 @@ export default function HeroSection() {
           </p>
           <div className="mt-8 hidden flex-wrap items-center justify-start gap-3 sm:flex sm:gap-4">
             <Link href="/consultation" className="inline-flex items-center justify-center gap-4 rounded-2xl sm:rounded-full bg-linear-to-r from-amber-200 to-orange-300 px-6 py-2.5 sm:py-4 text-base font-semibold text-stone-900 transition hover:from-amber-300 hover:to-orange-400 hover:shadow-md">
-              Получить консультацию
+              Узнать свои шансы
             </Link>
             <a href="#programs" className="hidden rounded-2xl sm:rounded-full border border-brand-200/60 px-6 py-2.5 sm:py-4 text-base font-semibold text-white transition hover:bg-white/10 sm:inline-flex sm:font-medium">Выбрать программу</a>
           </div>

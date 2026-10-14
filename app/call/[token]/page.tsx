@@ -1,6 +1,6 @@
 import { database } from "../../../lib/consultation/database";
 import { tokenHash } from "../../../lib/calls/server";
-import CallRoom from "../../components/calls/call-room";
+import CallSession from "../../components/calls/call-session";
 export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Видеоконсультация",
@@ -25,7 +25,7 @@ export default async function Page({
   return (
     <main className="min-h-screen bg-brand-50 px-5 py-12">
       {call ? (
-        <CallRoom
+        <CallSession
           id={call.id}
           token={token}
           name={call.name}

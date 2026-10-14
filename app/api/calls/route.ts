@@ -9,6 +9,22 @@ const admin = (r: NextRequest) =>
   process.env.NODE_ENV === "development" ||
   validSession(r.cookies.get(sessionCookie)?.value);
 export async function GET(r: NextRequest) {
+  const applicationId = r.nextUrl.searchParams.get("applicationId");
+  if (applicationId !== null) {
+    if (!admin(r)) return new Response(null, { status: 401 });
+    const application = await getApplication(applicationId);
+    if (!application) return new Response(null, { status: 404 });
+    const result = await database().query(
+      "SELECT id,invitation_token,email,expires_at FROM browser_calls WHERE lower(email)=lower($1) AND expires_at>now() AND state<>'revoked' ORDER BY created_at DESC",
+      [application.email],
+    );
+    return Response.json(result.rows.map((row) => ({
+      id: row.id,
+      url: row.invitation_token ? `/call/${row.invitation_token}` : null,
+      email: row.email,
+      expiresAt: row.expires_at,
+    })), { headers: { "Cache-Control": "no-store" } });
+  }
   if (r.nextUrl.searchParams.get("incoming") === "1") {
     if (!admin(r)) return new Response(null, { status: 401 });
     const rows = await database().query(
@@ -45,7 +61,6 @@ export async function GET(r: NextRequest) {
   return Response.json(
     {
       state: call.state,
-      retryAfter: Math.max(0, Math.ceil((new Date(call.updated_at).getTime() + 20000 - Date.now()) / 1000)),
       signals: signals.rows,
       iceServers: iceServers(),
       relayConfigured: !!(process.env.CALL_TURN_URL && process.env.CALL_TURN_SECRET),
@@ -74,20 +89,22 @@ export async function POST(r: NextRequest) {
       return new Response(null, { status: 400 });
     const token = randomBytes(32).toString("hex"),
       id = randomUUID();
-    await database().query(
-      "INSERT INTO browser_calls(id,token_hash,email,name,expires_at) VALUES($1,$2,$3,$4,now()+$5*interval '1 hour')",
+    const invitation = await database().query(
+      "INSERT INTO browser_calls(id,token_hash,email,name,expires_at,invitation_token) VALUES($1,$2,$3,$4,now()+$5*interval '1 hour',$6) RETURNING expires_at",
       [
         id,
         tokenHash(token),
         application.email,
         application.answers.name,
         hours,
+        token,
       ],
     );
     return Response.json({
       id,
       url: `${trustedRequestOrigin(r)}/call/${token}`,
       email: application.email,
+      expiresAt: invitation.rows[0].expires_at,
     });
   }
   const token = r.headers.get("x-call-token") ?? undefined;
@@ -100,7 +117,7 @@ export async function POST(r: NextRequest) {
     const client = await database().connect();
     try {
       await client.query("BEGIN");
-      const result = await client.query("UPDATE browser_calls SET state='ringing',updated_at=now(),client_seen=now(),admin_seen=NULL WHERE id=$1 AND expires_at>now() AND (state='waiting' OR (state IN ('ended','declined') AND updated_at<=now()-interval '20 seconds')) RETURNING id", [call.id]);
+      const result = await client.query("UPDATE browser_calls SET state='ringing',updated_at=now(),client_seen=now(),admin_seen=NULL WHERE id=$1 AND expires_at>now() AND state IN ('waiting','ended','declined') RETURNING id", [call.id]);
       if (!result.rowCount) {
         await client.query("ROLLBACK");
         return new Response(null, { status: 409 });

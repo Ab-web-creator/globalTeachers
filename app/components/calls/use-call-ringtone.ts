@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-export default function useCallRingtone(active: boolean) {
+export default function useCallRingtone(active: boolean, variant: "incoming" | "outgoing" = "incoming") {
   const context = useRef<AudioContext | null>(null);
   const [blocked, setBlocked] = useState(false);
   const ringing = useRef(false);
@@ -28,7 +28,7 @@ export default function useCallRingtone(active: boolean) {
   }, [active]);
 
   useEffect(() => {
-    // Unlock audio during normal admin interaction, before a call arrives.
+    // Unlock audio during normal user interaction, before a call arrives.
     document.addEventListener("pointerdown", enableSound);
     document.addEventListener("keydown", enableSound);
     const timer = setInterval(() => {
@@ -41,17 +41,20 @@ export default function useCallRingtone(active: boolean) {
       }
       setBlocked(false);
       if (audio.currentTime < nextRing.current) return;
-      nextRing.current = audio.currentTime + 3;
-      for (const offset of [0, 0.55]) {
+      const outgoing = variant === "outgoing";
+      const duration = outgoing ? 1 : 0.4;
+      nextRing.current = audio.currentTime + (outgoing ? 4 : 3);
+      for (const offset of outgoing ? [0] : [0, 0.55]) {
         const start = audio.currentTime + offset;
         const volume = audio.createGain();
         volume.gain.setValueAtTime(0, start);
-        volume.gain.linearRampToValueAtTime(0.12, start + 0.02);
-        volume.gain.setValueAtTime(0.12, start + 0.35);
-        volume.gain.linearRampToValueAtTime(0, start + 0.4);
+        const level = outgoing ? 0.08 : 0.12;
+        volume.gain.linearRampToValueAtTime(level, start + 0.02);
+        volume.gain.setValueAtTime(level, start + duration - 0.05);
+        volume.gain.linearRampToValueAtTime(0, start + duration);
         volume.connect(audio.destination);
         let remaining = 2;
-        for (const frequency of [440, 480]) {
+        for (const frequency of outgoing ? [425, 450] : [440, 480]) {
           const tone = audio.createOscillator();
           tone.frequency.value = frequency;
           tone.connect(volume);
@@ -63,7 +66,7 @@ export default function useCallRingtone(active: boolean) {
             if (remaining === 0) volume.disconnect();
           };
           tone.start(start);
-          tone.stop(start + 0.42);
+          tone.stop(start + duration + 0.02);
         }
       }
     }, 250);
@@ -74,7 +77,7 @@ export default function useCallRingtone(active: boolean) {
       void context.current?.close();
       context.current = null;
     };
-  }, [enableSound]);
+  }, [enableSound, variant]);
 
   return { blocked, enableSound };
 }
