@@ -110,7 +110,7 @@ export default function VideoCallInvitation({ applicationId }: { applicationId: 
             <p className="font-medium">Приглашение на видеозвонок №{index + 1}</p>
             <p className="mt-2 text-neutral-600">Действует до {new Date(invitation.expiresAt).toLocaleString("ru-RU")}</p>
             {invitation.url ? (
-              <input aria-label="Ссылка приглашения" readOnly value={invitation.url} onFocus={(e) => e.target.select()} className="mt-3 w-full rounded-lg border border-brand-200 bg-white p-2" />
+              <input aria-label="Ссылка приглашения" readOnly value={invitation.url} onFocus={(e) => e.target.select()} className="mt-3 w-full rounded-lg border border-brand-200 bg-white p-2 text-base" />
             ) : (
               <p className="mt-2 text-neutral-600">Приглашение действует, но его ссылка не сохранена. Для новой ссылки отмените это приглашение и создайте другое.</p>
             )}
@@ -143,7 +143,7 @@ export default function VideoCallInvitation({ applicationId }: { applicationId: 
           <label className="block text-sm">
             Срок приглашения
             <span className="relative mt-2 block">
-              <select value={hours} disabled={busy} onChange={(e) => setHours(e.target.value)} className="block w-full appearance-none rounded-lg border border-brand-200 p-2 pr-12">
+              <select value={hours} disabled={busy} onChange={(e) => setHours(e.target.value)} className="block w-full appearance-none rounded-lg border border-brand-200 p-2 pr-12 text-base">
                 <option value="1">1 час</option>
                 <option value="24">24 часа</option>
                 <option value="72">3 дня</option>

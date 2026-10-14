@@ -8,7 +8,7 @@ export default function AdminLogin({ configured, failed, next }: { configured: b
         <form action="/admin/login" method="post" className="mt-6 space-y-4">
           {next && <input type="hidden" name="next" value={next} />}
           <label className="block text-lg font-medium" htmlFor="admin-password">Пароль
-            <input id="admin-password" name="password" type="password" autoComplete="current-password" required maxLength={256} className="mt-2 w-full rounded-xl border border-brand-200 px-4 py-3" />
+            <input id="admin-password" name="password" type="password" autoComplete="current-password" required maxLength={256} className="mt-2 w-full rounded-xl border border-brand-200 px-4 py-3 text-base" />
           </label>
           {failed && <p role="alert" className="text-lg text-red-700">Неверный пароль. Попробуйте ещё раз.</p>}
           <button className="w-full rounded-xl bg-brand-500 px-4 py-3 font-medium text-white hover:bg-brand-600">Войти</button>

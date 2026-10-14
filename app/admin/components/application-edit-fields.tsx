@@ -2,7 +2,7 @@ import type { Answers } from "../../consultation/components/form-fields";
 import { answerLabels } from "../../../lib/consultation/answers";
 import ApplicationSubjectChoices from "./application-subject-choices";
 
-const controlClass = "mt-2 block w-full rounded-xl border border-brand-200 bg-white px-3 py-2 text-sm font-normal focus:outline-2 focus:-outline-offset-2 focus:outline-brand-500";
+const controlClass = "mt-2 block w-full rounded-xl border border-brand-200 bg-white px-3 py-2 text-base font-normal focus:outline-2 focus:-outline-offset-2 focus:outline-brand-500";
 
 export default function ApplicationEditFields({ answers, onChange }: { answers: Answers; onChange: (name: keyof Answers, value: string) => void }) {
   return (

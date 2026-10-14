@@ -43,7 +43,7 @@ export default function ComposeForm({ to = "", subject = "", text = "", replyTo,
     setFields((previous) => ({ ...previous, [name]: event.target.value }));
   };
   const row = "flex items-center gap-3 border-b border-brand-100 px-6";
-  const input = `${styles.field} min-w-0 flex-1 bg-transparent py-3 text-sm outline-none`;
+  const input = `${styles.field} min-w-0 flex-1 bg-transparent py-3 text-base outline-none`;
   return (
     <form onSubmit={send} className="flex min-h-0 flex-1 flex-col">
       <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-brand-100 px-6 py-3">
@@ -66,7 +66,7 @@ export default function ComposeForm({ to = "", subject = "", text = "", replyTo,
         <label className={row}><span className="w-14 shrink-0 text-sm text-neutral-500">Тема</span>
           <input type="text" autoFocus required maxLength={300} value={fields.subject} onChange={update("subject")} className={input} />
         </label>
-        <textarea required aria-label="Текст письма" maxLength={50000} value={fields.text} onChange={update("text")} className={`${styles.field} min-h-80 flex-1 resize-none px-6 py-4 text-sm leading-normal outline-none`} />
+        <textarea required aria-label="Текст письма" maxLength={50000} value={fields.text} onChange={update("text")} className={`${styles.field} min-h-80 flex-1 resize-none px-6 py-4 text-base leading-normal outline-none`} />
       </fieldset>
     </form>
   );
