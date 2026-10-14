@@ -39,6 +39,14 @@ export default function CallRoom({
   const [chatOpen, setChatOpen] = useState(false);
   const [chatDraft, setChatDraft] = useState("");
   const [messages, setMessages] = useState<{ text: string; own: boolean }[]>([]);
+  // Incoming messages so far, and how many of them were on screen when the chat was last open or closed.
+  const [received, setReceived] = useState(0);
+  const [seen, setSeen] = useState(0);
+  const unread = chatOpen ? 0 : received - seen;
+  function showChat(open: boolean) {
+    setSeen(received);
+    setChatOpen(open);
+  }
   const [chatReady, setChatReady] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   // iPhone Safari has no element fullscreen, so the button is hidden there.
@@ -309,6 +317,7 @@ export default function CallRoom({
           if (typeof data.muted === "boolean") setRemoteMuted(data.muted);
           if (typeof data.message === "string" && data.message.trim() && data.message.length <= 2000) {
             setMessages((current) => [...current, { text: data.message, own: false }].slice(-200));
+            setReceived((count) => count + 1);
           }
         } catch { /* Ignore malformed device status messages. */ }
       };
@@ -563,8 +572,9 @@ export default function CallRoom({
           {fullscreenSupported && <button type="button" aria-label={fullscreen ? "Выйти из полноэкранного режима" : "Полноэкранный режим"} title={fullscreen ? "Выйти из полноэкранного режима" : "Полноэкранный режим"} onClick={() => { void (document.fullscreenElement ? document.exitFullscreen() : callFrameRef.current?.requestFullscreen())?.catch(() => setError("Полноэкранный режим недоступен в этом браузере.")); }} className="flex size-6 items-center justify-center rounded-full transition duration-200 ease-out hover:scale-110 active:scale-95 motion-reduce:transition-none motion-reduce:transform-none bg-green-500 text-white hover:bg-green-600"><CallWindowFullscreenIcon expanded={fullscreen} className="size-4" /></button>}
         </div>
 
-          {!chatOpen && <button type="button" aria-expanded={chatOpen} aria-controls="call-chat" onClick={() => setChatOpen(!chatOpen)} className="inline-flex items-center gap-2 rounded-xl bg-slate-700 px-3 py-2 text-sm text-white transition hover:bg-slate-600">
+          {!chatOpen && <button type="button" aria-expanded={chatOpen} aria-controls="call-chat" onClick={() => showChat(true)} aria-label={unread ? `Chat tab, непрочитанных сообщений: ${unread}` : undefined} className="relative inline-flex items-center gap-2 rounded-xl bg-slate-700 px-3 py-2 text-sm text-white transition hover:bg-slate-600">
             <CallChatIcon className="size-4" />Chat tab
+            {unread > 0 && <span aria-hidden="true" className="absolute -top-2 -right-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-xs font-semibold ring-2 ring-[#121826]">{unread > 99 ? "99+" : unread}</span>}
           </button>}
         </header>
       )}
@@ -656,7 +666,7 @@ export default function CallRoom({
       </div>
       {immersive && chatOpen && (
         <aside id="call-chat" aria-label="Чат звонка" className="absolute inset-y-0 right-0 z-40 flex w-full flex-col border-l border-slate-700 bg-[#121826] p-4 text-white sm:w-80">
-          <div className="flex items-center justify-between"><button type="button" aria-expanded={chatOpen} aria-controls="call-chat" onClick={() => setChatOpen(false)} className="inline-flex items-center gap-2 rounded-xl bg-slate-700 px-3 py-2 text-sm text-white transition hover:bg-slate-600"><CallChatIcon className="size-4" />Chat tab</button><button type="button" onClick={() => setChatOpen(false)} aria-label="Закрыть чат"><CallWindowCloseIcon className="size-5" /></button></div>
+          <div className="flex items-center justify-between"><button type="button" aria-expanded={chatOpen} aria-controls="call-chat" onClick={() => showChat(false)} className="inline-flex items-center gap-2 rounded-xl bg-slate-700 px-3 py-2 text-sm text-white transition hover:bg-slate-600"><CallChatIcon className="size-4" />Chat tab</button><button type="button" onClick={() => showChat(false)} aria-label="Закрыть чат"><CallWindowCloseIcon className="size-5" /></button></div>
           <div role="log" aria-live="polite" className="my-3 min-h-0 flex-1 space-y-2 overflow-y-auto">
             {messages.length === 0 && <p className="text-sm text-slate-400">Сообщения доступны во время звонка.</p>}
             {messages.map((message, index) => <p key={index} className={`break-words rounded-lg p-2 text-sm ${message.own ? "bg-brand-700" : "bg-slate-700"}`}><span className="mb-1 block text-xs text-white/70">{message.own ? "Вы" : token ? "Консультант" : "Участник"}</span>{message.text}</p>)}
