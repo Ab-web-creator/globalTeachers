@@ -596,12 +596,15 @@ export default function CallRoom({
             <button type="button" onPointerDown={startInsetDrag} onPointerMove={moveInset} onPointerUp={() => { drag.current = null; }} onPointerCancel={() => { drag.current = null; suppressInsetClick.current = true; }} onClick={(event) => { if (event.detail === 0 || !suppressInsetClick.current) setFocusedVideo("local"); suppressInsetClick.current = false; }} aria-label="Показать свою камеру крупно" className="absolute inset-0 z-30 touch-none cursor-grab rounded-xl active:cursor-grabbing focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500" />
           )}
           {infoOnVideo && (
-            <div className="pointer-events-none absolute inset-x-0 top-0 z-10 rounded-t-xl bg-linear-to-b from-neutral-950/70 to-transparent p-4 pb-10 text-white">
-              <p className="text-lg font-medium">Вы: {name}</p>
-              <p suppressHydrationWarning className="mt-1 text-sm text-white/80">
-                Приглашение действует до {expiresLabel}
-              </p>
-              {!waitingForConsultant && <p className="mt-2" role="status">{statusText}</p>}
+            <div className="pointer-events-none absolute inset-x-3 top-3 z-10 w-fit rounded-2xl bg-neutral-950/55 px-4 py-3 text-white shadow-lg ring-1 ring-white/10 backdrop-blur-md sm:inset-x-4 sm:top-4 sm:px-5 sm:py-4">
+              <p className="text-base font-semibold leading-snug sm:text-lg"><span className="font-normal text-white/60">Вы:</span> {name}</p>
+              <p className="mt-1 text-sm text-white/70">Приглашение действует до {expiresLabel}</p>
+              {!waitingForConsultant && (
+                <p role="status" className="mt-3 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-sm font-medium">
+                  <span className={`size-2 shrink-0 rounded-full ${state === "waiting" ? "bg-brand-400" : "bg-white/50"}`} />
+                  {statusText}
+                </p>
+              )}
             </div>
           )}
           {muted && mediaReady && !(state === "accepted" && focusedVideo === "remote") && (
