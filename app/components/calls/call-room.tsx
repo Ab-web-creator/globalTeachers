@@ -579,7 +579,7 @@ export default function CallRoom({
       )}
       </div>
       {immersive && (
-        <header className={`-mx-3 flex shrink-0 items-center justify-between border-b border-slate-700 bg-[#121826] px-3 pb-3 sm:-mx-4 sm:px-4 ${chatOpen ? "sm:mr-76" : ""}`}>
+        <header className={`-mx-3 flex shrink-0 items-center justify-between border-b border-slate-700 bg-[#121826] px-3 pb-3 sm:-mx-4 sm:px-4 ${chatOpen ? "sm:mr-92" : ""}`}>
         <div className="flex gap-2">
           <button type="button" aria-label="Завершить звонок" title="Завершить звонок" onClick={() => { if (callActive) void action("end"); else { cleanup(); onDismiss?.(); } }} className="flex pointer-coarse:max-lg:hidden size-6 items-center justify-center rounded-full transition duration-200 ease-out hover:scale-110 active:scale-95 motion-reduce:transition-none motion-reduce:transform-none bg-red-500 text-white hover:bg-red-600"><CallWindowCloseIcon className="size-4" /></button>
           <button type="button" aria-label={minimized ? "Вернуться к звонку" : "Свернуть звонок"} title={minimized ? "Вернуться к звонку" : "Свернуть звонок"} onClick={async () => { if (document.fullscreenElement) await document.exitFullscreen(); if (minimized) onRestore?.(); else onMinimize?.(); }} className="group flex size-6 items-center justify-center gap-2 rounded-full transition duration-200 ease-out hover:scale-110 active:scale-95 motion-reduce:transition-none motion-reduce:transform-none bg-yellow-400 text-neutral-900 hover:bg-yellow-500 pointer-coarse:max-lg:size-auto pointer-coarse:max-lg:rounded-xl pointer-coarse:max-lg:bg-slate-700 pointer-coarse:max-lg:px-3 pointer-coarse:max-lg:py-2 pointer-coarse:max-lg:text-sm pointer-coarse:max-lg:text-white pointer-coarse:max-lg:hover:scale-100 pointer-coarse:max-lg:hover:bg-slate-600"><CallWindowMinimizeIcon className="size-4 opacity-0 transition-opacity duration-200 motion-reduce:transition-none group-hover:opacity-100 group-focus-visible:opacity-100 pointer-coarse:max-lg:opacity-100" /><span className="hidden pointer-coarse:max-lg:inline">Свернуть</span></button>
@@ -593,7 +593,7 @@ export default function CallRoom({
         </header>
       )}
       {immersive && error && <p role="alert" className="absolute top-3 right-3 z-50 max-w-xs rounded-lg bg-red-950/90 p-2 text-sm text-white">{error}</p>}
-      <div className={immersive ? `relative flex min-h-0 flex-1 gap-3 ${chatOpen ? "sm:mr-80" : ""}` : "contents"}>
+      <div className={immersive ? `relative flex min-h-0 flex-1 gap-3 ${chatOpen ? "sm:mr-96" : ""}` : "contents"}>
       <div className={immersive ? "flex min-h-0 min-w-0 flex-1 items-center justify-center" : "contents"}>
       <div ref={stageRef} style={state === "accepted" && !immersive ? { aspectRatio: focusedVideo === "local" ? localRatio : remoteRatio } : undefined} className={`relative ${immersive ? "h-full w-full" : ""} fullscreen:mt-0 fullscreen:h-full fullscreen:w-full fullscreen:aspect-auto ${state === "accepted" ? `${minimized || immersive ? "" : "mt-4"} overflow-hidden rounded-2xl ${immersive ? "bg-[#121826]" : "bg-neutral-950"}` : `${infoOnVideo && !error ? "" : "mt-6"} grid w-full grid-cols-1 gap-4`} ${!token && !mediaReady && state !== "accepted" ? "hidden" : ""}`}>
         {callActive && minimized && (
@@ -687,11 +687,16 @@ export default function CallRoom({
       </div>
       </div>
       {immersive && chatOpen && (
-        <aside id="call-chat" aria-label="Чат звонка" className="absolute inset-y-0 right-0 z-40 flex w-full flex-col border-l border-slate-700 bg-[#121826] p-4 text-white sm:w-80">
+        <aside id="call-chat" aria-label="Чат звонка" className="absolute inset-y-0 right-0 z-40 flex w-full flex-col border-l border-slate-700 bg-[#121826] p-4 text-white sm:w-96">
           <div className="flex items-center justify-between"><button type="button" aria-expanded={chatOpen} aria-controls="call-chat" onClick={() => showChat(false)} className="inline-flex items-center gap-2 rounded-xl bg-slate-700 px-3 py-2 text-sm text-white transition hover:bg-slate-600"><CallChatIcon className="size-4" />Chat tab</button><button type="button" onClick={() => showChat(false)} aria-label="Закрыть чат"><CallWindowCloseIcon className="size-5" /></button></div>
-          <div ref={chatLog} onScroll={(event) => { const log = event.currentTarget; chatAtBottom.current = log.scrollHeight - log.scrollTop - log.clientHeight < 40; }} role="log" aria-live="polite" className="my-3 min-h-0 flex-1 space-y-2 overflow-y-auto">
+          <div ref={chatLog} onScroll={(event) => { const log = event.currentTarget; chatAtBottom.current = log.scrollHeight - log.scrollTop - log.clientHeight < 40; }} role="log" aria-live="polite" className="my-3 min-h-0 flex-1 space-y-3 overflow-y-auto">
             {messages.length === 0 && <p className="text-sm text-slate-400">Сообщения доступны во время звонка.</p>}
-            {messages.map((message, index) => <p key={index} className={`break-words rounded-lg p-2 text-base ${message.own ? "bg-brand-700" : "bg-slate-700"}`}><span className="mb-1 block text-sm text-white/70">{message.own ? "Вы" : token ? "Консультант" : "Участник"}</span>{message.text}</p>)}
+            {messages.map((message, index) => (
+              <div key={index} className={`flex flex-col ${message.own ? "items-end" : "items-start"}`}>
+                <p className={`max-w-4/5 rounded-3xl px-4 py-2 text-base wrap-break-word ${message.own ? "rounded-br-md bg-brand-500 text-white" : "rounded-bl-md bg-slate-100 text-slate-900"}`}>{message.text}</p>
+                <span className="mt-1 px-2 text-sm text-slate-400">{message.own ? "Вы" : token ? "Консультант" : name}</span>
+              </div>
+            ))}
           </div>
           <form onSubmit={(event) => {
             event.preventDefault();
@@ -708,7 +713,7 @@ export default function CallRoom({
           </form>
         </aside>
       )}
-      <div className={immersive ? `flex shrink-0 flex-wrap items-center gap-3 ${chatOpen ? "sm:mr-80" : ""}` : `mt-5 flex flex-wrap gap-3 ${state === "accepted" ? "" : "w-full"}`}>
+      <div className={immersive ? `flex shrink-0 flex-wrap items-center gap-3 ${chatOpen ? "sm:mr-96" : ""}` : `mt-5 flex flex-wrap gap-3 ${state === "accepted" ? "" : "w-full"}`}>
         {token && !expired && state !== "revoked" && (
           <button
             type="button"
