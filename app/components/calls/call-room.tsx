@@ -8,6 +8,8 @@ type Signal = {
   sdp?: string;
   candidate?: RTCIceCandidateInit;
 };
+const micBarCount = 32;
+
 export default function CallRoom({
   id,
   token,
@@ -99,7 +101,8 @@ export default function CallRoom({
   const [remoteAudioBlocked, setRemoteAudioBlocked] = useState(false);
   const [remoteMuted, setRemoteMuted] = useState<boolean | null>(null);
   const muteChannel = useRef<RTCDataChannel | null>(null);
-  const [micLevel, setMicLevel] = useState(0);
+  // Recent microphone levels, oldest first; new samples enter on the right and scroll left.
+  const [micLevels, setMicLevels] = useState<number[]>(() => Array(micBarCount).fill(0));
   const mediaRequest = useRef<Promise<MediaStream> | null>(null);
   const mediaGeneration = useRef(0);
   const local = useRef<HTMLVideoElement>(null),
@@ -275,7 +278,8 @@ export default function CallRoom({
     const timer = setInterval(() => {
       analyser.getByteTimeDomainData(samples);
       const energy = samples.reduce((sum, sample) => sum + ((sample - 128) / 128) ** 2, 0) / samples.length;
-      setMicLevel(Math.min(100, Math.round(Math.sqrt(energy) * 400)));
+      const level = Math.min(100, Math.round(Math.sqrt(energy) * 400));
+      setMicLevels((levels) => [...levels.slice(1), level]);
     }, 100);
     void context.resume().catch(() => {});
     return () => {
@@ -602,8 +606,12 @@ export default function CallRoom({
           </div>
           {!minimized && mediaReady && state !== "accepted" && (
             <div className="mt-3">
-              <label htmlFor="microphone-level" className="text-sm text-neutral-600">{muted ? "Микрофон выключен" : "Скажите несколько слов — индикатор должен двигаться"}</label>
-              <meter id="microphone-level" min="0" max="100" value={muted ? 0 : micLevel} className="mt-2 block h-3 w-full" />
+              <p id="microphone-level-label" className="text-sm text-neutral-600">{muted ? "Микрофон выключен" : "Скажите несколько слов — индикатор должен двигаться"}</p>
+              <div id="microphone-level" role="meter" aria-valuemin={0} aria-valuemax={100} aria-valuenow={muted ? 0 : micLevels[micLevels.length - 1]} aria-labelledby="microphone-level-label" className="mt-2 flex h-8 items-center gap-1">
+                {micLevels.map((level, index) => (
+                  <span key={index} style={{ height: `${muted ? 12 : Math.max(12, level)}%` }} className={`min-w-0 flex-1 rounded-full transition-[height] duration-100 ease-out motion-reduce:transition-none ${muted ? "bg-neutral-300" : "bg-brand-500"}`} />
+                ))}
+              </div>
             </div>
           )}
         </div>
