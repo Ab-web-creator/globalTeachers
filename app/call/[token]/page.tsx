@@ -23,7 +23,7 @@ export default async function Page({
     : null;
   const call = result?.rows[0];
   return (
-    <main className="min-h-screen bg-brand-50 px-5 py-12">
+    <main className="min-h-screen bg-white sm:bg-brand-50 sm:px-5 sm:py-12">
       {call ? (
         <CallSession
           id={call.id}
@@ -32,7 +32,7 @@ export default async function Page({
           expires={call.expires_at.toISOString()}
         />
       ) : (
-        <p className="mx-auto max-w-3xl text-xl">
+        <p className="mx-auto max-w-3xl px-4 py-12 text-xl sm:p-0">
           Срок действия приглашения истёк или ссылка недействительна.
         </p>
       )}

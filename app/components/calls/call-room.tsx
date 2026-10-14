@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState, useSyncExternalStore, type PointerEvent } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties, type PointerEvent } from "react";
 import { useRouter } from "next/navigation";
 import { CameraIcon, MicrophoneIcon, PhoneCallIcon, CallWindowCloseIcon, CallWindowMinimizeIcon, CallWindowFullscreenIcon, VideoExpandIcon, CallChatIcon, ScreenShareIcon, ChatSendIcon } from "@/app/components/svg";
 import useCallRingtone from "./use-call-ringtone";
@@ -500,11 +500,11 @@ export default function CallRoom({
     "rounded-xl bg-brand-500 px-3 py-2 text-sm text-white hover:bg-brand-600";
   return (
     <section ref={callFrameRef}
-      style={minimized || immersive ? undefined : { maxWidth: `min(${state === "accepted" ? "64rem" : "42rem"}, calc(max(12rem, 100dvh - ${token ? "24rem" : "30rem"}) * ${state === "accepted" && focusedVideo === "remote" ? remoteRatio : localRatio} + 3rem + 2px))` }}
-      className={minimized ? "fixed right-4 bottom-4 z-50 w-72 max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-slate-800 bg-[#121826] p-2 shadow-2xl" : immersive ? "fixed inset-0 z-60 flex h-dvh w-full flex-col gap-3 overflow-hidden bg-[#121826] p-3 sm:p-4" : "mx-auto w-full rounded-3xl border border-brand-100 bg-white p-6 shadow-sm"}
+      style={minimized || immersive ? undefined : { "--call-max-width": `min(${state === "accepted" ? "64rem" : "42rem"}, calc(max(12rem, 100dvh - ${token ? "24rem" : "30rem"}) * ${state === "accepted" && focusedVideo === "remote" ? remoteRatio : localRatio} + 3rem + 2px))` } as CSSProperties}
+      className={minimized ? "fixed right-4 bottom-4 z-50 w-72 max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-slate-800 bg-[#121826] p-2 shadow-2xl" : immersive ? "fixed inset-0 z-60 flex h-dvh w-full flex-col gap-3 overflow-hidden bg-[#121826] p-3 sm:p-4" : "mx-auto w-full bg-white px-4 py-6 sm:max-w-(--call-max-width) sm:rounded-3xl sm:border sm:border-brand-100 sm:p-6 sm:shadow-sm"}
     >
       <div className={minimized || immersive ? "hidden" : ""}>
-      <h1 className="text-3xl font-semibold">Видеоконсультация</h1>
+      <h1 className="text-2xl font-semibold sm:text-3xl">Видеоконсультация</h1>
       <p className="mt-3 text-lg">{name}</p>
       <p suppressHydrationWarning className="mt-2 text-sm text-neutral-500">
         Приглашение действует до {new Date(expires).toLocaleString("ru-RU")}
