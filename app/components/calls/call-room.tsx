@@ -628,7 +628,7 @@ export default function CallRoom({
           </div>
           {!minimized && mediaReady && state !== "accepted" && (
             <div className="mt-3">
-              <p id="microphone-level-label" className="text-sm text-neutral-600">{muted ? "Микрофон выключен" : "Скажите несколько слов — индикатор должен двигаться"}</p>
+              <p id="microphone-level-label" className="text-sm text-neutral-600">{muted ? "Микрофон выключен" : "Говорите — индикатор должен двигаться"}</p>
               <div id="microphone-level" role="meter" aria-valuemin={0} aria-valuemax={100} aria-valuenow={muted ? 0 : micLevels[0]} aria-labelledby="microphone-level-label" className="mt-2 flex h-8 items-center gap-1">
                 {micLevels.map((level, index) => (
                   <span key={index} style={{ height: `${muted ? 12 : Math.max(12, level)}%` }} className={`min-w-0 flex-1 rounded-full transition-[height] duration-100 ease-out motion-reduce:transition-none ${muted ? "bg-neutral-300" : "bg-brand-500"}`} />
