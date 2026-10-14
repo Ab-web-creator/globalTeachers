@@ -630,11 +630,11 @@ export default function CallRoom({
             </div>
           ))}
           {micCheck && (
-            <div className="absolute inset-x-0 bottom-0 z-10 rounded-b-xl bg-neutral-950/55 px-4 py-3 text-white backdrop-blur-md">
+            <div className="absolute inset-x-0 bottom-0 z-10 rounded-b-xl bg-neutral-950/65 px-4 py-3 text-white backdrop-blur-md">
               <p id="microphone-level-label" className="text-sm text-white/80">{muted ? "Микрофон выключен" : "Говорите — индикатор должен двигаться"}</p>
               <div id="microphone-level" role="meter" aria-valuemin={0} aria-valuemax={100} aria-valuenow={muted ? 0 : micLevels[0]} aria-labelledby="microphone-level-label" className="mt-2 flex h-6 items-center gap-1">
                 {micLevels.map((level, index) => (
-                  <span key={index} style={{ height: `${muted ? 12 : Math.max(12, level)}%` }} className={`min-w-0 flex-1 rounded-full transition-[height] duration-100 ease-out motion-reduce:transition-none ${muted ? "bg-white/30" : "bg-brand-400"}`} />
+                  <span key={index} style={{ height: `${muted ? 12 : Math.max(12, level)}%` }} className={`min-w-0 flex-1 rounded-full transition-[height] duration-100 ease-out motion-reduce:transition-none ${muted ? "bg-white/30" : "bg-brand-300"}`} />
                 ))}
               </div>
             </div>
