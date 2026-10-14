@@ -541,6 +541,8 @@ export default function CallRoom({
         revoked: "Приглашение отменено",
       } as Record<string, string>)[state];
   // Before the call the client's details sit over their own camera preview.
+  // Before the call the microphone check sits along the bottom of the own preview.
+  const micCheck = !minimized && mediaReady && state !== "accepted";
   const infoOnVideo = !!token && mediaReady && state !== "accepted" && !minimized;
   const button =
     "rounded-xl bg-brand-500 px-3 py-2 text-sm text-white hover:bg-brand-600";
@@ -621,12 +623,22 @@ export default function CallRoom({
           {mediaReady && !camera && !sharingScreen && !waitingForConsultant && (state === "accepted" && focusedVideo === "remote" ? (
             <span role="img" aria-label="Ваша камера выключена" className="pointer-events-none absolute inset-0 flex items-center justify-center text-white/70"><CameraIcon off className="size-6" /></span>
           ) : (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center text-white">
+            <div className={`absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center text-white ${micCheck ? "pb-24" : ""}`}>
               <span className="flex size-14 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/15"><CameraIcon off className="size-7" /></span>
               <p role="status" className="text-base font-medium">Камера выключена</p>
               <button type="button" onClick={toggleCamera} className="rounded-xl bg-white/15 px-4 py-2 text-sm font-medium backdrop-blur-md transition hover:bg-white/25">Включить камеру</button>
             </div>
           ))}
+          {micCheck && (
+            <div className="absolute inset-x-0 bottom-0 z-10 rounded-b-xl bg-neutral-950/55 px-4 py-3 text-white backdrop-blur-md">
+              <p id="microphone-level-label" className="text-sm text-white/80">{muted ? "Микрофон выключен" : "Говорите — индикатор должен двигаться"}</p>
+              <div id="microphone-level" role="meter" aria-valuemin={0} aria-valuemax={100} aria-valuenow={muted ? 0 : micLevels[0]} aria-labelledby="microphone-level-label" className="mt-2 flex h-6 items-center gap-1">
+                {micLevels.map((level, index) => (
+                  <span key={index} style={{ height: `${muted ? 12 : Math.max(12, level)}%` }} className={`min-w-0 flex-1 rounded-full transition-[height] duration-100 ease-out motion-reduce:transition-none ${muted ? "bg-white/30" : "bg-brand-400"}`} />
+                ))}
+              </div>
+            </div>
+          )}
           {infoOnVideo && (
             <div className="pointer-events-none absolute inset-x-3 top-3 z-10 w-fit rounded-2xl bg-neutral-950/55 px-4 py-3 text-white shadow-lg ring-1 ring-white/10 backdrop-blur-md sm:inset-x-4 sm:top-4 sm:px-5 sm:py-4">
               <h1 className="text-lg font-semibold leading-snug sm:text-xl">Видеоконсультация</h1>
@@ -640,7 +652,7 @@ export default function CallRoom({
               )}
             </div>
           )}
-          {muted && mediaReady && !(state === "accepted" && focusedVideo === "remote") && (
+          {muted && mediaReady && !micCheck && !(state === "accepted" && focusedVideo === "remote") && (
             <span role="img" aria-label="Ваш микрофон выключен" style={pictureCorner(localRatio, immersive && focusedVideo === "local")} className="pointer-events-none absolute z-10 flex size-8 items-center justify-center rounded-full bg-neutral-950/60 text-white"><MicrophoneIcon off className="size-4" /></span>
           )}
           <video ref={local} disablePictureInPicture disableRemotePlayback onResize={(event) => { const video = event.currentTarget; if (video.videoWidth && video.videoHeight) setLocalRatio(video.videoWidth / video.videoHeight); }} autoPlay playsInline muted style={immersive && focusedVideo === "local" ? undefined : { aspectRatio: localRatio }} className={`block w-full rounded-xl ${immersive && focusedVideo === "local" ? `h-full ${videoFit(localRatio)}` : "h-auto bg-neutral-900"} ${!mediaReady ? "hidden" : ""}`} />
@@ -658,16 +670,6 @@ export default function CallRoom({
             </div>
           )}
           </div>
-          {!minimized && mediaReady && state !== "accepted" && (
-            <div className="mt-3">
-              <p id="microphone-level-label" className="text-sm text-neutral-600">{muted ? "Микрофон выключен" : "Говорите — индикатор должен двигаться"}</p>
-              <div id="microphone-level" role="meter" aria-valuemin={0} aria-valuemax={100} aria-valuenow={muted ? 0 : micLevels[0]} aria-labelledby="microphone-level-label" className="mt-2 flex h-8 items-center gap-1">
-                {micLevels.map((level, index) => (
-                  <span key={index} style={{ height: `${muted ? 12 : Math.max(12, level)}%` }} className={`min-w-0 flex-1 rounded-full transition-[height] duration-100 ease-out motion-reduce:transition-none ${muted ? "bg-neutral-300" : "bg-brand-500"}`} />
-                ))}
-              </div>
-            </div>
-          )}
         </div>
       </div>
       </div>
