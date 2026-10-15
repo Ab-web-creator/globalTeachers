@@ -15,7 +15,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   const params = await searchParams;
   const developmentAccess = process.env.NODE_ENV === "development";
   const authenticated = developmentAccess || validSession((await cookies()).get(sessionCookie)?.value);
-  const filter = params.status === "draft" || params.status === "pending" || params.status === "confirmed" ? params.status : "all";
+  const filter = params.status === "not-enough-english" || params.status === "not-enough-education" || params.status === "unsupported_subjects" || params.status === "draft" || params.status === "pending" || params.status === "confirmed" ? params.status : "all";
   const search = typeof params.q === "string" ? params.q.trim().slice(0, 200) : "";
   const page = typeof params.page === "string" ? Number(params.page) : 1;
   const data = authenticated ? await listApplications(filter, search, page).catch(() => null) : null;

@@ -3,18 +3,18 @@ import type { Answers } from "../../app/consultation/components/form-fields";
 
 export type ApplicationAttempt = {
   id: string; answers: Answers; submitted_at: string; confirmed_at: string | null;
-  status: "draft" | "pending" | "confirmed" | "superseded" | "expired"; last_step: string | null;
+  status: "not-enough-english" | "not-enough-education" | "unsupported_subjects" | "draft" | "pending" | "confirmed" | "superseded" | "expired"; last_step: string | null;
 };
 export type QualificationChange = { previous_answer: string; new_answer: string; changed_at: string };
 export type Application = {
   qualification_changes: QualificationChange[];
   answer_changes: (QualificationChange & { field: "subject" | "education" | "english" })[];
-  id: string; email: string; answers: Answers; status: "draft" | "pending" | "confirmed";
+  id: string; email: string; answers: Answers; status: "not-enough-english" | "not-enough-education" | "unsupported_subjects" | "draft" | "pending" | "confirmed";
   latest_status: "pending" | "confirmed"; email_confirmed_at: Date | null;
   submitted_at: Date; confirmed_at: Date | null; expires_at: Date | null;
-  latest_is_draft: boolean; notification_sent_at: Date | null; expired: boolean; editable: boolean; attempts: ApplicationAttempt[];
+  latest_is_draft: boolean; expired: boolean; editable: boolean; attempts: ApplicationAttempt[];
 };
-export type ApplicationFilter = "all" | "draft" | "pending" | "confirmed";
+export type ApplicationFilter = "all" | "not-enough-english" | "not-enough-education" | "unsupported_subjects" | "draft" | "pending" | "confirmed";
 export const pageSize = 20;
 const records = `WITH histories AS (
   SELECT lower(email) AS email,
@@ -27,10 +27,10 @@ const records = `WITH histories AS (
   ORDER BY lower(email), submitted_at DESC, id DESC
 ), records AS (
   SELECT latest.id, histories.email, COALESCE(p.answers, c.answers, latest.answers) AS answers,
-    CASE WHEN histories.email_confirmed_at IS NOT NULL THEN 'confirmed' WHEN latest.status = 'draft' THEN 'draft' ELSE 'pending' END AS status,
+    CASE WHEN latest.status IN ('unsupported_subjects', 'not-enough-education', 'not-enough-english') THEN latest.status WHEN histories.email_confirmed_at IS NOT NULL THEN 'confirmed' WHEN latest.status = 'draft' THEN 'draft' ELSE 'pending' END AS status,
     CASE WHEN latest.status = 'confirmed' THEN 'confirmed' ELSE 'pending' END AS latest_status,
     histories.email_confirmed_at, (latest.status = 'draft') AS latest_is_draft,
-    latest.submitted_at, latest.confirmed_at, p.expires_at, c.notification_sent_at,
+    latest.submitted_at, latest.confirmed_at, p.expires_at,
     (p.id IS NOT NULL OR c.id IS NOT NULL) AS editable,
     (latest.status = 'expired' OR COALESCE(p.expires_at <= now(), false)) AS expired,
     histories.attempts,

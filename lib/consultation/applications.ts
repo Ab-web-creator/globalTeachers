@@ -12,15 +12,16 @@ export async function removeExpiredApplications() {
 export async function savePendingApplication(answers: Answers, draftInput?: unknown) {
   const token = createToken();
   const identity = draftIdentity(draftInput);
-  const client = identity ? await database().connect() : null;
+  const client = await database().connect();
   try {
+    await client.query("BEGIN");
+    await client.query("SELECT pg_advisory_xact_lock(hashtextextended($1, 0))", [answers.email.toLowerCase()]);
     let id = randomUUID();
-    if (client && identity) {
-      await client.query("BEGIN");
+    if (identity) {
       const draft = await client.query("SELECT id FROM consultation_attempts WHERE id = $1 AND draft_token_hash = $2 AND status = 'draft' FOR UPDATE", [identity.id, draftTokenHash(identity.token)]);
       if (draft.rowCount) id = draft.rows[0].id;
     }
-    const result = await (client ?? database()).query(
+    const result = await client.query(
       `INSERT INTO consultation_pending (id, email, answers, token_hash)
        VALUES ($1, $2, $3, $4)
        ON CONFLICT (email) DO UPDATE SET
@@ -30,12 +31,12 @@ export async function savePendingApplication(answers: Answers, draftInput?: unkn
        RETURNING id`,
       [id, answers.email.toLowerCase(), JSON.stringify(answers), hashToken(token)],
     );
-    if (client) await client.query("COMMIT");
+    await client.query("COMMIT");
     return result.rowCount ? token : null;
   } catch (error) {
-    if (client) await client.query("ROLLBACK");
+    await client.query("ROLLBACK");
     throw error;
-  } finally { client?.release(); }
+  } finally { client.release(); }
 }
 
 export async function confirmApplication(tokenHash: string): Promise<string | null> {

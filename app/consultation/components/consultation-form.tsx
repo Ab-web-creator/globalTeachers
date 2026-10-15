@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef, useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import FormFields, { emptyAnswers, type Answers } from "./form-fields";
-import EmailPending from "./email-pending";
+import SubmissionSuccess from "./submission-success";
 import StepIndicator from "./step-indicator";
 import FormNavigation from "./form-navigation";
 import NameFields, { type TeacherName } from "./name-fields";
@@ -10,15 +11,27 @@ import NameFields, { type TeacherName } from "./name-fields";
 import { consultationSteps } from "./consultation-steps";
 import { validateStep } from "./validate-step";
 import useDraftSave from "./use-draft-save";
+import { educationNotice } from "./education-notice";
+import { englishNotice, isBeginnerEnglish } from "./english-notice";
+import { getSubjectNotice, subjectNotices, type SubjectNoticeKind } from "./subject-notices";
 
 export default function ConsultationForm() {
+  const router = useRouter();
+  const [outcome, setOutcome] = useState<"unsupported_subjects" | "not-enough-education" | "not-enough-english" | null>(null);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>(emptyAnswers);
   const [teacherName, setTeacherName] = useState<TeacherName>({ firstName: "", lastName: "" });
   const [sent, setSent] = useState(false);
+  const [confirmationDestination, setConfirmationDestination] = useState("/");
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
   const [errorField, setErrorField] = useState("");
+  const [educationNoticeOpen, setEducationNoticeOpen] = useState(false);
+  const [englishNoticeOpen, setEnglishNoticeOpen] = useState(false);
+  const [noticeKind, setNoticeKind] = useState<SubjectNoticeKind | null>(null);
+  const noticeButton = useRef<HTMLButtonElement>(null);
+  const notice = educationNoticeOpen ? { ...educationNotice, exclusion: "", recommendStart: false } : englishNoticeOpen ? { ...englishNotice, exclusion: "", recommendStart: false } : noticeKind ? subjectNotices[noticeKind] : null;
+  const noticeOpen = educationNoticeOpen || englishNoticeOpen || noticeKind !== null;
   const submitting = useRef(false);
   const heading = useRef<HTMLHeadingElement>(null);
   const scrollArea = useRef<HTMLDivElement>(null);
@@ -26,7 +39,19 @@ export default function ConsultationForm() {
   const isEnglishStep = consultationSteps[step].fields[0] === "english";
 
   const completeAnswers = { ...answers, name: `${teacherName.firstName.trim()} ${teacherName.lastName.trim()}`.trim() };
-  const draft = useDraftSave(completeAnswers, step, sending || sent);
+  const draft = useDraftSave(completeAnswers, step, sending || sent || outcome !== null);
+
+  useEffect(() => {
+    if (!noticeOpen) return;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    noticeButton.current?.focus();
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      previousFocus?.focus({ preventScroll: true });
+    };
+  }, [noticeOpen]);
 
   function resetScroll() {
     scrollArea.current?.scrollTo({ top: 0, behavior: "instant" });
@@ -40,6 +65,42 @@ export default function ConsultationForm() {
       heading.current?.focus({ preventScroll: true });
     });
   }
+  async function finishCase(result: "unsupported_subjects" | "not-enough-education" | "not-enough-english") {
+    if (submitting.current) return;
+    submitting.current = true;
+    setSending(true);
+    setError("");
+    try {
+      await draft.finishCase(result);
+      setNoticeKind(null);
+      setEducationNoticeOpen(false);
+      setEnglishNoticeOpen(false);
+      setOutcome(result);
+      requestAnimationFrame(() => { resetScroll(); heading.current?.focus({ preventScroll: true }); });
+    } finally {
+      submitting.current = false;
+      setSending(false);
+    }
+  }
+
+  async function closeOutcome(destination: "/" | "/#programs") {
+    if (outcome !== "not-enough-education" && outcome !== "not-enough-english") { router.push(destination); return; }
+    if (submitting.current) return;
+    submitting.current = true;
+    setSending(true);
+    setError("");
+    try {
+      await draft.finishCase(outcome, true);
+      setConfirmationDestination(destination);
+      setSent(true);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Не удалось отправить письмо. Попробуйте ещё раз.");
+    } finally {
+      submitting.current = false;
+      setSending(false);
+    }
+  }
+
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const validationError = validateStep(event.currentTarget, consultationSteps[step].fields[0], answers);
@@ -48,6 +109,13 @@ export default function ConsultationForm() {
       setErrorField(validationError.field);
       requestAnimationFrame(() => errorMessage.current?.scrollIntoView({ block: "nearest" }));
       return;
+    }
+    if (consultationSteps[step].fields[0] === "subject") {
+      const kind = getSubjectNotice(answers.subject.split("; "));
+      if (kind) {
+        setNoticeKind(kind);
+        return;
+      }
     }
     if (step < consultationSteps.length - 1) return changeStep(step + 1);
     if (submitting.current) return;
@@ -71,7 +139,8 @@ export default function ConsultationForm() {
           return;
         }
       }
-      if (!response.ok) throw new Error(result.error || "Не удалось отправить письмо.");
+      if (!response.ok) throw new Error(result.error || "Не удалось сохранить заявку.");
+      setConfirmationDestination("/");
       setSent(true);
       requestAnimationFrame(resetScroll);
     } catch (cause) {
@@ -83,11 +152,30 @@ export default function ConsultationForm() {
   }
 
   return (
-    <section className="consultation-form flex h-full min-h-0 min-w-0 flex-col overflow-hidden bg-white lg:rounded-3xl lg:shadow-surround lg:shadow-brand-950/8" aria-labelledby="form-heading">
-      {sent ? <div className="min-h-0 overflow-y-auto overscroll-contain px-4 py-5 lg:p-8 xl:p-10">
-        <EmailPending email={answers.email} onEdit={() => { draft.startNew(); setSent(false); changeStep(0); }} />
-        <p className="mt-5 flex items-start gap-2 text-xs leading-relaxed text-neutral-500"><span aria-hidden="true">◇</span>Ваши данные используются только для рассмотрения заявки и связи с вами.</p>
-      </div> : <form noValidate onSubmit={submit} className="flex min-h-0 flex-1 flex-col">
+    <section className="consultation-form relative flex h-full min-h-0 min-w-0 flex-col overflow-hidden bg-white lg:rounded-3xl lg:shadow-surround lg:shadow-brand-950/8" aria-labelledby={sent ? "verification-heading" : "form-heading"}>
+      {outcome ? <div inert={sent} className="flex min-h-0 flex-1 flex-col">
+        <div ref={scrollArea} className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+          <div className="bg-white px-4 py-5 lg:px-8 lg:py-8 xl:px-10 xl:py-10">
+            <StepIndicator step={step} />
+            <h2 ref={heading} tabIndex={-1} id="form-heading" className="mt-5 text-2xl font-semibold tracking-tight outline-none sm:mt-8">{consultationSteps[step].title}</h2>
+            <p id="step-description" className={`mt-2 text-sm leading-relaxed ${outcome === "not-enough-english" ? "text-purple-900" : "text-neutral-500"}`}>{outcome === "not-enough-english" ? <>Вы указали, что ваш уровень английского — «{answers.english}».</> : consultationSteps[step].description}</p>
+          </div>
+          <div className="px-4 py-6 lg:px-8 lg:py-8 xl:px-10 xl:py-10">
+            <fieldset disabled aria-label={outcome === "unsupported_subjects" ? "Выбранные предметы" : outcome === "not-enough-english" ? "Выбранный уровень английского" : "Выбранное образование"}>
+              <FormFields step={step} answers={answers} onChange={() => {}} />
+            </fieldset>
+            {outcome === "unsupported_subjects" && <p role="status" className="mt-7 text-base leading-relaxed">Мы не предоставляем услуги сопровождения преподавателям с выбранными предметами.</p>}
+          </div>
+        </div>
+        <div className="flex shrink-0 flex-col gap-3 px-4 pt-6 pb-5 lg:px-8 lg:pb-8 xl:px-10 xl:pb-10">
+          {outcome === "not-enough-education" && <p className="mb-4 text-base leading-relaxed">Вы указали, что ваш уровень образования — среднее специальное.</p>}
+          {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
+          <div className="flex gap-3">
+            {outcome !== "unsupported_subjects" && <button type="button" disabled={sending} onClick={() => { void closeOutcome("/#programs"); }} className="min-h-12 flex-1 rounded-xl border border-brand-200 px-4 py-3 text-sm font-medium hover:bg-brand-50 disabled:opacity-50">{outcome === "not-enough-english" ? "Выбрать программу" : "Выбрать Start"}</button>}
+            <button type="button" disabled={sending} onClick={() => { void closeOutcome("/"); }} className="action-gradient min-h-12 flex-1 rounded-xl px-4 py-3 font-medium text-white disabled:opacity-50">{sending ? "Отправляем…" : "Закрыть"}</button>
+          </div>
+        </div>
+      </div> : !sent ? <form inert={noticeOpen} noValidate onSubmit={submit} className="flex min-h-0 flex-1 flex-col">
         <fieldset disabled={sending} aria-describedby={error ? "step-error" : undefined} className="flex min-h-0 min-w-0 flex-1 flex-col">
           <div ref={scrollArea} className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
             <div className="flex min-h-full flex-col">
@@ -100,11 +188,8 @@ export default function ConsultationForm() {
                 <div>
                   {consultationSteps[step].fields[0] === "name"
                     ? <NameFields value={teacherName} error={error} errorField={errorField} errorRef={errorMessage} onChange={(value) => { setError(""); setTeacherName(value); }} />
-                    : <FormFields step={step} answers={answers} onChange={(name, value) => { setError(""); setAnswers((previous) => ({ ...previous, [name]: value })); }} />}
+                    : <FormFields step={step} answers={answers} onChange={(name, value) => { setError(""); setAnswers((previous) => ({ ...previous, [name]: value })); if (name === "english" && isBeginnerEnglish(value)) setEnglishNoticeOpen(true); if (name === "education" && value === "Среднее специальное") setEducationNoticeOpen(true); }} />}
                   {error && consultationSteps[step].fields[0] !== "name" && <p ref={errorMessage} id="step-error" role="alert" className={`mt-2 text-sm text-red-700 ${["country", "email", "subject", "goals"].includes(consultationSteps[step].fields[0]) ? "px-4" : ""}`}>{error}</p>}
-                </div>
-                <div className="mt-auto">
-                  {step === consultationSteps.length - 1 && <p className="mt-4 text-xs leading-relaxed text-neutral-500">Мы отправим вам письмо со ссылкой для подтверждения email. Перейдите по ней, чтобы завершить отправку заявки.</p>}
                 </div>
               </div>
             </div>
@@ -113,7 +198,47 @@ export default function ConsultationForm() {
             <FormNavigation step={step} sending={sending} onBack={() => changeStep(step - 1)} />
           </div>
         </fieldset>
-      </form>}
+      </form> : null}
+      {sent && <SubmissionSuccess email={answers.email.trim()} onClose={() => router.push(confirmationDestination)} onNew={() => {
+        draft.startNew();
+        setAnswers(emptyAnswers);
+        setTeacherName({ firstName: "", lastName: "" });
+        setSent(false);
+        setConfirmationDestination("/");
+        setOutcome(null);
+        changeStep(0);
+      }} />}
+      {notice && <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="consultation-notice-title"
+        aria-describedby={educationNoticeOpen ? "consultation-notice-reason education-notice-recommendation" : englishNoticeOpen ? "consultation-notice-reason english-notice-recommendation" : "consultation-notice-reason consultation-notice-exclusion"}
+        onKeyDown={(event) => {
+          if (event.key === "Escape" && !sending) { event.preventDefault(); setNoticeKind(null); setEnglishNoticeOpen(false); setEducationNoticeOpen(false); }
+          if (event.key === "Tab") {
+            const buttons = Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>("button:not(:disabled)"));
+            const first = buttons[0];
+            const last = buttons[buttons.length - 1];
+            if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+            else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+          }
+        }}
+        className="fixed inset-0 z-50 flex flex-col overflow-y-auto overscroll-contain bg-white px-4 py-8 text-brand-700 lg:absolute lg:rounded-3xl lg:p-8 xl:p-10"
+      >
+        <div className={englishNoticeOpen ? "" : "my-auto"}>
+          <h3 id="consultation-notice-title" className="text-2xl font-semibold">{notice.title}</h3>
+          <p id="consultation-notice-reason" className="mt-7 text-base leading-relaxed">{notice.reason}</p>
+          {notice.exclusion && <p id="consultation-notice-exclusion" className="mt-4 text-base font-semibold leading-relaxed">{notice.exclusion}</p>}
+          {educationNoticeOpen && <p id="education-notice-recommendation" className="mt-4 text-base leading-relaxed">{educationNotice.recommendation}</p>}
+          {englishNoticeOpen && <p id="english-notice-recommendation" className="mt-4 text-base leading-relaxed">{englishNotice.recommendation}</p>}
+          {notice.recommendStart && <p className="mt-4 text-base leading-relaxed">Однако программа <strong>START</strong> поможет вам оценить свои возможности и рассмотреть альтернативные пути международной карьеры.</p>}
+          {error && <p role="alert" className="mt-4 text-sm text-red-700">{error}</p>}
+          {!englishNoticeOpen && <button ref={noticeButton} type="button" disabled={sending} onClick={() => { void finishCase(educationNoticeOpen ? "not-enough-education" : "unsupported_subjects").catch((cause) => setError(cause instanceof Error ? cause.message : "Не удалось сохранить заявку. Попробуйте ещё раз.")); }} className="mt-6 min-h-12 rounded-xl bg-brand-500 px-5 py-3 font-medium text-white hover:bg-brand-600">{sending ? "Сохраняем…" : "Продолжить"}</button>}
+        </div>
+        {englishNoticeOpen && <div className="mt-auto flex shrink-0 flex-col gap-3 pt-8">
+          <button ref={noticeButton} type="button" disabled={sending} onClick={() => { void finishCase("not-enough-english").catch((cause) => setError(cause instanceof Error ? cause.message : "Не удалось сохранить заявку. Попробуйте ещё раз.")); }} className="min-h-12 rounded-xl bg-brand-500 px-5 py-3 font-medium text-white hover:bg-brand-600 disabled:opacity-50">{sending ? "Сохраняем…" : "Продолжить"}</button>
+        </div>}
+      </div>}
     </section>
   );
 }

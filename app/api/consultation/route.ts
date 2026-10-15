@@ -1,7 +1,9 @@
 import { trustedRequestOrigin } from "../../../lib/request-origin";
 import { AnswerValidationError, parseAnswers } from "../../../lib/consultation/answers";
-import { emailConfig, sendEmail } from "../../../lib/consultation/email";
 import { removeExpiredApplications, savePendingApplication } from "../../../lib/consultation/applications";
+
+import { hashToken } from "../../../lib/consultation/token";
+import { emailConfig, sendEmail } from "../../../lib/consultation/email";
 
 export const runtime = "nodejs";
 
@@ -23,15 +25,14 @@ export async function POST(request: Request) {
     await removeExpiredApplications();
     const token = await savePendingApplication(answers, draft);
     if (!token) return Response.json({ error: "Подождите минуту перед повторной отправкой." }, { status: 429 });
-    // Only a random token goes into the link; personal data stays in the database.
     const link = `${origin}/consultation/confirm#${token}`;
     await sendEmail({
       to: answers.email,
       subject: "Подтвердите email — TeacherNavigator",
-      text: `Спасибо за обращение в наш вебсайт!\n\nЧтобы подтвердить ваш email и отправить заявку на консультацию, откройте ссылку:\n\n${link}\n\nСсылка действительна 24 часа. После подтверждения мы получим вашу заявку и свяжемся с вами, чтобы обсудить следующие шаги.\n\nЕсли вы не оставляли заявку, просто проигнорируйте это письмо.`,
-    });
+      text: `Здравствуйте!\n\nЧтобы подтвердить ваш email и отправить заявку на консультацию TeacherNavigator, откройте ссылку:\n\n${link}\n\nСсылка действительна 24 часа. После подтверждения мы получим вашу заявку и свяжемся с вами.\n\nЕсли вы не оставляли заявку, просто проигнорируйте это письмо.`,
+    }, `consultation-verification-${hashToken(token)}`);
     return Response.json({ ok: true });
   } catch {
-    return Response.json({ error: "Не удалось отправить письмо. Попробуйте позже." }, { status: 503 });
+    return Response.json({ error: "Не удалось отправить письмо для подтверждения. Попробуйте позже." }, { status: 503 });
   }
 }

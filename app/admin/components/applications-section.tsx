@@ -27,16 +27,16 @@ export default function ApplicationsSection({
             Заявки и обращения
           </h1>
           <p className="mt-7 max-w-xl text-lg leading-relaxed text-neutral-500">
-            От первого шага до подтверждённой заявки. Все обращения и история
+            От первого шага до отправленной заявки. Все обращения и история
             ответов в одном месте.
           </p>
         </div>
       </header>
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         <AdminStat
-          label="Подтверждённые"
+          label="Полученные"
           value={counts?.confirmed ?? "—"}
-          note="Email подтверждён пользователем"
+          note="Заявки отправлены через форму"
           featured
         />
         <AdminStat
@@ -57,16 +57,6 @@ export default function ApplicationsSection({
         </div>
         <ApplicationsList filter={filter} search={search} data={data} />
       </div>
-      <details className="mt-6 rounded-2xl border border-amber-200/70 bg-amber-50/60 px-5 py-4 text-sm text-amber-900">
-        <summary className="cursor-pointer font-medium">
-          Тестовый режим уведомлений
-        </summary>
-        <p className="mt-3 leading-relaxed">
-          Письма по квалификации, образованию, английскому и предметам
-          отправляются через 1 минуту. После тестирования верните задержку на 4
-          часа (миграция 012_temporary_one_minute_followups.sql).
-        </p>
-      </details>
       <p className="mt-5 text-sm text-neutral-400">
         Даты и время отображаются в часовом поясе вашего браузера.
       </p>

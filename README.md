@@ -74,12 +74,12 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-## Consultation database and email confirmation
+## Consultation database
 
-The app uses PostgreSQL and Resend. Configure `.env.local` from `.env.example`:
+Consultations use PostgreSQL. The separate admin mailbox uses Resend. Configure `.env.local` from `.env.example`:
 
 - `DATABASE_URL`: the PostgreSQL connection string (use your provider's TLS settings).
-- `RESEND_API_KEY`, `CONSULTATION_EMAIL_FROM`, `CONSULTATION_EMAIL_TO`: email settings.
+- `RESEND_API_KEY`, `CONSULTATION_EMAIL_FROM`, `CONSULTATION_EMAIL_TO`: admin mailbox settings.
 - `SITE_URL`: public HTTPS origin in production; localhost for local development.
 - `CRON_SECRET`: a random secret generated with `openssl rand -hex 32`.
 
@@ -89,34 +89,20 @@ The migration is transactional and safe to rerun. Secrets belong only in
 
 ### Record lifecycle
 
-1. Submission saves answers in `consultation_pending` **before** sending email.
-2. A random confirmation token is emailed; only its SHA-256 hash is stored.
-   Personal data no longer travels in confirmation links.
-3. Links expire after 24 hours. A new submission for the same email replaces
-   its pending record and invalidates the older link, with a database-enforced
-   60-second cooldown. Confirmed records are never overwritten by resubmission.
-4. Confirmation atomically inserts into `consultation_applications` and deletes
-   the pending row. A repeated/concurrent click returns the existing record.
-5. The thank-you page appears once the permanent record is committed. Team
-   notification is attempted separately; email failures cannot undo confirmation.
+Final submission saves a pending application and emails a confirmation link to
+the entered address. The form shows that address, a 24-hour expiry notice, and a
+small correction note above the privacy footer. Restarting clears the form so
+the visitor can enter a corrected address. The application becomes received
+when the confirmation link is opened; no internal notification is sent.
 
-Configure your hosting scheduler to GET `/api/consultation/maintenance` every
-five minutes, with `Authorization: Bearer <CRON_SECRET>`. It deletes expired
-pending rows and retries up to five queued team notifications per invocation.
-Expired pending rows are also deleted on new submissions, but **the scheduler is
-required to remove records when there is no traffic**. Expired links are rejected
-immediately even before cleanup. Confirmed applications are excluded from cleanup.
-
-Notification leases prevent concurrent sends. Resend idempotency keys protect
-retries; automatic retries stop 23 hours after the first attempt to stay within
-Resend's 24-hour deduplication window. Rows with a null `notification_sent_at`
-after that window need manual review in Resend before retrying. Keep email
-sender/recipient settings stable while retrying jobs. The record remains saved.
+Submissions have a 60-second per-address cooldown. The protected maintenance
+endpoint removes expired pending links. Education and English outcome emails
+remain separate, as described below. Configure Resend and the public `SITE_URL`
+for final verification email delivery.
 
 This stores application records separately from user login accounts. Database
 access is server-side only. Row-level security is enabled with no public policies;
-use a server-only connection with the table-owning role. Deploy the schema before the app update. Previously
-issued encrypted links are incompatible: submit again to receive a new link.
+use a server-only connection with the table-owning role. Deploy the schema before the app update. New submissions require email confirmation.
 `CONSULTATION_TOKEN_SECRET` is no longer used and can be removed from local/hosted settings.
 
 ### Verification
@@ -125,7 +111,7 @@ The consultation form has eight steps. Migration
 `002_remove_consultation_steps.sql` removes the retired experience, international
 experience, timing, destinations, and priority answers from pending and confirmed
 records. Run `npm run db:migrate` against each database when deploying this change.
-Application records, confirmation tokens, and notification metadata are preserved.
+Application records and legacy confirmation tokens are preserved.
 
 Run `npm run lint`, `npx tsc --noEmit`, and `npm test`.
 Integration tests require a dedicated empty PostgreSQL test database:
@@ -169,7 +155,7 @@ Use `npm run db:stop` to stop PostgreSQL cleanly. These commands require the
 locally installed PostgreSQL tools; they are not production deployment commands.
 The application role owns its database and has no PostgreSQL superuser rights.
 The protected maintenance endpoint still needs a scheduler for unattended expiry
-cleanup and notification retries.
+cleanup of legacy pending records.
 
 ### Repeat consultation submissions
 
@@ -178,15 +164,10 @@ deploying the history UI. Existing pending and confirmed records are backfilled.
 Answers overwritten before this migration cannot be recovered.
 
 Every accepted submission creates an original snapshot in `consultation_attempts`.
-The existing one-minute pending cooldown still rejects rapid retries without
-creating attempts. Replacing a pending submission invalidates its old link while
-retaining its answers with a superseded status. Confirmation and expiry update
-the snapshot status. Expiry cleanup removes the pending token record, but retains
-the attempt history, including unconfirmed submissions. Email grouping ignores
-letter case; admin search includes answers from every attempt. Status filters
-and counts describe whether the email has ever been confirmed. A later pending
-or expired attempt does not remove that confirmation. Individual attempt statuses
-remain visible in the history.
+A one-minute cooldown rejects rapid retries without creating attempts. Completed
+submissions appear as received in admin. Historical pending and expired attempts
+remain visible. Email grouping ignores letter case; admin search includes answers
+from every attempt. Receipt of an application does not verify email ownership.
 
 ### Incomplete consultation forms
 
@@ -204,63 +185,31 @@ late draft writes cannot overwrite submitted answers. Drafts are retained until
 admin deletion and do not expire with confirmation links. Entering an email is
 not proof that the visitor owns it.
 
-### START qualification followup
+### Unsupported subjects
 
-Apply `005_qualification_followups.sql`. Selecting «Нет» opens the qualification
-notice. When that answer is saved with a correctly formatted email, a START
-followup is temporarily due four minutes later, including for unconfirmed draft addresses.
-Correcting the qualification answer cancels unsent followups. Delivery happens
-once per email, with leased jobs, stable Resend idempotency keys, and bounded
-retries. Existing records are not emailed retroactively.
+After selecting only group A/B subjects, Next shows the subject warning.
+Continue saves a terminal `unsupported_subjects` attempt and shows the selected
+subjects with a service-unavailable message. Close returns home; no further
+form steps or emails follow. Admin lists these cases as «Неподходящие предметы»
+and offers a matching filter. Apply `022_unsupported_subject_cases.sql` before
+deploying. Subsequent draft writes cannot overwrite a terminal case.
 
-`scripts/deploy.sh` starts/restarts `teachernavigator-maintenance` under PM2 and
-saves the process list. The worker calls the protected maintenance endpoint every
-minute on `127.0.0.1:${PORT:-3000}` using `CRON_SECRET`. Delivery occurs on the
-first successful check after the four-minute deadline; server downtime or email
-provider failures delay it. Configure PM2 startup on the VPS for reboot recovery.
-For local testing, run `node scripts/consultation-maintenance.mjs` alongside the
-app only when you want to deliver real queued emails. Integration tests mock mail.
+### Secondary vocational education
 
-The temporary four-minute delay is set by `007_temporary_four_minute_followups.sql`.
-Admin displays a reminder to restore four hours. Use a new migration to restore
-both column defaults and the cancelled-job requeue delay in `queue_qualification_followup`.
+Selecting «Среднее специальное» opens the education notice. Continue saves a
+terminal `not-enough-education` case, then shows the education step with choices
+locked. «Выбрать Start» opens `/#programs`; «Закрыть» returns home. A START recommendation email is queued one minute after this outcome is saved.
+Admin has a matching education outcome label and filter. Apply
+`023_unsupported_education_cases.sql` and `024_not_enough_education_status.sql`
+before deployment. Migration 024 also renames existing education outcomes.
 
-### Subject-specific emails
+### Form step emails
 
-Apply `008_subject_followups.sql`. Subject selections containing A or B queue one
-email per address, due four minutes after the first eligible selection is saved.
-A is early education/primary/English; B contains national languages and the
-Modern Languages option; C contains the remaining subjects. Email variants cover
-A, B, AB, AC, BC, and ABC (the combined AC/BC message). C alone queues no email.
-The latest saved selection determines the variant before first delivery; changing
-to C alone cancels an unsent job. Templates retain their original emphasis in HTML
-and include plain-text alternatives. A has no START link; other variants link to
-`/programs/start`. Retries reuse the saved message and idempotency key.
+Step answers do not send emails. Migration `020_remove_step_followups.sql`
+removes the former follow-up queues, triggers, functions, and queued messages.
+Historical migrations remain so existing installations can upgrade consistently.
 
-These emails include unconfirmed drafts and are separate from the qualification
-START email. Existing records are not emailed retroactively. The same maintenance
-worker delivers them. Restore this migration's four-minute delay along with the
-qualification delay when ending the temporary test period.
-
-### Secondary vocational education followup
-
-Migration `009_education_followups.sql` queues a four-minute START recommendation
-when «Среднее специальное» is saved. The popup explains that degree requirements
-vary by school, country, and role. Emails include unconfirmed drafts, are sent
-once per address, and cancel when the education answer changes. The maintenance
-worker delivers them. Existing records are not mailed retroactively. Restore
-this temporary delay alongside the other followups after testing.
-
-### Beginner English followup
-
-Migration `010_english_followups.sql` queues the English preparation email four
-minutes after either «Не говорю по-английски» or «Базовый — могу общаться на простые
-темы» is saved. Selecting either option opens a popup recommending language
-preparation and START. English has no preselected answer. Emails include
-unconfirmed drafts, are sent once per address, and cancel when the answer changes
-to a higher level. The maintenance worker delivers them; existing records are
-not mailed retroactively. Restore this temporary delay alongside the other
-followups after testing.
+The maintenance worker continues to clean expired legacy confirmation links. `scripts/deploy.sh` runs it under PM2 using `CRON_SECRET`.
 
 ### Answer-change warnings
 
@@ -272,17 +221,16 @@ These choices save immediately in order once an email has been entered. Initial
 empty fields are not changes; deleting the user also deletes their audit records.
 Existing differences between saved attempts are recovered by the migration.
 
-### Email maintenance in development
+### Consultation maintenance in development
 
 `npm run dev` starts the maintenance worker when `CRON_SECRET` is configured.
 It uses the port reported by Next.js, including when the default port is busy,
-and checks due email queues every minute. Stopping the development server stops
+and removes expired legacy confirmation records every minute. Stopping the development server stops
 its worker. Production uses the PM2 worker configured by `scripts/deploy.sh`.
 
 ### Mailbox (info@teachernavigator.com)
 
-All site email — confirmations, followups, team notifications and admin mail — is
-sent from `CONSULTATION_EMAIL_FROM` (`TeacherNavigator <info@teachernavigator.com>`).
+Admin mailbox mail is sent from `CONSULTATION_EMAIL_FROM` (`TeacherNavigator <info@teachernavigator.com>`).
 Apply `013_mailbox.sql`, then open `/admin/mail` to read incoming mail, reply,
 and write new emails. Applicant profiles link to a prefilled compose form.
 
@@ -399,3 +347,74 @@ If you later put Cloudflare or another proxy before Nginx, configure Nginx's
 trusted real-IP ranges before using these figures. Local requests and older
 events without geodata are shown as unknown; locations cannot be backfilled
 because IP addresses were never stored.
+
+### Education outcome email
+
+Migration `025_education_outcome_email.sql` queues the supplied START email only
+when a new case becomes `not-enough-education`. Existing cases are not emailed
+retroactively. Each email address receives this message once; repeated saves do
+not reset the delay. Deleting its source case deletes its queued message.
+
+The email becomes due after one minute. The maintenance worker checks every
+minute, so delivery happens on the first successful check after that deadline
+and can take longer if the worker or provider is unavailable. Configure Resend,
+`SITE_URL`, the sender settings, and `CRON_SECRET`; keep the maintenance worker
+running. Failed sends retry after one minute using the same idempotency key,
+with automatic retries stopping 23 hours after the first attempt. English outcome emails are configured separately below; other consultation
+emails remain disabled.
+
+### English outcome email
+
+Migration `027_english_outcome_email.sql` queues the supplied START email when a
+new case becomes `not-enough-english`. It becomes due one minute later and uses
+the same maintenance worker, delivery configuration, retries and duplicate
+protection as the education outcome email. Existing cases are not retroactively
+emailed. Bold emphasis and the `/programs/start` link are included in HTML, with
+a plain-text alternative.
+
+### Follow-up after email confirmation
+
+Migration `028_confirmed_package_email.sql` queues the provided package overview
+email only when a visitor confirms a new application without choosing a package.
+It becomes due one minute after confirmation, delivered on the maintenance
+worker's next successful check. The HTML preserves emphasis and links to
+`/#programs`. Repeated confirmation does not queue another email. Delivery uses
+leases, stable idempotency keys and one-minute retries within a 23-hour window.
+Existing confirmed applications are not emailed retroactively. START, PRO and VIP selections receive their respective templates below.
+
+Migration `029_pro_package_email.sql` adds the PRO variant to the same confirmation
+queue. Choosing PRO sends the supplied program details one minute after email
+confirmation; «Оформить пакет PRO →» links to `/payment/pro`. Existing confirmations
+are not queued retroactively. Checkout and consultation booking remain placeholders.
+
+Migration `030_vip_package_email.sql` adds the VIP variant, due one minute after
+confirmation, with the supplied service details and individually agreed pricing.
+«Оформить заявку на VIP →» links to `/payment/vip`. All section headings and the
+call-to-action are emphasized in HTML; plain text is included too. Existing
+confirmations are not retroactively emailed.
+
+Migration `031_start_package_email.sql` adds the START variant, due one minute
+after confirmation. It uses the supplied seven-part program description, bold
+headings and a link to `/payment/start`, with the same delivery and retry rules.
+Existing confirmed applications are not queued retroactively.
+
+### Education outcome verification
+
+Migration `032_verify_education_outcome.sql` makes `not-enough-education` cases
+require email confirmation. Continuing from the education notice first shows the locked education screen.
+Both «Выбрать Start» and «Закрыть» send a 24-hour verification link and open the
+confirmation popup over that screen. Closing the popup opens `/#programs` when
+the visitor chose «Выбрать Start», or `/` when they chose «Закрыть». The education recommendation is queued only after confirmation, due one
+minute later. The case retains its `not-enough-education` status and records the
+confirmation time. Pending unverified education recommendation jobs are removed
+by this migration; existing cases are not emailed retroactively. English outcome verification is described below.
+
+### English outcome verification
+
+Migration `033_verify_english_outcome.sql` extends outcome verification to
+`not-enough-english`. Both buttons on the locked English screen send verification
+and show the confirmation popup. Closing it follows the selected destination:
+packages or home. English advice is queued one minute after confirmation, never
+before. The case retains its English outcome and records confirmation time.
+Pending unverified English advice jobs are removed by this migration; no
+retroactive verification emails are sent. Existing education links remain valid.

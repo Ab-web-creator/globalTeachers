@@ -42,15 +42,3 @@ export const subjectNotices = {
     recommendStart: true,
   },
 } satisfies Record<SubjectNoticeKind, { title: string; reason: string; exclusion: string; recommendStart: boolean }>;
-
-export type SubjectEmailKind = "A" | "B" | "AB" | "AC" | "BC" | "ABC";
-export function getSubjectEmailKind(selected: readonly string[]): SubjectEmailKind | null {
-  const a = selected.some((subject) => earlyEducationSubjects.has(subject));
-  const b = selected.some((subject) => languageSubjects.has(subject));
-  const c = selected.some((subject) => !earlyEducationSubjects.has(subject) && !languageSubjects.has(subject));
-  if (a && b && c) return "ABC";
-  if (a && c) return "AC";
-  if (b && c) return "BC";
-  if (a && b) return "AB";
-  return a ? "A" : b ? "B" : null;
-}

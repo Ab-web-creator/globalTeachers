@@ -1,13 +1,11 @@
 import { timingSafeEqual } from "node:crypto";
 import { removeExpiredApplications } from "../../../../lib/consultation/applications";
-import { deliverNotification } from "../../../../lib/consultation/notifications";
-import { deliverQualificationFollowup } from "../../../../lib/consultation/qualification-followups";
 
-import { deliverSubjectFollowup } from "../../../../lib/consultation/subject-followups";
+import { deliverEducationOutcomeEmail } from "../../../../lib/consultation/education-outcome-email";
 
-import { deliverEducationFollowup } from "../../../../lib/consultation/education-followups";
+import { deliverEnglishOutcomeEmail } from "../../../../lib/consultation/english-outcome-email";
 
-import { deliverEnglishFollowup } from "../../../../lib/consultation/english-followups";
+import { deliverPackageEmail } from "../../../../lib/consultation/package-email";
 
 export const runtime = "nodejs";
 
@@ -20,18 +18,13 @@ export async function GET(request: Request) {
   }
   try {
     const removed = await removeExpiredApplications();
-    // Keep each invocation bounded; a scheduler can invoke this every five minutes.
-    let processed = 0;
-    while (processed < 5 && await deliverNotification()) processed++;
-    let followups = 0;
-    while (followups < 5 && await deliverQualificationFollowup()) followups++;
-    let subjectFollowups = 0;
-    while (subjectFollowups < 5 && await deliverSubjectFollowup()) subjectFollowups++;
-    let educationFollowups = 0;
-    while (educationFollowups < 5 && await deliverEducationFollowup()) educationFollowups++;
-    let englishFollowups = 0;
-    while (englishFollowups < 5 && await deliverEnglishFollowup()) englishFollowups++;
-    return Response.json({ removed, processed, followups, subjectFollowups, educationFollowups, englishFollowups });
+    let educationEmails = 0;
+    while (educationEmails < 5 && await deliverEducationOutcomeEmail()) educationEmails++;
+    let englishEmails = 0;
+    while (englishEmails < 5 && await deliverEnglishOutcomeEmail()) englishEmails++;
+    let packageEmails = 0;
+    while (packageEmails < 5 && await deliverPackageEmail()) packageEmails++;
+    return Response.json({ removed, educationEmails, englishEmails, packageEmails });
   } catch {
     return Response.json({ error: "Maintenance failed" }, { status: 503 });
   }

@@ -2,7 +2,10 @@ import { createHash } from "node:crypto";
 import type { Answers } from "../../app/consultation/components/form-fields";
 import { answerLabels } from "./answers";
 import { consultationSteps } from "../../app/consultation/components/consultation-steps";
+import { isBeginnerEnglish } from "../../app/consultation/components/english-notice";
 import { database } from "./database";
+import { getSubjectNotice } from "../../app/consultation/components/subject-notices";
+import { subjects, MAX_SUBJECTS } from "../../app/consultation/components/subjects";
 
 export type DraftIdentity = { id: string; token: string };
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -34,13 +37,25 @@ export async function saveDraft(input: unknown) {
     answers[key] = value.trim();
   }
   if (!answers.email) throw new Error("Empty draft");
-  return database().query(`INSERT INTO consultation_attempts
+  const terminal = data.outcome === "unsupported_subjects" || data.outcome === "not-enough-education" || data.outcome === "not-enough-english";
+  if (data.outcome !== undefined && !terminal) throw new Error("Invalid draft");
+  if ((data.outcome === "not-enough-education" || data.outcome === "not-enough-english") && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(answers.email)) throw new Error("Invalid draft");
+  if (data.outcome === "not-enough-education" && (data.step !== "education" || answers.education !== "Среднее специальное")) throw new Error("Invalid draft");
+  if (data.outcome === "not-enough-english" && (data.step !== "english" || !isBeginnerEnglish(answers.english))) throw new Error("Invalid draft");
+  if (data.outcome === "unsupported_subjects") {
+    const selected = answers.subject.split("; ");
+    if (data.step !== "subject" || selected.length > MAX_SUBJECTS
+      || !selected.every((subject) => subjects.includes(subject)) || !getSubjectNotice(selected)) throw new Error("Invalid draft");
+  }
+  const result = await database().query(`INSERT INTO consultation_attempts
     (id, email, answers, submitted_at, status, draft_token_hash, draft_revision, last_step)
-    VALUES ($1, $2, $3, now(), 'draft', $4, $5, $6)
+    VALUES ($1, $2, $3, now(), $7, $4, $5, $6)
     ON CONFLICT (id) DO UPDATE SET email = EXCLUDED.email, answers = EXCLUDED.answers,
-      draft_revision = EXCLUDED.draft_revision, last_step = EXCLUDED.last_step, updated_at = now()
-    WHERE consultation_attempts.status = 'draft'
+      status = EXCLUDED.status, draft_revision = EXCLUDED.draft_revision, last_step = EXCLUDED.last_step, updated_at = now()
+    WHERE (consultation_attempts.status = 'draft' OR (consultation_attempts.status IN ('unsupported_subjects', 'not-enough-education', 'not-enough-english') AND EXCLUDED.status = consultation_attempts.status))
       AND consultation_attempts.draft_token_hash = EXCLUDED.draft_token_hash
       AND consultation_attempts.draft_revision < EXCLUDED.draft_revision
-    RETURNING id`, [identity.id, answers.email.toLowerCase(), JSON.stringify(answers), draftTokenHash(identity.token), data.revision, data.step]);
+    RETURNING id`, [identity.id, answers.email.toLowerCase(), JSON.stringify(answers), draftTokenHash(identity.token), data.revision, data.step, terminal ? data.outcome : "draft"]);
+  if (terminal && !result.rowCount) throw new Error("Invalid draft");
+  return result;
 }

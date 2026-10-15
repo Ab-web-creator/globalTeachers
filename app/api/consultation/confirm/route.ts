@@ -1,7 +1,8 @@
 import { trustedRequestOrigin } from "../../../../lib/request-origin";
 import { hashToken } from "../../../../lib/consultation/token";
 import { confirmApplication } from "../../../../lib/consultation/applications";
-import { deliverNotification } from "../../../../lib/consultation/notifications";
+
+import { confirmOutcomeEmail } from "../../../../lib/consultation/outcome-verification";
 
 export const runtime = "nodejs";
 
@@ -16,10 +17,8 @@ export async function POST(request: Request) {
     return Response.json({ error: "Ссылка недействительна или срок её действия истёк. Заполните заявку ещё раз." }, { status: 400 });
   }
   try {
-    const id = await confirmApplication(tokenHash);
+    const id = await confirmOutcomeEmail(tokenHash) ?? await confirmApplication(tokenHash);
     if (!id) return Response.json({ error: "Ссылка недействительна или срок её действия истёк. Заполните заявку ещё раз." }, { status: 400 });
-    // The permanent record is committed. Notification failures are retried by maintenance.
-    await deliverNotification(id).catch(() => console.error("Consultation notification deferred."));
     return Response.json({ ok: true });
   } catch {
     return Response.json({ error: "Не удалось сохранить заявку. Попробуйте ещё раз." }, { status: 503 });

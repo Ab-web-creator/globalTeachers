@@ -4,9 +4,12 @@ import { consultationSteps } from "../../consultation/components/consultation-st
 import { answerLabels } from "../../../lib/consultation/answers";
 
 const attemptStatuses: Record<ApplicationAttempt["status"], string> = {
+  "not-enough-english": "Недостаточный уровень английского",
+  "not-enough-education": "Недостаточное образование",
+  unsupported_subjects: "Неподходящие предметы",
   draft: "Незавершённая форма",
   pending: "Ожидает подтверждения",
-  confirmed: "Подтверждена",
+  confirmed: "Получена",
   superseded: "Заменена новой попыткой",
   expired: "Срок подтверждения истёк",
 };
@@ -15,8 +18,7 @@ export default function ApplicationDetails({ application }: { application: Appli
   return (
     <>
       {(application.email_confirmed_at || application.expires_at || application.latest_status === "confirmed") && <p className="mb-5 text-xs leading-relaxed text-neutral-500">
-        {application.email_confirmed_at ? <>Email подтверждён: <LocalTime value={application.email_confirmed_at.toISOString()} /></> : application.expires_at ? <>Срок подтверждения: <LocalTime value={application.expires_at.toISOString()} /></> : null}
-        {application.latest_status === "confirmed" && <span className="mt-1 block">Письмо команде: {application.notification_sent_at ? "отправлено" : "ещё не отправлено"}</span>}
+        {application.email_confirmed_at ? <>Заявка получена: <LocalTime value={application.email_confirmed_at.toISOString()} /></> : application.expires_at ? <>Срок подтверждения: <LocalTime value={application.expires_at.toISOString()} /></> : null}
       </p>}
       {application.qualification_changes.length > 0 && <aside aria-label="Изменения педагогической квалификации" className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-900">
         <p className="font-semibold">⚠ Данный юзер изменил свой ответ о педагогической квалификации</p>

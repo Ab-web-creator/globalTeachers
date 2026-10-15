@@ -6,7 +6,7 @@ const ts = require('typescript');
 require.extensions['.ts'] = (module, filename) => module._compile(ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
 }).outputText, filename);
-const { getSubjectNotice, getSubjectEmailKind } = require('../app/consultation/components/subject-notices.ts');
+const { getSubjectNotice } = require('../app/consultation/components/subject-notices.ts');
 const { subjects } = require('../app/consultation/components/subjects.ts');
 
 test('subject warnings distinguish groups and suppress warnings for any unrestricted selection', () => {
@@ -20,11 +20,4 @@ test('subject warnings distinguish groups and suppress warnings for any unrestri
   assert.equal(getSubjectNotice(['Начальная школа', 'Дошкольное образование']), 'early-education');
   assert.equal(getSubjectNotice(['Русский язык', 'Узбекский язык']), 'languages');
   assert.equal(getSubjectNotice(['Начальная школа', 'Русский язык', 'Физика']), null);
-});
-
-test('email classification covers every group combination', () => {
-  const a = 'Начальная школа', b = 'Русский язык', c = 'Математика';
-  for (const [selection, expected] of [[[a], 'A'], [[b], 'B'], [[a,b], 'AB'], [[a,c], 'AC'], [[b,c], 'BC'], [[a,b,c], 'ABC'], [[c], null], [[], null]]) {
-    assert.equal(getSubjectEmailKind(selection), expected);
-  }
 });

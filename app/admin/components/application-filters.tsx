@@ -6,10 +6,13 @@ import type { ApplicationFilter } from "../../../lib/admin/applications";
 import { SearchIcon } from "@/app/components/svg";
 
 const statuses = [
+  { value: "not-enough-english", label: "Недостаточный уровень английского" },
+  { value: "not-enough-education", label: "Недостаточное образование" },
+  { value: "unsupported_subjects", label: "Неподходящие предметы" },
   { value: "all", label: "Все заявки" },
   { value: "draft", label: "Незавершённые" },
   { value: "pending", label: "Неподтверждённые" },
-  { value: "confirmed", label: "Подтверждённые" },
+  { value: "confirmed", label: "Полученные" },
 ] as const;
 
 export default function ApplicationFilters({ filter, search }: { filter: ApplicationFilter; search: string }) {
@@ -25,7 +28,7 @@ export default function ApplicationFilters({ filter, search }: { filter: Applica
       const params = new URLSearchParams(window.location.search);
       setQuery(params.get("q") ?? "");
       const next = params.get("status");
-      setStatus(next === "draft" || next === "pending" || next === "confirmed" ? next : "all");
+      setStatus(next === "not-enough-english" || next === "not-enough-education" || next === "unsupported_subjects" || next === "draft" || next === "pending" || next === "confirmed" ? next : "all");
     }
     window.addEventListener("popstate", restoreFilters);
     return () => {

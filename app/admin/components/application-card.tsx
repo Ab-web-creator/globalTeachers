@@ -21,7 +21,7 @@ export default function ApplicationCard({ application }: { application: Applicat
         <div className="flex flex-wrap items-center gap-2 pr-12">
           <h2 className="min-w-0 break-words text-lg font-semibold leading-tight tracking-tight">{application.answers.name || "Без имени"}</h2>
           <span className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${confirmed ? "bg-brand-50 text-brand-600" : expired ? "bg-neutral-100 text-neutral-600" : "bg-amber-50 text-amber-800"}`}>
-            {confirmed ? "Email подтверждён" : application.status === "draft" ? "Незавершённая форма" : expired ? "Срок подтверждения истёк" : "Ожидает подтверждения"}
+            {application.status === "not-enough-english" ? "Недостаточный уровень английского" : application.status === "not-enough-education" ? "Недостаточное образование" : application.status === "unsupported_subjects" ? "Неподходящие предметы" : confirmed ? "Заявка получена" : application.status === "draft" ? "Незавершённая форма" : expired ? "Срок подтверждения истёк" : "Ожидает подтверждения"}
           </span>
         </div>
         {application.qualification_changes.length > 0 && <p className="mt-2 rounded-lg bg-amber-50 px-3 py-2 text-xs font-medium text-amber-900">⚠ Данный юзер изменил свой ответ о педагогической квалификации</p>}

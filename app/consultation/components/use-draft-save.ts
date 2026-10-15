@@ -61,6 +61,24 @@ export default function useDraftSave(answers: Answers, step: number, paused: boo
 
   return {
     waitForSave: () => Promise.all(pending.current),
+    finishCase: async (outcome: "unsupported_subjects" | "not-enough-education" | "not-enough-english", requestVerification = false) => {
+      save();
+      await Promise.all(pending.current);
+      if (!identity.current) throw new Error("Не удалось сохранить заявку. Попробуйте ещё раз.");
+      const response = await fetch("/api/consultation/draft", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ draft: identity.current, revision: ++revision.current,
+          step: outcome === "unsupported_subjects" ? "subject" : outcome === "not-enough-english" ? "english" : "education", answers: latest.current.answers, outcome, requestVerification }),
+        signal: AbortSignal.timeout(10000),
+      });
+      if (!response.ok) {
+        if (response.status === 429) throw new Error("Подождите минуту перед повторной отправкой.");
+        throw new Error(requestVerification
+          ? "Не удалось сохранить заявку или отправить письмо. Попробуйте ещё раз."
+          : "Не удалось сохранить заявку. Попробуйте ещё раз.");
+      }
+    },
     getIdentity: () => identity.current,
     startNew: () => { identity.current = null; revision.current = 0; lastSaved.current = ""; },
   };
