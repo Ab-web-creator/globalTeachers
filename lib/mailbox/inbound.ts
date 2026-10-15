@@ -20,13 +20,26 @@ export async function receiveEmail(resendId: string) {
   let message = (await database().query("SELECT * FROM mailbox_messages WHERE resend_id = $1", [resendId])).rows[0];
   if (!message) {
     const email = await receivedEmail(resendId);
+    // A form notification may already be stored directly before its email arrives.
+    const direct = /^Другой способ оплаты (START|PRO|VIP) — TeacherNavigator$/.test(email.subject ?? "")
+      ? (await database().query(
+        `SELECT mail.id FROM mailbox_messages mail
+         JOIN payment_contact_requests request ON request.id = mail.id
+         WHERE mail.subject = $1 AND mail.text_body = $2
+           AND request.email = ANY($3::text[]) AND mail.resend_id IS NULL
+         ORDER BY mail.created_at DESC LIMIT 1`,
+        [email.subject, email.text, list(email.reply_to)],
+      )).rows[0] : undefined;
     const attachments = (email.attachments ?? []).map(({ id, filename, content_type, size }) => ({ id, filename, content_type, size }));
     await database().query(
       `INSERT INTO mailbox_messages (id, direction, resend_id, message_id, from_address, to_addresses, cc_addresses, reply_to,
          subject, text_body, html_body, attachments, created_at, sent_at)
        VALUES ($1, 'inbound', $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $12)
-       ON CONFLICT (resend_id) DO NOTHING`,
-      [randomUUID(), resendId, email.message_id ?? null, String(email.from), list(email.to), list(email.cc), list(email.reply_to),
+       ${direct ? `ON CONFLICT (id) DO UPDATE SET resend_id = EXCLUDED.resend_id, message_id = EXCLUDED.message_id,
+         from_address = EXCLUDED.from_address, to_addresses = EXCLUDED.to_addresses,
+         cc_addresses = EXCLUDED.cc_addresses, html_body = EXCLUDED.html_body, attachments = EXCLUDED.attachments`
+        : "ON CONFLICT (resend_id) DO NOTHING"}`,
+      [direct?.id ?? randomUUID(), resendId, email.message_id ?? null, String(email.from), list(email.to), list(email.cc), list(email.reply_to),
         email.subject ?? "", email.text, email.html, JSON.stringify(attachments), email.created_at ?? new Date().toISOString()],
     );
     message = (await database().query("SELECT * FROM mailbox_messages WHERE resend_id = $1", [resendId])).rows[0];

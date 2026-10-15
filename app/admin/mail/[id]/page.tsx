@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { sessionCookie, validSession } from "../../../../lib/admin/session";
-import { addressOf, openMessage, unreadCount } from "../../../../lib/mailbox/messages";
+import { addressOf, messageFolder, openMessage, unreadCount } from "../../../../lib/mailbox/messages";
 import MailShell from "../components/mail-shell";
 import MessageView from "../components/message-view";
 
@@ -17,7 +17,7 @@ export default async function MailMessagePage({ params }: { params: Promise<{ id
   if (!message) notFound();
   const unread = await unreadCount().catch(() => 0);
   return (
-    <MailShell active={message.direction === "inbound" ? "inbox" : "sent"} unread={unread} mailbox={addressOf(process.env.CONSULTATION_EMAIL_FROM ?? "")} showLogout={!developmentAccess}>
+    <MailShell active={messageFolder(message)} unread={unread} mailbox={addressOf(process.env.CONSULTATION_EMAIL_FROM ?? "")} showLogout={!developmentAccess}>
       <MessageView message={message} />
     </MailShell>
   );

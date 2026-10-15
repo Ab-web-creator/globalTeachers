@@ -1,10 +1,27 @@
 import { database } from "../consultation/database";
 import { emailConfig, sendEmail } from "../consultation/email";
 
-export type MailFolder = "inbox" | "sent";
+export type MailFolder = "inbox" | "sent" | "start-clients" | "pro-clients" | "vip-clients";
+
+// Match this form's notifications against saved requests, including older emails.
+const paymentContactMessage = (tier: 'START' | 'PRO' | 'VIP') => `direction = 'inbound' AND EXISTS (
+  SELECT 1 FROM payment_contact_requests request
+  WHERE request.tier = '${tier}' AND mailbox_messages.subject = 'Другой способ оплаты ' || request.tier || ' — TeacherNavigator'
+    AND request.email = ANY(mailbox_messages.reply_to)
+)`;
+
+const paymentContactFolder = `CASE
+  WHEN ${paymentContactMessage('START')} THEN 'start-clients'
+  WHEN ${paymentContactMessage('PRO')} THEN 'pro-clients'
+  WHEN ${paymentContactMessage('VIP')} THEN 'vip-clients'
+  ELSE 'inbox' END`;
+
+export function messageFolder(message: Pick<MailMessage, "direction" | "folder">): MailFolder {
+  return message.direction === "outbound" ? "sent" : message.folder ?? "inbox";
+}
 export type MailAttachment = { id: string; filename: string; content_type: string; size?: number };
 export type MailMessage = {
-  id: string; direction: "inbound" | "outbound"; from_address: string; to_addresses: string[]; cc_addresses: string[];
+  id: string; folder?: MailFolder; direction: "inbound" | "outbound"; from_address: string; to_addresses: string[]; cc_addresses: string[];
   reply_to: string[]; subject: string; text_body: string | null; html_body: string | null; attachments: MailAttachment[];
   message_id: string | null; reply_to_message: string | null; created_at: Date; read_at: Date | null;
 };
@@ -13,12 +30,15 @@ export type MailSummary = Pick<MailMessage, "id" | "from_address" | "to_addresse
 export const mailPageSize = 30;
 
 export async function listMessages(folder: MailFolder, page: number) {
-  const direction = folder === "inbox" ? "inbound" : "outbound";
+  const condition = folder === "sent" ? "direction = 'outbound' AND sent_at IS NOT NULL"
+    : folder === "start-clients" ? paymentContactMessage("START")
+    : folder === "pro-clients" ? paymentContactMessage("PRO")
+    : folder === "vip-clients" ? paymentContactMessage("VIP")
+    : `direction = 'inbound' AND NOT (${paymentContactMessage("START")} OR ${paymentContactMessage("PRO")} OR ${paymentContactMessage("VIP")})`;
   const counts = await database().query(
-    `SELECT count(*) FILTER (WHERE direction = $1 AND ($1 = 'inbound' OR sent_at IS NOT NULL))::int AS total,
+    `SELECT count(*) FILTER (WHERE ${condition})::int AS total,
        count(*) FILTER (WHERE direction = 'inbound' AND read_at IS NULL)::int AS unread
      FROM mailbox_messages`,
-    [direction],
   );
   const { total, unread } = counts.rows[0];
   const pages = Math.max(1, Math.ceil(total / mailPageSize));
@@ -27,11 +47,22 @@ export async function listMessages(folder: MailFolder, page: number) {
     `SELECT id, from_address, to_addresses, subject, created_at, read_at,
        left(regexp_replace(COALESCE(text_body, ''), '\\s+', ' ', 'g'), 160) AS snippet,
        jsonb_array_length(attachments) > 0 AS has_attachments
-     FROM mailbox_messages WHERE direction = $1 AND ($1 = 'inbound' OR sent_at IS NOT NULL)
-     ORDER BY created_at DESC, id DESC LIMIT $2 OFFSET $3`,
-    [direction, mailPageSize, (current - 1) * mailPageSize],
+     FROM mailbox_messages WHERE ${condition}
+     ORDER BY created_at DESC, id DESC LIMIT $1 OFFSET $2`,
+    [mailPageSize, (current - 1) * mailPageSize],
   );
   return { messages: result.rows as MailSummary[], total, unread, page: current, pages };
+}
+
+export type FolderUnreadCounts = Partial<Record<MailFolder, number>>;
+
+export async function folderUnreadCounts(): Promise<FolderUnreadCounts> {
+  const result = await database().query(
+    `SELECT ${paymentContactFolder} AS folder, count(*)::int AS unread
+     FROM mailbox_messages WHERE direction = 'inbound' AND read_at IS NULL
+     GROUP BY 1`,
+  );
+  return Object.fromEntries(result.rows.map((row) => [row.folder, row.unread]));
 }
 
 export async function unreadCount() {
@@ -42,7 +73,7 @@ export async function unreadCount() {
 /** Read-only lookup for the Gmail copy links; unlike opening it in the admin, this keeps it unread. */
 export async function getMessage(id: string) {
   if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
-  const result = await database().query("SELECT * FROM mailbox_messages WHERE id = $1 AND (direction = 'inbound' OR sent_at IS NOT NULL)", [id]);
+  const result = await database().query(`SELECT *, ${paymentContactFolder} AS folder FROM mailbox_messages WHERE id = $1 AND (direction = 'inbound' OR sent_at IS NOT NULL)`, [id]);
   return (result.rows[0] as MailMessage | undefined) ?? null;
 }
 
@@ -51,7 +82,7 @@ export async function openMessage(id: string) {
   if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
   const result = await database().query(
     `UPDATE mailbox_messages SET read_at = COALESCE(read_at, now())
-     WHERE id = $1 AND (direction = 'inbound' OR sent_at IS NOT NULL) RETURNING *`,
+     WHERE id = $1 AND (direction = 'inbound' OR sent_at IS NOT NULL) RETURNING *, ${paymentContactFolder} AS folder`,
     [id],
   );
   return (result.rows[0] as MailMessage | undefined) ?? null;

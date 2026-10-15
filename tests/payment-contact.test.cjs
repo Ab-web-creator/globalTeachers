@@ -11,9 +11,15 @@ const { POST } = require('../app/api/payment/contact/route.ts');
 test('contact requests validate, save only contact fields, and avoid duplicate notifications', async () => {
   const env = { ...process.env }, pool = global.consultationPool, fetch = global.fetch;
   Object.assign(process.env, { DATABASE_URL: 'test', SITE_URL: 'https://example.com', RESEND_API_KEY: 'test', CONSULTATION_EMAIL_FROM: 'info@example.com', CONSULTATION_EMAIL_TO: 'team@example.com' });
-  let notified = false, writes = 0, sends = 0, throttled = false;
+  let notified = false, writes = 0, sends = 0, mailboxWrites = 0, throttled = false;
   const input = { id: '11111111-1111-4111-8111-111111111111', name: 'Анна', email: 'Teacher@Example.com', tier: 'START', message: 'Как оплатить?', cardNumber: 'must-not-be-stored', cvc: 'must-not-be-stored' };
   global.consultationPool = { query: async (sql, params) => {
+    if (sql.includes('INSERT INTO mailbox_messages')) {
+      mailboxWrites++;
+      assert.deepEqual(params, [input.id, ['team@example.com']]);
+      assert.match(sql, /ON CONFLICT \(id\) DO NOTHING/);
+      return { rowCount: 1 };
+    }
     if (sql.startsWith('INSERT')) {
       writes++;
       assert.deepEqual(params, [input.id, input.name, 'teacher@example.com', 'START', input.message]);
@@ -40,6 +46,7 @@ test('contact requests validate, save only contact fields, and avoid duplicate n
     assert.equal((await send(input)).status, 200);
     assert.equal((await send(input)).status, 200);
     assert.equal(sends, 1);
+    assert.equal(mailboxWrites, 2);
     throttled = true;
     assert.equal((await send(input)).status, 429);
   } finally {

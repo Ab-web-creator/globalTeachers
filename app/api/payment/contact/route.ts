@@ -2,6 +2,8 @@ import { trustedRequestOrigin } from "../../../../lib/request-origin";
 import { database } from "../../../../lib/consultation/database";
 import { emailConfig, sendEmail } from "../../../../lib/consultation/email";
 
+import { savePaymentContactMessage } from "../../../../lib/mailbox/payment-contact";
+
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
@@ -33,6 +35,7 @@ export async function POST(request: Request) {
         text: `Программа: ${tier}\nИмя: ${name}\nEmail: ${email}\n\n${message}` }, `payment-contact-${id}`);
       await database().query("UPDATE payment_contact_requests SET notified_at = now() WHERE id = $1", [id]);
     }
+    await savePaymentContactMessage(id, recipient);
     return reply({ ok: true });
   } catch { return reply({ error: "Не удалось отправить сообщение. Попробуйте ещё раз." }, 503); }
 }

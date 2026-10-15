@@ -13,7 +13,7 @@ type Props = { active?: "applications" | "mail" | "analytics"; unread?: number; 
 
 function Tab({ href, current, children }: { href: string; current: boolean; children: ReactNode }) {
   return (
-    <Link href={href} aria-current={current ? "page" : undefined} className={`${styles.tab} flex shrink-0 items-center gap-2 rounded-xl py-2.5 text-base font-medium transition ${current ? "bg-brand-500 px-5 text-white shadow-sm" : "px-3 text-neutral-500 hover:bg-brand-50 hover:text-brand-700"}`}>
+    <Link href={href} aria-current={current ? "page" : undefined} className={`${styles.tab} flex shrink-0 items-center gap-2 rounded-xl border py-2.5 text-base font-medium transition ${current ? "border-brand-500 px-5 text-brand-700" : "border-transparent px-3 text-neutral-500 hover:bg-brand-50 hover:text-brand-700"}`}>
       {children}
     </Link>
   );
@@ -36,7 +36,7 @@ export default async function AdminNav({ active, unread = 0, showLogout = false,
             <Tab href="/admin" current={active === "applications"}>Заявки</Tab>
             <Tab href="/admin/analytics" current={active === "analytics"}>Посещаемость</Tab>
             <Tab href="/admin/mail" current={active === "mail"}>
-              Почта{unread > 0 && <span className={`rounded-full px-2 py-0.5 text-base font-medium ${active === "mail" ? "bg-white/20 text-white" : "bg-brand-100 text-brand-600"}`}>{unread}</span>}
+              Почта{unread > 0 && <span className="rounded-full bg-brand-500 px-2 py-0.5 text-xs font-medium text-white">{unread}</span>}
             </Tab>
           </nav>
         )}

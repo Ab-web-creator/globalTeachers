@@ -1,9 +1,10 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ComposeMailIcon, InboxIcon, SentMailIcon } from "@/app/components/svg";
+import { folderUnreadCounts } from "../../../../lib/mailbox/messages";
 import AdminNav from "../../components/admin-nav";
 
-type Section = "inbox" | "sent" | "new";
+type Section = "inbox" | "sent" | "start-clients" | "pro-clients" | "vip-clients" | "new";
 type Props = { active: Section | null; unread: number; mailbox: string; showLogout: boolean; children: ReactNode };
 
 function FolderLink({ href, current, icon, label, count }: { href: string; current: boolean; icon: ReactNode; label: string; count?: number }) {
@@ -16,7 +17,8 @@ function FolderLink({ href, current, icon, label, count }: { href: string; curre
 }
 
 /** Mail app frame: the sidebar stays in place while the content pane scrolls on its own. */
-export default function MailShell({ active, unread, mailbox, showLogout, children }: Props) {
+export default async function MailShell({ active, unread, mailbox, showLogout, children }: Props) {
+  const folderCounts = await folderUnreadCounts().catch(() => ({} as Awaited<ReturnType<typeof folderUnreadCounts>>));
   return (
     <div className="flex min-h-dvh flex-col bg-brand-50 text-base text-brand-700 lg:h-dvh">
       <AdminNav active="mail" unread={unread} showLogout={showLogout} />
@@ -25,7 +27,10 @@ export default function MailShell({ active, unread, mailbox, showLogout, childre
           <aside className="flex flex-col gap-4">
             <Link href="/admin/mail/new" aria-current={active === "new" ? "page" : undefined} className="flex items-center justify-center gap-2 rounded-xl bg-brand-500 px-4 py-3 text-sm font-medium text-white hover:bg-brand-600"><ComposeMailIcon />Написать письмо</Link>
             <nav aria-label="Папки" className="flex flex-wrap gap-1 lg:flex-col">
-              <FolderLink href="/admin/mail" current={active === "inbox"} icon={<InboxIcon />} label="Входящие" count={unread} />
+              <FolderLink href="/admin/mail" current={active === "inbox"} icon={<InboxIcon />} label="Входящие" count={folderCounts.inbox} />
+              <FolderLink href="/admin/mail?folder=start-clients" current={active === "start-clients"} icon={<InboxIcon />} label="Клиенты START" count={folderCounts["start-clients"]} />
+              <FolderLink href="/admin/mail?folder=pro-clients" current={active === "pro-clients"} icon={<InboxIcon />} label="Клиенты PRO" count={folderCounts["pro-clients"]} />
+              <FolderLink href="/admin/mail?folder=vip-clients" current={active === "vip-clients"} icon={<InboxIcon />} label="VIP клиенты" count={folderCounts["vip-clients"]} />
               <FolderLink href="/admin/mail?folder=sent" current={active === "sent"} icon={<SentMailIcon />} label="Отправленные" />
             </nav>
             {mailbox && <p className="hidden px-4 text-sm break-all text-neutral-500 lg:block">{mailbox}</p>}
