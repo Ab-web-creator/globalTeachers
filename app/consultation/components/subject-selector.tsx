@@ -5,9 +5,9 @@ import SelectedSubjectList from "./selected-subject-list";
 import SubjectDropdown from "./subject-dropdown";
 import SubjectPicker from "./subject-picker";
 import SubjectSearchField from "./subject-search-field";
-import { MAX_SUBJECTS } from "./subjects";
+import { MAX_SUBJECTS, subjects } from "./subjects";
 
-export default function SubjectSelector({ value, onChange }: { value: string; onChange: (value: string) => void; }) {
+export default function SubjectSelector({ value, onChange, availableSubjects = subjects }: { value: string; onChange: (value: string) => void; availableSubjects?: readonly string[]; }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const trigger = useRef<HTMLButtonElement>(null);
@@ -26,6 +26,7 @@ export default function SubjectSelector({ value, onChange }: { value: string; on
   }
 
   function select(subject: string) {
+    if (!availableSubjects.includes(subject)) return;
     if (!selected.includes(subject) && selected.length >= MAX_SUBJECTS) return;
     const next = selected.includes(subject) ? selected.filter((item) => item !== subject) : [...selected, subject];
     onChange(next.join("; "));
@@ -45,7 +46,7 @@ export default function SubjectSelector({ value, onChange }: { value: string; on
           <SelectedSubjectList selected={selected} onRemove={(subject) => { select(subject); trigger.current?.focus({ preventScroll: true }); }} />
         )}
       </div>
-      {open && <SubjectDropdown anchor={anchor}><SubjectPicker query={query} selected={selected} onSelect={select} onDone={finishSelection} /></SubjectDropdown>}
+      {open && <SubjectDropdown anchor={anchor}><SubjectPicker availableSubjects={availableSubjects} query={query} selected={selected} onSelect={select} onDone={finishSelection} /></SubjectDropdown>}
     </fieldset>
   );
 }

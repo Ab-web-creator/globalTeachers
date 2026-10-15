@@ -37,9 +37,9 @@ export default function ConfirmationResult() {
       {status === "success" && (
         <>
           <h1 className="text-xl font-bold">Ваша заявка получена!</h1>
-          <p className="mt-1 text-lg">Спасибо за обращение в <strong>TeacherNavigator.</strong></p>
-          <p className="mt-7 text-lg leading-relaxed">Мы ознакомимся с вашей информацией и свяжемся с вами в ближайшее время, чтобы обсудить следующие шаги.</p>
-          <p className="mt-7 text-lg leading-relaxed">В ближайшее время мы отправим вам ещё одно письмо с подробной информацией.</p>
+          <p className="mt-1 text-lg">Спасибо за обращение в <strong>TeacherNavigator!</strong></p>
+          <p className="mt-7 text-lg leading-relaxed">Мы рассмотрим вашу анкету и свяжемся с вами, чтобы обсудить дальнейшие шаги.</p>
+          <p className="mt-7 text-lg leading-relaxed">Мы также отправим вам письмо с дополнительной информацией.</p>
           <p className="mt-7 text-lg">До скорой связи!</p>
         </>
       )}

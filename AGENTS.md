@@ -24,6 +24,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Tailwind CSS
 
+- Keep form-control focus rings inside the control’s border, including custom selectors and popup inputs. Use negative outline offsets such as `focus:-outline-offset-2` and `focus-visible:-outline-offset-2`, or `inset-ring` utilities when using rings; preserve a visible keyboard-focus indicator. Global unlayered CSS can override Tailwind utilities; ensure the effective CSS rule uses the inside offset rather than relying on a utility that the global rule overrides.
 - Form fields (`input`, `textarea`, `select`) must use `text-base` (16px) on mobile, set explicitly on the field rather than inherited; smaller text makes iPhone Safari zoom in on focus. Phones in landscape exceed the `sm` breakpoint, so do not shrink field text below `lg`.
 - Dropdown arrows must always have right padding. Use a custom arrow inset from the right edge (normally `right-4`) and reserve text space with `pr-12`; native select arrows do not reliably respect padding.
 - In content sections, use `mt-7` (28px) between the main heading and its description. Keep spacing between subsequent paragraphs separate.

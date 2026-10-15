@@ -21,3 +21,18 @@ test('subject warnings distinguish groups and suppress warnings for any unrestri
   assert.equal(getSubjectNotice(['Русский язык', 'Узбекский язык']), 'languages');
   assert.equal(getSubjectNotice(['Начальная школа', 'Русский язык', 'Физика']), null);
 });
+
+test('mixed selections have a distinct notice unless a C-group subject is present', () => {
+  const { earlyEducationSubjects, languageSubjects, subjectNotices } = require('../app/consultation/components/subject-notices.ts');
+  const unrestricted = subjects.filter((subject) => !earlyEducationSubjects.has(subject) && !languageSubjects.has(subject));
+  for (const early of earlyEducationSubjects) {
+    for (const language of languageSubjects) {
+      assert.equal(getSubjectNotice([early, language]), 'mixed');
+      assert.equal(getSubjectNotice([language, early]), 'mixed');
+      for (const subject of unrestricted) {
+        assert.equal(getSubjectNotice([early, language, subject]), null);
+      }
+    }
+  }
+  assert.equal(subjectNotices['early-education'].recommendStart, false);
+});

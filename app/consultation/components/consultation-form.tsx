@@ -227,8 +227,13 @@ export default function ConsultationForm() {
       >
         <div className={englishNoticeOpen ? "" : "my-auto"}>
           <h3 id="consultation-notice-title" className="text-2xl font-semibold">{notice.title}</h3>
-          <p id="consultation-notice-reason" className="mt-7 text-base leading-relaxed">{notice.reason}</p>
+          <div id="consultation-notice-reason" className="mt-7 space-y-7 text-base leading-relaxed">
+            {typeof notice.reason === "string" ? <p>{notice.reason}</p> : notice.reason.map((paragraph) => (
+              <p key={paragraph.text}>{paragraph.lead && <><strong>{paragraph.lead}</strong>{" "}</>}{paragraph.text}</p>
+            ))}
+          </div>
           {notice.exclusion && <p id="consultation-notice-exclusion" className="mt-4 text-base font-semibold leading-relaxed">{notice.exclusion}</p>}
+          {!educationNoticeOpen && !englishNoticeOpen && noticeKind && <p className="mt-7 text-base leading-relaxed">{subjectNotices[noticeKind].recommendation}</p>}
           {educationNoticeOpen && <p id="education-notice-recommendation" className="mt-4 text-base leading-relaxed">{educationNotice.recommendation}</p>}
           {englishNoticeOpen && <p id="english-notice-recommendation" className="mt-4 text-base leading-relaxed">{englishNotice.recommendation}</p>}
           {notice.recommendStart && <p className="mt-4 text-base leading-relaxed">Однако программа <strong>START</strong> поможет вам оценить свои возможности и рассмотреть альтернативные пути международной карьеры.</p>}

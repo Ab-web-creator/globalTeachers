@@ -3,14 +3,15 @@ import { MAX_SUBJECTS, subjects } from "./subjects";
 
 type Props = {
   query: string;
+  availableSubjects?: readonly string[];
   selected: string[];
   onSelect: (subject: string) => void;
   onDone: () => void;
 };
 
-export default function SubjectPicker({ query, selected, onSelect, onDone }: Props) {
+export default function SubjectPicker({ query, selected, onSelect, onDone, availableSubjects = subjects }: Props) {
   const normalized = query.trim().toLocaleLowerCase("ru");
-  const options = subjects.filter((subject) => subject.toLocaleLowerCase("ru").includes(normalized));
+  const options = availableSubjects.filter((subject) => subject.toLocaleLowerCase("ru").includes(normalized));
 
   return (
     <div id="subject-picker" className="flex min-h-0 flex-1 flex-col rounded-xl border border-brand-200 bg-white p-2">
