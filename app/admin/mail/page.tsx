@@ -13,7 +13,7 @@ export default async function MailPage({ searchParams }: { searchParams: Promise
   const developmentAccess = process.env.NODE_ENV === "development";
   if (!developmentAccess && !validSession((await cookies()).get(sessionCookie)?.value)) redirect("/admin");
   const params = await searchParams;
-  const folder = params.folder === "vip-clients" ? "vip-clients" : params.folder === "pro-clients" ? "pro-clients" : params.folder === "sent" ? "sent" : params.folder === "start-clients" ? "start-clients" : "inbox";
+  const folder = params.folder === "vip-clients" ? "vip-clients" : params.folder === "pro-clients" ? "pro-clients" : params.folder === "sent" ? "sent" : params.folder === "start-clients" ? "start-clients" : params.folder === "spam" ? "spam" : "inbox";
   const page = typeof params.page === "string" ? Number(params.page) : 1;
   const data = await listMessages(folder, page).catch(() => null);
   return (

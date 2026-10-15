@@ -1,7 +1,7 @@
 import { database } from "../consultation/database";
 import { emailConfig, sendEmail } from "../consultation/email";
 
-export type MailFolder = "inbox" | "sent" | "start-clients" | "pro-clients" | "vip-clients";
+export type MailFolder = "inbox" | "sent" | "start-clients" | "pro-clients" | "vip-clients" | "spam";
 
 // Match this form's notifications against saved requests, including older emails.
 const paymentContactMessage = (tier: 'START' | 'PRO' | 'VIP') => `direction = 'inbound' AND EXISTS (
@@ -11,6 +11,7 @@ const paymentContactMessage = (tier: 'START' | 'PRO' | 'VIP') => `direction = 'i
 )`;
 
 const paymentContactFolder = `CASE
+  WHEN spam THEN 'spam'
   WHEN ${paymentContactMessage('START')} THEN 'start-clients'
   WHEN ${paymentContactMessage('PRO')} THEN 'pro-clients'
   WHEN ${paymentContactMessage('VIP')} THEN 'vip-clients'
@@ -34,10 +35,11 @@ export async function listMessages(folder: MailFolder, page: number) {
     : folder === "start-clients" ? paymentContactMessage("START")
     : folder === "pro-clients" ? paymentContactMessage("PRO")
     : folder === "vip-clients" ? paymentContactMessage("VIP")
-    : `direction = 'inbound' AND NOT (${paymentContactMessage("START")} OR ${paymentContactMessage("PRO")} OR ${paymentContactMessage("VIP")})`;
+    : folder === "spam" ? "direction = 'inbound' AND spam"
+    : `direction = 'inbound' AND NOT (spam OR ${paymentContactMessage("START")} OR ${paymentContactMessage("PRO")} OR ${paymentContactMessage("VIP")})`;
   const counts = await database().query(
     `SELECT count(*) FILTER (WHERE ${condition})::int AS total,
-       count(*) FILTER (WHERE direction = 'inbound' AND read_at IS NULL)::int AS unread
+       count(*) FILTER (WHERE direction = 'inbound' AND read_at IS NULL AND NOT spam)::int AS unread
      FROM mailbox_messages`,
   );
   const { total, unread } = counts.rows[0];
@@ -66,7 +68,7 @@ export async function folderUnreadCounts(): Promise<FolderUnreadCounts> {
 }
 
 export async function unreadCount() {
-  const result = await database().query("SELECT count(*)::int AS unread FROM mailbox_messages WHERE direction = 'inbound' AND read_at IS NULL");
+  const result = await database().query("SELECT count(*)::int AS unread FROM mailbox_messages WHERE direction = 'inbound' AND read_at IS NULL AND NOT spam");
   return result.rows[0].unread as number;
 }
 

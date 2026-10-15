@@ -23,10 +23,10 @@ export default function MessageView({ message, readOnly = false }: { message: Ma
     ...(message.cc_addresses.length ? [["Копия", message.cc_addresses.join(", ")]] : []),
     ...(message.reply_to.length ? [["Ответить", message.reply_to.join(", ")]] : []),
   ];
-  const folder = inbound ? (message.folder === "vip-clients" ? "/admin/mail?folder=vip-clients" : message.folder === "pro-clients" ? "/admin/mail?folder=pro-clients" : message.folder === "start-clients" ? "/admin/mail?folder=start-clients" : "/admin/mail") : "/admin/mail?folder=sent";
+  const folder = inbound ? (message.folder === "vip-clients" ? "/admin/mail?folder=vip-clients" : message.folder === "pro-clients" ? "/admin/mail?folder=pro-clients" : message.folder === "start-clients" ? "/admin/mail?folder=start-clients" : message.folder === "spam" ? "/admin/mail?folder=spam" : "/admin/mail") : "/admin/mail?folder=sent";
   const heading = readOnly
     ? <p className="text-sm text-neutral-500">Просмотр по ссылке из копии письма</p>
-    : <Link href={folder} className="text-sm text-brand-600">← {inbound ? (message.folder === "vip-clients" ? "VIP клиенты" : message.folder === "pro-clients" ? "Клиенты PRO" : message.folder === "start-clients" ? "Клиенты START" : "Входящие") : "Отправленные"}</Link>;
+    : <Link href={folder} className="text-sm text-brand-600">← {inbound ? (message.folder === "vip-clients" ? "VIP клиенты" : message.folder === "pro-clients" ? "Клиенты PRO" : message.folder === "start-clients" ? "Клиенты START" : message.folder === "spam" ? "Спам" : "Входящие") : "Отправленные"}</Link>;
   const actions = readOnly ? (
     <Link href={`/admin/mail/${message.id}`} className="rounded-xl bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600">Ответить в админке</Link>
   ) : (

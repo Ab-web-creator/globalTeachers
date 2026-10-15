@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { database } from "../consultation/database";
 import { emailConfig, sendEmail } from "../consultation/email";
 import { receivedAttachments, receivedEmail } from "./resend";
+import { isSpam } from "./spam";
 import { mailViewUrl } from "./view-link";
 
 const escape = (value: string) => value.replace(/[&<>"']/g, (character) => `&#${character.charCodeAt(0)};`);
@@ -33,18 +34,20 @@ export async function receiveEmail(resendId: string) {
     const attachments = (email.attachments ?? []).map(({ id, filename, content_type, size }) => ({ id, filename, content_type, size }));
     await database().query(
       `INSERT INTO mailbox_messages (id, direction, resend_id, message_id, from_address, to_addresses, cc_addresses, reply_to,
-         subject, text_body, html_body, attachments, created_at, sent_at)
-       VALUES ($1, 'inbound', $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $12)
+         subject, text_body, html_body, attachments, spam, created_at, sent_at)
+       VALUES ($1, 'inbound', $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $13)
        ${direct ? `ON CONFLICT (id) DO UPDATE SET resend_id = EXCLUDED.resend_id, message_id = EXCLUDED.message_id,
          from_address = EXCLUDED.from_address, to_addresses = EXCLUDED.to_addresses,
          cc_addresses = EXCLUDED.cc_addresses, html_body = EXCLUDED.html_body, attachments = EXCLUDED.attachments`
         : "ON CONFLICT (resend_id) DO NOTHING"}`,
       [direct?.id ?? randomUUID(), resendId, email.message_id ?? null, String(email.from), list(email.to), list(email.cc), list(email.reply_to),
-        email.subject ?? "", email.text, email.html, JSON.stringify(attachments), email.created_at ?? new Date().toISOString()],
+        email.subject ?? "", email.text, email.html, JSON.stringify(attachments),
+        !direct && isSpam({ ...email, to: list(email.to), cc: list(email.cc), attachments }, emailConfig().address), email.created_at ?? new Date().toISOString()],
     );
     message = (await database().query("SELECT * FROM mailbox_messages WHERE resend_id = $1", [resendId])).rows[0];
   }
   if (message.forwarded_at) return;
+  if (message.spam) return;
   const recipients = forwardRecipients(emailConfig().address);
   if (!recipients.length) return;
   await forward(message, recipients);
@@ -53,7 +56,7 @@ export async function receiveEmail(resendId: string) {
 
 type StoredMessage = {
   id: string; resend_id: string; from_address: string; to_addresses: string[]; reply_to: string[];
-  subject: string; text_body: string | null; html_body: string | null; created_at: Date; attachments: unknown[];
+  subject: string; text_body: string | null; html_body: string | null; created_at: Date; attachments: unknown[]; spam: boolean;
 };
 
 const previewLength = 300;

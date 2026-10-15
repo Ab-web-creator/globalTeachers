@@ -1,10 +1,10 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { ComposeMailIcon, InboxIcon, SentMailIcon } from "@/app/components/svg";
+import { ComposeMailIcon, InboxIcon, SentMailIcon, SpamMailIcon } from "@/app/components/svg";
 import { folderUnreadCounts } from "../../../../lib/mailbox/messages";
 import AdminNav from "../../components/admin-nav";
 
-type Section = "inbox" | "sent" | "start-clients" | "pro-clients" | "vip-clients" | "new";
+type Section = "inbox" | "sent" | "start-clients" | "pro-clients" | "vip-clients" | "spam" | "new";
 type Props = { active: Section | null; unread: number; mailbox: string; showLogout: boolean; children: ReactNode };
 
 function FolderLink({ href, current, icon, label, count }: { href: string; current: boolean; icon: ReactNode; label: string; count?: number }) {
@@ -32,6 +32,7 @@ export default async function MailShell({ active, unread, mailbox, showLogout, c
               <FolderLink href="/admin/mail?folder=pro-clients" current={active === "pro-clients"} icon={<InboxIcon />} label="Клиенты PRO" count={folderCounts["pro-clients"]} />
               <FolderLink href="/admin/mail?folder=vip-clients" current={active === "vip-clients"} icon={<InboxIcon />} label="VIP клиенты" count={folderCounts["vip-clients"]} />
               <FolderLink href="/admin/mail?folder=sent" current={active === "sent"} icon={<SentMailIcon />} label="Отправленные" />
+              <FolderLink href="/admin/mail?folder=spam" current={active === "spam"} icon={<SpamMailIcon />} label="Спам" />
             </nav>
             {mailbox && <p className="hidden px-4 text-sm break-all text-neutral-500 lg:block">{mailbox}</p>}
           </aside>

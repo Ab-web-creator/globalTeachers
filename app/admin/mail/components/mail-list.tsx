@@ -14,7 +14,7 @@ export default function MailList({ folder, data }: Props) {
   return (
     <>
       <header className="flex shrink-0 items-center justify-between gap-4 border-b border-brand-100 px-6 py-4">
-        <h1 className="text-xl font-semibold">{folder === "vip-clients" ? "VIP клиенты" : folder === "pro-clients" ? "Клиенты PRO" : folder === "start-clients" ? "Клиенты START" : folder === "inbox" ? "Входящие" : "Отправленные"}</h1>
+        <h1 className="text-xl font-semibold">{folder === "vip-clients" ? "VIP клиенты" : folder === "pro-clients" ? "Клиенты PRO" : folder === "start-clients" ? "Клиенты START" : folder === "inbox" ? "Входящие" : folder === "spam" ? "Спам" : "Отправленные"}</h1>
         {!!data?.total && <p className="text-sm text-neutral-500">{(data.page - 1) * mailPageSize + 1}–{Math.min(data.page * mailPageSize, data.total)} из {data.total} · местное время</p>}
       </header>
       {!data ? (
@@ -43,7 +43,7 @@ export default function MailList({ folder, data }: Props) {
                 </li>
               );
             })}
-            {!data.total && <li className="p-10 text-center text-neutral-500">{(folder === "start-clients" || folder === "pro-clients" || folder === "vip-clients") ? "Заявок на оплату пока нет." : folder === "inbox" ? "Входящих писем пока нет." : "Отправленных писем пока нет."}</li>}
+            {!data.total && <li className="p-10 text-center text-neutral-500">{(folder === "start-clients" || folder === "pro-clients" || folder === "vip-clients") ? "Заявок на оплату пока нет." : folder === "inbox" ? "Входящих писем пока нет." : folder === "spam" ? "Спама нет." : "Отправленных писем пока нет."}</li>}
           </ul>
           {data.pages > 1 && (
             <nav aria-label="Страницы писем" className="flex shrink-0 items-center justify-between gap-4 border-t border-brand-100 px-6 py-3 text-sm">
