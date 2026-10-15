@@ -1,5 +1,6 @@
 "use client";
 
+import { ResearchIdeaIcon } from "@/app/components/svg";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import FormFields, { emptyAnswers, type Answers } from "./form-fields";
@@ -46,7 +47,7 @@ export default function ConsultationForm() {
     const previousFocus = document.activeElement as HTMLElement | null;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    noticeButton.current?.focus();
+    noticeButton.current?.focus({ preventScroll: true });
     return () => {
       document.body.style.overflow = previousOverflow;
       previousFocus?.focus({ preventScroll: true });
@@ -158,7 +159,7 @@ export default function ConsultationForm() {
           <div className="bg-white px-4 py-5 lg:px-8 lg:py-8 xl:px-10 xl:py-10">
             <StepIndicator step={step} />
             <h2 ref={heading} tabIndex={-1} id="form-heading" className="mt-5 text-2xl font-semibold tracking-tight outline-none sm:mt-8">{consultationSteps[step].title}</h2>
-            <p id="step-description" className={`mt-2 text-sm leading-relaxed ${outcome === "not-enough-english" ? "text-purple-900" : "text-neutral-500"}`}>{outcome === "not-enough-english" ? <>Вы указали, что ваш уровень английского — «{answers.english}».</> : consultationSteps[step].description}</p>
+            <p id="step-description" className={`mt-2 text-sm leading-relaxed ${outcome === "not-enough-english" ? "text-purple-900" : "text-neutral-500"}`}>{outcome === "not-enough-english" ? <>Вы указали, что ваш уровень английского — «{answers.english}».</> : outcome === "not-enough-education" ? "Вы указали, что ваш уровень образования — среднее специальное." : consultationSteps[step].description}</p>
           </div>
           <div className="px-4 py-6 lg:px-8 lg:py-8 xl:px-10 xl:py-10">
             <fieldset disabled aria-label={outcome === "unsupported_subjects" ? "Выбранные предметы" : outcome === "not-enough-english" ? "Выбранный уровень английского" : "Выбранное образование"}>
@@ -168,7 +169,6 @@ export default function ConsultationForm() {
           </div>
         </div>
         <div className="flex shrink-0 flex-col gap-3 px-4 pt-6 pb-5 lg:px-8 lg:pb-8 xl:px-10 xl:pb-10">
-          {outcome === "not-enough-education" && <p className="mb-4 text-base leading-relaxed">Вы указали, что ваш уровень образования — среднее специальное.</p>}
           {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
           <div className="flex gap-3">
             {outcome !== "unsupported_subjects" && <button type="button" disabled={sending} onClick={() => { void closeOutcome("/#plans"); }} className="min-h-12 flex-1 rounded-xl border border-brand-200 px-4 py-3 text-sm font-medium hover:bg-brand-50 disabled:opacity-50">{outcome === "not-enough-english" ? "Выбрать программу" : "Выбрать Start"}</button>}
@@ -223,25 +223,37 @@ export default function ConsultationForm() {
             else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
           }
         }}
-        className="fixed inset-0 z-50 flex flex-col overflow-y-auto overscroll-contain bg-white px-4 py-8 text-brand-700 lg:absolute lg:rounded-3xl lg:p-8 xl:p-10"
+        className={`absolute inset-0 z-50 flex flex-col overflow-y-auto overscroll-contain bg-white py-8 text-brand-700 lg:rounded-3xl lg:p-8 xl:p-10 ${englishNoticeOpen ? "bg-linear-to-b from-brand-50/50 to-white px-6" : "px-4"}`}
       >
         <div className={englishNoticeOpen ? "" : "my-auto"}>
-          <h3 id="consultation-notice-title" className="text-2xl font-semibold">{notice.title}</h3>
-          <div id="consultation-notice-reason" className="mt-7 space-y-7 text-base leading-relaxed">
-            {typeof notice.reason === "string" ? <p>{notice.reason}</p> : notice.reason.map((paragraph) => (
+          {englishNoticeOpen ? (
+            <div className="flex items-start gap-4">
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-brand-100 bg-white text-brand-500 shadow-sm">
+                <ResearchIdeaIcon aria-hidden="true" className="size-6" />
+              </span>
+              <h3 id="consultation-notice-title" className="min-w-0 text-2xl font-semibold leading-snug tracking-tight text-brand-950">{notice.title}</h3>
+            </div>
+          ) : <h3 id="consultation-notice-title" className="text-2xl font-semibold">{notice.title}</h3>}
+          <div id="consultation-notice-reason" className={`mt-7 space-y-5 text-base leading-relaxed ${englishNoticeOpen ? "text-neutral-600" : ""}`}>
+            {typeof notice.reason === "string" ? englishNoticeOpen ? notice.reason.split(/ (?=С начальным уровнем)/).map((paragraph) => <p key={paragraph}>{paragraph}</p>) : <p>{notice.reason}</p> : notice.reason.map((paragraph) => (
               <p key={paragraph.text}>{paragraph.lead && <><strong>{paragraph.lead}</strong>{" "}</>}{paragraph.text}</p>
             ))}
           </div>
           {notice.exclusion && <p id="consultation-notice-exclusion" className="mt-4 text-base font-semibold leading-relaxed">{notice.exclusion}</p>}
           {!educationNoticeOpen && !englishNoticeOpen && noticeKind && <p className="mt-7 text-base leading-relaxed">{subjectNotices[noticeKind].recommendation}</p>}
           {educationNoticeOpen && <p id="education-notice-recommendation" className="mt-4 text-base leading-relaxed">{educationNotice.recommendation}</p>}
-          {englishNoticeOpen && <p id="english-notice-recommendation" className="mt-4 text-base leading-relaxed">{englishNotice.recommendation}</p>}
+          {englishNoticeOpen && (
+            <div className="mt-7 rounded-2xl border border-brand-100 bg-brand-50/70 p-5 sm:p-6">
+              <p className="text-sm font-semibold text-brand-600">С чего начать</p>
+              <p id="english-notice-recommendation" className="mt-3 text-base leading-relaxed text-brand-800">{englishNotice.recommendation}</p>
+            </div>
+          )}
           {notice.recommendStart && <p className="mt-4 text-base leading-relaxed">Однако программа <strong>START</strong> поможет вам оценить свои возможности и рассмотреть альтернативные пути международной карьеры.</p>}
           {error && <p role="alert" className="mt-4 text-sm text-red-700">{error}</p>}
           {!englishNoticeOpen && <button ref={noticeButton} type="button" disabled={sending} onClick={() => { void finishCase(educationNoticeOpen ? "not-enough-education" : "unsupported_subjects").catch((cause) => setError(cause instanceof Error ? cause.message : "Не удалось сохранить заявку. Попробуйте ещё раз.")); }} className="mt-6 min-h-12 rounded-xl bg-brand-500 px-5 py-3 font-medium text-white hover:bg-brand-600">{sending ? "Сохраняем…" : "Продолжить"}</button>}
         </div>
-        {englishNoticeOpen && <div className="mt-auto flex shrink-0 flex-col gap-3 pt-8">
-          <button ref={noticeButton} type="button" disabled={sending} onClick={() => { void finishCase("not-enough-english").catch((cause) => setError(cause instanceof Error ? cause.message : "Не удалось сохранить заявку. Попробуйте ещё раз.")); }} className="min-h-12 rounded-xl bg-brand-500 px-5 py-3 font-medium text-white hover:bg-brand-600 disabled:opacity-50">{sending ? "Сохраняем…" : "Продолжить"}</button>
+        {englishNoticeOpen && <div className="mt-8 flex shrink-0 flex-col gap-3 border-t border-brand-100 pt-6">
+          <button ref={noticeButton} type="button" disabled={sending} onClick={() => { void finishCase("not-enough-english").catch((cause) => setError(cause instanceof Error ? cause.message : "Не удалось сохранить заявку. Попробуйте ещё раз.")); }} className="action-gradient min-h-12 rounded-xl px-6 py-3 text-base font-semibold text-white transition-shadow hover:shadow-md disabled:opacity-50">{sending ? "Сохраняем…" : "Продолжить"}</button>
         </div>}
       </div>}
     </section>

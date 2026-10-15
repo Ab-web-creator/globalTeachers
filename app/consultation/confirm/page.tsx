@@ -10,9 +10,9 @@ export const metadata: Metadata = {
 
 export default function ConfirmationPage() {
   return (
-    <div className="flex min-h-dvh flex-col bg-brand-50 text-brand-700">
+    <div className="flex min-h-dvh flex-col bg-white text-brand-700 sm:bg-brand-50">
       <PageHeader inFlow />
-      <main className="flex flex-1 items-center justify-center px-6 py-12">
+      <main className="flex flex-1 items-center justify-center sm:px-6 sm:py-12">
         <ConfirmationResult />
       </main>
     </div>
