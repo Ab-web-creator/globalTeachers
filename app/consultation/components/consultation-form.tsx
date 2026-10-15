@@ -83,7 +83,7 @@ export default function ConsultationForm() {
     }
   }
 
-  async function closeOutcome(destination: "/" | "/#programs") {
+  async function closeOutcome(destination: "/" | "/#plans") {
     if (outcome !== "not-enough-education" && outcome !== "not-enough-english") { router.push(destination); return; }
     if (submitting.current) return;
     submitting.current = true;
@@ -171,7 +171,7 @@ export default function ConsultationForm() {
           {outcome === "not-enough-education" && <p className="mb-4 text-base leading-relaxed">Вы указали, что ваш уровень образования — среднее специальное.</p>}
           {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
           <div className="flex gap-3">
-            {outcome !== "unsupported_subjects" && <button type="button" disabled={sending} onClick={() => { void closeOutcome("/#programs"); }} className="min-h-12 flex-1 rounded-xl border border-brand-200 px-4 py-3 text-sm font-medium hover:bg-brand-50 disabled:opacity-50">{outcome === "not-enough-english" ? "Выбрать программу" : "Выбрать Start"}</button>}
+            {outcome !== "unsupported_subjects" && <button type="button" disabled={sending} onClick={() => { void closeOutcome("/#plans"); }} className="min-h-12 flex-1 rounded-xl border border-brand-200 px-4 py-3 text-sm font-medium hover:bg-brand-50 disabled:opacity-50">{outcome === "not-enough-english" ? "Выбрать программу" : "Выбрать Start"}</button>}
             <button type="button" disabled={sending} onClick={() => { void closeOutcome("/"); }} className="action-gradient min-h-12 flex-1 rounded-xl px-4 py-3 font-medium text-white disabled:opacity-50">{sending ? "Отправляем…" : "Закрыть"}</button>
           </div>
         </div>

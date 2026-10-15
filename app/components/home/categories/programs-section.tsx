@@ -23,11 +23,11 @@ const badgeColors: Record<string, string> = {
 
 export default function ProgramsSection() {
   return (
-    <section id="programs" aria-labelledby="programs-title" className="bg-white py-12 sm:py-16 lg:py-20">
+    <section id="plans" aria-labelledby="programs-title" className="bg-white py-12 sm:py-16 lg:py-20">
       <div className="mx-auto max-w-400 px-6 sm:px-10 lg:px-16 xl:px-20">
         <header data-reveal className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
           <div>
-            <p className="mb-4 text-sm font-semibold tracking-widest text-brand-500 uppercase">НАШИ ПРОГРАММЫ</p>
+            <p className="mb-4 text-sm font-semibold tracking-widest text-brand-500">Наши тарифы</p>
             <h2 id="programs-title" className="max-w-3xl text-4xl sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl leading-none font-semibold tracking-wide text-brand-700">Выберите свой путь<br className="hidden sm:block" /> к международной карьере</h2>
             <p className="mt-7 max-w-3xl text-base leading-normal text-neutral-600 sm:text-lg">
               Сравните пакеты START, PRO и VIP и выберите тот, который подходит вашим целям и желаемому уровню поддержки.

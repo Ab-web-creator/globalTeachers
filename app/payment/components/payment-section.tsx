@@ -44,7 +44,7 @@ export default function PaymentSection({ program }: Props) {
             <h3 className="text-lg font-semibold">Онлайн-оплата скоро появится</h3>
             <p className="mt-3 text-base leading-relaxed">Сейчас оплатить программу на сайте пока нельзя. Мы добавим возможность оплаты на этой странице.</p>
           </div>
-          <Link href="/#programs" className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-xl border border-brand-200 px-5 py-3 text-center font-medium hover:bg-brand-50">
+          <Link href="/#plans" className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-xl border border-brand-200 px-5 py-3 text-center font-medium hover:bg-brand-50">
             Сравнить программы
           </Link>
         </aside>

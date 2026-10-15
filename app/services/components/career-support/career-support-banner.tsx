@@ -12,7 +12,7 @@ export default function CareerSupportBanner() {
       imageClassName="object-center"
     >
       <Link href="/programs/vip" className="action-gradient inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white">Посмотреть VIP <span aria-hidden="true">→</span></Link>
-      <Link href="/#programs" className="action-gradient-outline rounded-full px-6 py-3 text-sm font-medium">Сравнить программы</Link>
+      <Link href="/#plans" className="action-gradient-outline rounded-full px-6 py-3 text-sm font-medium">Сравнить программы</Link>
     </SupportBanner>
   );
 }

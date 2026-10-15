@@ -160,7 +160,7 @@ const startMessage = `Здравствуйте!
 **Команда TeacherNavigator**`;
 
 export function unselectedPackageContent(origin: string) {
-  return packageContent(message, origin, "/#programs", "Посмотреть пакеты услуг →");
+  return packageContent(message, origin, "/#plans", "Посмотреть пакеты услуг →");
 }
 
 export function proPackageContent(origin: string) {

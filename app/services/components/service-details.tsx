@@ -32,7 +32,7 @@ export default function ServiceDetails({ service }: { service: Service; }) {
         <p className="mt-7 max-w-3xl leading-relaxed text-neutral-600">{service.preparation}</p>
         <div className="mt-6 flex flex-wrap gap-4">
           <Link href="/consultation" className="action-gradient rounded-2xl px-6 py-3 font-medium text-white sm:rounded-full">Получить консультацию</Link>
-          <Link href="/#programs" className="action-gradient-outline rounded-2xl px-6 py-3 font-medium sm:rounded-full">Сравнить программы</Link>
+          <Link href="/#plans" className="action-gradient-outline rounded-2xl px-6 py-3 font-medium sm:rounded-full">Сравнить программы</Link>
         </div>
       </section>
     </main>

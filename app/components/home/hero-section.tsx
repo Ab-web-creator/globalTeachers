@@ -42,7 +42,7 @@ export default function HeroSection() {
             <Link href="/consultation" className="inline-flex items-center justify-center gap-4 rounded-2xl sm:rounded-full bg-linear-to-r from-amber-200 to-orange-300 px-6 py-2.5 sm:py-4 text-base font-semibold text-stone-900 transition hover:from-amber-300 hover:to-orange-400 hover:shadow-md">
               Узнать свои шансы
             </Link>
-            <a href="#programs" className="hidden rounded-2xl sm:rounded-full border border-brand-200/60 px-6 py-2.5 sm:py-4 text-base font-semibold text-white transition hover:bg-white/10 sm:inline-flex sm:font-medium">Выбрать программу</a>
+            <a href="#plans" className="hidden rounded-2xl sm:rounded-full border border-brand-200/60 px-6 py-2.5 sm:py-4 text-base font-semibold text-white transition hover:bg-white/10 sm:inline-flex sm:font-medium">Выбрать программу</a>
           </div>
           <p className="mt-6 hidden text-base font-semibold leading-normal text-brand-200 sm:block sm:text-lg sm:font-normal">
             Понятный план <span aria-hidden="true" className="mx-2 inline-block align-middle text-2xl">•</span> Личная поддержка <span aria-hidden="true" className="mx-2 inline-block align-middle text-2xl">•</span> Ваш следующий шаг.

@@ -11,7 +11,7 @@ export default function ProgramCta({ tier, price, title, text, image, imageClass
         <span className="ml-3 text-sm text-neutral-500">{price === null ? "стоимость по запросу" : "единоразовая оплата"}</span>
       </p>
       <Link href={`/payment/${tier.toLowerCase()}`} className="action-gradient inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white">Выбрать {tier} <span aria-hidden="true">→</span></Link>
-      <Link href="/#programs" className="action-gradient-outline rounded-full px-6 py-3 text-sm font-medium">Сравнить программы</Link>
+      <Link href="/#plans" className="action-gradient-outline rounded-full px-6 py-3 text-sm font-medium">Сравнить программы</Link>
     </SupportBanner>
   );
 }

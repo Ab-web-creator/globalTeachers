@@ -198,7 +198,7 @@ deploying. Subsequent draft writes cannot overwrite a terminal case.
 
 Selecting «Среднее специальное» opens the education notice. Continue saves a
 terminal `not-enough-education` case, then shows the education step with choices
-locked. «Выбрать Start» opens `/#programs`; «Закрыть» returns home. A START recommendation email is queued one minute after this outcome is saved.
+locked. «Выбрать Start» opens `/#plans`; «Закрыть» returns home. A START recommendation email is queued one minute after this outcome is saved.
 Admin has a matching education outcome label and filter. Apply
 `023_unsupported_education_cases.sql` and `024_not_enough_education_status.sql`
 before deployment. Migration 024 also renames existing education outcomes.
@@ -378,7 +378,7 @@ Migration `028_confirmed_package_email.sql` queues the provided package overview
 email only when a visitor confirms a new application without choosing a package.
 It becomes due one minute after confirmation, delivered on the maintenance
 worker's next successful check. The HTML preserves emphasis and links to
-`/#programs`. Repeated confirmation does not queue another email. Delivery uses
+`/#plans`. Repeated confirmation does not queue another email. Delivery uses
 leases, stable idempotency keys and one-minute retries within a 23-hour window.
 Existing confirmed applications are not emailed retroactively. START, PRO and VIP selections receive their respective templates below.
 
@@ -403,7 +403,7 @@ Existing confirmed applications are not queued retroactively.
 Migration `032_verify_education_outcome.sql` makes `not-enough-education` cases
 require email confirmation. Continuing from the education notice first shows the locked education screen.
 Both «Выбрать Start» and «Закрыть» send a 24-hour verification link and open the
-confirmation popup over that screen. Closing the popup opens `/#programs` when
+confirmation popup over that screen. Closing the popup opens `/#plans` when
 the visitor chose «Выбрать Start», or `/` when they chose «Закрыть». The education recommendation is queued only after confirmation, due one
 minute later. The case retains its `not-enough-education` status and records the
 confirmation time. Pending unverified education recommendation jobs are removed

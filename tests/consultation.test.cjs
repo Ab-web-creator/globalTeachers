@@ -536,7 +536,7 @@ test('PostgreSQL application lifecycle', { skip: !process.env.TEST_DATABASE_URL 
       assert.equal(calls.at(-1).headers['Idempotency-Key'], calls.at(-2).headers['Idempotency-Key']);
       assert.equal(calls.at(-1).body.text, unselectedPackageContent('https://example.com').text);
       assert.ok(calls.at(-1).body.html.includes('<strong>Когда вы решите двигаться дальше, мы будем рады вам помочь.</strong>'));
-      assert.ok(calls.at(-1).body.html.includes('href="https://example.com/#programs"'));
+      assert.ok(calls.at(-1).body.html.includes('href="https://example.com/#plans"'));
       assert.equal(await deliverPackageEmail(), false);
       await db.query('DELETE FROM consultation_attempts WHERE id = $1', [id]);
       assert.equal((await db.query('SELECT id FROM consultation_package_emails WHERE application_id = $1', [id])).rowCount, 0);

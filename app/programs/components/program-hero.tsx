@@ -7,7 +7,7 @@ type Props = { tier: string; image: string; title: ReactNode; intro: readonly st
 
 export default function ProgramHero({ tier, image, title, intro, introClassName = "text-base sm:text-lg", highlight, imageAspectRatio, imageHeightScale, imageTopCrop, matchTextHeight }: Props) {
   return (
-    <ServiceHero image={image} backHref="/#programs" imageAspectRatio={imageAspectRatio} stretchImage={!imageAspectRatio} imageHeightScale={imageHeightScale} imageTopCrop={imageTopCrop} matchTextHeight={matchTextHeight}>
+    <ServiceHero image={image} backHref="/#plans" imageAspectRatio={imageAspectRatio} stretchImage={!imageAspectRatio} imageHeightScale={imageHeightScale} imageTopCrop={imageTopCrop} matchTextHeight={matchTextHeight}>
       <SectionLabel>Программа {tier}</SectionLabel>
       <PageTitle>{title}</PageTitle>
       <div className="mt-6 space-y-5">

@@ -13,7 +13,7 @@ export default function SiteHeader({ inFlow = false }: { inFlow?: boolean; }) {
   const headerRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
   const homepage = pathname === "/";
-  const backHref = pathname.startsWith("/services/") ? "/#categories" : pathname.startsWith("/programs/") ? "/#programs" : undefined;
+  const backHref = pathname.startsWith("/services/") ? "/#categories" : pathname.startsWith("/programs/") ? "/#plans" : undefined;
   const headerState = useCompactHeader(headerRef, homepage);
   const compact = !homepage || headerState.compact;
   const hidden = headerState.hidden;
