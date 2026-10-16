@@ -10,7 +10,7 @@ import {
 import {
   ConsultationDetailIcon,
   AppointmentClockIcon,
-  CallChatIcon,
+  VideoCallIcon,
   supportCalendarIconPath,
 } from "@/app/components/svg";
 import AppointmentCall from "./appointment-call";
@@ -47,6 +47,7 @@ export default function WorkspacePanel({
   const draftId = useRef("");
   const sending = useRef(false);
   const [timeZone, setTimeZone] = useState("UTC");
+  const [now, setNow] = useState(0);
   const [selectedSlot, setSelectedSlot] = useState("");
   const endpoint = admin
     ? `/api/admin/clients?client=${initial.client.id}`
@@ -65,11 +66,14 @@ export default function WorkspacePanel({
 
   useEffect(() => {
     // The initial display uses UTC until the browser supplies the visitor's time zone.
-    const updateZone = () =>
+    const updateZone = () => {
       setTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone);
+      setNow(Date.now());
+    };
     const controller = new AbortController();
     const timer = window.setInterval(() => {
       if (document.visibilityState !== "visible") return;
+      setNow(Date.now());
       void refresh(controller.signal).catch((cause) => {
         if (!controller.signal.aborted)
           setError(
@@ -304,7 +308,7 @@ export default function WorkspacePanel({
           </div>
           <p className="mt-7 text-base font-medium leading-relaxed text-neutral-700">
             Пакет {data.client.tier} · Доступно {remaining} из{" "}
-            {data.client.allowance_hours} ч. Одна встреча длится 60 минут.
+            {data.client.allowance_hours} ч.
           </p>
           {data.client.tier === "PRO" && (
             <p className="mt-3 text-sm text-neutral-500">
@@ -351,8 +355,14 @@ export default function WorkspacePanel({
             <>
               {remaining === 0 && (
                 <p className="mt-6 flex items-start gap-2 text-base font-medium leading-relaxed text-neutral-700">
-                  <CallChatIcon className="mt-1 size-5 shrink-0 text-amber-600" />
-                  <span>Сейчас нет доступных часов для записи. Уточните условия у администратора в чате.</span>
+                  <VideoCallIcon className="mt-1 size-5 shrink-0 text-amber-600" />
+                  <span>{data.client.tier === "START" && data.bookings.length > 0
+                    ? data.bookings.some(slot => new Date(slot.ends_at).getTime() > now)
+                      ? data.bookings.some(slot => new Date(slot.starts_at).getTime() <= now && new Date(slot.ends_at).getTime() > now)
+                        ? "Ваша консультация сейчас проходит. Дополнительная консультация — $70 за 60 минут. Чтобы записаться, напишите нам в чате."
+                        : "Ваш час консультации уже забронирован. Дата и время указаны в блоке «Ваша запись»."
+                      : "Вы использовали 1 час консультации, включённый в пакет START. Дополнительная консультация — $70 за 60 минут. Чтобы записаться, напишите нам в чате."
+                    : "Сейчас нет доступных часов для записи. Уточните условия у администратора в чате."}</span>
                 </p>
               )}
               {remaining > 0 && !data.slots.length && (
@@ -409,7 +419,7 @@ export default function WorkspacePanel({
             </>
           )}
           </div>
-          <div className={admin ? "mt-8 min-w-0 rounded-xl bg-linear-to-br from-amber-100 via-orange-50 to-rose-100 p-4 pl-6" : "min-w-0 rounded-xl bg-linear-to-br from-amber-100 via-orange-50 to-rose-100 p-4 pl-6 lg:self-end"}>
+          <div className={admin ? "mt-8 min-w-0 rounded-xl bg-linear-to-br from-amber-100 via-orange-50 to-rose-100 p-4 pl-6" : "min-w-0 rounded-xl bg-linear-to-br from-amber-100 via-orange-50 to-rose-100 w-full max-w-64 p-4 pl-6 lg:justify-self-end lg:self-end"}>
           <h3 className="text-lg font-semibold">
             {admin ? "Записи клиента" : data.bookings.length === 1 ? "Ваша запись" : "Ваши записи"}
           </h3>

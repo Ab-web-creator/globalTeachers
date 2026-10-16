@@ -1,6 +1,6 @@
 export function PersonalSeparatorIllustration({ className = "" }: { className?: string }) {
   return (
-    <div aria-hidden="true" className={`flex items-center text-amber-600 ${className}`}>
+    <div aria-hidden="true" className={`flex items-center text-[#b28a40] ${className}`}>
       <span className="size-1 shrink-0 rotate-45 bg-current" />
       <span className="h-px flex-1 bg-current opacity-40" />
       <span className="size-1 shrink-0 rotate-45 bg-current opacity-70" />

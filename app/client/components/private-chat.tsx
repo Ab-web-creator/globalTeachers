@@ -93,8 +93,8 @@ export default function PrivateChat({
       aria-labelledby="private-chat-title"
       className="overflow-hidden rounded-3xl border border-brand-100 bg-white shadow-sm"
     >
-      <header className="flex items-center gap-3 border-b border-brand-100 px-5 py-5 sm:px-6">
-        <span className="flex size-14 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-500">
+      <header className="flex items-center gap-3 border-b border-brand-100 px-5 py-3 sm:px-6">
+        <span className="flex size-14 shrink-0 items-center justify-center rounded-full bg-brand-50 text-amber-600">
           <CallChatIcon className="size-8" />
         </span>
         <div className="min-w-0">
@@ -146,7 +146,7 @@ export default function PrivateChat({
           return (
             <div key={item.id} className="shrink-0">
               {day !== previous && (
-                <p className="my-3 text-center text-xs text-neutral-400">
+                <p className="my-3 text-center text-sm font-medium text-neutral-500">
                   {day}
                 </p>
               )}
