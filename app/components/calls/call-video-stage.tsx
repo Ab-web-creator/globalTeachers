@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import useVideoInset from "./use-video-inset";
-import { CameraIcon, MicrophoneIcon, PhoneCallIcon, VideoExpandIcon } from "@/app/components/svg";
+import { CameraIcon, MicrophoneIcon, PhoneCallIcon, VideoExpandIcon, CallWindowCloseIcon } from "@/app/components/svg";
 import type { CallRoomModel } from "./use-call-session";
 
 type CallVideoStageProps = Pick<CallRoomModel,
@@ -8,6 +8,8 @@ type CallVideoStageProps = Pick<CallRoomModel,
   | "name"
   | "minimized"
   | "onRestore"
+  | "onDismiss"
+  | "cleanup"
   | "focusedVideo"
   | "setFocusedVideo"
   | "chatOpen"
@@ -51,6 +53,8 @@ export default function CallVideoStage({
   name,
   minimized,
   onRestore,
+  onDismiss,
+  cleanup,
   focusedVideo,
   setFocusedVideo,
   chatOpen,
@@ -116,6 +120,11 @@ export default function CallVideoStage({
       <div className={immersive ? `relative flex min-h-0 flex-1 gap-3 ${chatOpen ? "sm:mr-96" : ""}` : "contents"}>
       <div className={immersive ? "flex min-h-0 min-w-0 flex-1 items-center justify-center" : "contents"}>
       <div ref={stageRef} style={state === "accepted" && !immersive ? { aspectRatio: focusedVideo === "local" ? localRatio : remoteRatio } : undefined} className={`relative ${immersive ? "h-full w-full" : ""} fullscreen:mt-0 fullscreen:h-full fullscreen:w-full fullscreen:aspect-auto ${state === "accepted" ? `${minimized || immersive ? "" : "mt-4"} overflow-hidden rounded-2xl ${immersive ? "bg-[#121826]" : "bg-neutral-950"}` : `${infoOnVideo && !error ? "" : "mt-6"} grid w-full grid-cols-1 gap-4`} ${!token && !mediaReady && state !== "accepted" ? "hidden" : ""}`}>
+        {!callActive && !minimized && onDismiss && (
+          <button type="button" aria-label="Закрыть окно видеосвязи" title="Закрыть окно видеосвязи" onClick={() => { cleanup(); onDismiss(); }} className="absolute top-3 right-3 z-40 flex size-10 items-center justify-center rounded-full bg-neutral-950/70 text-white transition-colors hover:bg-neutral-950 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-white">
+            <CallWindowCloseIcon className="size-5" />
+          </button>
+        )}
         {callActive && minimized && (
           <div className="pointer-events-none absolute inset-x-0 top-0 z-40 flex items-start justify-between p-3">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-red-600 px-2 py-1 text-xs font-semibold text-white"><span className="size-1.5 rounded-full bg-white" />LIVE</span>

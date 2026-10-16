@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import { usePathname, useRouter } from "next/navigation";
 import CallRoom from "./call-room";
 
-type Room = { id: string; token?: string; name: string; expires: string };
+type Room = { id: string; token?: string; name: string; expires: string; returnPath?: string };
 type Session = { room: Room; target: HTMLElement; path: string };
 const CallSessionContext = createContext<((room: Room, target: HTMLElement) => void) | null>(null);
 
@@ -30,7 +30,7 @@ export function CallSessionProvider({ children }: { children: ReactNode }) {
       {children}
       {host && session && createPortal(
         <CallRoom key={session.room.id} {...session.room} minimized={minimized}
-          onMinimize={() => router.push(session.room.token ? "/" : "/admin")}
+          onMinimize={() => router.push(session.room.token ? "/" : session.room.returnPath ?? "/admin")}
           onRestore={() => router.push(session.path)}
           onDismiss={() => setSession(null)} />,
         host,
@@ -39,10 +39,10 @@ export function CallSessionProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export default function CallSession({ id, token, name, expires }: Room) {
+export default function CallSession({ id, token, name, expires, returnPath }: Room) {
   const open = useContext(CallSessionContext);
   const attach = useCallback((target: HTMLDivElement | null) => {
-    if (target) open?.({ id, token, name, expires }, target);
-  }, [open, id, token, name, expires]); // Room identity is supplied by the server page.
+    if (target) open?.({ id, token, name, expires, returnPath }, target);
+  }, [open, id, token, name, expires, returnPath]); // Room identity is supplied by the server page.
   return <div ref={attach} />;
 }

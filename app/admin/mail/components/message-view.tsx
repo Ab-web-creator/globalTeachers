@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { MailMessage } from "../../../../lib/mailbox/messages";
 import { DeleteApplicationIcon, MarkUnreadIcon } from "@/app/components/svg";
 import MessageActionButton from "./message-action-button";
+import SendKeyButton from "./send-key-button";
 
 function size(bytes?: number) {
   if (!bytes) return "";
@@ -30,9 +31,10 @@ export default function MessageView({ message, readOnly = false }: { message: Ma
   const actions = readOnly ? (
     <Link href={`/admin/mail/${message.id}`} className="rounded-xl bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600">Ответить в админке</Link>
   ) : (
-    <div className="flex items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2">
       {inbound && <MessageActionButton id={message.id} endpoint="/admin/mail/unread" returnTo="/admin/mail" icon={<MarkUnreadIcon className="size-4" />} label="Отметить непрочитанным" busyLabel="Отмечаем…" />}
       <MessageActionButton id={message.id} endpoint="/admin/mail/delete" returnTo={folder} icon={<DeleteApplicationIcon className="size-4" />} label="Удалить" busyLabel="Удаляем…" confirmation="Удалить это письмо навсегда? Это действие нельзя отменить." danger />
+      {inbound && <SendKeyButton messageId={message.id} tier={message.folder === "start-clients" ? "START" : message.folder === "pro-clients" ? "PRO" : message.folder === "vip-clients" ? "VIP" : undefined} />}
       <Link href={`/admin/mail/new?${new URLSearchParams({ reply: message.id })}`} className="rounded-xl bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600">Ответить</Link>
     </div>
   );

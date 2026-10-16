@@ -188,6 +188,8 @@ test('PostgreSQL application lifecycle', { skip: !process.env.TEST_DATABASE_URL 
       await db.query(fs.readFileSync('database/migrations/031_start_package_email.sql', 'utf8'));
       await db.query(fs.readFileSync('database/migrations/032_verify_education_outcome.sql', 'utf8'));
       await db.query(fs.readFileSync('database/migrations/033_verify_english_outcome.sql', 'utf8'));
+      await db.query(fs.readFileSync('database/migrations/038_client_area.sql', 'utf8'));
+      await db.query(fs.readFileSync('database/migrations/042_invitation_html.sql', 'utf8'));
       const queues = await db.query("SELECT tablename FROM pg_tables WHERE schemaname = current_schema() AND tablename LIKE 'consultation_%_followups'");
       assert.equal(queues.rowCount, 0);
       const history = (await db.query('SELECT * FROM consultation_attempts')).rows;

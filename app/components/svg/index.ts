@@ -52,3 +52,11 @@ export { ChatSendIcon } from "./icons/call-controls";
 
 export { GiftIcon } from "./icons/gift";
 export { ConsultationBenefitIcon } from "./icons/consultation-benefit-icon";
+
+export { ProfilePhotoIcon } from "./icons/profile-photo";
+
+export { PersonalProfileIllustration } from "./illustrations/personal-profile";
+
+export { CopyKeyIcon, SignOutIcon } from "./icons/account-actions";
+
+export { NotificationBellIcon } from "./icons/notification-bell";

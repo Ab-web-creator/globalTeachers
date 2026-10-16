@@ -15,6 +15,7 @@ export type CallRoomProps = {
   token?: string;
   name: string;
   expires: string;
+  returnPath?: string;
   minimized?: boolean;
   onMinimize?: () => void;
   onRestore?: () => void;
@@ -22,7 +23,7 @@ export type CallRoomProps = {
 };
 
 export default function useCallSession({
-  id, token, name, expires, minimized = false, onMinimize, onRestore, onDismiss,
+  id, token, name, expires, returnPath = "/admin", minimized = false, onMinimize, onRestore, onDismiss,
 }: CallRoomProps) {
   const router = useRouter();
   const [focusedVideo, setFocusedVideo] = useState<"local" | "remote">("remote");
@@ -51,8 +52,10 @@ export default function useCallSession({
     [muted, setMuted] = useState(true),
     [camera, setCamera] = useState(true),
     [relay, setRelay] = useState(true);
-  const waitingForConsultant = !!token && state === "ringing" && !expired;
-  const { blocked: soundBlocked, enableSound } = useCallRingtone(waitingForConsultant, "outgoing");
+  const [initiatedBy, setInitiatedBy] = useState("client");
+  const incomingCall = state === "ringing" && (token ? initiatedBy === "admin" : initiatedBy === "client");
+  const waitingForConsultant = state === "ringing" && !incomingCall && !expired;
+  const { blocked: soundBlocked, enableSound } = useCallRingtone(waitingForConsultant || incomingCall, incomingCall ? "incoming" : "outgoing");
   const [mediaReady, setMediaReady] = useState(false);
   const [checking, setChecking] = useState(false);
   const [deviceError, setDeviceError] = useState(false);
@@ -77,11 +80,11 @@ export default function useCallSession({
   useEffect(() => {
     if (!minimized && token || !["ended", "declined", "revoked"].includes(state)) return;
     const timer = setTimeout(() => {
-      if (!token) router.replace("/admin");
+      if (!token && !minimized) router.replace(returnPath);
       onDismiss?.();
     }, 3000);
     return () => clearTimeout(timer);
-  }, [state, token, router, minimized, onDismiss]);
+  }, [state, token, router, minimized, onDismiss, returnPath]);
   useEffect(() => {
     microphoneMuted.current = muted;
     stream.current?.getAudioTracks().forEach((track) => {
@@ -301,12 +304,14 @@ export default function useCallSession({
         const data = await r.json();
         if (stopped || actionPending.current || version !== actionVersion.current) return;
         if (!token && data.state === "ringing" && (locallyEnded.current || ["ended", "declined"].includes(previousState))) {
-          router.replace("/admin");
+          setState("ended");
           return;
         }
+        if (token && data.state === "ringing" && data.initiatedBy === "admin") locallyEnded.current = false;
         if (locallyEnded.current && ["accepted", "ringing"].includes(data.state)) return;
         servers.current = data.iceServers;
         setRelay(data.relayConfigured);
+        setInitiatedBy(data.initiatedBy ?? "client");
         setState(data.state);
         if (["ended", "declined", "revoked"].includes(data.state)) {
           if (data.state !== previousState) cleanup(!!token && data.state !== "revoked");
@@ -451,7 +456,7 @@ export default function useCallSession({
     ? "Соединение установлено"
     : ({
         waiting: "Можно начать звонок",
-        ringing: "Ожидаем ответа консультанта",
+        ringing: incomingCall ? "Входящий звонок" : token ? "Ожидаем ответа консультанта" : "Ожидаем ответа клиента",
         accepted: "Подключаемся…",
         declined: "Звонок отклонён",
         ended: "Звонок завершён",
@@ -471,6 +476,7 @@ export default function useCallSession({
     toggleMicrophone,
     sendChatMessage,
     token,
+    incomingCall,
     name,
     minimized,
     onRestore,

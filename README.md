@@ -424,3 +424,82 @@ packages or home. English advice is queued one minute after confirmation, never
 before. The case retains its English outcome and records confirmation time.
 Pending unverified English advice jobs are removed by this migration; no
 retroactive verification emails are sent. Existing education links remain valid.
+
+### Private client pages, invitations, and appointments
+
+Apply migrations `038_client_area.sql` through `047_client_message_notifications.sql` with
+`npm run db:migrate`. The admin navigation now has a **Клиенты** tab at
+`/admin/clients`. START includes **1 hour**, PRO includes **3 hours on separate
+calendar days**, and VIP initially includes **1 hour**. Only VIP clients can receive
+additional hours through their individual admin page. The PRO daily restriction
+uses Europe/Amsterdam consistently and is enforced by the booking transaction,
+including concurrent requests. Existing applications do not automatically become private clients.
+
+On an incoming email, **Send Key** prepares a personalized invitation and starts
+a ten-second countdown. Clicking the email preview pauses the schedule on the
+server and opens an editor. The administrator can then explicitly send the
+edited message; its private access link must remain in the text. Closing the
+preview before sending also pauses it. Once delivery has begun, the message is
+frozen for safe retries. Sent invitations appear in the admin mailbox. Repeated
+clicks for the same email address reuse the existing invitation and client page.
+
+The invitation's `/client#...` link is the only way to establish client access.
+The key has 256 bits of randomness; its lookup value is stored as a hash. The
+administrator-only invitation and sent email necessarily retain the link so it
+can be delivered and viewed in the mailbox. The client exchanges it via POST for
+an HttpOnly, SameSite=Strict session, removes the fragment from browser history,
+and can remain signed in for 30 days. Signing out revokes that browser session;
+reentry requires the emailed link. No email-address or client-ID login exists.
+Treat the link like a password: anyone who obtains it can sign in as that client.
+The client page is excluded from analytics, has no-index/no-referrer metadata,
+and client APIs return no-store responses.
+
+Private chat is persisted per client, with administrator replies available from
+`/admin/clients`. Both sides refresh every five seconds while the page is visible.
+The page shows the latest 200 messages; older messages remain in the database.
+
+Only administrator-opened, non-overlapping, future one-hour slots are available.
+Admin selects a date and multiple whole-hour buttons, with morning/afternoon/workday
+presets, then opens the selection in one atomic action. Minute-based start times
+are rejected; the grid consistently uses Europe/Amsterdam, including DST changes.
+A booking atomically checks both client allowance and slot availability; a booked
+slot is unavailable to everyone else and cannot be closed through the admin
+availability controls. Clients see times in their browser's timezone. Successful
+bookings queue a short client confirmation and an admin notification; client confirmations include both their browser time zone captured at booking
+and UTC; admin notifications use UTC. The stored zone keeps retries consistent.
+
+During a booked hour, the client page enables **Позвонить администратору** using
+the existing browser video-calling system. Creating a call and accessing its
+signalling requires both the client's private session and a currently active
+booking. A call token alone does not authorize an appointment call. Calls expire
+at the end of the booked hour; incoming calls use the existing admin notification
+and accept/decline controls. Production calling still depends on the existing
+HTTPS, microphone/camera permissions, and TURN configuration.
+
+The existing consultation maintenance worker retries invitation and booking
+notification delivery with leases and stable Resend idempotency keys. Normally
+the invitation preview requests sending after ten seconds; if the tab closes or
+background timers are suspended, the worker sends it on its next check. Paused
+drafts are never sent by the worker. Failed delivery retries for up to 23 hours.
+Do not remove the maintenance worker from the production deployment.
+
+Run the integration checks with `TEST_DATABASE_URL` set to a test connection:
+`node --test tests/client-area.test.cjs`. They use a disposable database schema and
+mock all outgoing emails, covering invitation access, pausing, tenant isolation,
+concurrent booking, allowance limits, notifications and appointment-only calls.
+
+Invitation emails now include a styled HTML alternative with an access button,
+a readable key panel, and plain-text fallback. The HTML is saved with the draft
+so retries retain an identical provider payload. Already-attempted older messages
+without saved HTML continue their original plain-text delivery. The authenticated
+client page includes **Скопировать ключ**, with manual selection if browser
+clipboard access is unavailable. Key retrieval is scoped to the authenticated
+client and checks the key against that client's stored hash.
+
+The admin client directory supports name/email search, package filters, and 25 clients per page. Unread client messages are tracked persistently (shared across admins); opening a conversation marks its displayed history read. Clients whose last message is from the client are listed first until an admin replies. The directory refreshes every five seconds.
+
+Admins can start an appointment call using «Позвонить клиенту» beside «Свернуть» in the expanded client card. The client must have an active booking and an open personal page (presence expires after 20 seconds). Incoming admin calls appear privately on that page with accept/decline; they are excluded from admin incoming-call alerts. Migration `045_admin_appointment_calls.sql` adds call direction and presence tracking.
+
+The client welcome area includes a private profile photo, with initials as fallback. Clients can upload JPG, PNG or WebP up to 2 MB. Photo reads and writes are scoped to the authenticated client session and responses are not cached. Apply `046_client_profile_photo.sql` before deploying the updated client area.
+
+The personal-page navbar includes notification counts for unread admin chat messages. Counts refresh every five seconds and persist across sessions. Client messages are marked read only when the end of the chat is visible in an active tab; reading does not change admin unread markers. Apply `047_client_message_notifications.sql`.

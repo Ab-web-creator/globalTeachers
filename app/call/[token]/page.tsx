@@ -1,3 +1,6 @@
+import { cookies } from "next/headers";
+import { appointmentCallAllowed } from "../../../lib/client-area/appointment-call";
+import { clientSessionCookie } from "../../../lib/client-area/access";
 import { database } from "../../../lib/consultation/database";
 import { tokenHash } from "../../../lib/calls/server";
 import CallSession from "../../components/calls/call-session";
@@ -17,11 +20,12 @@ export default async function Page({
   const { token } = await params;
   const result = /^[a-f0-9]{64}$/.test(token)
     ? await database().query(
-        "SELECT id,name,expires_at FROM browser_calls WHERE token_hash=$1 AND expires_at>now()",
+        "SELECT id,name,expires_at,appointment_slot_id FROM browser_calls WHERE token_hash=$1 AND expires_at>now()",
         [tokenHash(token)],
       )
     : null;
-  const call = result?.rows[0];
+  let call = result?.rows[0];
+  if (call?.appointment_slot_id && !await appointmentCallAllowed(call.appointment_slot_id, (await cookies()).get(clientSessionCookie)?.value)) call = null;
   return (
     <main className="min-h-dvh bg-white sm:bg-brand-50 sm:px-5 sm:py-12">
       {call ? (

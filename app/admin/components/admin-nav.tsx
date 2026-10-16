@@ -9,7 +9,7 @@ import styles from "./admin-nav.module.css";
 import IncomingCalls from "./incoming-calls";
 import AdminMobileMenu from "./admin-mobile-menu";
 
-type Props = { active?: "applications" | "mail" | "analytics"; unread?: number; showLogout?: boolean; showTabs?: boolean };
+type Props = { active?: "applications" | "mail" | "analytics" | "clients" | "calendar"; unread?: number; showLogout?: boolean; showTabs?: boolean };
 
 function Tab({ href, current, children }: { href: string; current: boolean; children: ReactNode }) {
   return (
@@ -35,6 +35,8 @@ export default async function AdminNav({ active, unread = 0, showLogout = false,
           <nav aria-label="Разделы администратора" className="hidden gap-1 overflow-x-auto rounded-2xl bg-brand-50 p-1 sm:flex sm:w-auto">
             <Tab href="/admin" current={active === "applications"}>Заявки</Tab>
             <Tab href="/admin/analytics" current={active === "analytics"}>Посещаемость</Tab>
+            <Tab href="/admin/clients" current={active === "clients"}>Клиенты</Tab>
+            <Tab href="/admin/calendar" current={active === "calendar"}>Календарь</Tab>
             <Tab href="/admin/mail" current={active === "mail"}>
               Почта{unread > 0 && <span className="rounded-full bg-brand-500 px-2 py-0.5 text-xs font-medium text-white">{unread}</span>}
             </Tab>

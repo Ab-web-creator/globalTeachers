@@ -5,6 +5,9 @@ import { trustedRequestOrigin } from "../../../lib/request-origin";
 import { database } from "../../../lib/consultation/database";
 import { findCall, iceServers, tokenHash } from "../../../lib/calls/server";
 import { getApplication } from "../../../lib/admin/applications";
+import { appointmentCallAllowed } from "../../../lib/client-area/appointment-call";
+import { clientSessionCookie } from "../../../lib/client-area/access";
+
 const admin = (r: NextRequest) =>
   process.env.NODE_ENV === "development" ||
   validSession(r.cookies.get(sessionCookie)?.value);
@@ -28,7 +31,7 @@ export async function GET(r: NextRequest) {
   if (r.nextUrl.searchParams.get("incoming") === "1") {
     if (!admin(r)) return new Response(null, { status: 401 });
     const rows = await database().query(
-      "SELECT id,name,email FROM browser_calls WHERE state='ringing' AND expires_at>now() AND client_seen>now()-interval '20 seconds' ORDER BY updated_at DESC LIMIT 5",
+      "SELECT id,name,email FROM browser_calls WHERE state='ringing' AND initiated_by='client' AND expires_at>now() AND client_seen>now()-interval '20 seconds' ORDER BY updated_at DESC LIMIT 5",
     );
     return Response.json(rows.rows, {
       headers: { "Cache-Control": "no-store" },
@@ -38,6 +41,9 @@ export async function GET(r: NextRequest) {
   if (!token && !admin(r)) return new Response(null, { status: 401 });
   const call = await findCall(r.nextUrl.searchParams.get("id") ?? "", token);
   if (!call) return new Response(null, { status: 404 });
+  if (token && call.appointment_slot_id && !await appointmentCallAllowed(call.appointment_slot_id, r.cookies.get(clientSessionCookie)?.value)) {
+    return new Response(null, { status: 401 });
+  }
   const role = token ? "client" : "admin";
   const stale = await database().query(
     "UPDATE browser_calls SET state='ended',updated_at=now() WHERE id=$1 AND state IN ('ringing','accepted') AND ((state='ringing' AND updated_at<now()-interval '60 seconds') OR (updated_at<now()-interval '45 seconds' AND (client_seen IS NULL OR client_seen<now()-interval '45 seconds' OR (state='accepted' AND (admin_seen IS NULL OR admin_seen<now()-interval '45 seconds'))))) RETURNING id",
@@ -61,6 +67,7 @@ export async function GET(r: NextRequest) {
   return Response.json(
     {
       state: call.state,
+      initiatedBy: call.initiated_by,
       signals: signals.rows,
       iceServers: iceServers(),
       relayConfigured: !!(process.env.CALL_TURN_URL && process.env.CALL_TURN_SECRET),
@@ -111,13 +118,16 @@ export async function POST(r: NextRequest) {
   if (!token && !admin(r)) return new Response(null, { status: 401 });
   const call = await findCall(input.id, token);
   if (!call) return new Response(null, { status: 404 });
+  if (token && call.appointment_slot_id && !await appointmentCallAllowed(call.appointment_slot_id, r.cookies.get(clientSessionCookie)?.value)) {
+    return new Response(null, { status: 401 });
+  }
   const role = token ? "client" : "admin";
   if (input.action === "ring") {
     if (role !== "client") return new Response(null, { status: 403 });
     const client = await database().connect();
     try {
       await client.query("BEGIN");
-      const result = await client.query("UPDATE browser_calls SET state='ringing',updated_at=now(),client_seen=now(),admin_seen=NULL WHERE id=$1 AND expires_at>now() AND state IN ('waiting','ended','declined') RETURNING id", [call.id]);
+      const result = await client.query("UPDATE browser_calls SET state='ringing',initiated_by='client',updated_at=now(),client_seen=now(),admin_seen=NULL WHERE id=$1 AND expires_at>now() AND state IN ('waiting','ended','declined') RETURNING id", [call.id]);
       if (!result.rowCount) {
         await client.query("ROLLBACK");
         return new Response(null, { status: 409 });
@@ -162,6 +172,7 @@ export async function POST(r: NextRequest) {
       revoke: { from: ["waiting", "ringing", "accepted", "ended", "declined"], to: "revoked", role: "admin" },
     };
     const t = transitions[input.action];
+    if (t && ["accept", "decline"].includes(input.action)) t.role = call.initiated_by === "admin" ? "client" : "admin";
     if (!t || (t.role && t.role !== role))
       return new Response(null, { status: 403 });
     const result = await database().query(

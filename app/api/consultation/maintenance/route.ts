@@ -7,6 +7,9 @@ import { deliverEnglishOutcomeEmail } from "../../../../lib/consultation/english
 
 import { deliverPackageEmail } from "../../../../lib/consultation/package-email";
 
+import { deliverInvitation } from "../../../../lib/client-area/invitations";
+import { deliverBookingEmail } from "../../../../lib/client-area/booking-email";
+
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
@@ -24,7 +27,11 @@ export async function GET(request: Request) {
     while (englishEmails < 5 && await deliverEnglishOutcomeEmail()) englishEmails++;
     let packageEmails = 0;
     while (packageEmails < 5 && await deliverPackageEmail()) packageEmails++;
-    return Response.json({ removed, educationEmails, englishEmails, packageEmails });
+    let invitations = 0;
+    while (invitations < 5 && await deliverInvitation() !== "waiting") invitations++;
+    let bookingEmails = 0;
+    while (bookingEmails < 5 && await deliverBookingEmail()) bookingEmails++;
+    return Response.json({ removed, educationEmails, englishEmails, packageEmails, invitations, bookingEmails });
   } catch {
     return Response.json({ error: "Maintenance failed" }, { status: 503 });
   }

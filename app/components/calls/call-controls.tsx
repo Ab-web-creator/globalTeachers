@@ -4,6 +4,7 @@ import type { CallRoomModel } from "./use-call-session";
 type CallControlsProps = Pick<CallRoomModel,
   | "toggleMicrophone"
   | "token"
+  | "incomingCall"
   | "minimized"
   | "chatOpen"
   | "state"
@@ -25,6 +26,7 @@ type CallControlsProps = Pick<CallRoomModel,
 export default function CallControls({
   toggleMicrophone,
   token,
+  incomingCall,
   minimized,
   chatOpen,
   state,
@@ -48,7 +50,7 @@ export default function CallControls({
   return (
     <>
       <div className={immersive ? `flex shrink-0 flex-wrap items-center gap-3 ${chatOpen ? "sm:mr-96" : ""}` : `${minimized ? "mt-3 gap-2" : "mt-5 gap-3"} flex flex-wrap ${state === "accepted" ? "" : "w-full"}`}>
-        {token && !expired && state !== "revoked" && (
+        {token && !incomingCall && !expired && state !== "revoked" && (
           <button
             type="button"
             aria-label={callActive ? "Завершить" : "Позвонить"}
@@ -60,7 +62,7 @@ export default function CallControls({
             <span className={minimized ? "hidden" : ""}>{callActive ? "Завершить" : "Позвонить"}</span>
           </button>
         )}
-        {!token && state === "ringing" && (
+        {incomingCall && (
           <>
             <button className={button} onClick={() => void action("accept")}>
               Принять
@@ -98,7 +100,7 @@ export default function CallControls({
             )}
           </>
         )}
-        {!token && callActive && (
+        {!token && !incomingCall && callActive && (
           <button aria-label="Завершить звонок"
             className={`order-last ml-auto inline-flex w-fit items-center gap-2 rounded-xl bg-red-600 ${controlSize} text-white hover:bg-red-700`}
             onClick={() => void action("end")}
