@@ -2,19 +2,67 @@ import { database } from "../consultation/database";
 import type { Answers } from "../../app/consultation/components/form-fields";
 
 export type ApplicationAttempt = {
-  id: string; answers: Answers; submitted_at: string; confirmed_at: string | null;
-  status: "not-enough-english" | "not-enough-education" | "unsupported_subjects" | "draft" | "pending" | "confirmed" | "superseded" | "expired"; last_step: string | null;
+  id: string;
+  answers: Answers;
+  submitted_at: string;
+  confirmed_at: string | null;
+  status:
+    | "not-enough-english"
+    | "not-enough-education"
+    | "unsupported_subjects"
+    | "draft"
+    | "payment"
+    | "pending"
+    | "confirmed"
+    | "superseded"
+    | "expired";
+  last_step: string | null;
 };
-export type QualificationChange = { previous_answer: string; new_answer: string; changed_at: string };
+export type QualificationChange = {
+  previous_answer: string;
+  new_answer: string;
+  changed_at: string;
+};
 export type Application = {
   qualification_changes: QualificationChange[];
-  answer_changes: (QualificationChange & { field: "subject" | "education" | "english" })[];
-  id: string; email: string; answers: Answers; status: "not-enough-english" | "not-enough-education" | "unsupported_subjects" | "draft" | "pending" | "confirmed";
-  latest_status: "pending" | "confirmed"; email_confirmed_at: Date | null;
-  submitted_at: Date; confirmed_at: Date | null; expires_at: Date | null;
-  latest_is_draft: boolean; expired: boolean; editable: boolean; attempts: ApplicationAttempt[];
+  answer_changes: (QualificationChange & {
+    field: "subject" | "education" | "english";
+  })[];
+  id: string;
+  email: string;
+  answers: Answers;
+  status:
+    | "not-enough-english"
+    | "not-enough-education"
+    | "unsupported_subjects"
+    | "draft"
+    | "payment"
+    | "pending"
+    | "confirmed";
+  has_personal_profile: boolean;
+  paid_at: Date | null;
+  paid_tier: "START" | "PRO" | "VIP" | null;
+  latest_status: "pending" | "confirmed";
+  email_confirmed_at: Date | null;
+  submitted_at: Date;
+  confirmed_at: Date | null;
+  expires_at: Date | null;
+  last_step: string | null;
+  latest_is_draft: boolean;
+  expired: boolean;
+  editable: boolean;
+  attempts: ApplicationAttempt[];
 };
-export type ApplicationFilter = "all" | "not-enough-english" | "not-enough-education" | "unsupported_subjects" | "draft" | "pending" | "confirmed";
+export type ApplicationFilter =
+  | "paid"
+  | "all"
+  | "not-enough-english"
+  | "not-enough-education"
+  | "unsupported_subjects"
+  | "draft"
+  | "payment"
+  | "pending"
+  | "confirmed";
 export const pageSize = 20;
 const records = `WITH histories AS (
   SELECT lower(email) AS email,
@@ -26,11 +74,15 @@ const records = `WITH histories AS (
   SELECT DISTINCT ON (lower(email)) * FROM consultation_attempts
   ORDER BY lower(email), submitted_at DESC, id DESC
 ), records AS (
-  SELECT latest.id, histories.email, COALESCE(p.answers, c.answers, latest.answers) AS answers,
-    CASE WHEN latest.status IN ('unsupported_subjects', 'not-enough-education', 'not-enough-english') THEN latest.status WHEN histories.email_confirmed_at IS NOT NULL THEN 'confirmed' WHEN latest.status = 'draft' THEN 'draft' ELSE 'pending' END AS status,
+  SELECT latest.id, histories.email,
+    (SELECT paid_at FROM private_clients WHERE email = histories.email) AS paid_at,
+    (SELECT tier FROM private_clients WHERE email = histories.email AND paid_at IS NOT NULL) AS paid_tier,
+    EXISTS (SELECT 1 FROM private_clients WHERE email=histories.email AND consultation_profile <> '{}'::jsonb) AS has_personal_profile,
+    COALESCE(p.answers, c.answers, latest.answers) || COALESCE((SELECT consultation_profile || jsonb_build_object('name',name,'email',email) FROM private_clients WHERE email=histories.email), '{}'::jsonb) AS answers,
+    CASE WHEN latest.status IN ('unsupported_subjects', 'not-enough-education', 'not-enough-english') THEN latest.status WHEN latest.status = 'payment' THEN 'payment' WHEN histories.email_confirmed_at IS NOT NULL THEN 'confirmed' WHEN latest.status = 'draft' THEN 'draft' ELSE 'pending' END AS status,
     CASE WHEN latest.status = 'confirmed' THEN 'confirmed' ELSE 'pending' END AS latest_status,
     histories.email_confirmed_at, (latest.status = 'draft') AS latest_is_draft,
-    latest.submitted_at, latest.confirmed_at, p.expires_at,
+    latest.submitted_at, latest.confirmed_at, latest.last_step, p.expires_at,
     (p.id IS NOT NULL OR c.id IS NOT NULL) AS editable,
     (latest.status = 'expired' OR COALESCE(p.expires_at <= now(), false)) AS expired,
     histories.attempts,
@@ -47,7 +99,7 @@ const records = `WITH histories AS (
   LEFT JOIN consultation_pending p ON p.id = latest.id
   LEFT JOIN consultation_applications c ON c.id = latest.id
 )`;
-const where = `WHERE ($1 = 'all' OR ($1 = 'draft' AND latest_is_draft) OR ($1 <> 'draft' AND status = $1))
+const where = `WHERE ($1 = 'all' OR ($1 = 'paid' AND paid_at IS NOT NULL) OR ($1 = 'payment' AND status = 'payment' AND paid_at IS NULL) OR ($1 = 'draft' AND latest_is_draft) OR ($1 NOT IN ('draft', 'payment', 'paid') AND status = $1))
   AND ($2 = '' OR strpos(lower(email), lower($2)) > 0 OR EXISTS (
     SELECT 1 FROM jsonb_array_elements(attempts) AS attempt,
       jsonb_each_text(attempt->'answers') AS answer
@@ -57,24 +109,58 @@ const where = `WHERE ($1 = 'all' OR ($1 = 'draft' AND latest_is_draft) OR ($1 <>
     WHERE strpos(lower(answer.value), lower($2)) > 0
   ))`;
 
-export async function listApplications(filter: ApplicationFilter, search: string, requestedPage: number) {
+export async function listApplications(
+  filter: ApplicationFilter,
+  search: string,
+  requestedPage: number,
+) {
   const db = database();
   const counts = await db.query(`${records} SELECT
     count(*) FILTER (WHERE latest_is_draft)::int AS draft,
     count(*) FILTER (WHERE status = 'pending')::int AS pending,
     count(*) FILTER (WHERE status = 'confirmed')::int AS confirmed FROM records`);
-  const matched = await db.query(`${records} SELECT count(*)::int AS total FROM records ${where}`, [filter, search]);
+  const matched = await db.query(
+    `${records} SELECT count(*)::int AS total FROM records ${where}`,
+    [filter, search],
+  );
   const total = matched.rows[0].total as number;
   const pages = Math.max(1, Math.ceil(total / pageSize));
-  const page = Math.min(pages, Math.max(1, Number.isFinite(requestedPage) ? Math.floor(requestedPage) : 1));
-  const result = await db.query<Application>(`${records} SELECT * FROM records ${where}
-    ORDER BY submitted_at DESC, id DESC LIMIT $3 OFFSET $4`, [filter, search, pageSize, (page - 1) * pageSize]);
-  return { applications: result.rows, counts: counts.rows[0] as { draft: number; pending: number; confirmed: number }, total, page, pages };
+  const page = Math.min(
+    pages,
+    Math.max(1, Number.isFinite(requestedPage) ? Math.floor(requestedPage) : 1),
+  );
+  const result = await db.query<Application>(
+    `${records} SELECT * FROM records ${where}
+    ORDER BY submitted_at DESC, id DESC LIMIT $3 OFFSET $4`,
+    [filter, search, pageSize, (page - 1) * pageSize],
+  );
+  return {
+    applications: result.rows,
+    counts: counts.rows[0] as {
+      draft: number;
+      pending: number;
+      confirmed: number;
+    },
+    total,
+    page,
+    pages,
+  };
 }
 
 export async function getApplication(id: string): Promise<Application | null> {
-  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) return null;
-  const result = await database().query<Application>(`${records} SELECT * FROM records
-    WHERE email = (SELECT lower(email) FROM consultation_attempts WHERE id = $1)`, [id]);
+  if (
+    !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)
+  )
+    return null;
+  const result = await database().query<Application>(
+    `${records} SELECT * FROM records
+    WHERE email = (SELECT lower(email) FROM consultation_attempts WHERE id = $1)`,
+    [id],
+  );
   return result.rows[0] ?? null;
+}
+
+export function paymentCandidateTier(lastStep: string | null) {
+  const tier = lastStep?.startsWith("payment:") ? lastStep.slice(8) : null;
+  return tier === "START" || tier === "PRO" || tier === "VIP" ? tier : null;
 }

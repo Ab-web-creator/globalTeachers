@@ -4,7 +4,6 @@ import type {
 } from "../../../lib/admin/applications";
 import ApplicationFilters from "./application-filters";
 import ApplicationsList from "./applications-list";
-import AdminStat from "./admin-stat";
 
 export default function ApplicationsSection({
   data,
@@ -15,7 +14,6 @@ export default function ApplicationsSection({
   filter: ApplicationFilter;
   search: string;
 }) {
-  const counts = data?.counts;
   return (
     <section>
       <header className="flex flex-wrap items-end justify-between gap-5">
@@ -32,24 +30,6 @@ export default function ApplicationsSection({
           </p>
         </div>
       </header>
-      <div className="mt-8 grid gap-4 sm:grid-cols-3">
-        <AdminStat
-          label="Полученные"
-          value={counts?.confirmed ?? "—"}
-          note="Заявки отправлены через форму"
-          featured
-        />
-        <AdminStat
-          label="Ожидают подтверждения"
-          value={counts?.pending ?? "—"}
-          note="Заявки с неподтверждённым email"
-        />
-        <AdminStat
-          label="Незавершённые формы"
-          value={counts?.draft ?? "—"}
-          note="Последняя попытка осталась черновиком"
-        />
-      </div>
       <div className="mt-8 rounded-3xl border border-brand-100 bg-white p-5 sm:p-6">
         <div className="grid items-center gap-4 lg:grid-cols-[1fr_auto]">
           <h2 className="text-2xl font-semibold leading-tight tracking-tight">Все обращения</h2>

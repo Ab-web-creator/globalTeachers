@@ -1,0 +1,14 @@
+.missing:is(label),
+.missing :is(label, legend) {
+  color: var(--color-red-700);
+}
+
+.missing :is(input:not([type="radio"]), select),
+.missing label > span:first-of-type,
+.missing fieldset > div {
+  border-color: var(--color-red-300);
+}
+
+.missing button[aria-haspopup] {
+  color: var(--color-red-700);
+}

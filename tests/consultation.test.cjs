@@ -190,6 +190,10 @@ test('PostgreSQL application lifecycle', { skip: !process.env.TEST_DATABASE_URL 
       await db.query(fs.readFileSync('database/migrations/033_verify_english_outcome.sql', 'utf8'));
       await db.query(fs.readFileSync('database/migrations/038_client_area.sql', 'utf8'));
       await db.query(fs.readFileSync('database/migrations/042_invitation_html.sql', 'utf8'));
+      await db.query(fs.readFileSync('database/migrations/048_payment_page_cases.sql', 'utf8'));
+      await db.query(fs.readFileSync('database/migrations/050_client_payment_status.sql', 'utf8'));
+      await db.query(fs.readFileSync('database/migrations/051_frozen_client_accounts.sql', 'utf8'));
+      await db.query(fs.readFileSync('database/migrations/052_client_consultation_profile.sql', 'utf8'));
       const queues = await db.query("SELECT tablename FROM pg_tables WHERE schemaname = current_schema() AND tablename LIKE 'consultation_%_followups'");
       assert.equal(queues.rowCount, 0);
       const history = (await db.query('SELECT * FROM consultation_attempts')).rows;
@@ -199,7 +203,7 @@ test('PostgreSQL application lifecycle', { skip: !process.env.TEST_DATABASE_URL 
       await db.query('DELETE FROM consultation_attempts');
       assert.equal(await count('consultation_pending'), 0);
     });
-    await t.test('drafts require an entered email, retain partial input, and promote without duplicate attempts', async () => {
+    await t.test('drafts require name and valid email, retain partial input, and promote without duplicate attempts', async () => {
       const draft = { id: '33333333-3333-4333-8333-333333333333', token: '44444444-4444-4444-8444-444444444444' };
       const payload = { draft, revision: 1, step: 'email', answers: { name: 'Incomplete Teacher', email: '' } };
       assert.equal((await draftRoute(request(payload))).status, 400);
@@ -208,8 +212,14 @@ test('PostgreSQL application lifecycle', { skip: !process.env.TEST_DATABASE_URL 
       });
       assert.equal((await draftRoute(foreign)).status, 403);
       payload.answers.email = 'not-yet-a-valid-email';
+      assert.equal((await draftRoute(request(payload))).status, 400);
+      assert.equal(await getApplication(draft.id), null);
+      payload.answers = { name: '   ', email: 'initial@example.com' };
+      assert.equal((await draftRoute(request(payload))).status, 400);
+      assert.equal(await getApplication(draft.id), null);
+      payload.answers.name = 'Incomplete Teacher';
       assert.equal((await draftRoute(request(payload))).status, 204);
-      let record = (await listApplications('draft', 'not-yet-a-valid-email', 1)).applications[0];
+      let record = (await listApplications('draft', 'initial@example.com', 1)).applications[0];
       assert.equal(record.status, 'draft');
       assert.equal(record.editable, false);
       assert.equal(record.attempts[0].last_step, 'email');
@@ -218,7 +228,7 @@ test('PostgreSQL application lifecycle', { skip: !process.env.TEST_DATABASE_URL 
       const next = { ...payload, revision: 3, step: 'education', answers: { ...payload.answers, email: 'draft@example.com', education: 'Магистр' } };
       await saveDraft(next);
       await saveDraft({ ...payload, revision: 2 });
-      await saveDraft({ ...next, revision: 4, draft: { ...draft, token: '55555555-5555-4555-8555-555555555555' }, answers: { email: 'intruder@example.com' } });
+      await saveDraft({ ...next, revision: 4, draft: { ...draft, token: '55555555-5555-4555-8555-555555555555' }, answers: { name: 'Test Teacher', email: 'intruder@example.com' } });
       record = await getApplication(draft.id);
       assert.equal(record.email, 'draft@example.com');
       assert.equal(record.answers.education, 'Магистр');
@@ -252,14 +262,14 @@ test('PostgreSQL application lifecycle', { skip: !process.env.TEST_DATABASE_URL 
       assert.deepEqual((await db.query('SELECT answers FROM consultation_applications')).rows[0].answers, answers);
       assert.equal(calls.length, 1, 'confirmation sends no internal notification');
       const draft = { id: 'abababab-abab-4bab-8bab-abababababab', token: 'cdcdcdcd-cdcd-4dcd-8dcd-cdcdcdcdcdcd' };
-      await saveDraft({ draft, revision: 1, step: 'email', answers: { email: 'direct@example.com' } });
+      await saveDraft({ draft, revision: 1, step: 'email', answers: { name: 'Test Teacher', email: 'direct@example.com' } });
       assert.equal((await submit(request({ ...answers, email: 'direct@example.com', draft }))).status, 200);
       const record = await getApplication(draft.id);
       assert.equal(record.status, 'pending');
       assert.equal(record.attempts.length, 1);
       assert.deepEqual(record.answers, { ...answers, email: 'direct@example.com' });
       assert.equal(calls.at(-1).body.to, 'direct@example.com');
-      await saveDraft({ draft, revision: 2, step: 'email', answers: { email: 'overwritten@example.com' } });
+      await saveDraft({ draft, revision: 2, step: 'email', answers: { name: 'Test Teacher', email: 'overwritten@example.com' } });
       assert.equal((await getApplication(draft.id)).email, 'direct@example.com');
       await db.query('DELETE FROM consultation_attempts WHERE id = $1', [draft.id]);
     });
@@ -383,7 +393,7 @@ test('PostgreSQL application lifecycle', { skip: !process.env.TEST_DATABASE_URL 
     });
     await t.test('unsupported subject cases are saved, locked, and visible in admin without emails', async () => {
       const draft = { id: '12121212-1212-4212-8212-121212121212', token: '34343434-3434-4434-8434-343434343434' };
-      const payload = { draft, revision: 1, step: 'subject', answers: { email: 'unsupported@example.com', subject: 'Русский язык' }, outcome: 'unsupported_subjects' };
+      const payload = { draft, revision: 1, step: 'subject', answers: { name: 'Test Teacher', email: 'unsupported@example.com', subject: 'Русский язык' }, outcome: 'unsupported_subjects' };
       const before = calls.length;
       assert.equal((await draftRoute(request(payload))).status, 204);
       const record = await getApplication(draft.id);
@@ -399,7 +409,7 @@ test('PostgreSQL application lifecycle', { skip: !process.env.TEST_DATABASE_URL 
     });
     await t.test('secondary vocational education saves a locked outcome and requests email verification', async () => {
       const draft = { id: '78787878-7878-4878-8878-787878787878', token: '90909090-9090-4090-8090-909090909090' };
-      const payload = { draft, revision: 1, step: 'education', answers: { email: 'vocational@example.com', subject: 'Математика', education: 'Среднее специальное' }, outcome: 'not-enough-education' };
+      const payload = { draft, revision: 1, step: 'education', answers: { name: 'Test Teacher', email: 'vocational@example.com', subject: 'Математика', education: 'Среднее специальное' }, outcome: 'not-enough-education' };
       const before = calls.length;
       assert.equal((await draftRoute(request({ ...payload, answers: { ...payload.answers, education: 'Бакалавр' } }))).status, 400);
       assert.equal((await draftRoute(request({ ...payload, requestVerification: false }))).status, 204);
@@ -416,7 +426,7 @@ test('PostgreSQL application lifecycle', { skip: !process.env.TEST_DATABASE_URL 
     });
     await t.test('education outcome email waits one minute, retries, deduplicates, and preserves the supplied content', async () => {
       const draft = { id: 'abab1212-1212-4212-8212-121212121212', token: 'cdcd3434-3434-4434-8434-343434343434' };
-      const payload = { draft, revision: 1, step: 'education', answers: { email: 'education-email@example.com', education: 'Среднее специальное' }, outcome: 'not-enough-education' };
+      const payload = { draft, revision: 1, step: 'education', answers: { name: 'Test Teacher', email: 'education-email@example.com', education: 'Среднее специальное' }, outcome: 'not-enough-education' };
       const before = calls.length;
       await saveDraft({ ...payload, outcome: undefined });
       assert.equal((await db.query("SELECT * FROM consultation_education_emails WHERE email = 'education-email@example.com'")).rowCount, 0);
@@ -458,7 +468,7 @@ test('PostgreSQL application lifecycle', { skip: !process.env.TEST_DATABASE_URL 
     });
     await t.test('english outcome email waits one minute, retries, deduplicates, and preserves the supplied content', async () => {
       const draft = { id: 'abab5656-5656-4656-8656-565656565656', token: 'cdcd3434-3434-4434-8434-343434343434' };
-      const payload = { draft, revision: 1, step: 'english', answers: { email: 'english-email@example.com', english: 'Базовый — могу общаться на простые темы' }, outcome: 'not-enough-english' };
+      const payload = { draft, revision: 1, step: 'english', answers: { name: 'Test Teacher', email: 'english-email@example.com', english: 'Базовый — могу общаться на простые темы' }, outcome: 'not-enough-english' };
       const before = calls.length;
       await saveDraft({ ...payload, outcome: undefined });
       assert.equal((await db.query("SELECT * FROM consultation_english_emails WHERE email = 'english-email@example.com'")).rowCount, 0);
@@ -502,7 +512,7 @@ test('PostgreSQL application lifecycle', { skip: !process.env.TEST_DATABASE_URL 
     });
     await t.test('beginner English outcomes are locked, listed in admin, and queue no education email', async () => {
       const draft = { id: 'abcd7878-7878-4878-8878-787878787878', token: 'abcd9090-9090-4090-8090-909090909090' };
-      const payload = { draft, revision: 1, step: 'english', answers: { email: 'english-outcome@example.com', english: 'Не говорю по-английски' }, outcome: 'not-enough-english', requestVerification: false };
+      const payload = { draft, revision: 1, step: 'english', answers: { name: 'Test Teacher', email: 'english-outcome@example.com', english: 'Не говорю по-английски' }, outcome: 'not-enough-english', requestVerification: false };
       const before = calls.length;
       assert.equal((await draftRoute(request({ ...payload, answers: { ...payload.answers, english: 'Уверенный — могу работать на английском' } }))).status, 400);
       assert.equal((await draftRoute(request(payload))).status, 204);
@@ -663,7 +673,7 @@ test('PostgreSQL application lifecycle', { skip: !process.env.TEST_DATABASE_URL 
     });
     await t.test('answer changes remain audited without step email queues', async () => {
       const draft = { id: '66666666-6666-4666-8666-666666666666', token: '77777777-7777-4777-8777-777777777777' };
-      const payload = { draft, revision: 1, step: 'qualification', answers: { email: 'start@example.com', qualification: 'Нет' } };
+      const payload = { draft, revision: 1, step: 'qualification', answers: { name: 'Test Teacher', email: 'start@example.com', qualification: 'Нет' } };
       const before = calls.length;
       await saveDraft(payload);
       await saveDraft({ ...payload, revision: 2, answers: { ...payload.answers, qualification: 'Есть BEd/MEd' } });

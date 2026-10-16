@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { AboutBenefitCheckIcon, EnvelopeIcon } from "@/app/components/svg";
+import { AboutBenefitCheckIcon, AccessKeyIcon, CallWindowCloseIcon } from "@/app/components/svg";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { ClientTier, Invitation } from "../../../../lib/client-area/types";
@@ -284,17 +284,26 @@ function InvitationDialog({
       }}
       className="fixed inset-0 m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-2xl overflow-y-auto rounded-3xl border border-brand-100 bg-white p-6 text-brand-700 shadow-2xl backdrop:bg-brand-950/50 sm:p-8"
     >
-      {children}
+      <button
+        type="button"
+        aria-label="Закрыть"
+        disabled={preparing || working || invitation?.status === "sending"}
+        onClick={() => void pause(true)}
+        className="absolute top-4 right-4 flex size-9 items-center justify-center rounded-full text-neutral-500 transition-colors hover:bg-brand-50 hover:text-brand-700 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500 disabled:opacity-50"
+      >
+        <CallWindowCloseIcon className="size-5" />
+      </button>
+      <div className="pr-10">{children}</div>
       {invitation && (
         <>
-          <div className="flex items-start gap-4">
+          <div className="flex items-start gap-4 pr-10">
             <span
               className={`flex size-12 shrink-0 items-center justify-center rounded-2xl ${invitation.status === "sent" ? "bg-green-50 text-green-600" : "bg-brand-50 text-brand-500"}`}
             >
               {invitation.status === "sent" ? (
                 <AboutBenefitCheckIcon className="size-6" />
               ) : (
-                <EnvelopeIcon className="size-6" />
+                <AccessKeyIcon className="size-6" />
               )}
             </span>
             <div className="min-w-0 flex-1">
@@ -319,10 +328,9 @@ function InvitationDialog({
           </div>
           <div className="mt-6 flex flex-wrap items-center justify-between gap-2 rounded-2xl bg-brand-50/70 px-4 py-3">
             <div className="min-w-0">
-              <p className="text-xs font-medium uppercase tracking-wide text-neutral-400">
-                Получатель
+              <p className="text-base font-medium">
+                Получатель: {invitation.name}
               </p>
-              <p className="mt-1 text-base font-medium">{invitation.name}</p>
               <p className="mt-0.5 break-all text-sm text-neutral-500">
                 {invitation.email}
               </p>
@@ -335,18 +343,18 @@ function InvitationDialog({
           </div>
           {editing ? (
             <div className="mt-5 space-y-4">
-              <label className="block text-sm font-medium">
-                Тема
+              <label className="flex items-center gap-2 text-base">
+                <span className="shrink-0 font-medium">Тема:</span>
                 <input
                   value={subject || invitation.subject}
                   onChange={(event) => setSubject(event.target.value)}
                   maxLength={300}
-                  className={`${fieldClass} mt-2`}
+                  className="min-w-0 flex-1 border-0 bg-transparent p-0 text-base font-normal focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-300"
                 />
               </label>
               <label className="block text-sm font-medium">
-                Текст письма
                 <textarea
+                  aria-label="Текст письма"
                   value={body || invitation.body}
                   onChange={(event) => setBody(event.target.value)}
                   maxLength={50000}
@@ -354,16 +362,26 @@ function InvitationDialog({
                   className={`${fieldClass} mt-2`}
                 />
               </label>
-              <button
-                type="button"
-                disabled={working}
-                onClick={() => {
-                  void sendEdited();
-                }}
-                className="rounded-xl bg-brand-500 px-6 py-3 text-white disabled:opacity-50"
-              >
-                Отправить ключ
-              </button>
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  disabled={working}
+                  onClick={() => {
+                    void sendEdited();
+                  }}
+                  className="rounded-xl bg-brand-500 px-6 py-3 text-white disabled:opacity-50"
+                >
+                  Отправить ключ
+                </button>
+                <button
+                  type="button"
+                  disabled={working}
+                  onClick={() => void pause(true)}
+                  className="rounded-xl border border-brand-200 px-6 py-3 text-neutral-600 hover:bg-brand-50 disabled:opacity-50"
+                >
+                  Отмена
+                </button>
+              </div>
             </div>
           ) : (
             <div className="relative mt-5 overflow-hidden rounded-2xl border border-brand-100 bg-white">
@@ -430,26 +448,16 @@ function InvitationDialog({
           {error}
         </p>
       )}
-      <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-brand-100 pt-5">
-        {invitation?.status === "sent" && (
+      {invitation?.status === "sent" && (
+        <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-brand-100 pt-5">
           <Link
             href={`/admin/clients?client=${invitation.client_id}`}
             className="inline-flex min-h-12 w-fit items-center justify-center rounded-xl bg-brand-500 px-6 py-3 text-base font-medium text-white transition-colors hover:bg-brand-600"
           >
             Открыть страницу клиента →
           </Link>
-        )}
-        <button
-          type="button"
-          disabled={preparing || working || invitation?.status === "sending"}
-          onClick={() => {
-            void pause(true);
-          }}
-          className="inline-flex min-h-12 items-center justify-center rounded-xl border border-brand-200 px-5 py-2.5 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-50 disabled:opacity-50"
-        >
-          Закрыть
-        </button>
-      </div>
+        </div>
+      )}
     </dialog>
   );
 }

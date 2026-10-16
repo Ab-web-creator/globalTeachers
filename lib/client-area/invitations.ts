@@ -1,4 +1,4 @@
-import { invitationEmailHtml } from "./invitation-email";
+import { invitationEmailHtml, personalInvitationBody } from "./invitation-email";
 import { database } from "../consultation/database";
 import { emailConfig, sendEmail } from "../consultation/email";
 import { createToken, hashToken } from "../consultation/token";
@@ -64,10 +64,12 @@ export async function prepareInvitation(
     } else {
       const client = await connection.query(
         `INSERT INTO private_clients(email, name, tier, key_hash)
-        VALUES ($1, $2, $3, $4) RETURNING id`,
+        VALUES ($1, $2, $3, $4)
+        ON CONFLICT (email) DO UPDATE SET key_hash = EXCLUDED.key_hash
+        RETURNING id`,
         [email, name, tier, hashToken(key)],
       );
-      const body = `Здравствуйте, ${name}!\n\nМы создали вашу личную страницу TeacherNavigator.\n\nВаш персональный ключ — ссылка ниже:\n${origin}/client#${key}\n\nПожалуйста, сохраните это письмо и не пересылайте ссылку другим людям. Это ваш единственный способ входа на личную страницу. Любой, у кого есть эта ссылка, сможет войти от вашего имени.\n\nСтраница доступна только вам по этой ссылке и администратору TeacherNavigator. Здесь вы сможете конфиденциально общаться с нами в чате и записываться на консультации в рамках доступных часов вашего пакета. Доступное время открывает администратор.\n\nС уважением,\nКоманда TeacherNavigator`;
+      const body = personalInvitationBody(name, `${origin}/client#${key}`);
       const inserted = await connection.query(
         `INSERT INTO client_invitations(client_id, subject, body, html_body)
         VALUES ($1, 'Ваш ключ от личной страницы — TeacherNavigator', $2, $3) RETURNING id`,

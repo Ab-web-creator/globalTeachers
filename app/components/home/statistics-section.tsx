@@ -9,8 +9,8 @@ type StatisticItemProps = {
 const statistics = [
   { value: 15000, label: "международных школ" },
   { value: 5000, label: "актуальных вакансий" },
-  { value: 100, label: "стран для поиска работы*" },
-  { value: 25000, label: "новых позиций ежегодно*" },
+  { value: 100, label: "стран для поиска работы" },
+  { value: 25000, label: "новых позиций ежегодно" },
 ];
 
 export default function StatisticsSection() {

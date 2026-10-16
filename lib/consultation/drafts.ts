@@ -36,7 +36,8 @@ export async function saveDraft(input: unknown) {
     if (typeof value !== "string" || value.length > limit) throw new Error("Invalid draft");
     answers[key] = value.trim();
   }
-  if (!answers.email) throw new Error("Empty draft");
+  if (!answers.name || !answers.email) throw new Error("Empty draft");
+  if (answers.email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(answers.email)) throw new Error("Invalid draft");
   const terminal = data.outcome === "unsupported_subjects" || data.outcome === "not-enough-education" || data.outcome === "not-enough-english";
   if (data.outcome !== undefined && !terminal) throw new Error("Invalid draft");
   if ((data.outcome === "not-enough-education" || data.outcome === "not-enough-english") && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(answers.email)) throw new Error("Invalid draft");

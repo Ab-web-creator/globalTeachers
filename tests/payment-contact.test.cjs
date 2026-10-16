@@ -57,7 +57,7 @@ test('contact requests validate, save only contact fields, and avoid duplicate n
   }
 });
 
-test('START, PRO and VIP contact messages appear only in their matching admin folder', { skip: !process.env.TEST_DATABASE_URL }, async () => {
+test('unpaid START, PRO and VIP messages share Candidates instead of paid-client folders', { skip: !process.env.TEST_DATABASE_URL }, async () => {
   const { Pool } = require('pg');
   const { listMessages, getMessage, folderMessageCounts } = require('../lib/mailbox/messages.ts');
   const savedEnv = { ...process.env }, savedPool = global.consultationPool, savedFetch = global.fetch;
@@ -69,24 +69,45 @@ test('START, PRO and VIP contact messages appear only in their matching admin fo
   Object.assign(process.env, { DATABASE_URL: process.env.TEST_DATABASE_URL, SITE_URL: 'https://example.com', RESEND_API_KEY: 'test', CONSULTATION_EMAIL_FROM: 'info@example.com', CONSULTATION_EMAIL_TO: 'team@example.com' });
   global.fetch = async () => Response.json({ id: 'mock-email' });
   try {
-    for (const name of ['013_mailbox.sql', '035_payment_contact_requests.sql', '037_mailbox_spam.sql']) {
+    for (const name of ['013_mailbox.sql', '035_payment_contact_requests.sql', '037_mailbox_spam.sql', '038_client_area.sql']) {
       await db.query(fs.readFileSync(`database/migrations/${name}`, 'utf8'));
     }
+    await db.query("ALTER TABLE private_clients ADD COLUMN paid_at timestamptz, ADD COLUMN frozen_at timestamptz");
     const folders = { START: 'start-clients', PRO: 'pro-clients', VIP: 'vip-clients' };
     for (const [tier, folder] of Object.entries(folders)) {
       const input = { id: require('node:crypto').randomUUID(), name: 'Test Teacher', email: `${tier.toLowerCase()}@example.com`, tier, message: `Payment question for ${tier}` };
       const response = await POST(new Request('https://example.com/api/payment/contact', { method: 'POST', headers: { origin: 'https://example.com' }, body: JSON.stringify(input) }));
       assert.equal(response.status, 200);
-      assert.equal((await getMessage(input.id)).folder, folder);
-      assert.deepEqual((await listMessages(folder, 1)).messages.map((message) => message.id), [input.id]);
+      assert.equal((await getMessage(input.id)).folder, "candidates");
+      assert.ok((await listMessages("candidates", 1)).messages.some((message) => message.id === input.id));
+      assert.equal((await listMessages(folder, 1)).total, 0);
       assert.equal((await listMessages('inbox', 1)).total, 0);
       assert.equal((await listMessages('spam', 1)).total, 0);
     }
     const counts = await folderMessageCounts();
+    assert.deepEqual(counts.candidates, { total: 3, unread: 3 });
     for (const folder of Object.values(folders)) {
-      assert.equal((await listMessages(folder, 1)).total, 1);
-      assert.deepEqual(counts[folder], { total: 1, unread: 1 });
+      assert.equal((await listMessages(folder, 1)).total, 0);
+      assert.equal(counts[folder], undefined);
     }
+    const proMessage = (await listMessages("candidates", 1)).messages.find(message => message.from_address === "pro@example.com");
+    await db.query("INSERT INTO private_clients(email,name,tier,key_hash,paid_at) VALUES('pro@example.com','Test Teacher','PRO','test-hash',now())");
+    assert.equal((await getMessage(proMessage.id)).folder, "pro-clients");
+    assert.equal((await listMessages("pro-clients", 1)).total, 1);
+    assert.equal((await listMessages("candidates", 1)).total, 2);
+    await db.query("UPDATE private_clients SET paid_at=NULL WHERE email='pro@example.com'");
+    assert.equal((await getMessage(proMessage.id)).folder, "candidates");
+    assert.equal((await listMessages("candidates", 1)).total, 3);
+    await db.query("UPDATE private_clients SET frozen_at=now() WHERE email='pro@example.com'");
+    assert.equal((await getMessage(proMessage.id)).folder, "frozen");
+    assert.equal((await listMessages("frozen", 1)).total, 1);
+    assert.equal((await listMessages("candidates", 1)).total, 2);
+    assert.deepEqual((await folderMessageCounts()).frozen, { total: 1, unread: 1 });
+    await db.query("UPDATE private_clients SET paid_at=now(),frozen_at=NULL WHERE email='pro@example.com'");
+    assert.equal((await getMessage(proMessage.id)).folder, "pro-clients");
+    assert.equal((await listMessages("frozen", 1)).total, 0);
+
+
   } finally {
     global.fetch = savedFetch;
     global.consultationPool = savedPool;

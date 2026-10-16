@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     );
     return saved
       ? privateJson({ ok: true })
-      : privateJson({ error: "Сообщение не сохранено." }, 409);
+      : privateJson({ error: "Сообщение не сохранено. Аккаунт может быть заморожен до подтверждения оплаты." }, 409);
   } catch {
     return privateJson({ error: "Не удалось отправить сообщение." }, 503);
   }

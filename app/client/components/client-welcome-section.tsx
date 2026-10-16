@@ -1,5 +1,3 @@
-import { PersonalSeparatorIllustration } from "@/app/components/svg";
-
 export default function ClientWelcomeSection({
   name,
 }: {
@@ -13,9 +11,10 @@ export default function ClientWelcomeSection({
         </h1>
         <p className="mt-7 w-full text-base leading-relaxed text-neutral-600 lg:w-[calc((100%-1.5rem)/2)]">
           Добро пожаловать на вашу личную страницу. Здесь вы можете общаться с
-          нами и выбирать время для консультаций.
+          нами и выбирать время для консультаций. Страница и переписка доступны
+          вам по вашему персональному ключу. Пожалуйста, не передавайте ссылку
+          другим людям и сохраните письмо с ключом.
         </p>
-        <PersonalSeparatorIllustration className="mt-6 w-full lg:w-[calc((100%-1.5rem)/2)]" />
       </header>
     </section>
   );

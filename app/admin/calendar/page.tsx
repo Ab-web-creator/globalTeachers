@@ -19,13 +19,9 @@ export default async function AdminCalendarPage() {
     redirect("/admin");
   const calendar = await adminCalendar().catch(() => null);
   return (
-    <div className="min-h-dvh bg-brand-50 text-brand-700">
+    <div className="min-h-dvh bg-white text-brand-700">
       <AdminNav active="calendar" showLogout={!development} />
-      <main className="mx-auto max-w-400 px-5 py-8 sm:px-10 lg:px-16 xl:px-20">
-        <h1 className="text-3xl font-semibold">Календарь</h1>
-        <p className="mt-7 text-base text-neutral-600">
-          Открывайте часы для консультаций, закрывайте свободные слоты и просматривайте записи клиентов.
-        </p>
+      <main className="mx-auto w-full max-w-400 px-5 py-8 sm:px-10 lg:px-16 xl:px-20">
         {calendar ? (
           <CalendarManager slots={JSON.parse(JSON.stringify(calendar.slots))} />
         ) : (

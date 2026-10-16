@@ -1,5 +1,8 @@
+import { Great_Vibes } from "next/font/google";
 import QueuedImage from "@/app/components/queued-image";
 import { MentorSignatureUnderline } from "@/app/components/svg";
+
+const signatureFont = Great_Vibes({ weight: "400", subsets: ["cyrillic", "latin"], display: "swap", preload: false });
 
 export default function MentorNote() {
   return (
@@ -45,7 +48,7 @@ export default function MentorNote() {
                 <QueuedImage src="/images/myImage-brighter-background.webp" alt="Основатель TeacherNavigator" width={80} height={80} className="size-20 shrink-0 rounded-full object-cover brightness-110" />
                 <div className="pt-1">
                   <p className="text-base font-semibold text-brand-700">Основатель<br />TeacherNavigator</p>
-                  <p style={{ fontFamily: '"Segoe Print", "Bradley Hand", cursive' }} className="mt-2 text-lg italic text-brand-600">С вами на каждом этапе</p>
+                  <p className={`${signatureFont.className} mt-2 text-2xl text-brand-600`}>С вами на каждом этапе</p>
                   <MentorSignatureUnderline />
                 </div>
               </div>
@@ -53,7 +56,7 @@ export default function MentorNote() {
                 <p className="text-sm font-semibold tracking-widest text-neutral-900 lg:text-lg">Основатель TeacherNavigator</p>
                 <p className="mt-1 text-base text-neutral-500 lg:text-lg">Ваш наставник на пути к международной карьере</p>
                 <div className="mt-4 hidden lg:block">
-                  <p style={{ fontFamily: '\"Segoe Print\", \"Bradley Hand\", cursive' }} className="text-xl italic text-brand-600">С вами на каждом этапе</p>
+                  <p className={`${signatureFont.className} text-4xl text-brand-600`}>С вами на каждом этапе</p>
                   <MentorSignatureUnderline />
                 </div>
               </div>

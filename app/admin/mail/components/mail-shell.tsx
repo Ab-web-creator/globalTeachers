@@ -4,7 +4,7 @@ import { ComposeMailIcon, InboxIcon, SentMailIcon, SpamMailIcon } from "@/app/co
 import { folderMessageCounts } from "../../../../lib/mailbox/messages";
 import AdminNav from "../../components/admin-nav";
 
-type Section = "inbox" | "sent" | "start-clients" | "pro-clients" | "vip-clients" | "spam" | "new";
+type Section = "inbox" | "sent" | "candidates" | "frozen" | "start-clients" | "pro-clients" | "vip-clients" | "spam" | "new";
 type Props = { active: Section | null; unread: number; mailbox: string; showLogout: boolean; children: ReactNode };
 
 function FolderLink({ href, current, icon, label, count }: { href: string; current: boolean; icon: ReactNode; label: string; count?: { total: number; unread: number } }) {
@@ -35,9 +35,11 @@ export default async function MailShell({ active, unread, mailbox, showLogout, c
             <Link href="/admin/mail/new" aria-current={active === "new" ? "page" : undefined} className="flex items-center justify-center gap-2 rounded-xl bg-brand-500 px-4 py-3 text-sm font-medium text-white hover:bg-brand-600"><ComposeMailIcon />Написать письмо</Link>
             <nav aria-label="Папки" className="flex flex-wrap gap-1 lg:flex-col">
               <FolderLink href="/admin/mail" current={active === "inbox"} icon={<InboxIcon />} label="Входящие" count={folderCounts.inbox} />
+              <FolderLink href="/admin/mail?folder=candidates" current={active === "candidates"} icon={<InboxIcon />} label="Candidates" count={folderCounts.candidates} />
               <FolderLink href="/admin/mail?folder=start-clients" current={active === "start-clients"} icon={<InboxIcon />} label="Клиенты START" count={folderCounts["start-clients"]} />
               <FolderLink href="/admin/mail?folder=pro-clients" current={active === "pro-clients"} icon={<InboxIcon />} label="Клиенты PRO" count={folderCounts["pro-clients"]} />
               <FolderLink href="/admin/mail?folder=vip-clients" current={active === "vip-clients"} icon={<InboxIcon />} label="VIP клиенты" count={folderCounts["vip-clients"]} />
+              <FolderLink href="/admin/mail?folder=frozen" current={active === "frozen"} icon={<InboxIcon />} label="Замороженные" count={folderCounts.frozen} />
               <FolderLink href="/admin/mail?folder=sent" current={active === "sent"} icon={<SentMailIcon />} label="Отправленные" count={folderCounts.sent} />
               <FolderLink href="/admin/mail?folder=spam" current={active === "spam"} icon={<SpamMailIcon />} label="Спам" count={folderCounts.spam} />
             </nav>

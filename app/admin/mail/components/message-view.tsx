@@ -1,3 +1,5 @@
+import ApplicationPaymentControl from "../../components/application-payment-control";
+import { messagePaymentDetails } from "../../../../lib/admin/client-payment";
 import LocalTime from "../../components/local-time";
 import Link from "next/link";
 import type { MailMessage } from "../../../../lib/mailbox/messages";
@@ -16,25 +18,27 @@ function sandboxedHtml(html: string) {
 }
 
 // readOnly is the no-login view from a Gmail copy: no actions, and attachments are listed by name only.
-export default function MessageView({ message, readOnly = false }: { message: MailMessage; readOnly?: boolean }) {
+export default async function MessageView({ message, readOnly = false, readingPane = false }: { message: MailMessage; readOnly?: boolean; readingPane?: boolean }) {
   const inbound = message.direction === "inbound";
+  const payment = inbound && !readOnly ? await messagePaymentDetails(message.id) : null;
   const rows = [
     [inbound ? "От" : "Кому", inbound ? message.from_address : message.to_addresses.join(", ")],
     ...(inbound ? [["Кому", message.to_addresses.join(", ")]] : []),
     ...(message.cc_addresses.length ? [["Копия", message.cc_addresses.join(", ")]] : []),
     ...(message.reply_to.length ? [["Ответить", message.reply_to.join(", ")]] : []),
   ];
-  const folder = inbound ? (message.folder === "vip-clients" ? "/admin/mail?folder=vip-clients" : message.folder === "pro-clients" ? "/admin/mail?folder=pro-clients" : message.folder === "start-clients" ? "/admin/mail?folder=start-clients" : message.folder === "spam" ? "/admin/mail?folder=spam" : "/admin/mail") : "/admin/mail?folder=sent";
+  const folder = inbound ? (message.folder === "frozen" ? "/admin/mail?folder=frozen" : message.folder === "candidates" ? "/admin/mail?folder=candidates" : message.folder === "vip-clients" ? "/admin/mail?folder=vip-clients" : message.folder === "pro-clients" ? "/admin/mail?folder=pro-clients" : message.folder === "start-clients" ? "/admin/mail?folder=start-clients" : message.folder === "spam" ? "/admin/mail?folder=spam" : "/admin/mail") : "/admin/mail?folder=sent";
   const heading = readOnly
     ? <p className="text-sm text-neutral-500">Просмотр по ссылке из копии письма</p>
-    : <Link href={folder} className="text-sm text-brand-600">← {inbound ? (message.folder === "vip-clients" ? "VIP клиенты" : message.folder === "pro-clients" ? "Клиенты PRO" : message.folder === "start-clients" ? "Клиенты START" : message.folder === "spam" ? "Спам" : "Входящие") : "Отправленные"}</Link>;
+    : <Link href={folder} className="text-sm text-brand-600">← {inbound ? (message.folder === "frozen" ? "Замороженные" : message.folder === "candidates" ? "Candidates" : message.folder === "vip-clients" ? "VIP клиенты" : message.folder === "pro-clients" ? "Клиенты PRO" : message.folder === "start-clients" ? "Клиенты START" : message.folder === "spam" ? "Спам" : "Входящие") : "Отправленные"}</Link>;
   const actions = readOnly ? (
     <Link href={`/admin/mail/${message.id}`} className="rounded-xl bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600">Ответить в админке</Link>
   ) : (
     <div className="flex flex-wrap items-center gap-2">
+      {inbound && <SendKeyButton messageId={message.id} tier={payment?.contact_tier ?? (message.folder === "start-clients" ? "START" : message.folder === "pro-clients" ? "PRO" : message.folder === "vip-clients" ? "VIP" : undefined)} />}
+      {payment && <ApplicationPaymentControl key={`${message.id}:${payment.paid_at}:${payment.tier}`} messageId={message.id} paid={Boolean(payment.paid_at)} initialTier={payment.tier} />}
       {inbound && <MessageActionButton id={message.id} endpoint="/admin/mail/unread" returnTo="/admin/mail" icon={<MarkUnreadIcon className="size-4" />} label="Отметить непрочитанным" busyLabel="Отмечаем…" />}
       <MessageActionButton id={message.id} endpoint="/admin/mail/delete" returnTo={folder} icon={<DeleteApplicationIcon className="size-4" />} label="Удалить" busyLabel="Удаляем…" confirmation="Удалить это письмо навсегда? Это действие нельзя отменить." danger />
-      {inbound && <SendKeyButton messageId={message.id} tier={message.folder === "start-clients" ? "START" : message.folder === "pro-clients" ? "PRO" : message.folder === "vip-clients" ? "VIP" : undefined} />}
       <Link href={`/admin/mail/new?${new URLSearchParams({ reply: message.id })}`} className="rounded-xl bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600">Ответить</Link>
     </div>
   );
@@ -42,7 +46,7 @@ export default function MessageView({ message, readOnly = false }: { message: Ma
     <article className="flex min-h-0 flex-1 flex-col">
       <header className="shrink-0 border-b border-brand-100 px-6 py-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          {heading}
+          {!readingPane && heading}
           {actions}
         </div>
         <h1 className="mt-3 text-xl font-semibold wrap-break-word">{message.subject || "(без темы)"}</h1>

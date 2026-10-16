@@ -1,3 +1,4 @@
+import { clientAccessLink } from "../../../../lib/client-area/access";
 import type { NextRequest } from "next/server";
 import { trustedRequestOrigin } from "../../../../lib/request-origin";
 import { database } from "../../../../lib/consultation/database";
@@ -28,6 +29,8 @@ import { clientTiers, uuidPattern } from "../../../../lib/client-area/types";
 
 import { startAdminAppointmentCall } from "../../../../lib/client-area/appointment-call";
 
+import { markMessagePaid, setClientPayment } from "../../../../lib/admin/client-payment";
+
 export const runtime = "nodejs";
 
 export async function GET(request: NextRequest) {
@@ -38,7 +41,7 @@ export async function GET(request: NextRequest) {
     if (clientId) {
       if (!uuidPattern.test(clientId))
         return privateJson({ error: "Invalid client" }, 400);
-      const workspace = await getWorkspace(clientId);
+      const workspace = await getWorkspace(clientId, true);
       return workspace
         ? privateJson(workspace)
         : privateJson({ error: "Клиент не найден." }, 404);
@@ -66,6 +69,16 @@ export async function POST(request: NextRequest) {
     return privateJson({ error: "Invalid request" }, 400);
   }
   try {
+    if (input?.action === "set-client-payment" && uuidPattern.test(input.clientId ?? "") && (input.tier === null || clientTiers.includes(input.tier)))
+      return privateJson(await setClientPayment(input.clientId, input.tier));
+    if (input?.action === "copy-key" && uuidPattern.test(input.clientId ?? "")) {
+      const paid = await database().query("SELECT id FROM private_clients WHERE id=$1 AND paid_at IS NOT NULL", [input.clientId]);
+      if (!paid.rowCount) return privateJson({ error: "Копирование ключа доступно только для оплаченных клиентов." }, 403);
+      const link = await clientAccessLink(input.clientId);
+      return link ? privateJson({ link }) : privateJson({ error: "Ключ клиента пока не подготовлен. Повторно выберите оплаченный пакет." }, 404);
+    }
+    if (input?.action === "mark-message-paid" && uuidPattern.test(input.messageId ?? "") && (input.tier === null || clientTiers.includes(input.tier)))
+      return privateJson(await markMessagePaid(input.messageId, input.tier));
     if (
       input?.action === "call-client" &&
       uuidPattern.test(input.clientId ?? "")
@@ -166,11 +179,11 @@ export async function POST(request: NextRequest) {
       if (
         !Array.isArray(input.startsAts) ||
         !input.startsAts.length ||
-        input.startsAts.length > 24 ||
+        input.startsAts.length > 48 ||
         !input.startsAts.every((value: unknown) => typeof value === "string")
       )
-        return privateJson({ error: "Выберите от 1 до 24 часов." }, 400);
-      return privateJson({ ids: await openAppointmentSlots(input.startsAts) });
+        return privateJson({ error: "Выберите от 1 до 48 часов." }, 400);
+      return privateJson({ ids: await openAppointmentSlots(input.startsAts, input.timeZone) });
     }
     if (input?.action === "close-slot" && uuidPattern.test(input.id ?? "")) {
       const closed = await closeAppointmentSlot(input.id);

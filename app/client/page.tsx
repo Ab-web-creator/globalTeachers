@@ -27,9 +27,6 @@ export default async function ClientPage() {
     : null;
   return (
     <div className={`${styles.page} min-h-dvh text-brand-700`}>
-      <div aria-hidden="true" className={styles.flowers}>
-        <span className={styles.branch} />
-      </div>
       <ClientAccess
         authenticated={Boolean(workspace)}
         accessLink={accessLink}

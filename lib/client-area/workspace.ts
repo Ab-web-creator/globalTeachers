@@ -1,9 +1,10 @@
+import { clientConsultationProfile } from "./profile";
 import { validTimeZone } from "../admin/timezone";
 import { appointmentTimeZone } from "./booking-rules";
 import { database } from "../consultation/database";
 import type { ClientWorkspace, PrivateClient } from "./types";
 
-const clientSelect = `SELECT client.id, client.email, client.name, client.tier, client.active, client.last_seen_at, (client.profile_photo IS NOT NULL) AS has_profile_photo,
+const clientSelect = `SELECT client.id, client.email, client.name, client.tier, client.active, client.paid_at, client.last_seen_at, (client.profile_photo IS NOT NULL) AS has_profile_photo,
   (CASE WHEN client.tier = 'VIP' THEN COALESCE(client.allowance_hours, policy.hours) ELSE policy.hours END)::int AS allowance_hours,
   (SELECT count(*)::int FROM appointment_slots WHERE booked_by = client.id) AS booked_hours,
   (SELECT count(*)::int FROM private_chat_messages WHERE client_id = client.id AND author = 'client' AND admin_read_at IS NULL) AS unread_count,
@@ -14,7 +15,7 @@ const clientSelect = `SELECT client.id, client.email, client.name, client.tier, 
 export async function listPrivateClients(): Promise<PrivateClient[]> {
   return (
     await database().query(
-      `${clientSelect} ORDER BY awaiting_reply DESC, unread_count DESC, client.created_at DESC`,
+      `${clientSelect} WHERE client.paid_at IS NOT NULL ORDER BY awaiting_reply DESC, unread_count DESC, client.created_at DESC`,
     )
   ).rows.map((client) => ({
     ...client,
@@ -24,13 +25,14 @@ export async function listPrivateClients(): Promise<PrivateClient[]> {
 
 export async function getWorkspace(
   clientId: string,
+  paidOnly = false,
 ): Promise<ClientWorkspace | null> {
   const record = await database().query(
-    `${clientSelect} WHERE client.id = $1`,
+    `${clientSelect} WHERE client.id = $1 ${paidOnly ? "AND client.paid_at IS NOT NULL" : ""}`,
     [clientId],
   );
   if (!record.rowCount) return null;
-  const [messages, slots, bookings] = await Promise.all([
+  const [messages, slots, bookings, profile] = await Promise.all([
     database().query(
       `SELECT id, author, body, created_at FROM (
       SELECT id, author, body, created_at FROM private_chat_messages WHERE client_id = $1
@@ -51,8 +53,10 @@ export async function getWorkspace(
       WHERE booked_by = $1 ORDER BY starts_at DESC LIMIT 200`,
       [clientId],
     ),
+    clientConsultationProfile(clientId),
   ]);
   return {
+    profile,
     booking_time_zone: appointmentTimeZone,
     client: record.rows[0],
     messages: messages.rows,
@@ -68,8 +72,12 @@ export async function addChatMessage(
   body: string,
 ) {
   const result = await database().query(
-    `INSERT INTO private_chat_messages(id, client_id, author, body)
-    SELECT $1, id, $3, $4 FROM private_clients WHERE id = $2 AND active
+    `WITH writable_client AS (
+      SELECT id FROM private_clients WHERE id = $2 AND active
+        AND ($3 = 'admin' OR paid_at IS NOT NULL) FOR SHARE
+    )
+    INSERT INTO private_chat_messages(id, client_id, author, body)
+    SELECT $1, id, $3, $4 FROM writable_client
     ON CONFLICT (id) DO UPDATE SET id = EXCLUDED.id
     WHERE private_chat_messages.client_id = EXCLUDED.client_id AND private_chat_messages.author = EXCLUDED.author
       AND private_chat_messages.body = EXCLUDED.body RETURNING id`,
@@ -90,9 +98,9 @@ export async function openAppointmentSlot(startsAt: string) {
   return (await openAppointmentSlots([startsAt]))[0];
 }
 
-export async function openAppointmentSlots(startsAts: string[]) {
-  if (!startsAts.length || startsAts.length > 24)
-    throw new Error("Выберите от 1 до 24 часов.");
+export async function openAppointmentSlots(startsAts: string[], timeZone: unknown = "UTC") {
+  if (!startsAts.length || startsAts.length > 48)
+    throw new Error("Выберите от 1 до 48 часов.");
   const starts = [...new Set(startsAts)].sort();
   for (const value of starts) {
     const date = new Date(value);
@@ -102,8 +110,9 @@ export async function openAppointmentSlots(startsAts: string[]) {
       date.getTime() > Date.now() + 366 * 86400000
     )
       throw new Error("Выберите время в будущем в пределах года.");
+    const minute = new Intl.DateTimeFormat("en", { timeZone: validTimeZone(timeZone), minute: "2-digit" }).format(date);
     if (
-      date.getUTCMinutes() ||
+      Number(minute) !== 0 ||
       date.getUTCSeconds() ||
       date.getUTCMilliseconds()
     )
@@ -166,12 +175,13 @@ export async function bookAppointment(
     await transaction.query("BEGIN");
     // Serializes each client's allowance check, even when booking different slots concurrently.
     const allowance = await transaction.query(
-      `SELECT client.tier, CASE WHEN client.tier = 'VIP' THEN COALESCE(client.allowance_hours, policy.hours) ELSE policy.hours END AS hours
+      `SELECT client.tier, client.paid_at, CASE WHEN client.tier = 'VIP' THEN COALESCE(client.allowance_hours, policy.hours) ELSE policy.hours END AS hours
       FROM private_clients client JOIN client_package_allowances policy ON policy.tier = client.tier
       WHERE client.id = $1 AND client.active FOR UPDATE OF client, policy`,
       [clientId],
     );
     if (!allowance.rowCount) throw new Error("Нет доступа к личной странице.");
+    if (!allowance.rows[0].paid_at) throw new Error("Аккаунт заморожен. Новые записи недоступны до подтверждения оплаты.");
     const existing = await transaction.query(
       "SELECT id FROM appointment_slots WHERE id = $1 AND booked_by = $2",
       [slotId, clientId],

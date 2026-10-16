@@ -9,12 +9,14 @@ import {
 } from "react";
 import {
   ConsultationDetailIcon,
-  AppointmentClockIcon,
   VideoCallIcon,
   supportCalendarIconPath,
 } from "@/app/components/svg";
+import AppointmentCalendar from "./appointment-calendar";
 import AppointmentCall from "./appointment-call";
 import ClientWelcomeSection from "./client-welcome-section";
+import ConsultationProfileSection from "./consultation-profile-section";
+import { missingProfileFields } from "../../../lib/client-area/profile-fields";
 import PrivateChat from "./private-chat";
 import PackageSupportSection from "./package-support-section";
 import type { ClientWorkspace } from "../../../lib/client-area/types";
@@ -143,7 +145,7 @@ export default function WorkspacePanel({
 
   async function sendMessage(event: FormEvent) {
     event.preventDefault();
-    if (sending.current || !message.trim()) return;
+    if (sending.current || !message.trim() || (!admin && !data.client.paid_at)) return;
     sending.current = true;
     setPending(true);
     setError("");
@@ -170,7 +172,7 @@ export default function WorkspacePanel({
   }
 
   async function book() {
-    if (sending.current || !selectedSlot) return;
+    if (sending.current || !selectedSlot || !data.client.paid_at) return;
     sending.current = true;
     setPending(true);
     setError("");
@@ -252,23 +254,26 @@ export default function WorkspacePanel({
           {notice}
         </p>
       )}
+      {admin && missingProfileFields(data.profile).length > 0 && (
+        <p role="status" className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-base text-amber-900">
+          Анкета клиента не завершена. <span className="text-red-600">Не заполнено:</span> {missingProfileFields(data.profile).join(", ")}.
+        </p>
+      )}
+      {!admin && !data.client.paid_at && (
+        <p role="status" className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-base text-amber-900">
+          Аккаунт заморожен. Вы можете читать предыдущую переписку и просматривать записи. Отправка новых сообщений и запись на консультации доступны после подтверждения оплаты.
+        </p>
+      )}
       {!admin && <ClientWelcomeSection name={data.client.name} />}
-      <div className="grid items-start gap-6 lg:grid-cols-2">
-        {!admin && (
-          <div className="min-w-0 lg:col-start-1 lg:row-start-1">
-            <AppointmentCall bookings={data.bookings} />
-          </div>
-        )}
-        <div
-          className={
-            admin ? "min-w-0" : "min-w-0 lg:col-start-1 lg:row-start-2"
-          }
-        >
+      <div className="grid items-start gap-6 lg:grid-cols-2 lg:items-stretch">
+        <div className="flex min-w-0 flex-col gap-6">
+          {!admin && <AppointmentCall bookings={data.bookings} />}
           <PrivateChat
             messages={data.messages}
             name={data.client.name}
             admin={admin}
-            active={data.client.active}
+            fillHeight={!admin}
+            active={data.client.active && (admin || Boolean(data.client.paid_at))}
             timeZone={timeZone}
             draft={message}
             pending={pending}
@@ -284,13 +289,13 @@ export default function WorkspacePanel({
             onSend={sendMessage}
           />
         </div>
-        <div className={admin ? "min-w-0" : "min-w-0 lg:col-start-2 lg:row-start-1 lg:row-span-2"}>
+        <div className="min-w-0">
         <section
           data-consultations-card
           aria-labelledby="private-calendar-title"
-          className="rounded-3xl border border-brand-100 bg-white/90 p-5 shadow-sm sm:p-7"
+          className="w-fit max-w-full rounded-3xl border border-brand-100 bg-white/90 p-5 shadow-sm sm:p-7"
         >
-          <div className={admin ? undefined : "grid items-start gap-6 lg:grid-cols-2"}>
+          <div>
           <div className="min-w-0">
           <div data-consultations-heading className="flex items-center gap-3">
             <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-500">
@@ -308,7 +313,7 @@ export default function WorkspacePanel({
           </div>
           <p className="mt-7 text-base font-medium leading-relaxed text-neutral-700">
             Пакет {data.client.tier} · Доступно {remaining} из{" "}
-            {data.client.allowance_hours} ч.
+            {data.client.allowance_hours} ч. Время указано в часовом поясе {timeZone}.
           </p>
           {data.client.tier === "PRO" && (
             <p className="mt-3 text-sm text-neutral-500">
@@ -316,10 +321,6 @@ export default function WorkspacePanel({
               календарю {data.booking_time_zone}.
             </p>
           )}
-          <p className="mt-3 flex items-start gap-2 text-base font-medium text-neutral-700">
-            <AppointmentClockIcon className="mt-0.5 size-5 shrink-0 text-amber-600" />
-            <span>Время указано в часовом поясе {timeZone}.</span>
-          </p>
           {admin ? (
             data.client.tier === "VIP" ? (
               <form onSubmit={saveHours} className="mt-6">
@@ -353,7 +354,7 @@ export default function WorkspacePanel({
             )
           ) : (
             <>
-              {remaining === 0 && (
+              {data.client.paid_at && remaining === 0 && (
                 <p className="mt-6 flex items-start gap-2 text-base font-medium leading-relaxed text-neutral-700">
                   <VideoCallIcon className="mt-1 size-5 shrink-0 text-amber-600" />
                   <span>{data.client.tier === "START" && data.bookings.length > 0
@@ -365,61 +366,21 @@ export default function WorkspacePanel({
                     : "Сейчас нет доступных часов для записи. Уточните условия у администратора в чате."}</span>
                 </p>
               )}
-              {remaining > 0 && !data.slots.length && (
+              {data.client.paid_at && remaining > 0 && !data.slots.length && (
                 <p className="mt-6 text-base leading-relaxed text-neutral-500">
                   Пока нет свободных часов. Администратор откроет время для
                   записи — уточните удобные даты в чате.
                 </p>
               )}
-              {remaining > 0 && data.slots.length > 0 && (
-                <form
-                  onSubmit={(event) => {
-                    event.preventDefault();
-                    void book();
-                  }}
-                  className="mt-6"
-                >
-                  <label
-                    htmlFor="appointment-slot"
-                    className="block text-sm font-medium"
-                  >
-                    Выберите свободный час
-                  </label>
-                  <span className="relative mt-2 block">
-                    <select
-                      id="appointment-slot"
-                      required
-                      value={selectedSlot}
-                      onChange={(event) => setSelectedSlot(event.target.value)}
-                      className={`${fieldClass} appearance-none pr-12`}
-                    >
-                      <option value="">Выберите время</option>
-                      {data.slots.map((slot) => (
-                        <option key={slot.id} value={slot.id}>
-                          {format(slot.starts_at)}
-                        </option>
-                      ))}
-                    </select>
-                    <span
-                      aria-hidden="true"
-                      className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2"
-                    >
-                      ⌄
-                    </span>
-                  </span>
-                  <button
-                    type="submit"
-                    disabled={pending || !selectedSlot}
-                    className={`${buttonClass} mt-4`}
-                  >
-                    Забронировать час
-                  </button>
-                </form>
-              )}
+
             </>
           )}
           </div>
-          <div className={admin ? "mt-8 min-w-0 rounded-xl bg-linear-to-br from-amber-100 via-orange-50 to-rose-100 p-4 pl-6" : "min-w-0 rounded-xl bg-linear-to-br from-amber-100 via-orange-50 to-rose-100 w-full max-w-64 p-4 pl-6 lg:justify-self-end lg:self-end"}>
+          </div>
+          {!admin && data.client.paid_at && remaining > 0 && now > 0 && (
+            <AppointmentCalendar slots={data.slots} bookings={data.bookings} timeZone={timeZone} now={now} selectedSlot={selectedSlot} pending={pending} onSelect={setSelectedSlot} onBook={() => void book()} />
+          )}
+          <div className={admin ? "mt-8 min-w-0 rounded-xl bg-linear-to-br from-amber-100 via-orange-50 to-rose-100 p-4 pl-6" : "mt-6 w-full min-w-0 rounded-xl bg-linear-to-br from-amber-100 via-orange-50 to-rose-100 p-4 pl-6"}>
           <h3 className="text-lg font-semibold">
             {admin ? "Записи клиента" : data.bookings.length === 1 ? "Ваша запись" : "Ваши записи"}
           </h3>
@@ -438,14 +399,12 @@ export default function WorkspacePanel({
             </ul>
           )}
           </div>
-          </div>
         </section>
         {!admin && <PackageSupportSection tier={data.client.tier} />}
-        {!admin && <p className="mt-5 px-2 text-sm leading-relaxed text-neutral-500">
-          Страница и переписка доступны вам по вашему персональному ключу. Пожалуйста, не передавайте ссылку другим людям и сохраните письмо с ключом.
-        </p>}
+
         </div>
       </div>
+      <ConsultationProfileSection initial={data.profile} admin={admin} onSaved={(profile) => setData(current => ({ ...current, profile, client: { ...current.client, name: profile.name } }))} />
     </div>
   );
 }

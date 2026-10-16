@@ -2,11 +2,19 @@
 
 import Link from "next/link";
 import LocalTime from "../../components/local-time";
+import CopyClientKeyButton from "./copy-client-key-button";
+import ApplicationPaymentControl from "../../components/application-payment-control";
 import CallClientButton from "./call-client-button";
-import { SearchIcon } from "@/app/components/svg";
+import { SearchIcon, SubjectPickerChevronIcon } from "@/app/components/svg";
 import { useEffect, useState, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
 import type { PrivateClient } from "../../../../lib/client-area/types";
+
+const tierBadgeColors = {
+  START: "border border-blue-300 bg-blue-50 text-blue-700",
+  PRO: "bg-violet-50 text-violet-700",
+  VIP: "border border-amber-300 bg-amber-50 text-amber-800",
+};
 
 export default function ClientDirectory({
   initial,
@@ -45,11 +53,13 @@ export default function ClientDirectory({
     };
     const timer = window.setInterval(update, 5000);
     window.addEventListener("private-chat-read", update);
+    window.addEventListener("client-payment-changed", update);
     document.addEventListener("visibilitychange", update);
     return () => {
       stopped = true;
       clearInterval(timer);
       window.removeEventListener("private-chat-read", update);
+      window.removeEventListener("client-payment-changed", update);
       document.removeEventListener("visibilitychange", update);
     };
   }, []);
@@ -143,14 +153,17 @@ export default function ClientDirectory({
               </p>
             </div>
             <div className="flex shrink-0 flex-wrap items-start justify-end gap-2">
+              <ApplicationPaymentControl key={`payment-${selected.id}-${selected.tier}-${selected.paid_at}`} clientId={selected.id} paid={Boolean(selected.paid_at)} initialTier={selected.tier} />
+              {selected.paid_at && <CopyClientKeyButton key={`key-${selected.id}`} clientId={selected.id} />}
               <CallClientButton key={selected.id} clientId={selected.id} />
               <Link
                 href={href({ client: "" })}
                 scroll={false}
                 aria-label={`Свернуть карточку ${selected.name}`}
-                className="shrink-0 rounded-full bg-brand-50 px-4 py-2 text-sm text-brand-600 hover:bg-brand-100"
+                className="flex items-center justify-center gap-2 rounded-full border border-brand-200 bg-white px-4 py-2 text-sm font-medium text-brand-600 transition-colors hover:bg-brand-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-300 shrink-0"
               >
-                Свернуть ↑
+                <SubjectPickerChevronIcon className="size-4 rotate-180" />
+                Свернуть
               </Link>
             </div>
           </div>
@@ -191,7 +204,7 @@ export default function ClientDirectory({
               {client.last_seen_at ? <>Последний визит: <LocalTime value={client.last_seen_at} /></> : "Ещё не заходил на личную страницу"}
             </p>
             <div className="mt-4 flex items-center justify-between gap-3 text-sm">
-              <span className="rounded-full bg-brand-50 px-3 py-1 font-medium text-brand-600">
+              <span className={`inline-flex items-center rounded-full px-3 pt-1 pb-0.5 leading-5 font-medium ${tierBadgeColors[client.tier]}`}>
                 {client.tier}
               </span>
               <span className="text-neutral-500">

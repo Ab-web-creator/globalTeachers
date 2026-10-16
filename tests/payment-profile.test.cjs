@@ -28,6 +28,7 @@ test('profile data is returned only after a correct, unexpired, unused code', as
   const savedEnv = { ...process.env };
   const savedFetch = global.fetch;
   let record, deliveredCode, reads = 0, throttled = false, missing = false;
+  let excludedDraft;
   Object.assign(process.env, { DATABASE_URL: 'test', SITE_URL: 'https://example.com', RESEND_API_KEY: 'test', CONSULTATION_EMAIL_FROM: 'info@example.com', CONSULTATION_EMAIL_TO: 'admin@example.com' });
   global.fetch = async (url, init) => {
     assert.equal(url, 'https://api.resend.com/emails');
@@ -63,7 +64,8 @@ test('profile data is returned only after a correct, unexpired, unused code', as
       return { rowCount: 1, rows: [{ email: record.email }] };
     }
     reads++;
-    assert.deepEqual(params, ['teacher@example.com']);
+    assert.deepEqual(params, excludedDraft ? ['teacher@example.com', excludedDraft] : ['teacher@example.com']);
+    if (excludedDraft) assert.match(sql, /AND a.id <> \$2/);
     assert.match(sql, /COALESCE\(p.answers, c.answers, a.answers\)/);
     assert.match(sql, /ORDER BY a.submitted_at DESC/);
     return missing ? { rowCount: 0, rows: [] } : { rowCount: 1, rows: [{ answers: { name: 'Анна', subject: 'Математика; Начальная школа; Кыргызский язык', education: 'Магистр', english: 'Уверенный — могу работать на английском', contact: 'private' } }] };
@@ -99,6 +101,7 @@ test('profile data is returned only after a correct, unexpired, unused code', as
     assert.equal(confirmed.status, 200);
     assert.deepEqual(Object.keys(profile).sort(), ['education', 'english', 'name', 'subject']);
     assert.equal(profile.subject, 'Математика');
+    assert.equal(profile.name, 'Анна');
     assert.equal((await verify(challenge, deliveredCode)).status, 400);
     const exhausted = await send();
     for (let i = 0; i < 5; i++) assert.equal((await verify(exhausted, deliveredCode === '123456' ? '654321' : '123456')).status, 400);
@@ -107,6 +110,12 @@ test('profile data is returned only after a correct, unexpired, unused code', as
     record.expired = true;
     assert.equal((await verify(expired, deliveredCode)).status, 400);
     assert.equal(reads, 1);
+    const withDraft = await send();
+    excludedDraft = '11111111-1111-4111-8111-111111111111';
+    const restored = await POST(request({ action: 'verify', challenge: withDraft, code: deliveredCode, excludeDraftId: excludedDraft }));
+    assert.equal(restored.status, 200);
+    assert.equal((await restored.json()).profile.name, 'Анна');
+    excludedDraft = undefined;
     const unknown = await send();
     missing = true;
     assert.deepEqual(await (await verify(unknown, deliveredCode)).json(), { profile: null });

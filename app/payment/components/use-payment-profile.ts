@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import type { PaymentProfile } from "../../../lib/payment/profile";
 
-const emptyProfile: PaymentProfile = { name: "", subject: "", education: "", english: "" };
+const emptyProfile: PaymentProfile = {
+  name: "",
+  subject: "",
+  education: "",
+  english: "",
+};
 
 export default function usePaymentProfile() {
   const [email, setEmail] = useState("");
@@ -16,19 +21,30 @@ export default function usePaymentProfile() {
   const editsRef = useRef(new Set<keyof PaymentProfile>());
   const loadedRef = useRef(false);
   const checkedEmailRef = useRef("");
+  const verificationDraftRef = useRef<string | undefined>(undefined);
 
   useEffect(() => () => requestRef.current?.abort(), []);
 
   function changeEmail(value: string) {
-    if (value.trim().toLowerCase() === email.trim().toLowerCase()) { setEmail(value); return; }
+    if (value.trim().toLowerCase() === email.trim().toLowerCase()) {
+      setEmail(value);
+      return;
+    }
     operationRef.current += 1;
     requestRef.current?.abort();
     requestRef.current = null;
     checkedEmailRef.current = "";
+    verificationDraftRef.current = undefined;
     if (loadedRef.current) {
-      setProfile((current) => Object.fromEntries(Object.entries(current).map(([key, field]) =>
-        [key, editsRef.current.has(key as keyof PaymentProfile) ? field : ""],
-      )) as PaymentProfile);
+      setProfile(
+        (current) =>
+          Object.fromEntries(
+            Object.entries(current).map(([key, field]) => [
+              key,
+              editsRef.current.has(key as keyof PaymentProfile) ? field : "",
+            ]),
+          ) as PaymentProfile,
+      );
       loadedRef.current = false;
     }
     setEmail(value);
@@ -49,12 +65,16 @@ export default function usePaymentProfile() {
     const controller = new AbortController();
     requestRef.current = controller;
     const response = await fetch("/api/payment/profile", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body), signal: controller.signal,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      signal: controller.signal,
     });
     const data = await response.json();
-    if (controller.signal.aborted) throw new DOMException("Aborted", "AbortError");
-    if (!response.ok) throw new Error(data.error || "Не удалось загрузить данные.");
+    if (controller.signal.aborted)
+      throw new DOMException("Aborted", "AbortError");
+    if (!response.ok)
+      throw new Error(data.error || "Не удалось загрузить данные.");
     return data;
   }
 
@@ -65,7 +85,10 @@ export default function usePaymentProfile() {
     setError("");
     setChallenge("");
     try {
-      const data = await post({ action: "request", email: address.trim().toLowerCase() });
+      const data = await post({
+        action: "request",
+        email: address.trim().toLowerCase(),
+      });
       if (data.exists === false) {
         setDialogOpen(false);
         setStatus("");
@@ -74,33 +97,55 @@ export default function usePaymentProfile() {
       setChallenge(data.challenge);
     } catch (cause) {
       if (cause instanceof DOMException && cause.name === "AbortError") return;
-      setError(cause instanceof Error ? cause.message : "Не удалось отправить код.");
+      setError(
+        cause instanceof Error ? cause.message : "Не удалось отправить код.",
+      );
     } finally {
       if (operation === operationRef.current) setBusy(false);
     }
   }
 
-  async function lookup(address = email) {
+  async function lookup(address = email, excludeDraftId?: string) {
     const normalized = address.trim().toLowerCase();
-    if (busy || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized) || normalized === checkedEmailRef.current) return;
+    if (
+      busy ||
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized) ||
+      normalized === checkedEmailRef.current
+    )
+      return;
     const operation = ++operationRef.current;
     checkedEmailRef.current = normalized;
+    verificationDraftRef.current = excludeDraftId;
     setBusy(true);
     setStatus("");
     try {
-      const data = await post({ action: "check", email: normalized });
+      const data = await post({
+        action: "check",
+        email: normalized,
+        excludeDraftId,
+      });
+      if (operation !== operationRef.current) return;
       setStatus("");
       if (data.exists) {
         setDialogOpen(true);
-        void sendCode(address);
+        const invitation = await post({ action: "request", email: normalized, excludeDraftId });
+        if (operation !== operationRef.current) return;
+        if (invitation.exists === false) setDialogOpen(false);
+        else setChallenge(invitation.challenge);
       } else {
         setDialogOpen(false);
         setStatus("");
       }
     } catch (cause) {
       if (cause instanceof DOMException && cause.name === "AbortError") return;
+      if (operation !== operationRef.current) return;
       checkedEmailRef.current = "";
-      setStatus(cause instanceof Error ? cause.message : "Не удалось проверить email. Заполните поля вручную.");
+      setError(cause instanceof Error ? cause.message : "Не удалось отправить код.");
+      setStatus(
+        cause instanceof Error
+          ? cause.message
+          : "Не удалось проверить email. Заполните поля вручную.",
+      );
     } finally {
       if (operation === operationRef.current) setBusy(false);
     }
@@ -125,25 +170,55 @@ export default function usePaymentProfile() {
     setBusy(true);
     setError("");
     try {
-      const data = await post({ action: "verify", challenge, code });
+      const data = await post({ action: "verify", challenge, code, excludeDraftId: verificationDraftRef.current });
+      if (operation !== operationRef.current) return;
       if (data.profile) {
         const saved = data.profile as PaymentProfile;
         loadedRef.current = true;
-        setProfile((current) => Object.fromEntries(Object.entries(saved).map(([key, value]) =>
-          [key, editsRef.current.has(key as keyof PaymentProfile) ? current[key as keyof PaymentProfile] : value],
-        )) as PaymentProfile);
-        setStatus("Email подтверждён. Данные анкеты загружены. Вы можете их изменить.");
+        setProfile(
+          (current) =>
+            Object.fromEntries(
+              Object.entries(saved).map(([key, value]) => [
+                key,
+                editsRef.current.has(key as keyof PaymentProfile) && current[key as keyof PaymentProfile].trim()
+                  ? current[key as keyof PaymentProfile]
+                  : value,
+              ]),
+            ) as PaymentProfile,
+        );
+        setStatus(
+          "Email подтверждён. Ваше имя заполнено автоматически. Вы можете его изменить.",
+        );
       } else setStatus("Email подтверждён.");
       setChallenge("");
       setDialogOpen(false);
     } catch (cause) {
       if (cause instanceof DOMException && cause.name === "AbortError") return;
-      setError(cause instanceof Error ? cause.message : "Не удалось проверить код.");
+      setError(
+        cause instanceof Error ? cause.message : "Не удалось проверить код.",
+      );
     } finally {
       if (operation === operationRef.current) setBusy(false);
     }
   }
 
-  return { email, profile, status, changeEmail, changeField, lookup,
-    verification: { dialogOpen, email, busy, error, ready: Boolean(challenge), sendCode, verify, closeDialog, changeVerificationEmail } };
+  return {
+    email,
+    profile,
+    status,
+    changeEmail,
+    changeField,
+    lookup,
+    verification: {
+      dialogOpen,
+      email,
+      busy,
+      error,
+      ready: Boolean(challenge),
+      sendCode,
+      verify,
+      closeDialog,
+      changeVerificationEmail,
+    },
+  };
 }

@@ -172,6 +172,8 @@ test(
     try {
       for (const name of [
         "001_consultations.sql",
+        "003_consultation_attempt_history.sql",
+        "004_consultation_drafts.sql",
         "013_mailbox.sql",
         "017_browser_calls.sql",
         "018_retry_browser_calls.sql",
@@ -187,6 +189,10 @@ test(
         "045_admin_appointment_calls.sql",
         "046_client_profile_photo.sql",
         "047_client_message_notifications.sql",
+        "048_payment_page_cases.sql",
+        "050_client_payment_status.sql",
+        "051_frozen_client_accounts.sql",
+        "052_client_consultation_profile.sql",
       ]) {
         await db.query(fs.readFileSync(`database/migrations/${name}`, "utf8"));
       }
@@ -221,9 +227,12 @@ test(
             const key = invite.body.match(/\/client#([A-Za-z0-9_-]{43})/)[1];
             assert.equal(await exchangeClientKey(key), null);
             assert.equal(await clientAccessLink(invite.client_id), null);
+            assert.equal((await adminPost(request("/api/admin/clients", { action: "copy-key", clientId: invite.client_id }, adminCookie))).status, 403);
             assert.equal(await deliverInvitation(invite.id), "waiting");
             const repeated = await prepareInvitation(id);
             assert.equal(repeated.id, invite.id);
+            assert.equal((await listPrivateClients()).some(client => client.id === invite.client_id), false);
+            await db.query("UPDATE private_clients SET paid_at=now() WHERE id=$1", [invite.client_id]);
             clients.push({
               tier,
               id: invite.client_id,
@@ -283,6 +292,12 @@ test(
             client.session = session;
             client.cookie = `${clientSessionCookie}=${session}`;
             assert.equal(await clientFromSession(session), client.id);
+            const copied = await adminPost(request("/api/admin/clients", { action: "copy-key", clientId: client.id }, adminCookie));
+            assert.equal(copied.status, 200);
+            assert.equal((await copied.json()).link, `https://example.com/client#${client.key}`);
+            assert.equal(copied.headers.get("cache-control"), "no-store");
+            assert.equal((await adminPost(request("/api/admin/clients", { action: "copy-key", clientId: client.id }, client.cookie))).status, 401);
+
             assert.equal(
               await clientAccessLink(client.id),
               `https://example.com/client#${client.key}`,
@@ -825,7 +840,7 @@ test(
         async () => {
           const id = randomUUID();
           await db.query(
-            "INSERT INTO private_clients(id, email, name, tier, key_hash, active, allowance_hours) VALUES ($1, 'pro-days@example.com', 'PRO Days', 'PRO', $2, true, 99)",
+            "INSERT INTO private_clients(id, email, name, tier, key_hash, active, allowance_hours, paid_at) VALUES ($1, 'pro-days@example.com', 'PRO Days', 'PRO', $2, true, 99, now())",
             [id, randomUUID()],
           );
           assert.equal((await getWorkspace(id)).client.allowance_hours, 3);
@@ -871,7 +886,7 @@ test(
         async () => {
           const id = randomUUID();
           await db.query(
-            "INSERT INTO private_clients(id, email, name, tier, key_hash, active) VALUES ($1, 'vip-extra@example.com', 'VIP Extra', 'VIP', $2, true)",
+            "INSERT INTO private_clients(id, email, name, tier, key_hash, active, paid_at) VALUES ($1, 'vip-extra@example.com', 'VIP Extra', 'VIP', $2, true, now())",
             [id, randomUUID()],
           );
           const slots = await Promise.all([
@@ -926,7 +941,7 @@ test(
           );
           const clientId = randomUUID();
           await db.query(
-            "INSERT INTO private_clients(id, email, name, tier, key_hash, active, allowance_hours) VALUES ($1, 'batch@example.com', 'Batch Client', 'VIP', $2, true, 10)",
+            "INSERT INTO private_clients(id, email, name, tier, key_hash, active, allowance_hours, paid_at) VALUES ($1, 'batch@example.com', 'Batch Client', 'VIP', $2, true, 10, now())",
             [clientId, randomUUID()],
           );
           const taken = await openAppointmentSlot(future(202));
@@ -944,6 +959,13 @@ test(
             ).rowCount,
             0,
           );
+          const halfOffset = new Date(future(2000));
+          halfOffset.setUTCMinutes(30);
+          assert.equal((await openAppointmentSlots([halfOffset.toISOString()], "Asia/Kolkata")).length, 1);
+          await assert.rejects(openAppointmentSlots([halfOffset.toISOString()], "UTC"), /полные часы/);
+          const twoDays = Array.from({ length: 48 }, (_, index) => future(1000 + index));
+          assert.equal((await openAppointmentSlots(twoDays)).length, 48);
+          await assert.rejects(openAppointmentSlots([...twoDays, future(1048)]), /48/);
           const duplicate = await openAppointmentSlots([
             future(204),
             future(204),

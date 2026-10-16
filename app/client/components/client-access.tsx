@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
-import { CopyKeyIcon } from "@/app/components/svg";
+import Link from "next/link";
+import { BrandLogo, CopyKeyIcon } from "@/app/components/svg";
 import ClientNotifications from "./client-notifications";
 import ClientProfilePhoto from "./client-profile-photo";
 import { useEffect, useRef, useState } from "react";
@@ -94,22 +94,9 @@ export default function ClientAccess({
           aria-label="Личная страница"
           className="mx-auto flex max-w-400 flex-wrap items-center justify-between gap-3 px-6 py-2 sm:px-10 lg:px-16 xl:px-20"
         >
-          <div className="flex items-center gap-3">
-            <span className="size-12 shrink-0 overflow-hidden">
-              <Image
-                src="/images/brand/teacher-navigator-globe.webp"
-                alt="TeacherNavigator"
-                width={85}
-                height={48}
-                className="h-12 w-auto max-w-none"
-              />
-            </span>
-            <span className="inline-flex items-center py-1">
-              <span data-personal-title className="bg-linear-to-r from-blue-600 via-violet-600 to-fuchsia-500 bg-clip-text font-serif text-lg leading-none font-[450] tracking-tight text-transparent sm:text-xl">
-                Ваше личное<br />пространство
-              </span>
-            </span>
-          </div>
+          <Link href="/" aria-label="TeacherNavigator — на главную" className="shrink-0">
+            <BrandLogo className="w-28" aria-hidden="true" />
+          </Link>
           {authenticated && (
             <div className="ml-auto flex flex-wrap items-center justify-end gap-2 sm:gap-3">
               <ClientNotifications initialUnread={initialUnread} />

@@ -57,7 +57,7 @@ export { ProfilePhotoIcon } from "./icons/profile-photo";
 
 export { PersonalProfileIllustration } from "./illustrations/personal-profile";
 
-export { CopyKeyIcon, SignOutIcon } from "./icons/account-actions";
+export { CopyKeyIcon, SignOutIcon, AccessKeyIcon } from "./icons/account-actions";
 
 export { NotificationBellIcon } from "./icons/notification-bell";
 

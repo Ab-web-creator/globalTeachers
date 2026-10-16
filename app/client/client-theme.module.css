@@ -23,25 +23,6 @@
   isolation: isolate;
 }
 
-.flowers {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.branch {
-  position: absolute;
-  top: 7rem;
-  right: 55px;
-  width: 340px;
-  aspect-ratio: 729 / 2158;
-  background: url('/images/client/personal-magnolia-bouquet-blue.png') center / contain no-repeat;
-  transform: rotate(-7deg);
-  transform-origin: top center;
-}
-
 .page [data-personal-title] {
   background-image: linear-gradient(120deg, #00c8ee, #3675ff 50%, #883dff);
   background-clip: text;
@@ -117,13 +98,6 @@
   color: white;
 }
 
-@media (max-width: 639px) {
-  .branch {
-    top: 9rem;
-    right: 25px;
-    width: 210px;
-  }
-}
 
 .page > header {
   background-color: #f7faff;

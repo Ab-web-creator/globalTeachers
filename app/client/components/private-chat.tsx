@@ -9,6 +9,7 @@ type Props = {
   name: string;
   admin: boolean;
   active: boolean;
+  fillHeight?: boolean;
   timeZone: string;
   draft: string;
   pending: boolean;
@@ -22,6 +23,7 @@ export default function PrivateChat({
   name,
   admin,
   active,
+  fillHeight = false,
   timeZone,
   draft,
   pending,
@@ -91,9 +93,9 @@ export default function PrivateChat({
     <section
       data-private-chat
       aria-labelledby="private-chat-title"
-      className="overflow-hidden rounded-3xl border border-brand-100 bg-white shadow-sm"
+      className={`overflow-hidden rounded-3xl border border-brand-100 bg-white shadow-sm ${fillHeight ? "lg:flex lg:min-h-0 lg:flex-1 lg:flex-col" : ""}`}
     >
-      <header className="flex items-center gap-3 border-b border-brand-100 px-5 py-3 sm:px-6">
+      <header className="flex shrink-0 items-center gap-3 border-b border-brand-100 px-5 py-3 sm:px-6">
         <span className="flex size-14 shrink-0 items-center justify-center rounded-full bg-brand-50 text-amber-600">
           <CallChatIcon className="size-8" />
         </span>
@@ -120,7 +122,7 @@ export default function PrivateChat({
         aria-label="Личная переписка"
         aria-live="polite"
         aria-relevant="additions text"
-        className="flex h-96 flex-col gap-3 overflow-y-auto overscroll-auto bg-white px-4 py-5 sm:h-112 sm:px-5"
+        className={`flex h-96 flex-col gap-3 overflow-y-auto overscroll-auto bg-white px-4 py-5 sm:h-112 sm:px-5 ${fillHeight ? "lg:h-0 lg:min-h-112 lg:flex-1" : ""}`}
       >
         {!messages.length && (
           <div className="m-auto max-w-xs text-center">
@@ -178,7 +180,7 @@ export default function PrivateChat({
         })}
         <div ref={readMarker} aria-hidden="true" className="h-px shrink-0" />
       </div>
-      <div className="border-t border-brand-100 bg-white px-4 py-4 sm:px-5">
+      <div className="shrink-0 border-t border-brand-100 bg-white px-4 py-4 sm:px-5">
         <form
           data-chat-composer
           onSubmit={onSend}

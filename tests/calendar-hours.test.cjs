@@ -40,3 +40,12 @@ test("nonexistent daylight-saving hours and invalid dates cannot be selected", (
     "02",
   );
 });
+
+test("calendar days and full hours follow the administrator time zone", () => {
+  assert.equal(calendarHourStart("2026-10-16", 9, "Asia/Bangkok"), "2026-10-16T02:00:00.000Z");
+  assert.equal(calendarHourStart("2026-10-16", 9, "America/New_York"), "2026-10-16T13:00:00.000Z");
+  assert.equal(calendarHourStart("2026-10-16", 9, "Asia/Kolkata"), "2026-10-16T03:30:00.000Z");
+  assert.equal(calendarDay(new Date("2026-10-16T22:30:00Z"), "Asia/Bangkok"), "2026-10-17");
+  assert.equal(calendarDay(new Date("2026-10-16T22:30:00Z"), "America/New_York"), "2026-10-16");
+  assert.equal(calendarHourStart("2027-03-14", 2, "America/New_York"), null);
+});

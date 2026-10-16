@@ -1,3 +1,4 @@
+import type { Answers } from "../../app/consultation/components/form-fields";
 export type ClientTier = "START" | "PRO" | "VIP";
 export type PrivateClient = {
   id: string;
@@ -5,6 +6,7 @@ export type PrivateClient = {
   name: string;
   tier: ClientTier;
   active: boolean;
+  paid_at?: string | null;
   last_seen_at?: string | null;
   has_profile_photo?: boolean;
   allowance_hours: number;
@@ -28,6 +30,7 @@ export type AppointmentSlot = {
   client_name?: string;
 };
 export type ClientWorkspace = {
+  profile: Answers;
   booking_time_zone: string;
   client: PrivateClient;
   messages: ChatMessage[];

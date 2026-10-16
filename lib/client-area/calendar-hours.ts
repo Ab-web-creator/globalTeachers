@@ -1,9 +1,9 @@
 import { appointmentTimeZone } from "./booking-rules";
 
-function parts(value: Date) {
+function parts(value: Date, timeZone: string) {
   return Object.fromEntries(
     new Intl.DateTimeFormat("en-CA", {
-      timeZone: appointmentTimeZone,
+      timeZone,
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
@@ -17,14 +17,14 @@ function parts(value: Date) {
   );
 }
 
-export function calendarDay(value: Date) {
-  const result = parts(value);
+export function calendarDay(value: Date, timeZone = appointmentTimeZone) {
+  const result = parts(value, timeZone);
   return `${result.year}-${result.month}-${result.day}`;
 }
 
-// Convert a calendar hour without relying on the administrator's device time zone.
+// Convert a whole hour in the supplied calendar time zone to UTC.
 // Nonexistent hours at the spring daylight-saving transition return null.
-export function calendarHourStart(day: string, hour: number): string | null {
+export function calendarHourStart(day: string, hour: number, timeZone = appointmentTimeZone): string | null {
   if (
     !/^\d{4}-\d{2}-\d{2}$/.test(day) ||
     !Number.isInteger(hour) ||
@@ -36,14 +36,14 @@ export function calendarHourStart(day: string, hour: number): string | null {
   if (!Number.isFinite(target)) return null;
   let value = target;
   for (let attempt = 0; attempt < 4; attempt++) {
-    const local = parts(new Date(value));
+    const local = parts(new Date(value), timeZone);
     const represented = Date.parse(
       `${local.year}-${local.month}-${local.day}T${local.hour}:${local.minute}:${local.second}Z`,
     );
     const correction = target - represented;
     if (!correction) {
       const actual = new Date(value);
-      return calendarDay(actual) === day && Number(local.hour) === hour
+      return calendarDay(actual, timeZone) === day && Number(local.hour) === hour
         ? actual.toISOString()
         : null;
     }

@@ -34,3 +34,12 @@ export function SignOutIcon(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+export function AccessKeyIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <circle cx="8" cy="8" r="5" />
+      <path d="m11.5 11.5 9 9M17 17l3-3m-6 0 3-3" />
+    </svg>
+  );
+}

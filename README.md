@@ -503,3 +503,27 @@ Admins can start an appointment call using «Позвонить клиенту»
 The client welcome area includes a private profile photo, with initials as fallback. Clients can upload JPG, PNG or WebP up to 2 MB. Photo reads and writes are scoped to the authenticated client session and responses are not cached. Apply `046_client_profile_photo.sql` before deploying the updated client area.
 
 The personal-page navbar includes notification counts for unread admin chat messages. Counts refresh every five seconds and persist across sessions. Client messages are marked read only when the end of the chat is visible in an active tab; reading does not change admin unread markers. Apply `047_client_message_notifications.sql`.
+
+### Direct payment-page cases
+
+Run `npm run db:migrate` to apply `048_payment_page_cases.sql`. START, PRO, and VIP payment pages create a candidate case only after both a valid email and a nonblank name are supplied, then update the same record as details change. Entering email alone does not create a case. The case appears under «Оформление пакета» in the admin application list. This status does not mean paid or email-confirmed. Existing consultation histories stay grouped by email and remain intact. Updates require the browser's private draft token and increasing revisions; card details are never included. Automatic saves do not send package emails or create personal-page access. Each browser tab retains its case identity in session storage, and creation is capped at ten payment attempts per email per day.
+
+Payment pages ask candidates only for name and email as personal details. Card payment fields and acknowledgement of the terms remain required in the payment section. Existing profile lookup still requires email verification before loading saved information.
+
+Migration `049_existing_client_cases.sql` backfills missing admin cases for older private clients with a name and email. Existing case histories, private pages, keys, chats, and bookings remain intact; it does not mark payment or email as confirmed or send emails.
+
+Run migration `050_client_payment_status.sql` for the unified user list. All users remain in `/admin`; open an individual inbound email in `/admin/mail`, choose Start/Pro/ViP in the payment selector (saved immediately; «Не заплатил(а)» removes the paid mark) to include them in `/admin/clients`. Email verification, form completion, and Send Key do not mark payment. Marking payment immediately activates the personal page and prepares its persistent key in a draft invitation. It sends no email; Send Key remains an optional separate action, and admin can copy the link for manual sharing. New private clients automatically receive a missing main case.
+
+Both consultation drafts and payment candidates require a nonblank name and a valid email before any case is created. Consultation answers continue autosaving after that minimum is met; neither entering a name alone nor entering an email alone registers a case.
+
+Selecting a paid package in an incoming email also routes all incoming messages from that sender to the corresponding client folder. Unpaid payment-page requests share the Candidates folder; package client folders contain paid clients only.
+
+Removing the paid mark freezes client writing and new appointment bookings, enforced in database mutations and reflected in the client UI. Their active key, existing sessions, chat history, and bookings remain available to read. Marking payment again restores writing and booking without changing their access key.
+
+Migration `051_frozen_client_accounts.sql` records when payment is removed. Incoming mail from frozen accounts appears in «Замороженные», distinct from unpaid Candidates. Restoring payment clears the frozen state and routes correspondence to the selected paid-package folder.
+
+Migration `052_client_consultation_profile.sql` adds editable consultation profiles at the bottom of personal pages. Existing answers prefill from case history; explicit saved values (including cleared optional answers) take precedence. Email remains the verified account identity and is read-only. Partial profiles can be saved, and expanded admin client cases list missing required fields and the saved profile. Updates require the client session and do not change historical consultation submissions or paid-package status.
+
+The admin calendar detects the browser time zone and uses it for date boundaries and whole-hour selection, converting times to UTC for storage. Slots remain shared between administrators. Server validation supports whole local hours even in half-hour-offset zones. The package rule for PRO meetings on separate days still uses the existing booking-policy time zone.
+
+Paid-client keys are copyable before invitation delivery. Existing draft or sent keys are preserved across package changes and payment restoration; canceling an invitation stops email delivery without disabling a paid client’s page. The activation flow needs SITE_URL but does not require email-provider credentials.

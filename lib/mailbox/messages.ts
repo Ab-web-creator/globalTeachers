@@ -1,17 +1,26 @@
 import { database } from "../consultation/database";
 import { emailConfig, sendEmail } from "../consultation/email";
 
-export type MailFolder = "inbox" | "sent" | "start-clients" | "pro-clients" | "vip-clients" | "spam";
+export type MailFolder = "inbox" | "sent" | "candidates" | "frozen" | "start-clients" | "pro-clients" | "vip-clients" | "spam";
 
-// Match this form's notifications against saved requests, including older emails.
-const paymentContactMessage = (tier: 'START' | 'PRO' | 'VIP') => `direction = 'inbound' AND EXISTS (
+// Paid status routes all incoming correspondence; unpaid payment requests share the Candidates folder.
+const senderEmail = `lower(btrim(regexp_replace(COALESCE(mailbox_messages.reply_to[1], mailbox_messages.from_address), '^.*<([^>]+)>.*$', '\\1')))`;
+const paidSender = `SELECT 1 FROM private_clients client WHERE client.email = ${senderEmail} AND client.paid_at IS NOT NULL`;
+const frozenSender = `SELECT 1 FROM private_clients client WHERE client.email = ${senderEmail} AND client.paid_at IS NULL AND client.frozen_at IS NOT NULL`;
+const frozenMessage = `direction = 'inbound' AND NOT spam AND EXISTS (${frozenSender})`;
+const paymentContactMessage = (tier: 'START' | 'PRO' | 'VIP') => `direction = 'inbound' AND NOT spam AND EXISTS (${paidSender} AND client.tier = '${tier}')`;
+const candidateMessage = `direction = 'inbound' AND NOT spam AND NOT EXISTS (${paidSender}) AND NOT EXISTS (${frozenSender}) AND EXISTS (
   SELECT 1 FROM payment_contact_requests request
-  WHERE request.tier = '${tier}' AND mailbox_messages.subject = 'Другой способ оплаты ' || request.tier || ' — TeacherNavigator'
+  WHERE mailbox_messages.id = request.id OR (
+    mailbox_messages.subject = 'Другой способ оплаты ' || request.tier || ' — TeacherNavigator'
     AND request.email = ANY(mailbox_messages.reply_to)
+  )
 )`;
 
 const paymentContactFolder = `CASE
   WHEN spam THEN 'spam'
+  WHEN ${frozenMessage} THEN 'frozen'
+  WHEN ${candidateMessage} THEN 'candidates'
   WHEN ${paymentContactMessage('START')} THEN 'start-clients'
   WHEN ${paymentContactMessage('PRO')} THEN 'pro-clients'
   WHEN ${paymentContactMessage('VIP')} THEN 'vip-clients'
@@ -32,11 +41,13 @@ export const mailPageSize = 30;
 
 export async function listMessages(folder: MailFolder, page: number) {
   const condition = folder === "sent" ? "direction = 'outbound' AND sent_at IS NOT NULL"
+    : folder === "frozen" ? frozenMessage
+    : folder === "candidates" ? candidateMessage
     : folder === "start-clients" ? paymentContactMessage("START")
     : folder === "pro-clients" ? paymentContactMessage("PRO")
     : folder === "vip-clients" ? paymentContactMessage("VIP")
     : folder === "spam" ? "direction = 'inbound' AND spam"
-    : `direction = 'inbound' AND NOT (spam OR ${paymentContactMessage("START")} OR ${paymentContactMessage("PRO")} OR ${paymentContactMessage("VIP")})`;
+    : `direction = 'inbound' AND NOT (spam OR ${frozenMessage} OR ${candidateMessage} OR ${paymentContactMessage("START")} OR ${paymentContactMessage("PRO")} OR ${paymentContactMessage("VIP")})`;
   const counts = await database().query(
     `SELECT count(*) FILTER (WHERE ${condition})::int AS total,
        count(*) FILTER (WHERE direction = 'inbound' AND read_at IS NULL AND NOT spam)::int AS unread
