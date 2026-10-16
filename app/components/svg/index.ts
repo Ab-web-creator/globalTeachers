@@ -64,3 +64,9 @@ export { NotificationBellIcon } from "./icons/notification-bell";
 export { UserProfileIcon } from "./icons/user-profile";
 
 export { SupportCrownIcon } from "./icons/support-crown";
+
+export { personalBotanicalUrl, personalGoldSprigUrl } from "./assets";
+
+export { PersonalSeparatorIllustration } from "./illustrations/personal-separator";
+
+export { AppointmentClockIcon } from "./icons/appointment-clock";

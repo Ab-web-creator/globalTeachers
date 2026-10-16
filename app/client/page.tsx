@@ -1,3 +1,4 @@
+import styles from "./client-theme.module.css";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import {
@@ -25,7 +26,10 @@ export default async function ClientPage() {
     ? await clientAccessLink(workspace.client.id)
     : null;
   return (
-    <div className="min-h-dvh bg-linear-to-br from-amber-50/40 via-brand-50 to-violet-50/60 text-brand-700">
+    <div className={`${styles.page} min-h-dvh text-brand-700`}>
+      <div aria-hidden="true" className={styles.flowers}>
+        <span className={styles.branch} />
+      </div>
       <ClientAccess
         authenticated={Boolean(workspace)}
         accessLink={accessLink}
@@ -34,7 +38,7 @@ export default async function ClientPage() {
         hasPhoto={!!workspace?.client.has_profile_photo}
         initialUnread={workspace?.client.client_unread_count ?? 0}
       />
-      <main className="mx-auto max-w-6xl px-5 py-8 sm:px-10 sm:py-12">
+      <main className="mx-auto max-w-400 px-6 py-8 sm:px-10 sm:py-12 lg:px-16 xl:px-20">
         {workspace && (
           <WorkspacePanel initial={JSON.parse(JSON.stringify(workspace))} />
         )}

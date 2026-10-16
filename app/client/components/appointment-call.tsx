@@ -102,6 +102,7 @@ export default function AppointmentCall({
 
   return (
     <section
+      data-call-card
       aria-labelledby="appointment-call-title"
       className="relative min-w-0 overflow-hidden rounded-3xl border border-brand-400/30 bg-linear-to-br from-brand-600 to-brand-950 p-5 text-white shadow-lg shadow-brand-500/10 sm:p-7"
     >
@@ -152,19 +153,21 @@ export default function AppointmentCall({
       </dialog>
       <div
         aria-hidden="true"
+        data-call-orbit
         className="pointer-events-none absolute -top-20 -right-16 size-64 rounded-full border border-white/10"
       />
       <div
         aria-hidden="true"
+        data-call-orbit
         className="pointer-events-none absolute -right-24 -bottom-32 size-80 rounded-full border border-white/10"
       />
       <div className="relative flex items-center gap-3">
-        <span className="flex size-11 shrink-0 items-center justify-center rounded-full border border-white/25 bg-white/10">
-          <VideoCallIcon className="size-6" />
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-white/25 bg-white/10">
+          <VideoCallIcon className="size-5" />
         </span>
         <h2
           id="appointment-call-title"
-          className="font-serif text-2xl sm:text-3xl"
+          className="font-serif text-xl sm:text-2xl"
         >
           Звонок администратору
         </h2>

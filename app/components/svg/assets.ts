@@ -5,3 +5,6 @@ export const interviewNotesMaskUrl = "/svg/masks/interview-notes.svg";
 export const worldMapSilhouetteUrl = "/svg/maps/world-map.svg";
 export const tesLogoUrl = "/svg/logos/tes-logo.svg";
 export const schroleLogoUrl = "/svg/logos/schrole-logo.svg";
+
+export const personalBotanicalUrl = "/svg/illustrations/personal-botanical.svg";
+export const personalGoldSprigUrl = "/svg/illustrations/personal-gold-sprig.svg";

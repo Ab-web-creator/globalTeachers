@@ -9,6 +9,8 @@ import {
 } from "react";
 import {
   ConsultationDetailIcon,
+  AppointmentClockIcon,
+  CallChatIcon,
   supportCalendarIconPath,
 } from "@/app/components/svg";
 import AppointmentCall from "./appointment-call";
@@ -280,24 +282,27 @@ export default function WorkspacePanel({
         </div>
         <div className={admin ? "min-w-0" : "min-w-0 lg:col-start-2 lg:row-start-1 lg:row-span-2"}>
         <section
+          data-consultations-card
           aria-labelledby="private-calendar-title"
           className="rounded-3xl border border-brand-100 bg-white/90 p-5 shadow-sm sm:p-7"
         >
-          <div className="flex items-center gap-3">
-            <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-500">
+          <div className={admin ? undefined : "grid items-start gap-6 lg:grid-cols-2"}>
+          <div className="min-w-0">
+          <div data-consultations-heading className="flex items-center gap-3">
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-500">
               <ConsultationDetailIcon
                 path={supportCalendarIconPath}
-                className="size-6"
+                className="size-5"
               />
             </span>
             <h2
               id="private-calendar-title"
-              className="font-serif text-3xl text-brand-950"
+              className="font-serif text-xl text-brand-950 sm:text-2xl"
             >
               Консультации
             </h2>
           </div>
-          <p className="mt-7 text-base leading-relaxed text-neutral-600">
+          <p className="mt-7 text-base font-medium leading-relaxed text-neutral-700">
             Пакет {data.client.tier} · Доступно {remaining} из{" "}
             {data.client.allowance_hours} ч. Одна встреча длится 60 минут.
           </p>
@@ -307,8 +312,9 @@ export default function WorkspacePanel({
               календарю {data.booking_time_zone}.
             </p>
           )}
-          <p className="mt-3 text-sm text-neutral-500">
-            Время указано в часовом поясе {timeZone}.
+          <p className="mt-3 flex items-start gap-2 text-base font-medium text-neutral-700">
+            <AppointmentClockIcon className="mt-0.5 size-5 shrink-0 text-amber-600" />
+            <span>Время указано в часовом поясе {timeZone}.</span>
           </p>
           {admin ? (
             data.client.tier === "VIP" ? (
@@ -344,9 +350,9 @@ export default function WorkspacePanel({
           ) : (
             <>
               {remaining === 0 && (
-                <p className="mt-6 text-base leading-relaxed text-neutral-500">
-                  Сейчас нет доступных часов для записи. Уточните условия у
-                  администратора в чате.
+                <p className="mt-6 flex items-start gap-2 text-base font-medium leading-relaxed text-neutral-700">
+                  <CallChatIcon className="mt-1 size-5 shrink-0 text-amber-600" />
+                  <span>Сейчас нет доступных часов для записи. Уточните условия у администратора в чате.</span>
                 </p>
               )}
               {remaining > 0 && !data.slots.length && (
@@ -402,15 +408,17 @@ export default function WorkspacePanel({
               )}
             </>
           )}
-          <h3 className="mt-8 text-lg font-semibold">
-            {admin ? "Записи клиента" : "Ваши записи"}
+          </div>
+          <div className={admin ? "mt-8 min-w-0 rounded-xl bg-linear-to-br from-amber-100 via-orange-50 to-rose-100 p-4 pl-6" : "min-w-0 rounded-xl bg-linear-to-br from-amber-100 via-orange-50 to-rose-100 p-4 pl-6 lg:self-end"}>
+          <h3 className="text-lg font-semibold">
+            {admin ? "Записи клиента" : data.bookings.length === 1 ? "Ваша запись" : "Ваши записи"}
           </h3>
           {!data.bookings.length ? (
             <p className="mt-3 text-base text-neutral-500">Записей пока нет.</p>
           ) : (
             <ul className="mt-4 space-y-3">
               {data.bookings.map((slot) => (
-                <li key={slot.id} className="rounded-xl bg-brand-50 p-4">
+                <li key={slot.id}>
                   <p className="font-medium">{format(slot.starts_at)}</p>
                   <p className="mt-1 text-sm text-neutral-500">
                     60 минут · {timeZone}
@@ -419,6 +427,8 @@ export default function WorkspacePanel({
               ))}
             </ul>
           )}
+          </div>
+          </div>
         </section>
         {!admin && <PackageSupportSection tier={data.client.tier} />}
         {!admin && <p className="mt-5 px-2 text-sm leading-relaxed text-neutral-500">

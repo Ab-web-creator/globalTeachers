@@ -23,7 +23,7 @@ export default function PackageSupportSection({ tier }: { tier: ClientTier }) {
           </div>
         </div>
         <div className="min-w-0">
-          <p className="text-sm leading-relaxed text-neutral-600">{descriptions[tier]}</p>
+          <p className="text-base font-medium leading-relaxed text-neutral-700">{descriptions[tier]}</p>
           <Link href={`/programs/${tier.toLowerCase()}`} className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-brand-600 hover:text-brand-500">
             Подробнее о пакете<CardChevronIcon className="size-4" />
           </Link>

@@ -92,7 +92,7 @@ export default function ClientAccess({
       <header className="border-b border-brand-100 bg-white/80 backdrop-blur-lg">
         <nav
           aria-label="Личная страница"
-          className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-4 sm:px-10"
+          className="mx-auto flex max-w-400 flex-wrap items-center justify-between gap-3 px-6 py-2 sm:px-10 lg:px-16 xl:px-20"
         >
           <div className="flex items-center gap-3">
             <span className="size-12 shrink-0 overflow-hidden">
@@ -104,9 +104,9 @@ export default function ClientAccess({
                 className="h-12 w-auto max-w-none"
               />
             </span>
-            <span className="inline-flex items-center py-2.5">
-              <span className="bg-linear-to-r from-blue-600 via-violet-600 to-fuchsia-500 bg-clip-text text-lg font-bold tracking-tight text-transparent sm:text-xl">
-                Ваше личное пространство
+            <span className="inline-flex items-center py-1">
+              <span data-personal-title className="bg-linear-to-r from-blue-600 via-violet-600 to-fuchsia-500 bg-clip-text font-serif text-lg leading-none font-[450] tracking-tight text-transparent sm:text-xl">
+                Ваше личное<br />пространство
               </span>
             </span>
           </div>
@@ -136,7 +136,7 @@ export default function ClientAccess({
             </div>
           )}
         </nav>
-        <div className="mx-auto max-w-6xl px-5 sm:px-10">
+        <div className="mx-auto max-w-400 px-6 sm:px-10 lg:px-16 xl:px-20">
           {copied && (
             <p role="status" className="pb-4 text-sm text-brand-600">
               Ссылка скопирована. Сохраните её в надёжном месте и не передавайте
@@ -184,7 +184,7 @@ export default function ClientAccess({
       {error && (
         <p
           role="alert"
-          className="mx-auto my-4 max-w-6xl px-5 text-base text-red-700"
+          className="mx-auto my-4 max-w-400 px-6 text-base text-red-700 sm:px-10 lg:px-16 xl:px-20"
         >
           {error}
         </p>

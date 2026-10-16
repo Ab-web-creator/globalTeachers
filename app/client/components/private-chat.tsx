@@ -89,6 +89,7 @@ export default function PrivateChat({
 
   return (
     <section
+      data-private-chat
       aria-labelledby="private-chat-title"
       className="overflow-hidden rounded-3xl border border-brand-100 bg-white shadow-sm"
     >
@@ -101,10 +102,10 @@ export default function PrivateChat({
             id="private-chat-title"
             className="truncate text-xl font-semibold"
           >
-            {admin ? name : "TeacherNavigator"}
+            {admin ? name : "Личный чат"}
           </h2>
           <p className="mt-1 text-sm text-neutral-500">
-            Личный чат · Только вы и {admin ? "клиент" : "администратор"}
+            Только вы и {admin ? "клиент" : "администратор"}
           </p>
         </div>
       </header>
@@ -119,7 +120,7 @@ export default function PrivateChat({
         aria-label="Личная переписка"
         aria-live="polite"
         aria-relevant="additions text"
-        className="flex h-96 flex-col gap-3 overflow-y-auto overscroll-auto bg-brand-50/40 px-4 py-5 sm:h-112 sm:px-5"
+        className="flex h-96 flex-col gap-3 overflow-y-auto overscroll-auto bg-white px-4 py-5 sm:h-112 sm:px-5"
       >
         {!messages.length && (
           <div className="m-auto max-w-xs text-center">
@@ -179,8 +180,9 @@ export default function PrivateChat({
       </div>
       <div className="border-t border-brand-100 bg-white px-4 py-4 sm:px-5">
         <form
+          data-chat-composer
           onSubmit={onSend}
-          className="flex items-end gap-2 rounded-3xl border border-brand-200 bg-brand-50/50 p-1.5 focus-within:border-brand-500"
+          className="flex items-end gap-2 rounded-3xl border border-brand-200 bg-brand-50/50 p-1 focus-within:border-brand-500"
         >
           <textarea
             ref={inputRef}
@@ -204,7 +206,7 @@ export default function PrivateChat({
             readOnly={pending}
             disabled={!active}
             style={{ outline: "none" }}
-            className="min-h-11 min-w-0 flex-1 resize-none overflow-y-auto rounded-2xl bg-transparent px-3 py-2.5 text-base leading-normal text-brand-950 outline-none placeholder:text-neutral-400"
+            className="min-h-9 min-w-0 flex-1 resize-none overflow-y-auto rounded-2xl bg-transparent px-3 py-1.5 text-base leading-normal text-brand-950 outline-none placeholder:text-neutral-400"
           />
           <button
             type="submit"
@@ -212,7 +214,7 @@ export default function PrivateChat({
               pending ? "Отправляем сообщение" : "Отправить сообщение"
             }
             disabled={pending || !active || !draft.trim()}
-            className="mb-0.5 flex size-10 shrink-0 items-center justify-center rounded-full bg-yellow-400 text-slate-900 transition-colors hover:bg-yellow-300 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500 disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-400"
+            className="flex size-9 shrink-0 items-center justify-center rounded-full bg-yellow-400 text-slate-900 transition-colors hover:bg-yellow-300 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500 disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-400"
           >
             <ChatSendIcon className="size-5" />
           </button>
