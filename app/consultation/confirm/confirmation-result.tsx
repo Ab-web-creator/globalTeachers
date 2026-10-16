@@ -42,7 +42,7 @@ export default function ConfirmationResult() {
               <AboutBenefitCheckIcon className="size-5 text-brand-500 sm:size-6" />
             </div>
             <div className="min-w-0">
-              <h1 className="text-2xl font-semibold leading-tight tracking-tight text-brand-950">Электронная почта подтверждена!</h1>
+              <h1 className="text-xl font-semibold leading-tight tracking-tight text-brand-950">Электронная почта подтверждена!</h1>
               <p className="mt-2 text-base leading-relaxed text-neutral-600">Спасибо за обращение в <strong className="font-semibold text-brand-700">TeacherNavigator!</strong></p>
             </div>
           </div>

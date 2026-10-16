@@ -49,3 +49,6 @@ export { VideoExpandIcon } from "./icons/call-controls";
 export { CallChatIcon } from "./icons/call-controls";
 export { ScreenShareIcon } from "./icons/call-controls";
 export { ChatSendIcon } from "./icons/call-controls";
+
+export { GiftIcon } from "./icons/gift";
+export { ConsultationBenefitIcon } from "./icons/consultation-benefit-icon";

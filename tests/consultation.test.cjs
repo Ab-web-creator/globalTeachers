@@ -598,6 +598,39 @@ test('PostgreSQL application lifecycle', { skip: !process.env.TEST_DATABASE_URL 
       assert.equal(await deliverPackageEmail(), false);
       await db.query('DELETE FROM consultation_attempts WHERE id = $1', [id]);
     });
+    await t.test('completed VIP form sends verification then the VIP email through the public routes', async () => {
+      const email = 'complete-vip@example.com';
+      const before = calls.length;
+      assert.equal((await submit(request({ ...answers, email, packagePreference: 'VIP' }))).status, 200);
+      const verification = calls[before].body;
+      assert.equal(verification.to, email);
+      assert.equal(verification.subject, 'Подтвердите email — TeacherNavigator');
+      assert.equal((await db.query('SELECT id FROM consultation_package_emails WHERE email = $1', [email])).rowCount, 0);
+
+      const token = verification.text.match(/\/confirm#([^\s]+)/)[1];
+      assert.equal((await confirm(request({ token }))).status, 200);
+      const job = (await db.query('SELECT * FROM consultation_package_emails WHERE email = $1', [email])).rows[0];
+      assert.equal(job.package_preference, 'VIP');
+      assert.ok(job.due_at.getTime() > Date.now() + 59000);
+      const maintenanceRequest = () => new Request('https://example.com/api/consultation/maintenance', {
+        headers: { authorization: 'Bearer test-scheduler-secret' },
+      });
+      assert.equal((await maintain(maintenanceRequest())).status, 200);
+      assert.equal(calls.filter((call) => call.body.to === email).length, 1, 'no follow-up before the delay');
+
+      await db.query('UPDATE consultation_package_emails SET due_at = now(), next_attempt_at = now() WHERE id = $1', [job.id]);
+      assert.equal((await maintain(maintenanceRequest())).status, 200);
+      const delivered = calls.filter((call) => call.body.to === email);
+      assert.equal(delivered.length, 2);
+      assert.equal(delivered[1].body.subject, 'Пакет VIP — TeacherNavigator');
+      assert.equal(delivered[1].body.text, vipPackageContent('https://example.com').text);
+      assert.ok((await db.query('SELECT sent_at FROM consultation_package_emails WHERE id = $1', [job.id])).rows[0].sent_at);
+
+      assert.equal((await confirm(request({ token }))).status, 200);
+      assert.equal((await maintain(maintenanceRequest())).status, 200);
+      assert.equal(calls.filter((call) => call.body.to === email).length, 2, 'repeated confirmation does not resend');
+      await db.query('DELETE FROM consultation_attempts WHERE id = $1', [job.application_id]);
+    });
     await t.test('START confirmation queues the supplied email once with its payment link', async () => {
       const email = 'start-followup@example.com';
       const token = await savePendingApplication({ ...answers, email, packagePreference: 'Start' });

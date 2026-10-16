@@ -17,6 +17,11 @@ export default function FaqClarityAnimation({ hidden }: { hidden: boolean }) {
     if (!element) return;
     function measureTextBlocks() {
       if (!element || !element.clientWidth) return;
+      const eyebrow = element.querySelector<SVGTextElement>("[data-faq-eyebrow]");
+      if (eyebrow) {
+        const offset = 20 - eyebrow.getBBox().x;
+        element.style.setProperty("--faq-eyebrow-offset", `${offset}px`);
+      }
       const summaryText = element.querySelector<SVGTextElement>("[data-faq-summary-text]");
       const summaryBackground = element.querySelector<SVGRectElement>("[data-faq-summary-background]");
       if (summaryText && summaryBackground) {
@@ -35,7 +40,7 @@ export default function FaqClarityAnimation({ hidden }: { hidden: boolean }) {
     }
     const observer = new ResizeObserver(measureTextBlocks);
     observer.observe(element);
-    element.querySelectorAll<SVGTextElement>("[data-faq-intro-text], [data-faq-summary-text]").forEach(text => observer.observe(text));
+    element.querySelectorAll<SVGTextElement>("[data-faq-eyebrow], [data-faq-intro-text], [data-faq-summary-text]").forEach(text => observer.observe(text));
     measureTextBlocks();
     void document.fonts.ready.then(measureTextBlocks);
     document.fonts.addEventListener("loadingdone", measureTextBlocks);
@@ -47,26 +52,31 @@ export default function FaqClarityAnimation({ hidden }: { hidden: boolean }) {
 
   useEffect(() => {
     if (!container.current) return;
-    const eyebrow = container.current.querySelector<SVGTextElement>("[data-faq-eyebrow]");
-    if (eyebrow) {
-      const offset = 20 - 208 + eyebrow.getComputedTextLength() / 2;
-      container.current.style.setProperty("--faq-eyebrow-offset", `${offset}px`);
-    }
     const section = container.current.closest("section");
     if (!section) return;
+    let fontsReady = false;
+    let disposed = false;
     function checkVisibility() {
-      if (!section || !container.current || container.current.getClientRects().length === 0) return;
+      if (disposed || !fontsReady || !section || !container.current || container.current.getClientRects().length === 0) return;
       const { top, height } = section.getBoundingClientRect();
       const lastQuarterStart = top + height * 0.75;
       if (lastQuarterStart <= 0 || lastQuarterStart > window.innerHeight) return;
+      const eyebrow = container.current.querySelector<SVGTextElement>("[data-faq-eyebrow]");
+      if (eyebrow) {
+        container.current.style.setProperty("--faq-eyebrow-offset", `${20 - eyebrow.getBBox().x}px`);
+      }
       setStarted(true);
       window.removeEventListener("scroll", checkVisibility);
       window.removeEventListener("resize", checkVisibility);
     }
     window.addEventListener("scroll", checkVisibility, { passive: true });
     window.addEventListener("resize", checkVisibility);
-    checkVisibility();
+    void document.fonts.ready.then(() => {
+      fontsReady = true;
+      checkVisibility();
+    });
     return () => {
+      disposed = true;
       window.removeEventListener("scroll", checkVisibility);
       window.removeEventListener("resize", checkVisibility);
     };

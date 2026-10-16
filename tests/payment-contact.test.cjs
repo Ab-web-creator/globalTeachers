@@ -56,3 +56,44 @@ test('contact requests validate, save only contact fields, and avoid duplicate n
     Object.assign(process.env, env);
   }
 });
+
+test('START, PRO and VIP contact messages appear only in their matching admin folder', { skip: !process.env.TEST_DATABASE_URL }, async () => {
+  const { Pool } = require('pg');
+  const { listMessages, getMessage, folderMessageCounts } = require('../lib/mailbox/messages.ts');
+  const savedEnv = { ...process.env }, savedPool = global.consultationPool, savedFetch = global.fetch;
+  const admin = new Pool({ connectionString: process.env.TEST_DATABASE_URL });
+  const schema = `test_payment_folders_${Date.now()}`;
+  await admin.query(`CREATE SCHEMA ${schema}`);
+  const db = new Pool({ connectionString: process.env.TEST_DATABASE_URL, options: `-c search_path=${schema}` });
+  global.consultationPool = db;
+  Object.assign(process.env, { DATABASE_URL: process.env.TEST_DATABASE_URL, SITE_URL: 'https://example.com', RESEND_API_KEY: 'test', CONSULTATION_EMAIL_FROM: 'info@example.com', CONSULTATION_EMAIL_TO: 'team@example.com' });
+  global.fetch = async () => Response.json({ id: 'mock-email' });
+  try {
+    for (const name of ['013_mailbox.sql', '035_payment_contact_requests.sql', '037_mailbox_spam.sql']) {
+      await db.query(fs.readFileSync(`database/migrations/${name}`, 'utf8'));
+    }
+    const folders = { START: 'start-clients', PRO: 'pro-clients', VIP: 'vip-clients' };
+    for (const [tier, folder] of Object.entries(folders)) {
+      const input = { id: require('node:crypto').randomUUID(), name: 'Test Teacher', email: `${tier.toLowerCase()}@example.com`, tier, message: `Payment question for ${tier}` };
+      const response = await POST(new Request('https://example.com/api/payment/contact', { method: 'POST', headers: { origin: 'https://example.com' }, body: JSON.stringify(input) }));
+      assert.equal(response.status, 200);
+      assert.equal((await getMessage(input.id)).folder, folder);
+      assert.deepEqual((await listMessages(folder, 1)).messages.map((message) => message.id), [input.id]);
+      assert.equal((await listMessages('inbox', 1)).total, 0);
+      assert.equal((await listMessages('spam', 1)).total, 0);
+    }
+    const counts = await folderMessageCounts();
+    for (const folder of Object.values(folders)) {
+      assert.equal((await listMessages(folder, 1)).total, 1);
+      assert.deepEqual(counts[folder], { total: 1, unread: 1 });
+    }
+  } finally {
+    global.fetch = savedFetch;
+    global.consultationPool = savedPool;
+    for (const key of Object.keys(process.env)) if (!(key in savedEnv)) delete process.env[key];
+    Object.assign(process.env, savedEnv);
+    await db.end();
+    await admin.query(`DROP SCHEMA ${schema} CASCADE`);
+    await admin.end();
+  }
+});

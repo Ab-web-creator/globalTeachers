@@ -68,7 +68,7 @@ export default function usePaymentProfile() {
       const data = await post({ action: "request", email: address.trim().toLowerCase() });
       if (data.exists === false) {
         setDialogOpen(false);
-        setStatus("Анкета не найдена. Заполните данные ниже.");
+        setStatus("");
         return;
       }
       setChallenge(data.challenge);
@@ -86,7 +86,7 @@ export default function usePaymentProfile() {
     const operation = ++operationRef.current;
     checkedEmailRef.current = normalized;
     setBusy(true);
-    setStatus("Проверяем email…");
+    setStatus("");
     try {
       const data = await post({ action: "check", email: normalized });
       setStatus("");
@@ -95,7 +95,7 @@ export default function usePaymentProfile() {
         void sendCode(address);
       } else {
         setDialogOpen(false);
-        setStatus("Анкета не найдена. Заполните данные ниже.");
+        setStatus("");
       }
     } catch (cause) {
       if (cause instanceof DOMException && cause.name === "AbortError") return;
@@ -133,7 +133,7 @@ export default function usePaymentProfile() {
           [key, editsRef.current.has(key as keyof PaymentProfile) ? current[key as keyof PaymentProfile] : value],
         )) as PaymentProfile);
         setStatus("Email подтверждён. Данные анкеты загружены. Вы можете их изменить.");
-      } else setStatus("Email подтверждён. Анкета не найдена — заполните данные ниже.");
+      } else setStatus("Email подтверждён.");
       setChallenge("");
       setDialogOpen(false);
     } catch (cause) {

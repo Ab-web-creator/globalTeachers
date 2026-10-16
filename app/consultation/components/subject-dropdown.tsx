@@ -19,7 +19,7 @@ export default function SubjectDropdown({ anchor, children }: Props) {
       if (!field || !panel) return;
       const bounds = field.getBoundingClientRect();
       const top = bounds.bottom + 8;
-      const bottom = navigation?.getBoundingClientRect().bottom ?? window.innerHeight - 8;
+      const bottom = Math.min(navigation?.getBoundingClientRect().bottom ?? window.innerHeight - 8, window.innerHeight - 8);
       Object.assign(panel.style, {
         top: `${top}px`,
         left: `${bounds.left}px`,
@@ -42,7 +42,7 @@ export default function SubjectDropdown({ anchor, children }: Props) {
   }, [anchor]);
 
   return createPortal(
-    <div ref={dropdown} className="fixed z-50 flex flex-col overflow-hidden rounded-xl bg-white shadow-xl">
+    <div ref={dropdown} className="fixed z-50 flex max-h-96 flex-col overflow-hidden rounded-xl bg-white shadow-xl">
       {children}
     </div>,
     document.body,

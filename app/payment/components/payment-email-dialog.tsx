@@ -36,7 +36,7 @@ export default function PaymentEmailDialog({ email, busy, error, ready, sendCode
         setEditingEmail(false);
         changeVerificationEmail(newEmail);
       }} className="mt-7">
-        <label htmlFor="payment-corrected-email" className="block text-sm font-medium">Введите ваш емайл</label>
+        <label htmlFor="payment-corrected-email" className="block text-sm font-medium">Электронная почта</label>
         <input ref={emailRef} id="payment-corrected-email" type="email" autoComplete="email" required maxLength={254} value={newEmail} onChange={(event) => setNewEmail(event.target.value)} className="mt-2 w-full rounded-xl border border-brand-200 px-4 py-3 text-base focus:border-brand-500 focus:-outline-offset-2 focus:outline-brand-500" />
         <button type="submit" disabled={busy} className="mt-4 min-h-12 rounded-xl bg-brand-500 px-5 py-3 text-base font-medium text-white hover:bg-brand-600 disabled:opacity-50">Отправить код на этот email</button>
       </form>}

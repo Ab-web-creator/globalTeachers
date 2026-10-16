@@ -4,8 +4,8 @@ import PageHeader from "../../components/page-header";
 import { programs } from "../../components/home/categories/programs";
 import ProgramPageLayout from "../../programs/components/program-page-layout";
 import PaymentHero from "../components/payment-hero";
-import PaymentDetailsSection from "../components/payment-details-section";
-import PaymentSection from "../components/payment-section";
+import PaymentCheckout from "../components/payment-checkout";
+import VipConsultationBenefitsSection from "../components/vip-consultation-benefits-section";
 
 type Props = { params: Promise<{ tier: string }> };
 
@@ -35,8 +35,8 @@ export default async function PaymentPage({ params }: Props) {
     <div className="min-h-screen bg-white text-brand-700">
       <PageHeader />
       <ProgramPageLayout hero={<PaymentHero program={program} />}>
-        <PaymentDetailsSection />
-        <PaymentSection program={program} />
+        {program.tier === "VIP" && <VipConsultationBenefitsSection />}
+        <PaymentCheckout program={program} />
       </ProgramPageLayout>
     </div>
   );

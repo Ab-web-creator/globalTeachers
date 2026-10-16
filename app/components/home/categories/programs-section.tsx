@@ -2,6 +2,7 @@
 
 import QueuedImage from "@/app/components/queued-image";
 import Link from "next/link";
+import { CameraIcon } from "@/app/components/svg";
 import { useState } from "react";
 import FeatureText from "./feature-text";
 import type { Program } from "./programs";
@@ -49,16 +50,25 @@ function ProgramCardFooter({ program }: ProgramCardFooterProps) {
         <p className="flex min-h-14 min-w-0 items-center text-brand-500 @min-[17rem]:flex-1">
           {program.price === null ? (<span className="flex flex-col items-start gap-1">
             <span className="rounded-md bg-brand-100 px-2 py-1 text-sm font-semibold text-brand-600">Индивидуально</span>
-            <span className="text-xs leading-normal text-neutral-600">Стоимость по запросу</span>
+            <span className="text-xs leading-normal text-neutral-600">Стоимость после консультации</span>
           </span>) : (<span className="flex flex-col">
             <span className="text-3xl font-semibold tracking-tight">${program.price}</span>
             <span className="text-base lg:text-xs leading-normal text-neutral-600">единоразовая</span>
           </span>)}
         </p>
-        <Link href={`/programs/${program.tier.toLowerCase()}`} className="shrink-0 rounded-2xl sm:rounded-full bg-linear-to-r from-blue-100 to-violet-200 px-5 py-2.5 sm:py-3 text-base lg:text-sm font-medium whitespace-nowrap text-brand-700 transition hover:from-blue-200 hover:to-violet-300 hover:shadow-md after:absolute after:inset-0 after:rounded-2xl" aria-label={`Подробнее о программе ${program.tier}`}>
+        <Link href={`/programs/${program.tier.toLowerCase()}`} aria-describedby={program.tier === "VIP" ? "vip-consultation-note" : undefined} className="shrink-0 rounded-2xl sm:rounded-full bg-linear-to-r from-blue-100 to-violet-200 px-5 py-2.5 sm:py-3 text-base lg:text-sm font-medium whitespace-nowrap text-brand-700 transition hover:from-blue-200 hover:to-violet-300 hover:shadow-md after:absolute after:inset-0 after:rounded-2xl" aria-label={`Подробнее о программе ${program.tier}`}>
           Подробнее
         </Link>
       </div>
+      {program.tier === "VIP" && (
+        <div id="vip-consultation-note" className="pointer-events-none mt-5 lg:invisible lg:absolute lg:right-32 lg:bottom-4 lg:z-20 lg:mt-0 lg:w-96 lg:rounded-2xl lg:border lg:border-brand-100 lg:bg-white lg:p-5 lg:opacity-0 lg:shadow-xl lg:transition-opacity lg:group-hover:visible lg:group-hover:opacity-100 lg:group-focus-within:visible lg:group-focus-within:opacity-100 motion-reduce:transition-none">
+          <p className="flex items-center gap-2 text-base font-semibold text-neutral-900">
+            <CameraIcon className="size-5 shrink-0 text-neutral-500" />
+            Первая консультация — $99
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-neutral-600">60 минут онлайн. При оформлении VIP стоимость консультации засчитывается в пакет.</p>
+        </div>
+      )}
     </div>
   );
 }

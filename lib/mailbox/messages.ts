@@ -56,15 +56,17 @@ export async function listMessages(folder: MailFolder, page: number) {
   return { messages: result.rows as MailSummary[], total, unread, page: current, pages };
 }
 
-export type FolderUnreadCounts = Partial<Record<MailFolder, number>>;
+export type FolderCounts = Partial<Record<MailFolder, { total: number; unread: number }>>;
 
-export async function folderUnreadCounts(): Promise<FolderUnreadCounts> {
+export async function folderMessageCounts(): Promise<FolderCounts> {
   const result = await database().query(
-    `SELECT ${paymentContactFolder} AS folder, count(*)::int AS unread
-     FROM mailbox_messages WHERE direction = 'inbound' AND read_at IS NULL
+    `SELECT CASE WHEN direction = 'outbound' THEN 'sent' ELSE ${paymentContactFolder} END AS folder,
+       count(*)::int AS total,
+       count(*) FILTER (WHERE direction = 'inbound' AND read_at IS NULL)::int AS unread
+     FROM mailbox_messages WHERE direction = 'inbound' OR sent_at IS NOT NULL
      GROUP BY 1`,
   );
-  return Object.fromEntries(result.rows.map((row) => [row.folder, row.unread]));
+  return Object.fromEntries(result.rows.map((row) => [row.folder, { total: row.total, unread: row.unread }]));
 }
 
 export async function unreadCount() {

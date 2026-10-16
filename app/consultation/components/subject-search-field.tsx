@@ -16,19 +16,21 @@ export default function SubjectSearchField({ query, selected, onQueryChange, onR
   }, []);
 
   return (
-    <div className="flex min-h-14 min-w-0 flex-wrap items-center gap-2 rounded-xl border border-brand-200 bg-white p-2 pr-14 focus-within:border-brand-500">
+    <div className="flex h-full min-w-0 items-center rounded-xl border border-brand-200 bg-white p-2 pr-14 focus-within:border-brand-500">
       <label htmlFor="subject-search" className="sr-only">Поиск по предметам</label>
-      <SelectedSubjects selected={selected} onRemove={(subject) => { onRemove(subject); search.current?.focus({ preventScroll: true }); }} />
-      <input
-        ref={search}
-        id="subject-search"
-        type="search"
-        value={query}
-        onChange={(event) => onQueryChange(event.target.value)}
-        placeholder={selected.length ? "" : "Поиск по предметам"}
-        autoComplete="off"
-        className={`${styles.input} w-8 min-w-8 flex-1 rounded-md bg-transparent px-2 py-1 text-base text-brand-700`}
-      />
+      <div className="flex w-full min-w-0 items-center gap-2 overflow-x-auto">
+        <SelectedSubjects selected={selected} onRemove={(subject) => { onRemove(subject); search.current?.focus({ preventScroll: true }); }} />
+        <input
+          ref={search}
+          id="subject-search"
+          type="search"
+          value={query}
+          onChange={(event) => onQueryChange(event.target.value)}
+          placeholder={selected.length ? "" : "Поиск по предметам"}
+          autoComplete="off"
+          className={`${styles.input} w-24 min-w-24 flex-1 rounded-md bg-transparent px-2 py-1 text-base text-brand-700`}
+        />
+      </div>
     </div>
   );
 }
