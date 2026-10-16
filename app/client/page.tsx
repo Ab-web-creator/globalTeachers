@@ -30,6 +30,7 @@ export default async function ClientPage() {
         authenticated={Boolean(workspace)}
         accessLink={accessLink}
         name={workspace?.client.name}
+        tier={workspace?.client.tier}
         hasPhoto={!!workspace?.client.has_profile_photo}
         initialUnread={workspace?.client.client_unread_count ?? 0}
       />

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { CopyKeyIcon, SignOutIcon } from "@/app/components/svg";
+import { CopyKeyIcon } from "@/app/components/svg";
 import ClientNotifications from "./client-notifications";
 import ClientProfilePhoto from "./client-profile-photo";
 import { useEffect, useRef, useState } from "react";
@@ -11,12 +11,14 @@ export default function ClientAccess({
   accessLink,
   name = "Клиент",
   hasPhoto = false,
+  tier,
   initialUnread = 0,
 }: {
   authenticated: boolean;
   accessLink: string | null;
   name?: string;
   hasPhoto?: boolean;
+  tier?: "START" | "PRO" | "VIP";
   initialUnread?: number;
 }) {
   const started = useRef(false);
@@ -121,16 +123,16 @@ export default function ClientAccess({
                   {copied ? "Ключ скопирован ✓" : "Скопировать ключ"}
                 </button>
               )}
+              <ClientProfilePhoto name={name} hasPhoto={hasPhoto} tier={tier} />
               <button
                 type="button"
                 disabled={busy}
                 onClick={() => void logout()}
-                className="flex min-h-11 shrink-0 items-center gap-2 rounded-xl px-2 py-3 text-left text-sm text-neutral-600 hover:bg-brand-50 disabled:opacity-50"
+                className="min-h-11 shrink-0 rounded-xl border border-brand-200 bg-white px-5 py-2.5 text-sm font-medium text-neutral-600 hover:bg-brand-50 disabled:opacity-50"
               >
-                <SignOutIcon className="size-5 shrink-0" />
                 {busy ? "Выходим…" : "Выйти"}
               </button>
-              <ClientProfilePhoto name={name} hasPhoto={hasPhoto} />
+
             </div>
           )}
         </nav>

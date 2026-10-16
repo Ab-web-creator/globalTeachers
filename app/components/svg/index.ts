@@ -60,3 +60,7 @@ export { PersonalProfileIllustration } from "./illustrations/personal-profile";
 export { CopyKeyIcon, SignOutIcon } from "./icons/account-actions";
 
 export { NotificationBellIcon } from "./icons/notification-bell";
+
+export { UserProfileIcon } from "./icons/user-profile";
+
+export { SupportCrownIcon } from "./icons/support-crown";

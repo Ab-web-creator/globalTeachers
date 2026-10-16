@@ -5,15 +5,16 @@ import { useRef, useState, type ChangeEvent } from "react";
 import {
   ProfilePhotoIcon,
   FormSelectChevronIcon,
-  PersonalProfileIllustration,
 } from "@/app/components/svg";
 
 export default function ClientProfilePhoto({
   name,
   hasPhoto,
+  tier,
 }: {
   name: string;
   hasPhoto: boolean;
+  tier?: "START" | "PRO" | "VIP";
 }) {
   const [photo, setPhoto] = useState(
     hasPhoto ? "/api/client/profile-photo" : "",
@@ -64,7 +65,7 @@ export default function ClientProfilePhoto({
           aria-label="Профиль"
           className="flex cursor-pointer list-none items-center gap-2 rounded-full p-1 text-brand-700 hover:bg-brand-50 focus-visible:-outline-offset-2 [&::-webkit-details-marker]:hidden"
         >
-          <span className="relative flex size-11 items-center justify-center overflow-hidden rounded-full border border-brand-200 bg-linear-to-br from-brand-300 to-brand-600">
+          <span className="relative flex size-11 items-center justify-center overflow-hidden rounded-full border border-brand-200 bg-brand-50">
             {photo ? (
               <Image
                 src={photo}
@@ -76,13 +77,16 @@ export default function ClientProfilePhoto({
                 onError={() => setPhoto("")}
               />
             ) : (
-              <PersonalProfileIllustration className="size-full" />
+              <Image src="/images/client/default-male-avatar.png" alt="Портрет мужчины" fill sizes="44px" className="object-cover" />
             )}
           </span>
           <FormSelectChevronIcon className="mr-1 size-4 transition-transform group-open:rotate-180" />
         </summary>
         <div className="absolute top-full right-0 z-40 mt-3 w-60 rounded-2xl border border-brand-100 bg-white p-3 shadow-lg">
-          <p className="break-words px-2 py-2 text-sm font-semibold">{name}</p>
+          <div className="flex items-center gap-2 px-2 py-2">
+            <p className="min-w-0 break-words text-sm font-semibold">{name}</p>
+            {tier && <span className="ml-auto shrink-0 rounded-full bg-brand-50 px-2 py-1 text-xs font-semibold text-brand-600">{tier}</span>}
+          </div>
           <button
             type="button"
             disabled={busy}
@@ -90,7 +94,7 @@ export default function ClientProfilePhoto({
             className="flex w-full items-center gap-2 rounded-xl px-2 py-3 text-left text-sm text-brand-600 hover:bg-brand-50 disabled:opacity-50"
           >
             <ProfilePhotoIcon className="size-5" />
-            {busy ? "Загружаем…" : photo ? "Изменить фото" : "Добавить фото"}
+            {busy ? "Загружаем…" : "Изменить фото"}
           </button>
         </div>
       </details>

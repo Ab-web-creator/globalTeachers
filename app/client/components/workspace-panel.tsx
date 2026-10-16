@@ -14,6 +14,7 @@ import {
 import AppointmentCall from "./appointment-call";
 import ClientWelcomeSection from "./client-welcome-section";
 import PrivateChat from "./private-chat";
+import PackageSupportSection from "./package-support-section";
 import type { ClientWorkspace } from "../../../lib/client-area/types";
 
 const fieldClass =
@@ -419,8 +420,9 @@ export default function WorkspacePanel({
             </ul>
           )}
         </section>
+        {!admin && <PackageSupportSection tier={data.client.tier} />}
         {!admin && <p className="mt-5 px-2 text-sm leading-relaxed text-neutral-500">
-          Страница и переписка доступны вам по вашему персональному ключу и администратору TeacherNavigator. Пожалуйста, не передавайте ссылку другим людям и сохраните письмо с ключом.
+          Страница и переписка доступны вам по вашему персональному ключу. Пожалуйста, не передавайте ссылку другим людям и сохраните письмо с ключом.
         </p>}
         </div>
       </div>
