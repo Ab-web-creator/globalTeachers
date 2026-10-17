@@ -105,7 +105,7 @@ export default function ClientDirectory({
       {selected && children && (
         <article className={`mt-6 rounded-3xl border border-brand-200 bg-linear-to-br p-4 sm:p-6 ${tierCardColors[selected.tier]}`}>
           <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
-            <div className="min-w-0 flex-1 basis-60">
+            <div className="min-w-0 grow basis-60">
               <h2 className="break-words text-xl font-semibold">
                 {selected.name}
               </h2>
