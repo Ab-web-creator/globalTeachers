@@ -46,9 +46,9 @@ export default async function MailShell({ active, unread, mailbox, showLogout, c
       <AdminNav active="mail" unread={unread} showLogout={showLogout} />
       <main className="mx-auto w-full max-w-400 px-6 sm:px-10 lg:px-16 xl:px-20 flex min-h-0 flex-1 flex-col pt-3 pb-6">
         <div className="grid min-h-0 flex-1 grid-cols-1 grid-rows-[auto_1fr] gap-4 lg:grid-cols-[13rem_minmax(0,1fr)] lg:grid-rows-1 lg:gap-3">
-          <aside className="flex flex-col gap-4">
-            <Link href="/admin/mail/new" aria-current={active === "new" ? "page" : undefined} className="flex items-center justify-center gap-2 rounded-xl bg-brand-500 px-4 py-3 text-sm font-medium text-white hover:bg-brand-600"><ComposeMailIcon />Написать письмо</Link>
-            <details key={active ?? "none"} className="group rounded-xl border border-brand-100 bg-white lg:hidden">
+          <aside className="flex items-start gap-3 lg:flex-col lg:items-stretch lg:gap-4">
+            <Link href="/admin/mail/new" aria-current={active === "new" ? "page" : undefined} className="order-last flex size-11.5 shrink-0 items-center justify-center gap-2 rounded-xl bg-brand-500 text-sm font-medium text-white hover:bg-brand-600 lg:order-none lg:h-auto lg:w-auto lg:px-4 lg:py-3"><ComposeMailIcon /><span className="sr-only lg:not-sr-only">Написать письмо</span></Link>
+            <details key={active ?? "none"} className="group min-w-0 flex-1 rounded-xl border border-brand-100 bg-white lg:hidden">
               <summary className="relative flex cursor-pointer list-none items-center gap-2 rounded-xl py-3 pr-12 pl-4 text-sm font-semibold focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500 [&::-webkit-details-marker]:hidden">
                 {current ? <><span className="shrink-0 text-blue-600">{current.icon}</span>{current.label}</> : "Папки"}
                 <FormSelectChevronIcon className="pointer-events-none absolute top-1/2 right-4 size-5 -translate-y-1/2 text-brand-600 transition-transform group-open:rotate-180" />
