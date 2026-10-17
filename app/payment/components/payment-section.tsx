@@ -62,18 +62,6 @@ export default function PaymentSection({ program, detailsComplete, validateDetai
       title="Стоимость и оформление"
       fade="violet"
       fadeDirection="down"
-      asideClassName="hidden sm:block lg:justify-self-end lg:w-full lg:max-w-sm"
-      aside={program.tier === "VIP" && (
-        <div className="w-full max-w-sm rounded-3xl border border-brand-100 bg-white p-6 shadow-sm sm:p-8">
-          <p className="text-sm font-semibold tracking-widest text-brand-500">ПРОГРАММА VIP</p>
-          <dl className="mt-7">
-            <dt className="text-base text-neutral-500">Стоимость программы</dt>
-            <dd className="mt-3 text-4xl font-semibold text-brand-500">Индивидуально</dd>
-          </dl>
-          <p className="mt-5 text-base leading-relaxed text-neutral-600">Стоимость VIP согласовывается индивидуально.</p>
-          <p className="mt-5 border-t border-brand-100 pt-5 text-base leading-relaxed text-neutral-600">{program.supportSummary}</p>
-        </div>
-      )}
     >
       <div className="payment-form mt-10 max-w-2xl">
         <fieldset>
