@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, type FormEvent } from "react";
-import { CallChatIcon, ChatSendIcon } from "@/app/components/svg";
+import { CallChatIcon, ChatSendIcon, TwoHeartsIcon } from "@/app/components/svg";
 import type { ChatMessage } from "../../../lib/client-area/types";
 
 type Props = {
@@ -35,11 +35,44 @@ export default function PrivateChat({
   const logRef = useRef<HTMLDivElement>(null);
   const atBottom = useRef(true);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const heartsRef = useRef<HTMLDivElement>(null);
+  const heartAnimations = useRef<Animation[]>([]);
+  const seenMessages = useRef(new Set(messages.map((message) => message.id)));
+  const sentCount = useRef(0);
+  const conversation = useRef(name);
   const ownRole = admin ? "admin" : "client";
   const last = messages.at(-1);
   const lastId = last?.id;
   const lastIsOwn = last?.author === ownRole;
   const previousLastId = useRef(lastId);
+  useEffect(() => {
+    if (conversation.current !== name) {
+      conversation.current = name;
+      seenMessages.current = new Set(messages.map((message) => message.id));
+      sentCount.current = 0;
+      return;
+    }
+    let celebrate = false;
+    for (const message of messages) {
+      if (seenMessages.current.has(message.id)) continue;
+      seenMessages.current.add(message.id);
+      if (admin && message.author === "admin") {
+        sentCount.current += 1;
+        if (sentCount.current % 3 === 0) celebrate = true;
+      }
+    }
+    if (!celebrate || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    heartAnimations.current.forEach((animation) => animation.cancel());
+    heartAnimations.current = Array.from(heartsRef.current?.children ?? []).map((heart, index) => {
+      const drift = ((index % 7) - 3) * 38;
+      return heart.animate([
+        { opacity: 0, transform: "translate(0, 0) scale(0.3) rotate(0deg)" },
+        { opacity: 1, offset: 0.15 },
+        { opacity: 0, transform: `translate(${drift}px, -${280 + (index % 5) * 40}px) scale(1.1) rotate(${drift}deg)` },
+      ], { duration: 1800 + (index % 4) * 150, delay: (index % 6) * 60, easing: "cubic-bezier(0.2, 0.6, 0.35, 1)" });
+    });
+  }, [messages, admin, name]);
+  useEffect(() => () => heartAnimations.current.forEach((animation) => animation.cancel()), []);
   const dateFormat = new Intl.DateTimeFormat("ru-RU", {
     day: "numeric",
     month: "long",
@@ -93,21 +126,21 @@ export default function PrivateChat({
     <section
       data-private-chat
       aria-labelledby="private-chat-title"
-      className={`overflow-hidden rounded-3xl border border-brand-100 bg-white shadow-sm ${fillHeight ? "lg:flex lg:min-h-0 lg:flex-1 lg:flex-col" : ""}`}
+      className={`relative overflow-hidden rounded-3xl border border-brand-100 bg-white shadow-sm ${fillHeight ? "lg:flex lg:min-h-0 lg:flex-1 lg:flex-col" : ""}`}
     >
       <header className="flex shrink-0 items-center gap-3 border-b border-brand-100 px-5 py-3 sm:px-6">
         <span className="flex size-14 shrink-0 items-center justify-center rounded-full bg-brand-50 text-amber-600">
-          <CallChatIcon className="size-8" />
+          {admin ? <TwoHeartsIcon className="size-9" /> : <CallChatIcon className="size-8" />}
         </span>
         <div className="min-w-0">
           <h2
             id="private-chat-title"
-            className="truncate text-xl font-semibold"
+            className="break-words text-xl font-semibold"
           >
-            {admin ? name : "Давайте поболтаем"}
+            {admin ? <>Поговори с <span className="text-brand-500">{name}</span> от души</> : "Давайте поболтаем"}
           </h2>
           <p className="mt-1 text-sm text-neutral-500">
-            {admin ? "Только вы и клиент" : "О планах, сомнениях и всём, что хочется обсудить."}
+            {admin ? "тут только вы и ваш клиент: интим гарантирован" : "О планах, сомнениях и всём, что хочется обсудить."}
           </p>
         </div>
       </header>
@@ -225,6 +258,15 @@ export default function PrivateChat({
           Enter — отправить · Shift+Enter — новая строка
         </p>
       </div>
+      {admin && (
+        <div ref={heartsRef} aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 bottom-20 z-10 overflow-hidden motion-reduce:hidden">
+          {Array.from({ length: 18 }, (_, index) => (
+            <span key={index} className={`absolute bottom-0 opacity-0 ${index % 3 === 0 ? "text-red-500" : index % 3 === 1 ? "text-amber-400" : "text-purple-500"}`} style={{ left: `${25 + (index % 9) * 6}%` }}>
+              <TwoHeartsIcon solid className={index % 2 === 0 ? "size-7" : "size-5"} />
+            </span>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

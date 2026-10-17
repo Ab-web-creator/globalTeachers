@@ -1,4 +1,6 @@
 export { BrandLogo } from "./illustrations/brand-logo";
+export { TwoHeartsIcon } from "./icons/two-hearts";
+export { FriendlyConversationIcon } from "./icons/friendly-conversation";
 export { MenuHomeIcon, MenuPricingIcon } from "./icons/menu-cards";
 export { ApplicationEnglishIcon, ApplicationEducationIcon, ApplicationCalendarIcon, ApplicationStarIcon } from "./icons/application-details";
 export { ServiceCategoryIllustration } from "./illustrations/service-category-illustration";

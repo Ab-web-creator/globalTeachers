@@ -291,7 +291,7 @@ export default function WorkspacePanel({
       </dialog>
       {admin && missingProfileFields(data.profile).length > 0 && (
         <p role="status" className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-base text-amber-900">
-          Анкета клиента не завершена. <span className="text-red-600">Не заполнено:</span> {missingProfileFields(data.profile).join(", ")}.
+          Анкета клиента не завершена. Не заполнено: {missingProfileFields(data.profile).join(", ")}.
         </p>
       )}
       {!admin && !data.client.paid_at && (
@@ -301,7 +301,7 @@ export default function WorkspacePanel({
       )}
       {!admin && <ClientWelcomeSection name={data.client.name} />}
       <div className="grid items-start gap-6 lg:grid-cols-2 lg:items-stretch lg:gap-y-0">
-        <div className="order-2 flex min-w-0 flex-col gap-6 lg:col-start-2 lg:row-start-1 lg:row-span-2">
+        <div className={`order-2 flex min-w-0 flex-col gap-6 lg:col-start-2 lg:row-start-1 ${admin ? "" : "lg:row-span-2"}`}>
           <PrivateChat
             messages={data.messages}
             name={data.client.name}
@@ -328,7 +328,7 @@ export default function WorkspacePanel({
         <section
           data-consultations-card
           aria-labelledby="private-calendar-title"
-          className="w-fit max-w-full lg:col-start-1 lg:row-start-2 rounded-3xl border border-brand-100 bg-white/90 p-5 shadow-sm sm:p-7"
+          className={`w-fit max-w-full lg:col-start-1 ${admin ? "lg:row-start-1" : "lg:row-start-2"} rounded-3xl border border-brand-100 bg-white/90 p-5 shadow-sm sm:p-7`}
         >
           <div>
           <div className="min-w-0">

@@ -2,18 +2,19 @@
 
 import Link from "next/link";
 import LocalTime from "../../components/local-time";
+import cardStyles from "../../components/application-card.module.css";
 import CopyClientKeyButton from "./copy-client-key-button";
 import ApplicationPaymentControl from "../../components/application-payment-control";
 import CallClientButton from "./call-client-button";
-import { SubjectPickerChevronIcon } from "@/app/components/svg";
+import { ApplicationCalendarIcon, ApplicationStarIcon, AppointmentClockIcon, BriefcaseIcon, ClientCheckIcon, EnvelopeIcon, SupportCrownIcon, SubjectPickerChevronIcon, UserProfileIcon } from "@/app/components/svg";
 import { useEffect, useState, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
 import type { PrivateClient } from "../../../../lib/client-area/types";
 
-const tierBadgeColors = {
-  START: "border border-blue-300 bg-blue-50 text-blue-700",
-  PRO: "border border-violet-300 bg-violet-50 text-violet-700",
-  VIP: "border border-amber-300 bg-amber-50 text-amber-800",
+const tierHeaderColors = {
+  START: "bg-linear-to-r from-sky-500 to-emerald-500 text-white",
+  PRO: "bg-linear-to-r from-brand-500 to-violet-500 text-white",
+  VIP: "bg-linear-to-r from-amber-400 to-orange-400 text-white",
 };
 
 const tierCardColors = {
@@ -104,8 +105,8 @@ export default function ClientDirectory({
       )}
       {selected && children && (
         <article className={`mt-6 rounded-3xl border border-brand-200 bg-linear-to-br p-4 sm:p-6 ${tierCardColors[selected.tier]}`}>
-          <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
-            <div className="min-w-0 grow basis-60">
+          <div className="mb-6 grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 xl:flex xl:justify-between">
+            <div className="min-w-0 grow xl:basis-60">
               <h2 className="break-words text-xl font-semibold">
                 {selected.name}
               </h2>
@@ -116,10 +117,11 @@ export default function ClientDirectory({
                 {selected.last_seen_at ? <>Последний визит: <LocalTime value={selected.last_seen_at} /></> : "Ещё не заходил на личную страницу"}
               </p>
             </div>
-            <div className="flex max-w-full flex-wrap items-start gap-2 sm:justify-end">
+            <div className="order-3 col-span-2 flex max-w-full flex-wrap items-start gap-2 xl:order-none xl:justify-end">
               <ApplicationPaymentControl key={`payment-${selected.id}-${selected.tier}-${selected.paid_at}`} clientId={selected.id} paid={Boolean(selected.paid_at)} initialTier={selected.tier} />
               {selected.paid_at && <CopyClientKeyButton key={`key-${selected.id}`} clientId={selected.id} />}
               <CallClientButton key={selected.id} clientId={selected.id} />
+            </div>
               <Link
                 href={href({ client: "" })}
                 scroll={false}
@@ -129,7 +131,6 @@ export default function ClientDirectory({
                 <SubjectPickerChevronIcon className="size-4 rotate-180" />
                 Свернуть
               </Link>
-            </div>
           </div>
           {children}
         </article>
@@ -143,46 +144,7 @@ export default function ClientDirectory({
           </p>
         )}
         {shown.map((client) => (
-          <Link
-            key={client.id}
-            href={href({ client: client.id })}
-            scroll={false}
-            aria-label={`Открыть карточку ${client.name}`}
-            className={`block w-full rounded-2xl border border-brand-100 bg-linear-to-br p-5 transition-colors hover:border-brand-300 sm:w-72 ${tierCardColors[client.tier]}`}
-          >
-            <div className="flex items-center justify-between gap-2">
-              <p className="min-w-0 break-words font-semibold">{client.name}</p>
-              {!!client.unread_count && (
-                <span
-                  aria-label={`Непрочитанных сообщений: ${client.unread_count}`}
-                  className="flex h-6 min-w-6 shrink-0 items-center justify-center rounded-full bg-brand-500 px-1.5 text-xs font-semibold text-white"
-                >
-                  {client.unread_count}
-                </span>
-              )}
-            </div>
-            <p className="mt-1 break-all text-sm text-neutral-500">
-              {client.email}
-            </p>
-            <p className="mt-2 text-xs text-neutral-500">
-              {client.last_seen_at ? <>Последний визит: <LocalTime value={client.last_seen_at} /></> : "Ещё не заходил на личную страницу"}
-            </p>
-            <div className="mt-4 flex items-center justify-between gap-3 text-sm">
-              <span className={`inline-flex items-center rounded-full px-3 pt-1 pb-0.5 leading-5 font-medium ${tierBadgeColors[client.tier]}`}>
-                {client.tier}
-              </span>
-              <span className="text-neutral-500">
-                {client.active
-                  ? `${client.booked_hours}/${client.allowance_hours} ч`
-                  : "Ключ не отправлен"}
-              </span>
-            </div>
-            {client.awaiting_reply && (
-              <p className="mt-3 text-xs font-medium text-amber-700">
-                Ожидает ответа
-              </p>
-            )}
-          </Link>
+          <ClientSummaryCard key={client.id} client={client} href={href({ client: client.id })} />
         ))}
       </div>
       <nav
@@ -222,5 +184,41 @@ export default function ClientDirectory({
         )}
       </nav>
     </section>
+  );
+}
+
+function ClientSummaryCard({ client, href }: { client: PrivateClient; href: string }) {
+  const paid = Boolean(client.paid_at);
+  const Icon = !paid ? UserProfileIcon : client.tier === "VIP" ? SupportCrownIcon : client.tier === "PRO" ? BriefcaseIcon : ClientCheckIcon;
+  return (
+    <Link href={href} scroll={false} aria-label={`Открыть карточку ${client.name}`} className="block w-full overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-md transition-shadow hover:shadow-lg focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500 sm:w-80">
+      <header className={`relative isolate flex flex-col gap-2 overflow-hidden px-4 py-3 ${paid ? tierHeaderColors[client.tier] : "bg-linear-to-r from-neutral-300 to-neutral-200 text-neutral-800"}`}>
+        <span aria-hidden="true" className={`${cardStyles.ornament} ${paid ? cardStyles.paidOrnament : ""}`} />
+        <div className="flex items-center gap-2">
+          <Icon className="size-6 shrink-0" />
+          <h2 className="min-w-0 flex-1 break-words text-base font-semibold leading-tight">{client.name}</h2>
+          {!!client.unread_count && <span aria-label={`Непрочитанных сообщений: ${client.unread_count}`} className="flex h-6 min-w-6 shrink-0 items-center justify-center rounded-full bg-white px-1.5 text-xs font-semibold text-brand-600">{client.unread_count}</span>}
+        </div>
+        <span className={`inline-flex w-fit items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-semibold shadow-sm ${paid && client.tier === "VIP" ? "text-amber-700" : "text-brand-700"}`}>
+          {paid && <ApplicationStarIcon className="size-4" />}
+          {paid ? "Клиент" : "Кандидат"} {client.tier}
+        </span>
+      </header>
+      <dl className="mx-4 divide-y divide-neutral-200 text-sm">
+        <div className="flex items-start gap-3 py-2">
+          <EnvelopeIcon className="mt-0.5 size-4 shrink-0 text-neutral-600" />
+          <div className="min-w-0"><dt className="text-xs text-neutral-500">Email</dt><dd className="mt-0.5 break-all text-neutral-800">{client.email}</dd></div>
+        </div>
+        <div className="flex items-start gap-3 py-2">
+          <ApplicationCalendarIcon className="mt-0.5 size-4 shrink-0 text-neutral-600" />
+          <div className="min-w-0"><dt className="text-xs text-neutral-500">Последний визит</dt><dd className="mt-0.5 text-neutral-800">{client.last_seen_at ? <LocalTime value={client.last_seen_at} /> : "Ещё не заходил на личную страницу"}</dd></div>
+        </div>
+        <div className="flex items-start gap-3 py-2">
+          <AppointmentClockIcon className="mt-0.5 size-4 shrink-0 text-neutral-600" />
+          <div className="min-w-0"><dt className="text-xs text-neutral-500">Консультации</dt><dd className="mt-0.5 text-neutral-800">{client.active ? `Забронировано ${client.booked_hours} из ${client.allowance_hours} ч` : "Ключ не отправлен"}</dd></div>
+        </div>
+      </dl>
+      {client.awaiting_reply && <p className="mx-4 mb-3 rounded-lg bg-amber-50 px-3 py-2 text-xs font-medium text-amber-700">Ожидает ответа</p>}
+    </Link>
   );
 }
