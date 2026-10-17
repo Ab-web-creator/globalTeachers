@@ -58,7 +58,7 @@ export default async function MailShell({ active, unread, mailbox, showLogout, c
             <nav aria-label="Папки" className="hidden flex-col gap-1 lg:flex">{folderLinks}</nav>
             {mailbox && <p className="hidden px-4 text-sm break-all text-neutral-500 lg:block">{mailbox}</p>}
           </aside>
-          <section className="flex min-h-0 flex-col overflow-hidden rounded-3xl border border-brand-100 bg-white">{children}</section>
+          <section className="-mx-6 flex min-h-0 flex-col overflow-hidden border-y border-brand-100 bg-white sm:mx-0 sm:rounded-3xl sm:border">{children}</section>
         </div>
       </main>
     </div>
