@@ -95,14 +95,14 @@ export default function ApplicationFilters({
       }}
       className="contents"
     >
-      <div className="flex min-w-0 flex-wrap items-center gap-3 lg:col-start-2 lg:row-start-1">
+      <div className="contents min-w-0 items-center gap-3 lg:col-start-2 lg:row-start-1 lg:flex">
         <Link
           href="/admin/analytics"
-          className="inline-flex h-10 shrink-0 items-center justify-center rounded-full border border-brand-200 bg-white px-4 py-2 text-base font-medium text-neutral-600 transition-colors hover:bg-brand-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500"
+          className="col-start-2 row-start-1 inline-flex h-10 shrink-0 items-center justify-center rounded-full border border-brand-200 bg-white px-4 py-2 text-base font-medium text-neutral-600 transition-colors hover:bg-brand-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500"
         >
           Посещаемость
         </Link>
-        <div className="relative min-w-0 flex-1 lg:w-80">
+        <div className="relative col-span-2 min-w-0 flex-1 lg:w-80">
         <SearchIcon className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-neutral-400" />
         <input
           id="application-search"
@@ -120,7 +120,7 @@ export default function ApplicationFilters({
         />
         </div>
       </div>
-      <div className="-mx-5 min-w-0 overflow-hidden sm:-mx-6 lg:col-span-2 lg:col-start-1 lg:row-start-2">
+      <div className="-mx-5 min-w-0 overflow-hidden sm:-mx-6 col-span-2 lg:col-start-1 lg:row-start-2">
       <div ref={filterStrip} role="radiogroup" aria-label="Статус заявки" tabIndex={0} className="relative flex w-full min-w-0 max-w-full gap-2 overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden border-0 bg-neutral-400 p-2 text-base focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-neutral-500">
         {statuses.map((option) => (
           <label
