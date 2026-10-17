@@ -69,6 +69,21 @@ export async function POST(request: NextRequest) {
     return privateJson({ error: "Invalid request" }, 400);
   }
   try {
+    if (input?.action === "clear-chat") {
+      if (!uuidPattern.test(input.clientId ?? "")) return privateJson({ error: "Invalid client" }, 400);
+      await database().query("DELETE FROM private_chat_messages WHERE client_id = $1", [input.clientId]);
+      return privateJson({ ok: true });
+    }
+    if (input?.action === "edit-chat" || input?.action === "delete-chat") {
+      if (!uuidPattern.test(input.clientId ?? "") || !uuidPattern.test(input.id ?? ""))
+        return privateJson({ error: "Invalid message" }, 400);
+      if (input.action === "edit-chat" && (typeof input.body !== "string" || !input.body.trim() || input.body.length > 5000))
+        return privateJson({ error: "Сообщение должно содержать от 1 до 5000 символов." }, 400);
+      const result = input.action === "edit-chat"
+        ? await database().query("UPDATE private_chat_messages SET body = $3 WHERE id = $1 AND client_id = $2 AND author = 'admin' RETURNING id", [input.id, input.clientId, input.body.trim()])
+        : await database().query("DELETE FROM private_chat_messages WHERE id = $1 AND client_id = $2 AND author = 'admin' RETURNING id", [input.id, input.clientId]);
+      return result.rowCount ? privateJson({ ok: true }) : privateJson({ error: "Сообщение не найдено или недоступно для изменения." }, 404);
+    }
     if (input?.action === "set-client-payment" && uuidPattern.test(input.clientId ?? "") && (input.tier === null || clientTiers.includes(input.tier)))
       return privateJson(await setClientPayment(input.clientId, input.tier));
     if (input?.action === "copy-key" && uuidPattern.test(input.clientId ?? "")) {

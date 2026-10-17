@@ -62,7 +62,7 @@ export default function PaymentSection({ program, detailsComplete, validateDetai
       title="Стоимость и оформление"
       fade="violet"
       fadeDirection="down"
-      asideClassName="lg:justify-self-end lg:w-full lg:max-w-sm"
+      asideClassName="hidden sm:block lg:justify-self-end lg:w-full lg:max-w-sm"
       aside={program.tier === "VIP" && (
         <div className="w-full max-w-sm rounded-3xl border border-brand-100 bg-white p-6 shadow-sm sm:p-8">
           <p className="text-sm font-semibold tracking-widest text-brand-500">ПРОГРАММА VIP</p>

@@ -9,6 +9,9 @@ import {
 } from "react";
 import {
   ConsultationDetailIcon,
+  SupportCrownIcon,
+  BriefcaseIcon,
+  ClientCheckIcon,
   VideoCallIcon,
   MobileMenuCloseIcon,
   supportCalendarIconPath,
@@ -17,7 +20,6 @@ import AppointmentCalendar from "./appointment-calendar";
 import AppointmentCall from "./appointment-call";
 import ClientWelcomeSection from "./client-welcome-section";
 import ConsultationProfileSection from "./consultation-profile-section";
-import { missingProfileFields } from "../../../lib/client-area/profile-fields";
 import PrivateChat from "./private-chat";
 import PackageSupportSection from "./package-support-section";
 import type { ClientWorkspace } from "../../../lib/client-area/types";
@@ -270,6 +272,38 @@ export default function WorkspacePanel({
           timeZone: "UTC",
         }).format(new Date(value))
       : slotLabel(value);
+  const nextBooking = now > 0
+    ? [...data.bookings].filter(slot => new Date(slot.ends_at).getTime() > now)
+      .sort((a, b) => new Date(a.starts_at).getTime() - new Date(b.starts_at).getTime())[0]
+    : undefined;
+  const displayedBookings = admin && nextBooking
+    ? [nextBooking, ...data.bookings.filter(slot => slot.id !== nextBooking.id)]
+    : data.bookings;
+  const bookingsCard = (
+          <div className={admin ? "mt-4 min-w-0 border-t border-brand-100 pt-4" : "mt-6 w-full min-w-0 rounded-xl bg-linear-to-br from-amber-100 via-orange-50 to-rose-100 p-4 pl-6"}>
+          <h3 className="text-lg font-semibold">
+            {admin ? "Записи клиента" : data.bookings.length === 1 ? "Ваша запись" : "Ваши записи"}
+          </h3>
+          {!data.bookings.length ? (
+            <p className="mt-3 text-base text-neutral-500">Записей пока нет.</p>
+          ) : (
+            <ul className="mt-3 space-y-3">
+              {displayedBookings.map((slot) => (
+                <li key={slot.id} className={admin ? slot.id === nextBooking?.id ? "rounded-xl border border-violet-200 bg-violet-50 p-3" : "border-b border-brand-100 py-2 last:border-0" : undefined}>
+                  {admin && slot.id === nextBooking?.id && <p className="mb-1 text-xs font-semibold text-brand-600">Ближайшая консультация</p>}
+                  <p className="font-medium">{format(slot.starts_at)}</p>
+                  <p className="mt-1 text-sm text-neutral-500">
+                    {admin ? "60 минут" : `60 минут · ${timeZone}`}
+                  </p>
+                  {!admin && data.client.paid_at && new Date(slot.starts_at).getTime() > now && (
+                    <button type="button" disabled={pending} onClick={() => void cancelBooking(slot.id)} className="mt-3 rounded-full border border-brand-200 bg-white px-4 py-2 text-sm text-neutral-600 hover:bg-brand-50 disabled:opacity-50">Отменить запись</button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+          </div>
+  );
   return (
     <div>
       <dialog
@@ -289,24 +323,35 @@ export default function WorkspacePanel({
         <p id="workspace-feedback-message" className={`mt-4 text-base leading-relaxed ${error ? "text-red-700" : "text-neutral-600"}`}>{error || notice}</p>
         <button type="button" onClick={dismissFeedback} className="mt-6 rounded-full bg-brand-500 px-6 py-2 text-base font-medium text-white hover:bg-brand-600">Понятно</button>
       </dialog>
-      {admin && missingProfileFields(data.profile).length > 0 && (
-        <p role="status" className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-base text-amber-900">
-          Анкета клиента не завершена. Не заполнено: {missingProfileFields(data.profile).join(", ")}.
-        </p>
-      )}
       {!admin && !data.client.paid_at && (
         <p role="status" className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-base text-amber-900">
           Аккаунт заморожен. Вы можете читать предыдущую переписку и просматривать записи. Отправка новых сообщений и запись на консультации доступны после подтверждения оплаты.
         </p>
       )}
       {!admin && <ClientWelcomeSection name={data.client.name} />}
-      <div className="grid items-start gap-6 lg:grid-cols-2 lg:items-stretch lg:gap-y-0">
-        <div className={`order-2 flex min-w-0 flex-col gap-6 lg:col-start-2 lg:row-start-1 ${admin ? "" : "lg:row-span-2"}`}>
+      <div className={`grid items-start gap-6 ${admin ? "lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]" : "lg:grid-cols-2 lg:items-stretch lg:gap-y-0"}`}>
+        <div className={`flex min-w-0 flex-col gap-6 lg:row-start-1 ${admin ? "order-1 lg:col-start-1 lg:sticky lg:top-20" : "order-2 lg:col-start-2 lg:row-span-2"}`}>
           <PrivateChat
             messages={data.messages}
             name={data.client.name}
             admin={admin}
             fillHeight={!admin}
+            viewportHeight={admin}
+            onClearMessages={admin ? async () => {
+              await post("/api/admin/clients", { action: "clear-chat", clientId: data.client.id });
+              setData(current => ({ ...current, messages: [] }));
+              await refresh();
+            } : undefined}
+            onEditMessage={admin ? async (id, body) => {
+              await post("/api/admin/clients", { action: "edit-chat", clientId: data.client.id, id, body });
+              setData(current => ({ ...current, messages: current.messages.map(item => item.id === id ? { ...item, body } : item) }));
+              await refresh();
+            } : undefined}
+            onDeleteMessage={admin ? async id => {
+              await post("/api/admin/clients", { action: "delete-chat", clientId: data.client.id, id });
+              setData(current => ({ ...current, messages: current.messages.filter(item => item.id !== id) }));
+              await refresh();
+            } : undefined}
             active={data.client.active && (admin || Boolean(data.client.paid_at))}
             timeZone={timeZone}
             draft={message}
@@ -323,12 +368,12 @@ export default function WorkspacePanel({
             onSend={sendMessage}
           />
         </div>
-        <div className="order-1 min-w-0 lg:contents">
+        <div className={`${admin ? "order-2" : "order-1"} min-w-0 lg:contents`}>
         {!admin && <div className="mb-6 lg:col-start-1 lg:row-start-1"><AppointmentCall bookings={data.bookings} /></div>}
         <section
           data-consultations-card
           aria-labelledby="private-calendar-title"
-          className={`w-fit max-w-full lg:col-start-1 ${admin ? "lg:row-start-1" : "lg:row-start-2"} rounded-3xl border border-brand-100 bg-white/90 p-5 shadow-sm sm:p-7`}
+          className={`max-w-full ${admin ? "w-full lg:col-start-2 lg:row-start-1 lg:self-start" : "w-fit lg:col-start-1 lg:row-start-2"} rounded-xl border border-brand-100 bg-white p-5 shadow-sm sm:p-6`}
         >
           <div>
           <div className="min-w-0">
@@ -341,15 +386,34 @@ export default function WorkspacePanel({
             </span>
             <h2
               id="private-calendar-title"
-              className="font-serif text-xl text-brand-950 sm:text-2xl"
+              className="text-xl font-semibold text-brand-950"
             >
               Консультации
             </h2>
           </div>
-          <p className="mt-7 text-base font-medium leading-relaxed text-neutral-700">
+          {admin ? (
+            <div className="mt-4">
+              <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">Пакет</p>
+              <div className="mt-2 flex flex-wrap items-center gap-3 rounded-xl border border-violet-100 bg-linear-to-r from-violet-50 to-white p-4">
+                {data.client.tier === "VIP" ? <SupportCrownIcon className="size-8 text-brand-500" /> : data.client.tier === "PRO" ? <BriefcaseIcon className="size-8 text-brand-500" /> : <ClientCheckIcon className="size-8 text-brand-500" />}
+                <div className="min-w-0 flex-1"><p className="font-semibold">Пакет {data.client.tier}</p><p className="mt-1 text-xs text-neutral-500">{data.client.tier === "VIP" ? "Индивидуальное сопровождение и приоритетная поддержка." : data.client.tier === "PRO" ? "Подготовка к поиску работы в международных школах." : "Ваш первый шаг к международной карьере."}</p></div>
+                <span className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white px-3 py-1 text-xs"><span className={`size-2 rounded-full ${data.client.paid_at ? "bg-emerald-500" : "bg-neutral-400"}`} />{data.client.paid_at ? "Активен" : "Заморожен"}</span>
+              </div>
+              <div className="mt-4 border-t border-brand-100 pt-4">
+                <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">Доступно и забронировано</p>
+                <dl className="mt-2 grid grid-cols-2 gap-3">
+                  {[{ label: "Доступно часов", value: remaining }, { label: "Забронировано часов", value: data.client.booked_hours }].map(({ label, value }) => (
+                    <div key={label} className="rounded-xl border border-brand-100 p-3"><dt className="text-xs text-neutral-500">{label}</dt><dd className="mt-1 text-xl font-semibold">{value} из {data.client.allowance_hours}</dd><div aria-hidden="true" className="mt-3 h-1.5 overflow-hidden rounded-full bg-brand-100"><div className="h-full rounded-full bg-brand-500" style={{ width: `${data.client.allowance_hours ? Math.min(100, value / data.client.allowance_hours * 100) : 0}%` }} /></div></div>
+                  ))}
+                </dl>
+              </div>
+              <div className="mt-4 border-t border-brand-100 pt-4"><p className="text-xs font-medium uppercase tracking-wide text-neutral-500">Часовой пояс</p><p className="mt-2 text-sm">{timeZone}</p></div>
+            </div>
+          ) : <p className="mt-7 text-base font-medium leading-relaxed text-neutral-700">
             Пакет {data.client.tier} · Доступно {remaining} из{" "}
             {data.client.allowance_hours} ч. Время указано в часовом поясе {timeZone}.
-          </p>
+          </p>}
+          {admin && bookingsCard}
           {data.client.tier === "PRO" && (
             <p className="mt-3 text-sm text-neutral-500">
               Три встречи проходят в разные дни. Не более одного часа в день по
@@ -358,13 +422,15 @@ export default function WorkspacePanel({
           )}
           {admin ? (
             data.client.tier === "VIP" ? (
-              <form onSubmit={saveHours} className="mt-6">
+              <form onSubmit={saveHours} className="mt-4 border-t border-brand-100 pt-4">
                 <label
                   htmlFor="client-hours"
                   className="block text-sm font-medium"
                 >
-                  Всего часов для VIP-клиента (включая первый час)
+                  Лимит часов VIP (включая первый час)
                 </label>
+                <div className="mt-2 flex flex-wrap items-end gap-2">
+                <div className="w-24 shrink-0">
                 <input
                   id="client-hours"
                   type="number"
@@ -374,11 +440,13 @@ export default function WorkspacePanel({
                   required
                   value={hours}
                   onChange={(event) => setHours(event.target.value)}
-                  className={`${fieldClass} mt-2`}
+                  className={fieldClass}
                 />
-                <button disabled={pending} className={`${buttonClass} mt-3`}>
-                  Сохранить лимит
+                </div>
+                <button disabled={pending} className={buttonClass}>
+                  Сохранить
                 </button>
+                </div>
               </form>
             ) : (
               <p className="mt-6 text-base text-neutral-500">
@@ -415,28 +483,7 @@ export default function WorkspacePanel({
           {!admin && data.client.paid_at && remaining > 0 && now > 0 && (
             <AppointmentCalendar slots={data.slots} bookings={data.bookings} timeZone={timeZone} now={now} selectedSlot={selectedSlot} pending={pending} onSelect={setSelectedSlot} onBook={() => void book()} />
           )}
-          <div className={admin ? "mt-8 min-w-0 rounded-xl bg-linear-to-br from-amber-100 via-orange-50 to-rose-100 p-4 pl-6" : "mt-6 w-full min-w-0 rounded-xl bg-linear-to-br from-amber-100 via-orange-50 to-rose-100 p-4 pl-6"}>
-          <h3 className="text-lg font-semibold">
-            {admin ? "Записи клиента" : data.bookings.length === 1 ? "Ваша запись" : "Ваши записи"}
-          </h3>
-          {!data.bookings.length ? (
-            <p className="mt-3 text-base text-neutral-500">Записей пока нет.</p>
-          ) : (
-            <ul className="mt-4 space-y-3">
-              {data.bookings.map((slot) => (
-                <li key={slot.id}>
-                  <p className="font-medium">{format(slot.starts_at)}</p>
-                  <p className="mt-1 text-sm text-neutral-500">
-                    60 минут · {timeZone}
-                  </p>
-                  {!admin && data.client.paid_at && new Date(slot.starts_at).getTime() > now && (
-                    <button type="button" disabled={pending} onClick={() => void cancelBooking(slot.id)} className="mt-3 rounded-full border border-brand-200 bg-white px-4 py-2 text-sm text-neutral-600 hover:bg-brand-50 disabled:opacity-50">Отменить запись</button>
-                  )}
-                </li>
-              ))}
-            </ul>
-          )}
-          </div>
+          {!admin && bookingsCard}
         </section>
         {!admin && <div className="lg:col-start-1 lg:row-start-3"><PackageSupportSection tier={data.client.tier} /></div>}
 

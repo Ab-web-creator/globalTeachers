@@ -469,6 +469,35 @@ test(
         },
       );
 
+      await t.test("only admins can edit and delete their messages for both participants", async () => {
+        const own = clients[0], other = clients[1];
+        const id = randomUUID(), clientMessage = randomUUID();
+        await addChatMessage(own.id, "admin", id, "Original");
+        await addChatMessage(own.id, "client", clientMessage, "Client original");
+        const mutate = (action, messageId = id, clientId = own.id, cookie = adminCookie, body = "Corrected") =>
+          adminPost(request("/api/admin/clients", { action, clientId, id: messageId, body }, cookie));
+        for (const action of ["edit-chat", "delete-chat"]) {
+          assert.equal((await mutate(action, id, own.id, own.cookie)).status, 401);
+          assert.equal((await mutate(action, id, other.id)).status, 404);
+          assert.equal((await mutate(action, clientMessage)).status, 404);
+        }
+        assert.equal((await mutate("edit-chat", id, own.id, adminCookie, " ")).status, 400);
+        assert.equal((await mutate("edit-chat", id, own.id, adminCookie, "x".repeat(5001))).status, 400);
+        assert.equal((await mutate("edit-chat")).status, 200);
+        assert.equal((await getWorkspace(own.id)).messages.find(message => message.id === id).body, "Corrected");
+        assert.equal((await mutate("delete-chat")).status, 200);
+        assert.ok(!(await getWorkspace(own.id)).messages.some(message => message.id === id));
+        assert.equal((await getWorkspace(own.id)).messages.find(message => message.id === clientMessage).body, "Client original");
+        const foreign = randomUUID();
+        await addChatMessage(other.id, "admin", foreign, "Other conversation");
+        assert.equal((await adminPost(request("/api/admin/clients", { action: "clear-chat", clientId: own.id }, own.cookie))).status, 401);
+        assert.ok((await getWorkspace(own.id)).messages.length > 0);
+        assert.equal((await adminPost(request("/api/admin/clients", { action: "clear-chat", clientId: own.id }, adminCookie))).status, 200);
+        assert.equal((await getWorkspace(own.id)).messages.length, 0);
+        assert.ok((await getWorkspace(other.id)).messages.some(message => message.id === foreign));
+        await db.query("DELETE FROM private_chat_messages WHERE id = $1", [foreign]);
+      });
+
       await t.test(
         "unread messages persist, reads are scoped, and clients awaiting replies sort first",
         async () => {

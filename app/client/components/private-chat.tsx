@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, type FormEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from "react";
 import { CallChatIcon, ChatSendIcon, TwoHeartsIcon } from "@/app/components/svg";
 import type { ChatMessage } from "../../../lib/client-area/types";
+import ChatMessageActions from "./chat-message-actions";
+import ClearChatDialog from "./clear-chat-dialog";
 
 type Props = {
   messages: ChatMessage[];
@@ -10,12 +12,16 @@ type Props = {
   admin: boolean;
   active: boolean;
   fillHeight?: boolean;
+  viewportHeight?: boolean;
   timeZone: string;
   draft: string;
   pending: boolean;
   onDraftChange: (value: string) => void;
   onSend: (event: FormEvent) => void;
   onRead?: () => void;
+  onEditMessage?: (id: string, body: string) => Promise<void>;
+  onDeleteMessage?: (id: string) => Promise<void>;
+  onClearMessages?: () => Promise<void>;
 };
 
 export default function PrivateChat({
@@ -24,13 +30,18 @@ export default function PrivateChat({
   admin,
   active,
   fillHeight = false,
+  viewportHeight = false,
   timeZone,
   draft,
   pending,
   onDraftChange,
   onSend,
   onRead,
+  onEditMessage,
+  onDeleteMessage,
+  onClearMessages,
 }: Props) {
+  const [clearDialogOpen, setClearDialogOpen] = useState(false);
   const readMarker = useRef<HTMLDivElement>(null);
   const logRef = useRef<HTMLDivElement>(null);
   const atBottom = useRef(true);
@@ -126,16 +137,16 @@ export default function PrivateChat({
     <section
       data-private-chat
       aria-labelledby="private-chat-title"
-      className={`relative overflow-hidden rounded-3xl border border-brand-100 bg-white shadow-sm ${fillHeight ? "lg:flex lg:min-h-0 lg:flex-1 lg:flex-col" : ""}`}
+      className={`relative overflow-hidden rounded-xl border border-brand-100 bg-white shadow-sm ${viewportHeight ? "flex h-[min(42rem,80dvh)] min-h-96 flex-col lg:h-[calc(100dvh-7rem)]" : fillHeight ? "lg:flex lg:min-h-0 lg:flex-1 lg:flex-col" : ""}`}
     >
       <header className="flex shrink-0 items-center gap-3 border-b border-brand-100 px-5 py-3 sm:px-6">
-        <span className="flex size-14 shrink-0 items-center justify-center rounded-full bg-brand-50 text-amber-600">
-          {admin ? <TwoHeartsIcon className="size-9" /> : <CallChatIcon className="size-8" />}
+        <span className={`flex shrink-0 items-center justify-center rounded-full bg-brand-50 ${admin ? "size-9 text-brand-500" : "size-14 text-amber-600"}`}>
+          {admin ? <TwoHeartsIcon className="size-6" /> : <CallChatIcon className="size-8" />}
         </span>
         <div className="min-w-0">
           <h2
             id="private-chat-title"
-            className="break-words text-xl font-semibold"
+            className={`break-words font-semibold ${admin ? "text-base" : "text-xl"}`}
           >
             {admin ? <>Поговори с <span className="text-brand-500">{name}</span> от души</> : "Давайте поболтаем"}
           </h2>
@@ -143,6 +154,7 @@ export default function PrivateChat({
             {admin ? "тут только вы и ваш клиент: интим гарантирован" : "О планах, сомнениях и всём, что хочется обсудить."}
           </p>
         </div>
+        {admin && <span className="ml-auto shrink-0 rounded-lg bg-violet-50 px-2 py-1 text-xs text-brand-600">Личное</span>}
       </header>
       <div
         ref={logRef}
@@ -155,7 +167,7 @@ export default function PrivateChat({
         aria-label="Личная переписка"
         aria-live="polite"
         aria-relevant="additions text"
-        className={`flex h-96 flex-col gap-3 overflow-y-auto overscroll-auto bg-white px-4 py-5 sm:h-112 sm:px-5 ${fillHeight ? "lg:h-0 lg:min-h-112 lg:flex-1" : ""}`}
+        className={`flex flex-col gap-3 overflow-y-auto overscroll-auto bg-white px-4 py-5 sm:px-5 ${viewportHeight ? "min-h-0 flex-1" : `h-96 sm:h-112 ${fillHeight ? "lg:h-0 lg:min-h-112 lg:flex-1" : ""}`}`}
       >
         {!messages.length && (
           <div className="m-auto max-w-xs text-center">
@@ -193,20 +205,15 @@ export default function PrivateChat({
                 >
                   {item.body}
                 </p>
-                <p
-                  title={`${day}, ${timeFormat.format(date)} (${timeZone})`}
-                  className="mt-1 px-2 text-xs text-neutral-400"
-                >
-                  {own
-                    ? "Вы"
-                    : item.author === "admin"
-                      ? "TeacherNavigator"
-                      : name}{" "}
-                  ·{" "}
-                  <time dateTime={new Date(item.created_at).toISOString()}>
-                    {timeFormat.format(date)}
-                  </time>
-                </p>
+                <div className="mt-1 flex max-w-full flex-wrap items-center justify-end gap-0.5">
+                  <p title={`${day}, ${timeFormat.format(date)} (${timeZone})`} className="pr-1 text-xs text-neutral-400">
+                    {!(admin && own) && <>{own ? "Вы" : item.author === "admin" ? "TeacherNavigator" : name} · </>}
+                    <time dateTime={new Date(item.created_at).toISOString()}>{timeFormat.format(date)}</time>
+                  </p>
+                  {admin && item.author === "admin" && onEditMessage && onDeleteMessage && (
+                    <ChatMessageActions body={item.body} onEdit={body => onEditMessage(item.id, body)} onDelete={() => onDeleteMessage(item.id)} />
+                  )}
+                </div>
               </div>
             </div>
           );
@@ -249,15 +256,20 @@ export default function PrivateChat({
               pending ? "Отправляем сообщение" : "Отправить сообщение"
             }
             disabled={pending || !active || !draft.trim()}
-            className="flex size-9 shrink-0 items-center justify-center rounded-full bg-yellow-400 text-slate-900 transition-colors hover:bg-yellow-300 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500 disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-400"
+            className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-500 text-white transition-colors hover:bg-brand-600 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500 disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-400"
           >
             <ChatSendIcon className="size-5" />
           </button>
         </form>
-        <p className="mt-2 hidden px-2 text-xs text-neutral-400 sm:block">
+        <div className="mt-2 flex flex-wrap items-center justify-between gap-2 px-2">
+        <p className="hidden text-xs text-neutral-400 sm:block">
           Enter — отправить · Shift+Enter — новая строка
         </p>
+        {admin && onClearMessages && <button type="button" onClick={() => setClearDialogOpen(true)} disabled={pending || !messages.length} className="ml-auto rounded text-xs text-red-600 underline-offset-4 hover:underline focus-visible:-outline-offset-2 disabled:opacity-40">Удалить все</button>}
+        </div>
+
       </div>
+      {admin && clearDialogOpen && onClearMessages && <ClearChatDialog onConfirm={onClearMessages} onClose={() => setClearDialogOpen(false)} />}
       {admin && (
         <div ref={heartsRef} aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 bottom-20 z-10 overflow-hidden motion-reduce:hidden">
           {Array.from({ length: 18 }, (_, index) => (
