@@ -326,7 +326,9 @@ export default function WorkspacePanel({
       </dialog>
       {!admin && !data.client.paid_at && (
         <p role="status" className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-base text-amber-900">
-          Аккаунт заморожен. Вы можете читать предыдущую переписку и просматривать записи. Отправка новых сообщений и запись на консультации доступны после подтверждения оплаты.
+          {data.client.frozen_at
+            ? "Аккаунт заморожен. Вы можете читать предыдущую переписку и просматривать записи. Отправка новых сообщений и запись на консультации доступны после подтверждения оплаты."
+            : "Оплатите пакет, чтобы писать сообщения и записываться на консультации."}
         </p>
       )}
       {!admin && <ClientWelcomeSection name={data.client.name} />}

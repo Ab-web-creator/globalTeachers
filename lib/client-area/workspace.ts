@@ -4,7 +4,7 @@ import { appointmentTimeZone } from "./booking-rules";
 import { database } from "../consultation/database";
 import type { ClientWorkspace, PrivateClient } from "./types";
 
-const clientSelect = `SELECT client.id, client.email, client.name, client.tier, client.active, client.paid_at, client.last_seen_at, (client.profile_photo IS NOT NULL) AS has_profile_photo,
+const clientSelect = `SELECT client.id, client.email, client.name, client.tier, client.active, client.paid_at, client.frozen_at, client.last_seen_at, (client.profile_photo IS NOT NULL) AS has_profile_photo,
   (CASE WHEN client.tier = 'VIP' THEN COALESCE(client.allowance_hours, policy.hours) ELSE policy.hours END)::int AS allowance_hours,
   (SELECT count(*)::int FROM appointment_slots WHERE booked_by = client.id) AS booked_hours,
   (SELECT count(*)::int FROM private_chat_messages WHERE client_id = client.id AND author = 'client' AND NOT hidden_from_admin AND admin_read_at IS NULL) AS unread_count,

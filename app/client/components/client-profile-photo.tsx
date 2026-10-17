@@ -13,10 +13,12 @@ export default function ClientProfilePhoto({
   tier,
   email,
   paid,
+  frozen,
   remainingHours,
 }: {
   email?: string;
   paid?: boolean;
+  frozen?: boolean;
   remainingHours?: number;
   name: string;
   hasPhoto: boolean;
@@ -102,7 +104,7 @@ export default function ClientProfilePhoto({
           <div className="space-y-2 border-b border-brand-100 px-2 pt-1 pb-3 text-sm">
             {email && <p className="break-all text-neutral-500">{email}</p>}
             {remainingHours !== undefined && <p className="text-neutral-600">Доступно часов: {remainingHours}</p>}
-            <p className={paid ? "text-emerald-700" : "text-amber-700"}>{paid ? "Аккаунт активен" : "Аккаунт заморожен"}</p>
+            <p className={paid ? "text-emerald-700" : "text-amber-700"}>{paid ? "Аккаунт активен" : frozen ? "Аккаунт заморожен" : "Ожидает оплаты"}</p>
           </div>
           <label className={`relative flex w-full items-center gap-2 rounded-xl px-2 py-3 text-left text-sm text-brand-600 hover:bg-brand-50 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-brand-500 ${busy ? "opacity-50" : "cursor-pointer"}`}>
             <ProfilePhotoIcon className="size-5" />

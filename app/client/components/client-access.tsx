@@ -15,6 +15,7 @@ export default function ClientAccess({
   initialUnread = 0,
   email,
   paid,
+  frozen,
   remainingHours,
 }: {
   authenticated: boolean;
@@ -25,6 +26,7 @@ export default function ClientAccess({
   initialUnread?: number;
   email?: string;
   paid?: boolean;
+  frozen?: boolean;
   remainingHours?: number;
 }) {
   const started = useRef(false);
@@ -116,7 +118,7 @@ export default function ClientAccess({
                   {copied ? "Ключ скопирован ✓" : "Скопировать ключ"}
                 </button>
               )}
-              <ClientProfilePhoto name={name} hasPhoto={hasPhoto} tier={tier} email={email} paid={paid} remainingHours={remainingHours} />
+              <ClientProfilePhoto name={name} hasPhoto={hasPhoto} tier={tier} email={email} paid={paid} frozen={frozen} remainingHours={remainingHours} />
               <button
                 type="button"
                 disabled={busy}

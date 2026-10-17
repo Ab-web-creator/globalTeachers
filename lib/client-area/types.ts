@@ -7,6 +7,7 @@ export type PrivateClient = {
   tier: ClientTier;
   active: boolean;
   paid_at?: string | null;
+  frozen_at?: string | null;
   last_seen_at?: string | null;
   has_profile_photo?: boolean;
   allowance_hours: number;

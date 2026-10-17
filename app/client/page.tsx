@@ -34,6 +34,7 @@ export default async function ClientPage() {
         tier={workspace?.client.tier}
         email={workspace?.client.email}
         paid={Boolean(workspace?.client.paid_at)}
+        frozen={Boolean(workspace?.client.frozen_at)}
         remainingHours={workspace ? Math.max(0, workspace.client.allowance_hours - workspace.client.booked_hours) : undefined}
         hasPhoto={!!workspace?.client.has_profile_photo}
         initialUnread={workspace?.client.client_unread_count ?? 0}
