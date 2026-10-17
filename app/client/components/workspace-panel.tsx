@@ -9,9 +9,8 @@ import {
 } from "react";
 import {
   ConsultationDetailIcon,
-  SupportCrownIcon,
-  BriefcaseIcon,
-  ClientCheckIcon,
+  ConsultationCalendarIcon,
+  ConsultationBenefitIcon,
   VideoCallIcon,
   MobileMenuCloseIcon,
   supportCalendarIconPath,
@@ -281,7 +280,7 @@ export default function WorkspacePanel({
     ? [nextBooking, ...data.bookings.filter(slot => slot.id !== nextBooking.id)]
     : data.bookings;
   const bookingsCard = (
-          <div className={admin ? "mt-4 min-w-0 border-t border-brand-100 pt-4" : "mt-6 w-full min-w-0 rounded-xl bg-linear-to-br from-amber-100 via-orange-50 to-rose-100 p-4 pl-6"}>
+          <div className={admin ? "mt-6 min-w-0 border-t border-neutral-200 pt-4" : "mt-6 w-full min-w-0 rounded-xl bg-linear-to-br from-amber-100 via-orange-50 to-rose-100 p-4 pl-6"}>
           <h3 className="text-lg font-semibold">
             {admin ? "Записи клиента" : data.bookings.length === 1 ? "Ваша запись" : "Ваши записи"}
           </h3>
@@ -290,12 +289,13 @@ export default function WorkspacePanel({
           ) : (
             <ul className="mt-3 space-y-3">
               {displayedBookings.map((slot) => (
-                <li key={slot.id} className={admin ? slot.id === nextBooking?.id ? "rounded-xl border border-violet-200 bg-violet-50 p-3" : "border-b border-brand-100 py-2 last:border-0" : undefined}>
-                  {admin && slot.id === nextBooking?.id && <p className="mb-1 text-xs font-semibold text-brand-600">Ближайшая консультация</p>}
-                  <p className="font-medium">{format(slot.starts_at)}</p>
-                  <p className="mt-1 text-sm text-neutral-500">
-                    {admin ? "60 минут" : `60 минут · ${timeZone}`}
-                  </p>
+                <li key={slot.id} className={admin ? slot.id === nextBooking?.id ? "flex items-center gap-4 rounded-xl border border-violet-200 bg-linear-to-r from-violet-50 to-purple-50 p-4" : "border-b border-brand-100 py-2 last:border-0" : undefined}>
+                  {admin && slot.id === nextBooking?.id && <span className="flex size-14 shrink-0 items-center justify-center rounded-full bg-violet-100 text-brand-500"><ConsultationCalendarIcon clock className="size-9" /></span>}
+                  <div className="min-w-0">
+                    {admin && slot.id === nextBooking?.id && <p className="mb-1 text-sm font-medium text-brand-600">Ближайшая консультация</p>}
+                    <p className="font-semibold">{format(slot.starts_at)}{admin && " · 60 минут"}</p>
+                    {!admin && <p className="mt-1 text-sm text-neutral-500">60 минут · {timeZone}</p>}
+                  </div>
                   {!admin && data.client.paid_at && new Date(slot.starts_at).getTime() > now && (
                     <button type="button" disabled={pending} onClick={() => void cancelBooking(slot.id)} className="mt-3 rounded-full border border-brand-200 bg-white px-4 py-2 text-sm text-neutral-600 hover:bg-brand-50 disabled:opacity-50">Отменить запись</button>
                   )}
@@ -371,53 +371,46 @@ export default function WorkspacePanel({
             onSend={sendMessage}
           />
         </div>
-        <div className={`${admin ? "order-2" : "order-1"} min-w-0 lg:contents`}>
+        <div className={`${admin ? "order-2 flex flex-col gap-6 lg:h-[calc(100dvh-7rem)] lg:gap-4 lg:col-start-2 lg:row-start-1" : "order-1 lg:contents"} min-w-0`}>
         {!admin && <div className="mb-6 lg:col-start-1 lg:row-start-1"><AppointmentCall bookings={data.bookings} /></div>}
         <section
           data-consultations-card
           aria-labelledby="private-calendar-title"
-          className={`${admin ? "-mx-5 border-y sm:mx-0 sm:w-full sm:max-w-full sm:rounded-xl sm:border sm:shadow-sm lg:col-start-2 lg:row-start-1 lg:self-start" : "w-fit max-w-full rounded-xl border shadow-sm lg:col-start-1 lg:row-start-2"} border-brand-100 bg-white p-5 sm:p-6`}
+          className={`${admin ? "-mx-5 relative rounded-none border border-t-0 border-neutral-100 pt-10 pb-10 shadow-none before:absolute before:inset-x-0 before:top-0 before:h-2 before:bg-linear-to-r before:from-sky-200 before:via-violet-200 before:to-pink-200 border-b-0 after:absolute after:inset-x-0 after:bottom-0 after:h-2 after:bg-linear-to-r after:from-sky-200 after:via-violet-200 after:to-pink-200 sm:after:hidden sm:border-b sm:mx-0 sm:rounded-3xl sm:border-brand-100 sm:border-t sm:pt-6 sm:pb-6 sm:shadow-sm sm:before:hidden sm:w-full sm:max-w-full lg:shrink-0 lg:col-start-2 lg:row-start-1 lg:self-start" : "w-fit max-w-full rounded-xl border shadow-sm lg:col-start-1 lg:row-start-2"} border-brand-100 bg-white p-5 sm:p-6`}
         >
           <div>
           <div className="min-w-0">
-          <div data-consultations-heading className="flex items-center gap-3">
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-500">
-              <ConsultationDetailIcon
-                path={supportCalendarIconPath}
-                className="size-5"
-              />
+          <div data-consultations-heading className="flex min-h-9 items-center gap-3">
+            <span className={`flex shrink-0 items-center justify-center text-brand-500 ${admin ? "size-10" : "size-9 rounded-full bg-brand-50"}`}>
+              {admin ? <ConsultationCalendarIcon className="size-9" /> : <ConsultationDetailIcon path={supportCalendarIconPath} className="size-5" />}
             </span>
             <h2
               id="private-calendar-title"
-              className="text-xl font-semibold text-brand-950"
+              className={`${admin ? "text-2xl" : "text-xl"} font-semibold text-brand-950`}
             >
               Консультации
             </h2>
           </div>
           {admin ? (
-            <div className="mt-4">
-              <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">Пакет</p>
-              <div className="mt-2 grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 rounded-xl border border-violet-100 bg-linear-to-r from-violet-50 to-white p-4">
-                {data.client.tier === "VIP" ? <SupportCrownIcon className="size-8 text-brand-500 sm:row-span-2" /> : data.client.tier === "PRO" ? <BriefcaseIcon className="size-8 text-brand-500 sm:row-span-2" /> : <ClientCheckIcon className="size-8 text-brand-500 sm:row-span-2" />}
-                <div className="contents"><p className="col-start-2 row-start-1 min-w-0 font-semibold">Пакет {data.client.tier}</p><p className="col-span-2 col-start-2 row-start-2 text-xs text-neutral-500 sm:col-span-1">{data.client.tier === "VIP" ? "Индивидуальное сопровождение и приоритетная поддержка." : data.client.tier === "PRO" ? "Подготовка к поиску работы в международных школах." : "Ваш первый шаг к международной карьере."}</p></div>
-                <span className="col-start-3 row-start-1 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white px-3 py-1 text-xs sm:row-span-2"><span className={`size-2 rounded-full ${data.client.paid_at ? "bg-emerald-500" : "bg-neutral-400"}`} />{data.client.paid_at ? "Активен" : "Заморожен"}</span>
+            <div className="mt-7 grid items-end gap-5 sm:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] sm:gap-8">
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-brand-950">Доступно и забронировано</p>
+                <p className="mt-2 text-4xl font-semibold text-brand-950">{data.client.booked_hours} из {data.client.allowance_hours}</p>
+                <div role="progressbar" aria-label="Забронировано часов" aria-valuenow={data.client.booked_hours} aria-valuemin={0} aria-valuemax={data.client.allowance_hours} className="mt-4 h-2.5 overflow-hidden rounded-full bg-neutral-200">
+                  <div className="h-full rounded-full bg-brand-500" style={{ width: `${data.client.allowance_hours ? Math.min(100, data.client.booked_hours / data.client.allowance_hours * 100) : 0}%` }} />
+                </div>
               </div>
-              <div className="mt-4 border-t border-brand-100 pt-4">
-                <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">Доступно и забронировано</p>
-                <dl className="mt-2 grid grid-cols-2 gap-3">
-                  {[{ label: "Доступно часов", value: remaining }, { label: "Забронировано часов", value: data.client.booked_hours }].map(({ label, value }) => (
-                    <div key={label} className="rounded-xl border border-brand-100 p-3"><dt className="text-xs text-neutral-500">{label}</dt><dd className="mt-1 text-xl font-semibold">{value} из {data.client.allowance_hours}</dd><div aria-hidden="true" className="mt-3 h-1.5 overflow-hidden rounded-full bg-brand-100"><div className="h-full rounded-full bg-brand-500" style={{ width: `${data.client.allowance_hours ? Math.min(100, value / data.client.allowance_hours * 100) : 0}%` }} /></div></div>
-                  ))}
-                </dl>
+              <div className="flex min-w-0 items-center gap-3">
+                <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-violet-100 text-brand-500"><ConsultationBenefitIcon kind="globe" className="size-7" /></span>
+                <div className="min-w-0"><p className="break-words text-sm font-medium text-brand-950">{timeZone}</p><p className="mt-1 text-sm text-neutral-500">Часовой пояс</p></div>
               </div>
-              <div className="mt-4 border-t border-brand-100 pt-4"><p className="text-xs font-medium uppercase tracking-wide text-neutral-500">Часовой пояс</p><p className="mt-2 text-sm">{timeZone}</p></div>
             </div>
           ) : <p className="mt-7 text-base font-medium leading-relaxed text-neutral-700">
             Пакет {data.client.tier} · Доступно {remaining} из{" "}
             {data.client.allowance_hours} ч. Время указано в часовом поясе {timeZone}.
           </p>}
           {admin && bookingsCard}
-          {data.client.tier === "PRO" && (
+          {!admin && data.client.tier === "PRO" && (
             <p className="mt-3 text-sm text-neutral-500">
               Три встречи проходят в разные дни. Не более одного часа в день по
               календарю {data.booking_time_zone}.
@@ -452,10 +445,8 @@ export default function WorkspacePanel({
                 </div>
               </form>
             ) : (
-              <p className="mt-6 text-base text-neutral-500">
-                {data.client.tier === "START"
-                  ? "START включает одну консультацию продолжительностью 60 минут."
-                  : "PRO включает три консультации по 60 минут в разные дни."}
+              <p className="mt-6 text-pretty text-base text-neutral-500">
+                Чтобы перенести или отменить консультацию, согласуйте изменения с клиентом в чате.
               </p>
             )
           ) : (
@@ -488,11 +479,12 @@ export default function WorkspacePanel({
           )}
           {!admin && bookingsCard}
         </section>
+        {admin && <ConsultationProfileSection initial={data.profile} admin={admin} onSaved={(profile) => setData(current => ({ ...current, profile, client: { ...current.client, name: profile.name } }))} />}
         {!admin && <div className="lg:col-start-1 lg:row-start-3"><PackageSupportSection tier={data.client.tier} /></div>}
 
         </div>
       </div>
-      <ConsultationProfileSection initial={data.profile} admin={admin} onSaved={(profile) => setData(current => ({ ...current, profile, client: { ...current.client, name: profile.name } }))} />
+      {!admin && <ConsultationProfileSection initial={data.profile} admin={admin} onSaved={(profile) => setData(current => ({ ...current, profile, client: { ...current.client, name: profile.name } }))} />}
       <ClientFiles clientId={data.client.id} admin={admin} writable={admin || Boolean(data.client.active && data.client.paid_at)} />
     </div>
   );

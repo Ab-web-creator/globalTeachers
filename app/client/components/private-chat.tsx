@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from "react";
-import { CallChatIcon, ChatSendIcon, TwoHeartsIcon } from "@/app/components/svg";
+import { CallChatIcon, ChatSendIcon, PrivateChatIcon, TwoHeartsIcon } from "@/app/components/svg";
 import type { ChatMessage } from "../../../lib/client-area/types";
 import ChatMessageActions from "./chat-message-actions";
 import ClearChatDialog from "./clear-chat-dialog";
@@ -42,6 +42,34 @@ export default function PrivateChat({
   onClearMessages,
 }: Props) {
   const [clearDialogOpen, setClearDialogOpen] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (!viewportHeight) return;
+    const section = sectionRef.current;
+    if (!section) return;
+    const siteHeader = document.querySelector<HTMLElement>("header.sticky");
+    const viewport = window.visualViewport;
+    let frame = 0;
+    const measure = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const height = viewport?.height ?? window.innerHeight;
+        const headerHeight = siteHeader?.getBoundingClientRect().height ?? 0;
+        section.style.setProperty("--chat-mobile-height", `${Math.max(0, height - headerHeight)}px`);
+      });
+    };
+    const observer = new ResizeObserver(measure);
+    if (siteHeader) observer.observe(siteHeader);
+    window.addEventListener("resize", measure);
+    viewport?.addEventListener("resize", measure);
+    measure();
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      window.removeEventListener("resize", measure);
+      viewport?.removeEventListener("resize", measure);
+    };
+  }, [viewportHeight]);
   const readMarker = useRef<HTMLDivElement>(null);
   const logRef = useRef<HTMLDivElement>(null);
   const atBottom = useRef(true);
@@ -135,26 +163,26 @@ export default function PrivateChat({
 
   return (
     <section
+      ref={sectionRef}
       data-private-chat
       aria-labelledby="private-chat-title"
-      className={`relative overflow-hidden border-brand-100 bg-white ${admin ? "-mx-5 border-y sm:mx-0 sm:rounded-xl sm:border sm:shadow-sm" : "rounded-xl border shadow-sm"} ${viewportHeight ? "flex h-[min(42rem,80dvh)] min-h-96 flex-col lg:h-[calc(100dvh-7rem)]" : fillHeight ? "lg:flex lg:min-h-0 lg:flex-1 lg:flex-col" : ""}`}
+      className={`relative overflow-hidden border-brand-100 bg-white ${admin ? "-mx-5 border-t sm:mx-0 sm:rounded-3xl sm:border sm:shadow-sm" : "rounded-xl border shadow-sm"} ${viewportHeight ? "flex h-[var(--chat-mobile-height,calc(100dvh-4rem))] min-h-0 flex-col sm:h-[min(42rem,80dvh)] sm:min-h-96 lg:h-[calc(100dvh-7rem)]" : fillHeight ? "lg:flex lg:min-h-0 lg:flex-1 lg:flex-col" : ""}`}
     >
       <header className="flex shrink-0 items-start gap-3 sm:items-center border-b border-brand-100 px-5 py-3 sm:px-6">
-        <span className={`flex shrink-0 items-center justify-center rounded-full bg-brand-50 ${admin ? "size-9 text-brand-500" : "size-14 text-amber-600"}`}>
-          {admin ? <TwoHeartsIcon className="size-6" /> : <CallChatIcon className="size-8" />}
+        <span className={`flex shrink-0 items-center justify-center rounded-full bg-brand-50 ${admin ? "size-12 text-brand-500" : "size-14 text-amber-600"}`}>
+          <PrivateChatIcon className="size-8" />
         </span>
         <div className="min-w-0">
           <h2
             id="private-chat-title"
-            className={`break-words font-semibold ${admin ? "text-base" : "text-xl"}`}
+            className={`break-words font-semibold ${admin ? "text-base" : "text-lg"}`}
           >
-            {admin ? <>Поговори с <span className="text-brand-500">{name}</span> от души</> : "Давайте поболтаем"}
+            {admin ? "Поговорим от души" : "Давайте поболтаем"}
           </h2>
-          <p className="mt-1 text-sm text-neutral-500">
-            {admin ? "тут только вы и ваш клиент: интим гарантирован" : "О планах, сомнениях и всём, что хочется обсудить."}
+          <p className={`${admin ? "mt-0" : "mt-1"} text-sm text-neutral-500`}>
+            {admin ? <>тут только вы и ваш клиент<span className="hidden sm:inline">: разговор приватный</span></> : "О планах, сомнениях и всём, что хочется обсудить."}
           </p>
         </div>
-        {admin && <span className="ml-auto hidden shrink-0 rounded-lg bg-violet-50 px-2 py-1 text-xs text-brand-600 sm:inline">Личное</span>}
       </header>
       <div
         ref={logRef}

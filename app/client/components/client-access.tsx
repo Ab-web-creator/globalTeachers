@@ -17,6 +17,8 @@ export default function ClientAccess({
   paid,
   frozen,
   remainingHours,
+  subject,
+  country,
 }: {
   authenticated: boolean;
   accessLink: string | null;
@@ -28,6 +30,8 @@ export default function ClientAccess({
   paid?: boolean;
   frozen?: boolean;
   remainingHours?: number;
+  subject?: string;
+  country?: string;
 }) {
   const started = useRef(false);
   const [error, setError] = useState("");
@@ -118,7 +122,7 @@ export default function ClientAccess({
                   {copied ? "Ключ скопирован ✓" : "Скопировать ключ"}
                 </button>
               )}
-              <ClientProfilePhoto name={name} hasPhoto={hasPhoto} tier={tier} email={email} paid={paid} frozen={frozen} remainingHours={remainingHours} />
+              <ClientProfilePhoto name={name} hasPhoto={hasPhoto} tier={tier} email={email} paid={paid} frozen={frozen} remainingHours={remainingHours} subject={subject} country={country} />
               <button
                 type="button"
                 disabled={busy}

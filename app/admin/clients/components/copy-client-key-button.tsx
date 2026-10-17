@@ -29,9 +29,9 @@ export default function CopyClientKeyButton({ clientId }: { clientId: string }) 
 
   return (
     <div className="flex flex-col items-end gap-2">
-      <button type="button" onClick={() => void copy()} disabled={busy} className="flex h-9 items-center justify-center gap-2 sm:h-auto rounded-full border border-brand-200 bg-white px-4 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-300 disabled:opacity-50">
+      <button type="button" onClick={() => void copy()} disabled={busy} aria-label={busy ? "Загрузка…" : copied ? "Ключ скопирован" : "Скопировать ключ клиента"} title={copied ? "Ключ скопирован" : "Ключ"} className="flex size-9 shrink-0 items-center justify-center gap-2 sm:h-auto sm:w-auto rounded-full border border-brand-200 bg-white p-0 sm:px-4 sm:py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-300 disabled:opacity-50">
         <CopyKeyIcon className="size-4" />
-        {busy ? "Загрузка…" : copied ? "Ключ скопирован" : "Скопировать ключ"}
+        <span className="hidden sm:inline">{busy ? "Загрузка…" : copied ? "Ключ скопирован" : "Ключ"}</span>
       </button>
       {copied && <span role="status" className="sr-only">Ключ клиента скопирован</span>}
       {manualLink && <label className="max-w-xs text-sm text-neutral-600">Скопируйте ссылку вручную<input aria-label="Персональная ссылка клиента" readOnly value={manualLink} onFocus={event => event.target.select()} className="mt-1 w-full rounded-xl border border-brand-200 bg-white px-3 py-2 text-base focus:outline-2 focus:-outline-offset-2 focus:outline-brand-500" /></label>}

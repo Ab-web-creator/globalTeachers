@@ -32,6 +32,8 @@ export default async function ClientPage() {
         accessLink={accessLink}
         name={workspace?.client.name}
         tier={workspace?.client.tier}
+        subject={workspace?.profile.subject}
+        country={workspace?.profile.country}
         email={workspace?.client.email}
         paid={Boolean(workspace?.client.paid_at)}
         frozen={Boolean(workspace?.client.frozen_at)}

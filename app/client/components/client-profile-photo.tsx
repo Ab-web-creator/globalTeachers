@@ -5,6 +5,8 @@ import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import {
   ProfilePhotoIcon,
   FormSelectChevronIcon,
+  ClientProfileFieldIcon,
+  AppointmentClockIcon,
 } from "@/app/components/svg";
 
 export default function ClientProfilePhoto({
@@ -15,11 +17,15 @@ export default function ClientProfilePhoto({
   paid,
   frozen,
   remainingHours,
+  subject,
+  country,
 }: {
   email?: string;
   paid?: boolean;
   frozen?: boolean;
   remainingHours?: number;
+  subject?: string;
+  country?: string;
   name: string;
   hasPhoto: boolean;
   tier?: "START" | "PRO" | "VIP";
@@ -102,8 +108,10 @@ export default function ClientProfilePhoto({
             {tier && <span className="ml-auto shrink-0 rounded-full bg-brand-50 px-2 py-1 text-xs font-semibold text-brand-600">{tier}</span>}
           </div>
           <div className="space-y-2 border-b border-brand-100 px-2 pt-1 pb-3 text-sm">
-            {email && <p className="break-all text-neutral-500">{email}</p>}
-            {remainingHours !== undefined && <p className="text-neutral-600">Доступно часов: {remainingHours}</p>}
+            {email && <p className="flex items-start gap-2 text-neutral-500"><ClientProfileFieldIcon field="email" className="mt-0.5 size-4 shrink-0 text-brand-500" /><span className="min-w-0 break-all">{email}</span></p>}
+            {subject && <p className="flex items-start gap-2 text-neutral-600"><ClientProfileFieldIcon field="subject" className="mt-0.5 size-4 shrink-0 text-brand-500" /><span className="min-w-0 break-words">{subject}</span></p>}
+            {country && <p className="flex items-start gap-2 text-neutral-600"><ClientProfileFieldIcon field="country" className="mt-0.5 size-4 shrink-0 text-brand-500" /><span className="min-w-0 break-words">{country}</span></p>}
+            {remainingHours !== undefined && <p className="flex items-start gap-2 text-neutral-600"><AppointmentClockIcon className="mt-0.5 size-4 shrink-0 text-brand-500" /><span>Доступно часов: {remainingHours}</span></p>}
             <p className={paid ? "text-emerald-700" : "text-amber-700"}>{paid ? "Аккаунт активен" : frozen ? "Аккаунт заморожен" : "Ожидает оплаты"}</p>
           </div>
           <label className={`relative flex w-full items-center gap-2 rounded-xl px-2 py-3 text-left text-sm text-brand-600 hover:bg-brand-50 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-brand-500 ${busy ? "opacity-50" : "cursor-pointer"}`}>

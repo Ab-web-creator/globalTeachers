@@ -1,6 +1,7 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
+import { createPortal } from "react-dom";
 import { CallWindowCloseIcon, CallWindowMinimizeIcon, CallWindowFullscreenIcon, CallChatIcon } from "@/app/components/svg";
 import useMinimizedCallDrag from "./use-minimized-call-drag";
 import CallChat from "./call-chat";
@@ -39,7 +40,18 @@ export default function CallRoom(props: CallRoomProps) {
     cleanup,
   } = room;
   const { style: minimizedStyle, dragHandlers } = useMinimizedCallDrag(minimized);
+  const anchorRef = useRef<HTMLDivElement>(null);
+  const [host] = useState(() => typeof document === "undefined" ? null : document.createElement("div"));
+  useLayoutEffect(() => {
+    if (!host) return;
+    const target = immersive || minimized ? document.body : anchorRef.current;
+    target?.appendChild(host);
+    return () => { host.remove(); };
+  }, [host, immersive, minimized]);
   return (
+    <>
+      <div ref={anchorRef} />
+      {host && createPortal(
     <section ref={callFrameRef} {...dragHandlers}
       style={minimized ? minimizedStyle : immersive ? undefined : { "--call-max-width": `min(${state === "accepted" ? "64rem" : "42rem"}, calc(max(12rem, 100dvh - ${token ? "24rem" : "30rem"}) * ${state === "accepted" && focusedVideo === "remote" ? remoteRatio : localRatio} + 3rem + 2px))` } as CSSProperties}
       className={minimized ? "fixed right-4 bottom-4 z-50 touch-none select-none cursor-grab active:cursor-grabbing w-52 max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-slate-800 bg-[#121826] p-2 shadow-2xl" : immersive ? "fixed inset-0 z-60 flex h-dvh w-full flex-col gap-3 overflow-hidden bg-[#121826] p-3 sm:p-4" : "mx-auto w-full bg-white px-4 py-6 sm:max-w-(--call-max-width) sm:rounded-3xl sm:border sm:border-brand-100 sm:p-6 sm:shadow-sm"}
@@ -85,6 +97,9 @@ export default function CallRoom(props: CallRoomProps) {
       <CallVideoStage {...room} />
       <CallChat {...room} />
       <CallControls {...room} />
-    </section>
+    </section>,
+        host,
+      )}
+    </>
   );
 }

@@ -62,7 +62,7 @@ export default function ClientFiles({ clientId, admin, writable }: { clientId: s
         setLoaded(true);
         setQuery("");
         setType("all");
-        setUploader(admin ? "admin" : "client");
+        setUploader("all");
       }
     });
     if (upload.current) upload.current.value = "";
@@ -70,7 +70,7 @@ export default function ClientFiles({ clientId, admin, writable }: { clientId: s
   const files = data.files.filter(file => (tab === "all" || tab === file.folder_id) && (uploader === "all" || uploader === file.author) && file.name.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()) && (type === "all" || (type === "image" ? file.content_type.startsWith("image/") : type === "pdf" ? file.content_type === "application/pdf" : file.name.toLowerCase().endsWith(".doc") || file.name.toLowerCase().endsWith(".docx"))));
   const tabs = [{ id: "all", name: "Все файлы" }, ...data.folders];
   return (
-    <section aria-labelledby="client-files-title" className={`@container mt-8 min-w-0 border-brand-200 bg-white p-4 sm:p-6 ${admin ? "-mx-5 border-t sm:mx-0 sm:max-w-full sm:rounded-2xl sm:border" : "max-w-full rounded-2xl border"}`}>
+    <section aria-labelledby="client-files-title" className={`@container mt-8 min-w-0 border-brand-200 bg-white p-4 sm:p-6 ${admin ? "-mx-5 relative border-t-0 pt-12 before:absolute before:inset-x-0 before:top-0 before:h-2 before:bg-linear-to-r before:from-sky-200 before:via-violet-200 before:to-pink-200 sm:mx-0 sm:max-w-full sm:rounded-3xl sm:border sm:border-brand-100 sm:shadow-sm sm:before:hidden" : "max-w-full rounded-2xl border"}`}>
       <header className="relative flex flex-wrap items-start justify-between gap-4">
         <button type="button" aria-label="Загрузить файлы" title="Загрузить файлы" disabled={!writable || busy} onClick={() => upload.current?.click()} className="absolute right-0 top-2 flex size-9 items-center justify-center rounded-full bg-brand-500 text-white hover:bg-brand-600 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-300 disabled:opacity-50 sm:hidden"><FileUploadIcon /></button>
         <div className="min-w-0 flex-1 sm:flex-initial"><div className="flex flex-wrap items-baseline gap-x-2 gap-y-1"><h2 id="client-files-title" className="pr-11 text-xl font-semibold sm:pr-0">Файлы и материалы</h2>          <details className="group relative">

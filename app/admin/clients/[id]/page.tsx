@@ -24,7 +24,7 @@ export default async function AdminClientPage({ params }: { params: Promise<{ id
   if (!workspace) notFound();
   const initial = JSON.parse(JSON.stringify(workspace));
   return (
-    <div className="min-h-dvh bg-white text-brand-700">
+    <div className="relative isolate min-h-dvh bg-white sm:bg-linear-to-br sm:from-sky-100 sm:via-violet-100 sm:to-pink-100 text-brand-700 before:hidden sm:before:block before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-linear-to-b before:from-white before:to-transparent">
       <AdminNav backHref="/admin/clients" active="clients" showLogout={!development} />
       <main className="mx-auto max-w-400 px-5 py-6 sm:px-10 lg:px-16 xl:px-20">
         <ClientWorkspaceShell initial={initial.client}>

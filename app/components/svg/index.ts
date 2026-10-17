@@ -81,3 +81,8 @@ export { CandidateGroupIcon, ClientCheckIcon, BriefcaseIcon, SnowflakeIcon, Repl
 export { FileUploadIcon } from "./icons/file-upload";
 
 export { StartClientIcon } from "./icons/start-client";
+export { PrivateChatIcon } from "./icons/private-chat";
+
+export { ConsultationCalendarIcon } from "./icons/consultation-calendar";
+
+export { ClientProfileFieldIcon } from "./icons/client-profile-field";
