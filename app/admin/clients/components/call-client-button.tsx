@@ -35,10 +35,12 @@ export default function CallClientButton({ clientId }: { clientId: string }) {
         type="button"
         onClick={() => void call()}
         disabled={busy}
-        className="flex items-center justify-center gap-2 rounded-full border border-brand-200 bg-white px-4 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-300 disabled:cursor-wait disabled:opacity-50"
+        aria-label={busy ? "Вызываем…" : "Позвонить"}
+        title={busy ? "Вызываем…" : "Позвонить"}
+        className="flex h-9 items-center justify-center gap-2 sm:h-auto rounded-full border border-brand-200 bg-white px-4 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-300 disabled:cursor-wait disabled:opacity-50"
       >
         <PhoneCallIcon className="size-4" />
-        {busy ? "Вызываем…" : "Позвонить"}
+        <span className="hidden sm:inline">{busy ? "Вызываем…" : "Позвонить"}</span>
       </button>
       {error && (
         <p role="alert" className="max-w-xs text-right text-sm text-red-700">

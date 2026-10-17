@@ -44,11 +44,6 @@ export default function LegalDocument({ document }: { document: Document }) {
         <Link href="/" className="text-sm text-brand-600 underline underline-offset-4">На главную</Link>
         <h1 className="mt-7 text-3xl font-semibold tracking-tight sm:text-4xl">{document.title}</h1>
         <p className="mt-7 text-lg leading-relaxed text-neutral-600">{document.description}</p>
-        {document.draft !== false && (
-          <aside className="mt-7 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-relaxed text-amber-950">
-            Черновик от 8 октября 2026 года. Реквизиты, контакты и отдельные условия требуют подтверждения. Email ниже — пример, а не действующий адрес для обращений.
-          </aside>
-        )}
         <div className="mt-10 space-y-8">
           {document.sections.map((section) => (
             <section key={section.title}>
@@ -72,9 +67,10 @@ export default function LegalDocument({ document }: { document: Document }) {
         <section className="mt-10 rounded-2xl border border-brand-200 bg-brand-50 p-6">
           <h2 className="text-xl font-semibold">Реквизиты и контакты</h2>
           <div className="mt-7 space-y-3 text-neutral-600">
-            <p>{operator.name}</p>
-            <p>{operator.address}</p>
-            <p>Email (пример): {operator.email}</p>
+            <p>{operator.introduction}</p>
+            <p>Email: <a href={`mailto:${operator.email}`} className="break-all underline underline-offset-4 hover:text-brand-600">{operator.email}</a></p>
+            <p>Сайт: <a href={operator.website} className="break-all underline underline-offset-4 hover:text-brand-600">{operator.website}</a></p>
+            <p>{operator.registrationNotice}</p>
           </div>
         </section>
         <nav aria-label="Правовые документы" className="mt-10 flex flex-wrap gap-6 text-sm text-brand-600">

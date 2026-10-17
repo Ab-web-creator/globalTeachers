@@ -11,3 +11,10 @@
 .paidOrnament {
   opacity: 0.2;
 }
+
+@media (width < 40rem) {
+  .profileOrnament {
+    background-size: auto 12rem;
+    background-repeat: repeat;
+  }
+}

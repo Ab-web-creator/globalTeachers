@@ -5,12 +5,10 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { sessionCookie, validSession } from "../../../lib/admin/session";
 import {
-  getWorkspace,
   listPrivateClients,
 } from "../../../lib/client-area/workspace";
 import { uuidPattern } from "../../../lib/client-area/types";
 import AdminNav from "../components/admin-nav";
-import WorkspacePanel from "../../client/components/workspace-panel";
 
 export const metadata: Metadata = {
   title: "Клиенты — TeacherNavigator",
@@ -35,10 +33,8 @@ export default async function AdminClientsPage({
     typeof params.client === "string" && uuidPattern.test(params.client)
       ? params.client
       : null;
-  const data = await Promise.all([
-    listPrivateClients(),
-    clientId ? getWorkspace(clientId, true) : Promise.resolve(null),
-  ]).catch(() => null);
+  if (clientId) redirect(`/admin/clients/${clientId}`);
+  const data = await listPrivateClients().catch(() => null);
   return (
     <div className="min-h-dvh bg-white text-brand-700">
       <AdminNav active="clients" showLogout={!development} />
@@ -57,17 +53,7 @@ export default async function AdminClientsPage({
             db:migrate.
           </p>
         ) : (
-          <>
-            <ClientDirectory initial={data[0]} selectedId={clientId}>
-              {data[1] && (
-                <WorkspacePanel
-                  key={data[1].client.id}
-                  initial={JSON.parse(JSON.stringify(data[1]))}
-                  admin
-                />
-              )}
-            </ClientDirectory>
-          </>
+          <ClientDirectory initial={data} />
         )}
       </main>
     </div>

@@ -16,6 +16,10 @@ export type PrivateClient = {
   awaiting_reply?: boolean;
 };
 export type ChatMessage = {
+  hidden_from_client?: boolean;
+  client_edited_at?: string | null;
+  client_deleted_at?: string | null;
+  client_edit_history?: { body: string; changed_at: string }[];
   id: string;
   author: "admin" | "client";
   body: string;

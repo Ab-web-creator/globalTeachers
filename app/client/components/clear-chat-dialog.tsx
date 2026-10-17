@@ -3,8 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { DeleteApplicationIcon } from "@/app/components/svg";
 
-export default function ClearChatDialog({ onConfirm, onClose }: { onConfirm: () => Promise<void>; onClose: () => void }) {
+export default function ClearChatDialog({ onConfirm, onClose }: { onConfirm: (scope: "admin" | "client" | "both") => Promise<void>; onClose: () => void }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const [scope, setScope] = useState<"admin" | "client" | "both">("admin");
   const [busy, setBusy] = useState(false);
   const submitting = useRef(false);
   const [error, setError] = useState("");
@@ -21,7 +22,7 @@ export default function ClearChatDialog({ onConfirm, onClose }: { onConfirm: () 
     submitting.current = true;
     setBusy(true);
     setError("");
-    try { await onConfirm(); onClose(); }
+    try { await onConfirm(scope); onClose(); }
     catch (cause) { setError(cause instanceof Error ? cause.message : "Не удалось удалить сообщения."); }
     finally { submitting.current = false; setBusy(false); }
   }
@@ -37,7 +38,20 @@ export default function ClearChatDialog({ onConfirm, onClose }: { onConfirm: () 
       className="fixed inset-0 m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-sm overflow-y-auto rounded-3xl border-0 bg-white p-6 text-brand-700 shadow-2xl backdrop:bg-neutral-950/40 backdrop:backdrop-blur-sm">
       <div className="mb-4 flex size-12 items-center justify-center rounded-full bg-red-50 text-red-500"><DeleteApplicationIcon className="size-6" /></div>
       <h2 id="clear-chat-title" className="text-xl font-semibold">Удалить всю переписку?</h2>
-      <p id="clear-chat-description" className="mt-3 text-sm leading-relaxed text-neutral-600">Все сообщения исчезнут у вас и клиента. Восстановить переписку будет невозможно.</p>
+      <p id="clear-chat-description" className="mt-3 text-sm leading-relaxed text-neutral-600">Выберите, у кого скрыть все текущие сообщения. Новые сообщения будут появляться как обычно.</p>
+      <fieldset disabled={busy} className="mt-4 space-y-2">
+        <legend className="sr-only">У кого удалить переписку</legend>
+        {([
+          { value: "admin", label: "Только у меня", description: "Клиент продолжит видеть переписку." },
+          { value: "client", label: "Только у клиента", description: "У вас останется копия с отметкой об удалении у клиента." },
+          { value: "both", label: "У меня и клиента", description: "Переписка исчезнет с обеих сторон." },
+        ] as const).map(option => (
+          <label key={option.value} className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 ${scope === option.value ? "border-brand-300 bg-brand-50" : "border-neutral-200"}`}>
+            <input type="radio" name="clear-chat-scope" value={option.value} checked={scope === option.value} onChange={() => setScope(option.value)} className="mt-1 shrink-0 accent-brand-500 text-base focus-visible:-outline-offset-2" />
+            <span><span className="block text-sm font-medium">{option.label}</span><span className="mt-1 block text-xs leading-relaxed text-neutral-500">{option.description}</span></span>
+          </label>
+        ))}
+      </fieldset>
       {error && <p role="alert" className="mt-3 text-sm text-red-600">{error}</p>}
       <div className="mt-6 flex justify-end gap-2">
         <button type="button" autoFocus disabled={busy} onClick={onClose} className="rounded-xl px-4 py-2.5 text-sm font-semibold text-brand-500 hover:bg-brand-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500 disabled:opacity-50">Отмена</button>

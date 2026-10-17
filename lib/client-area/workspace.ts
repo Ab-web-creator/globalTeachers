@@ -7,9 +7,9 @@ import type { ClientWorkspace, PrivateClient } from "./types";
 const clientSelect = `SELECT client.id, client.email, client.name, client.tier, client.active, client.paid_at, client.last_seen_at, (client.profile_photo IS NOT NULL) AS has_profile_photo,
   (CASE WHEN client.tier = 'VIP' THEN COALESCE(client.allowance_hours, policy.hours) ELSE policy.hours END)::int AS allowance_hours,
   (SELECT count(*)::int FROM appointment_slots WHERE booked_by = client.id) AS booked_hours,
-  (SELECT count(*)::int FROM private_chat_messages WHERE client_id = client.id AND author = 'client' AND admin_read_at IS NULL) AS unread_count,
-  (SELECT count(*)::int FROM private_chat_messages WHERE client_id = client.id AND author = 'admin' AND client_read_at IS NULL) AS client_unread_count,
-  COALESCE((SELECT author = 'client' FROM private_chat_messages WHERE client_id = client.id ORDER BY created_at DESC, id DESC LIMIT 1), false) AS awaiting_reply
+  (SELECT count(*)::int FROM private_chat_messages WHERE client_id = client.id AND author = 'client' AND NOT hidden_from_admin AND admin_read_at IS NULL) AS unread_count,
+  (SELECT count(*)::int FROM private_chat_messages WHERE client_id = client.id AND author = 'admin' AND NOT hidden_from_client AND client_read_at IS NULL) AS client_unread_count,
+  COALESCE((SELECT author = 'client' FROM private_chat_messages WHERE client_id = client.id AND NOT hidden_from_admin ORDER BY created_at DESC, id DESC LIMIT 1), false) AS awaiting_reply
   FROM private_clients client JOIN client_package_allowances policy ON policy.tier = client.tier`;
 
 export async function listPrivateClients(): Promise<PrivateClient[]> {
@@ -34,8 +34,9 @@ export async function getWorkspace(
   if (!record.rowCount) return null;
   const [messages, slots, bookings, profile] = await Promise.all([
     database().query(
-      `SELECT id, author, body, created_at FROM (
-      SELECT id, author, body, created_at FROM private_chat_messages WHERE client_id = $1
+      `SELECT id, author, body, created_at, hidden_from_client, client_edited_at, ${paidOnly ? "client_edit_history, client_deleted_at" : "NULL AS client_deleted_at"} FROM (
+      SELECT id, author, body, created_at, hidden_from_client, client_edited_at, client_edit_history, client_deleted_at FROM private_chat_messages WHERE client_id = $1
+      AND NOT ${paidOnly ? "hidden_from_admin" : "hidden_from_client"}
       ORDER BY created_at DESC, id DESC LIMIT 200) recent ORDER BY created_at, id`,
       [clientId],
     ),
@@ -235,7 +236,7 @@ export async function bookAppointment(
 export async function markChatRead(clientId: string, ids: string[]) {
   await database().query(
     `UPDATE private_chat_messages SET admin_read_at = now()
-    WHERE client_id = $1 AND author = 'client' AND admin_read_at IS NULL
+    WHERE client_id = $1 AND author = 'client' AND NOT hidden_from_admin AND admin_read_at IS NULL
       AND (created_at, id) <= (SELECT created_at, id FROM private_chat_messages
         WHERE client_id = $1 AND id = ANY($2::uuid[]) ORDER BY created_at DESC, id DESC LIMIT 1)`,
     [clientId, ids],
@@ -244,7 +245,7 @@ export async function markChatRead(clientId: string, ids: string[]) {
 
 export async function clientUnreadMessages(clientId: string) {
   const result = await database().query(
-    "SELECT count(*)::int AS count FROM private_chat_messages WHERE client_id = $1 AND author = 'admin' AND client_read_at IS NULL",
+    "SELECT count(*)::int AS count FROM private_chat_messages WHERE client_id = $1 AND author = 'admin' AND NOT hidden_from_client AND client_read_at IS NULL",
     [clientId],
   );
   return result.rows[0].count as number;
@@ -253,7 +254,7 @@ export async function clientUnreadMessages(clientId: string) {
 export async function markClientChatRead(clientId: string, ids: string[]) {
   await database().query(
     `UPDATE private_chat_messages SET client_read_at = now()
-    WHERE client_id = $1 AND author = 'admin' AND client_read_at IS NULL
+    WHERE client_id = $1 AND author = 'admin' AND NOT hidden_from_client AND client_read_at IS NULL
       AND (created_at, id) <= (SELECT created_at, id FROM private_chat_messages
         WHERE client_id = $1 AND id = ANY($2::uuid[]) ORDER BY created_at DESC, id DESC LIMIT 1)`,
     [clientId, ids],

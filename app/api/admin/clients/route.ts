@@ -71,7 +71,9 @@ export async function POST(request: NextRequest) {
   try {
     if (input?.action === "clear-chat") {
       if (!uuidPattern.test(input.clientId ?? "")) return privateJson({ error: "Invalid client" }, 400);
-      await database().query("DELETE FROM private_chat_messages WHERE client_id = $1", [input.clientId]);
+      if (!["admin", "client", "both"].includes(input.scope)) return privateJson({ error: "Выберите, у кого удалить сообщения." }, 400);
+      const assignments = input.scope === "admin" ? "hidden_from_admin = true" : input.scope === "client" ? "hidden_from_client = true" : "hidden_from_admin = true, hidden_from_client = true";
+      await database().query(`UPDATE private_chat_messages SET ${assignments} WHERE client_id = $1`, [input.clientId]);
       return privateJson({ ok: true });
     }
     if (input?.action === "edit-chat" || input?.action === "delete-chat") {

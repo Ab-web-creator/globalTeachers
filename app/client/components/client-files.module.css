@@ -1,0 +1,114 @@
+.table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.table th,
+.table td {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.table th:first-child {
+  width: 28%;
+}
+
+.uploaderBadge {
+  display: none;
+}
+
+@container (width < 64rem) {
+  .table,
+  .table tbody {
+    display: block;
+  }
+
+  .table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .table tbody tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 0.5rem;
+  }
+
+  .table td {
+    display: block;
+    padding: 0.5rem;
+  }
+
+  .table td[data-label="Загрузил"] {
+    display: none;
+  }
+
+  .uploaderBadge {
+    display: inline-flex;
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.75rem;
+    color: var(--color-neutral-500);
+  }
+
+  .table td:first-child,
+  .table td:nth-child(5),
+  .table td:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .table td[data-label="Название"] {
+    order: 0;
+  }
+
+  .table td[data-label="Размер"] {
+    order: 1;
+  }
+
+  .table td[data-label="Папка"] {
+    order: 2;
+  }
+
+  .table td[data-label="Дата"] {
+    order: 3;
+    grid-column: 1;
+    align-self: end;
+  }
+
+  .table td[data-label="Дата"]::before {
+    content: none;
+    display: none;
+  }
+
+  .table td:last-child:not(:first-child) {
+    order: 4;
+    grid-column: 2;
+    align-self: end;
+  }
+}
+
+@media (width < 40rem) {
+  .fileList {
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .fileList .table tbody {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .fileList .table tbody tr {
+    border: 1px solid var(--color-brand-300);
+    border-radius: 0.75rem;
+    background: white;
+  }
+}

@@ -54,7 +54,7 @@ export async function deliverBookingEmail(slotId?: string) {
         {
           to: recipient,
           subject: `Новая запись ${record.tier} — TeacherNavigator`,
-          text: `${record.name} (${record.email}) забронировал(а) консультацию: ${date} (UTC), 60 минут.\n\n${origin}/admin/clients?client=${job.client_id}`,
+          text: `${record.name} (${record.email}) забронировал(а) консультацию: ${date} (UTC), 60 минут.\n\n${origin}/admin/clients/${job.client_id}`,
         },
         `appointment-admin-${job.id}`,
       );

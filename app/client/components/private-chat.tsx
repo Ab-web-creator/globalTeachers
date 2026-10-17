@@ -21,7 +21,7 @@ type Props = {
   onRead?: () => void;
   onEditMessage?: (id: string, body: string) => Promise<void>;
   onDeleteMessage?: (id: string) => Promise<void>;
-  onClearMessages?: () => Promise<void>;
+  onClearMessages?: (scope: "admin" | "client" | "both") => Promise<void>;
 };
 
 export default function PrivateChat({
@@ -137,9 +137,9 @@ export default function PrivateChat({
     <section
       data-private-chat
       aria-labelledby="private-chat-title"
-      className={`relative overflow-hidden rounded-xl border border-brand-100 bg-white shadow-sm ${viewportHeight ? "flex h-[min(42rem,80dvh)] min-h-96 flex-col lg:h-[calc(100dvh-7rem)]" : fillHeight ? "lg:flex lg:min-h-0 lg:flex-1 lg:flex-col" : ""}`}
+      className={`relative overflow-hidden border-brand-100 bg-white ${admin ? "-mx-5 border-y sm:mx-0 sm:rounded-xl sm:border sm:shadow-sm" : "rounded-xl border shadow-sm"} ${viewportHeight ? "flex h-[min(42rem,80dvh)] min-h-96 flex-col lg:h-[calc(100dvh-7rem)]" : fillHeight ? "lg:flex lg:min-h-0 lg:flex-1 lg:flex-col" : ""}`}
     >
-      <header className="flex shrink-0 items-center gap-3 border-b border-brand-100 px-5 py-3 sm:px-6">
+      <header className="flex shrink-0 items-start gap-3 sm:items-center border-b border-brand-100 px-5 py-3 sm:px-6">
         <span className={`flex shrink-0 items-center justify-center rounded-full bg-brand-50 ${admin ? "size-9 text-brand-500" : "size-14 text-amber-600"}`}>
           {admin ? <TwoHeartsIcon className="size-6" /> : <CallChatIcon className="size-8" />}
         </span>
@@ -154,7 +154,7 @@ export default function PrivateChat({
             {admin ? "тут только вы и ваш клиент: интим гарантирован" : "О планах, сомнениях и всём, что хочется обсудить."}
           </p>
         </div>
-        {admin && <span className="ml-auto shrink-0 rounded-lg bg-violet-50 px-2 py-1 text-xs text-brand-600">Личное</span>}
+        {admin && <span className="ml-auto hidden shrink-0 rounded-lg bg-violet-50 px-2 py-1 text-xs text-brand-600 sm:inline">Личное</span>}
       </header>
       <div
         ref={logRef}
@@ -198,20 +198,30 @@ export default function PrivateChat({
                 </p>
               )}
               <div
+                data-chat-message
                 className={`flex flex-col ${own ? "items-end" : "items-start"}`}
               >
                 <p
+                  data-message-bubble
                   className={`relative max-w-4/5 after:absolute after:bottom-0 after:h-2 after:w-2 after:content-[''] whitespace-pre-wrap break-words rounded-xl px-4 py-2.5 text-base leading-relaxed ${own ? "rounded-br-none bg-brand-500 text-white after:-right-1.5 after:bg-brand-500 after:[clip-path:polygon(0_0,0_100%,100%_100%)]" : item.author === "admin" ? "rounded-bl-none bg-brand-50 text-brand-950 after:-left-1.5 after:bg-brand-50 after:[clip-path:polygon(100%_0,0_100%,100%_100%)]" : "rounded-bl-none bg-brand-50 text-brand-950 after:-left-1.5 after:bg-brand-50 after:[clip-path:polygon(100%_0,0_100%,100%_100%)]"}`}
                 >
                   {item.body}
                 </p>
-                <div className="mt-1 flex max-w-full flex-wrap items-center justify-end gap-0.5">
+                {admin && item.client_deleted_at && <span className="mt-1 text-xs font-medium text-red-600">Клиент удалил это сообщение · исходный текст сохранён</span>}
+                {admin && Boolean(item.client_edit_history?.length) && (
+                  <details className="mt-2 max-w-4/5 rounded-lg border border-amber-200 bg-amber-50 p-2 text-xs text-amber-900">
+                    <summary className="cursor-pointer font-medium">Клиент изменил сообщение · история ({item.client_edit_history!.length})</summary>
+                    <ol className="mt-2 space-y-2">{item.client_edit_history!.map((entry, revision) => <li key={revision} className="whitespace-pre-wrap break-words"><span className="font-medium">Версия {revision + 1} · {timeFormat.format(new Date(entry.changed_at))}</span><p className="mt-1">{entry.body}</p></li>)}</ol>
+                  </details>
+                )}
+                {admin && item.hidden_from_client && !item.client_deleted_at && <span className="mt-1 text-xs text-amber-700">Удалено у клиента · видно только вам</span>}
+                <div className="mt-1 flex max-w-full flex-wrap items-center justify-end gap-0.5 has-[form]:flex-col has-[form]:items-end">
                   <p title={`${day}, ${timeFormat.format(date)} (${timeZone})`} className="pr-1 text-xs text-neutral-400">
                     {!(admin && own) && <>{own ? "Вы" : item.author === "admin" ? "TeacherNavigator" : name} · </>}
                     <time dateTime={new Date(item.created_at).toISOString()}>{timeFormat.format(date)}</time>
                   </p>
-                  {admin && item.author === "admin" && onEditMessage && onDeleteMessage && (
-                    <ChatMessageActions body={item.body} onEdit={body => onEditMessage(item.id, body)} onDelete={() => onDeleteMessage(item.id)} />
+                  {own && (admin || active) && onEditMessage && onDeleteMessage && (
+                    <ChatMessageActions admin={admin} body={item.body} onEdit={body => onEditMessage(item.id, body)} onDelete={() => onDeleteMessage(item.id)} />
                   )}
                 </div>
               </div>

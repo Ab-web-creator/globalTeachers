@@ -32,6 +32,7 @@ const {
 } = require("../lib/client-area/invitations.ts");
 const {
   addChatMessage,
+  clientUnreadMessages,
   bookAppointment,
   cancelAppointment,
   closeAppointmentSlot,
@@ -52,6 +53,7 @@ const {
   GET: adminGet,
   POST: adminPost,
 } = require("../app/api/admin/clients/route.ts");
+const { GET: filesGet, POST: filesPost } = require("../app/api/client-files/route.ts");
 const { POST: access } = require("../app/api/client/access/route.ts");
 const {
   GET: workspaceGet,
@@ -196,6 +198,9 @@ test(
         "052_client_consultation_profile.sql",
         "053_mailbox_trash.sql",
         "054_admin_direct_calls.sql",
+        "055_chat_visibility.sql",
+        "056_client_message_history.sql",
+        "057_client_files.sql",
       ]) {
         await db.query(fs.readFileSync(`database/migrations/${name}`, "utf8"));
       }
@@ -490,12 +495,85 @@ test(
         assert.equal((await getWorkspace(own.id)).messages.find(message => message.id === clientMessage).body, "Client original");
         const foreign = randomUUID();
         await addChatMessage(other.id, "admin", foreign, "Other conversation");
-        assert.equal((await adminPost(request("/api/admin/clients", { action: "clear-chat", clientId: own.id }, own.cookie))).status, 401);
+        assert.equal((await adminPost(request("/api/admin/clients", { action: "clear-chat", clientId: own.id, scope: "both" }, own.cookie))).status, 401);
         assert.ok((await getWorkspace(own.id)).messages.length > 0);
-        assert.equal((await adminPost(request("/api/admin/clients", { action: "clear-chat", clientId: own.id }, adminCookie))).status, 200);
+        assert.equal((await adminPost(request("/api/admin/clients", { action: "clear-chat", clientId: own.id, scope: "invalid" }, adminCookie))).status, 400);
+        assert.equal((await adminPost(request("/api/admin/clients", { action: "clear-chat", clientId: own.id, scope: "client" }, adminCookie))).status, 200);
+        assert.equal((await getWorkspace(own.id)).messages.length, 0);
+        const retained = (await getWorkspace(own.id, true)).messages;
+        assert.ok(retained.length > 0);
+        assert.ok(retained.every(message => message.hidden_from_client));
+        assert.equal(await clientUnreadMessages(own.id), 0);
+        const fresh = randomUUID();
+        await addChatMessage(own.id, "admin", fresh, "New message after clearing");
+        assert.ok((await getWorkspace(own.id)).messages.some(message => message.id === fresh));
+        assert.equal((await adminPost(request("/api/admin/clients", { action: "clear-chat", clientId: own.id, scope: "admin" }, adminCookie))).status, 200);
+        assert.equal((await getWorkspace(own.id, true)).messages.length, 0);
+        assert.ok((await getWorkspace(own.id)).messages.some(message => message.id === fresh));
+        assert.equal((await adminPost(request("/api/admin/clients", { action: "clear-chat", clientId: own.id, scope: "both" }, adminCookie))).status, 200);
         assert.equal((await getWorkspace(own.id)).messages.length, 0);
         assert.ok((await getWorkspace(other.id)).messages.some(message => message.id === foreign));
         await db.query("DELETE FROM private_chat_messages WHERE id = $1", [foreign]);
+      });
+
+      await t.test("client edits and deletions preserve admin history and enforce ownership", async () => {
+        const own = clients[0], other = clients[1];
+        const id = randomUUID(), adminId = randomUUID();
+        await addChatMessage(own.id, "client", id, "Original client text");
+        await addChatMessage(own.id, "admin", adminId, "Admin text");
+        const mutate = (action, messageId, body, cookie = own.cookie) => chatPost(request("/api/client/messages", { action, id: messageId, body, clientId: other.id }, cookie));
+        for (const action of ["edit-chat", "delete-chat"]) {
+          assert.equal((await mutate(action, id, "Intrusion", other.cookie)).status, 409);
+          assert.equal((await mutate(action, adminId, "Intrusion")).status, 409);
+        }
+        assert.equal((await mutate("edit-chat", id, " ")).status, 400);
+        assert.equal((await mutate("edit-chat", id, "Second version")).status, 200);
+        assert.equal((await mutate("edit-chat", id, "Final version")).status, 200);
+        const adminCopy = (await getWorkspace(own.id, true)).messages.find(message => message.id === id);
+        assert.equal(adminCopy.body, "Final version");
+        assert.deepEqual(adminCopy.client_edit_history.map(entry => entry.body), ["Original client text", "Second version"]);
+        const clientCopy = (await getWorkspace(own.id)).messages.find(message => message.id === id);
+        assert.equal(clientCopy.body, "Final version");
+        assert.equal(clientCopy.client_edit_history, undefined);
+        assert.equal((await mutate("delete-chat", id)).status, 200);
+        assert.ok(!(await getWorkspace(own.id)).messages.some(message => message.id === id));
+        const deletedCopy = (await getWorkspace(own.id, true)).messages.find(message => message.id === id);
+        assert.equal(deletedCopy.body, "Final version");
+        assert.ok(deletedCopy.client_deleted_at);
+        assert.equal(deletedCopy.client_edit_history.length, 2);
+        assert.equal((await mutate("edit-chat", id, "Restore")).status, 409);
+        await db.query("DELETE FROM private_chat_messages WHERE id = ANY($1::uuid[])", [[id, adminId]]);
+      });
+
+      await t.test("shared files are private, validate uploads, and restrict folders and deletion", async () => {
+        const own = clients[0], other = clients[1];
+        const base = `/api/client-files?client=${own.id}`;
+        const upload = (path, name, bytes, cookie) => filesPost(new NextRequest(`https://example.com${path}&action=upload&name=${encodeURIComponent(name)}`, { method: "POST", headers: { origin: "https://example.com", cookie }, body: bytes }));
+        const pdf = Buffer.from("%PDF-1.4 test document");
+        assert.equal((await upload(base, "lesson.pdf", pdf, own.cookie)).status, 401);
+        assert.equal((await upload(base, "lesson.pdf", pdf, adminCookie)).status, 200);
+        assert.equal((await upload("/api/client-files?", "homework.pdf", pdf, own.cookie)).status, 200);
+        assert.equal((await upload(base, "fake.pdf", Buffer.from("not a pdf"), adminCookie)).status, 400);
+        assert.equal((await upload(base, "script.svg", Buffer.from("<svg/>"), adminCookie)).status, 400);
+        assert.equal((await upload(base, "big.pdf", Buffer.alloc(10485761), adminCookie)).status, 413);
+        let data = await (await filesGet(request("/api/client-files", undefined, own.cookie))).json();
+        assert.equal(data.files.length, 2);
+        const adminFile = data.files.find(file => file.author === "admin"), clientFile = data.files.find(file => file.author === "client");
+        assert.equal((await filesGet(request(`/api/client-files?file=${adminFile.id}`, undefined, other.cookie))).status, 404);
+        assert.equal((await filesGet(request(base + `&file=${adminFile.id}`, undefined, own.cookie))).status, 401);
+        const download = await filesGet(request(`/api/client-files?file=${adminFile.id}`, undefined, own.cookie));
+        assert.equal(download.status, 200);
+        assert.match(download.headers.get("content-disposition"), /attachment/);
+        assert.equal(await download.text(), pdf.toString());
+        assert.equal((await filesPost(request("/api/client-files?action=folder", { name: "Lessons" }, own.cookie))).status, 403);
+        assert.equal((await filesPost(request(base + "&action=folder", { name: "Lessons" }, adminCookie))).status, 200);
+        data = await (await filesGet(request(base, undefined, adminCookie))).json();
+        assert.equal((await filesPost(request(base + "&action=move", { id: adminFile.id, folder: data.folders[0].id }, adminCookie))).status, 200);
+        assert.equal((await filesPost(request("/api/client-files?action=delete", { id: adminFile.id }, own.cookie))).status, 404);
+        assert.equal((await filesPost(request("/api/client-files?action=delete", { id: clientFile.id }, other.cookie))).status, 404);
+        assert.equal((await filesPost(request("/api/client-files?action=delete", { id: clientFile.id }, own.cookie))).status, 200);
+        assert.equal((await filesPost(request(base + "&action=delete", { id: adminFile.id }, adminCookie))).status, 200);
+        assert.equal((await filesGet(request(`/api/client-files?file=${adminFile.id}`, undefined, own.cookie))).status, 404);
       });
 
       await t.test(

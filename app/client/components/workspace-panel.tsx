@@ -21,6 +21,7 @@ import AppointmentCall from "./appointment-call";
 import ClientWelcomeSection from "./client-welcome-section";
 import ConsultationProfileSection from "./consultation-profile-section";
 import PrivateChat from "./private-chat";
+import ClientFiles from "./client-files";
 import PackageSupportSection from "./package-support-section";
 import type { ClientWorkspace } from "../../../lib/client-area/types";
 
@@ -337,21 +338,21 @@ export default function WorkspacePanel({
             admin={admin}
             fillHeight={!admin}
             viewportHeight={admin}
-            onClearMessages={admin ? async () => {
-              await post("/api/admin/clients", { action: "clear-chat", clientId: data.client.id });
-              setData(current => ({ ...current, messages: [] }));
+            onClearMessages={admin ? async scope => {
+              await post("/api/admin/clients", { action: "clear-chat", clientId: data.client.id, scope });
+              setData(current => ({ ...current, messages: scope === "client" ? current.messages.map(item => ({ ...item, hidden_from_client: true })) : [] }));
               await refresh();
             } : undefined}
-            onEditMessage={admin ? async (id, body) => {
-              await post("/api/admin/clients", { action: "edit-chat", clientId: data.client.id, id, body });
+            onEditMessage={async (id, body) => {
+              await post(admin ? "/api/admin/clients" : "/api/client/messages", { action: "edit-chat", ...(admin ? { clientId: data.client.id } : {}), id, body });
               setData(current => ({ ...current, messages: current.messages.map(item => item.id === id ? { ...item, body } : item) }));
               await refresh();
-            } : undefined}
-            onDeleteMessage={admin ? async id => {
-              await post("/api/admin/clients", { action: "delete-chat", clientId: data.client.id, id });
+            }}
+            onDeleteMessage={async id => {
+              await post(admin ? "/api/admin/clients" : "/api/client/messages", { action: "delete-chat", ...(admin ? { clientId: data.client.id } : {}), id });
               setData(current => ({ ...current, messages: current.messages.filter(item => item.id !== id) }));
               await refresh();
-            } : undefined}
+            }}
             active={data.client.active && (admin || Boolean(data.client.paid_at))}
             timeZone={timeZone}
             draft={message}
@@ -373,7 +374,7 @@ export default function WorkspacePanel({
         <section
           data-consultations-card
           aria-labelledby="private-calendar-title"
-          className={`max-w-full ${admin ? "w-full lg:col-start-2 lg:row-start-1 lg:self-start" : "w-fit lg:col-start-1 lg:row-start-2"} rounded-xl border border-brand-100 bg-white p-5 shadow-sm sm:p-6`}
+          className={`${admin ? "-mx-5 border-y sm:mx-0 sm:w-full sm:max-w-full sm:rounded-xl sm:border sm:shadow-sm lg:col-start-2 lg:row-start-1 lg:self-start" : "w-fit max-w-full rounded-xl border shadow-sm lg:col-start-1 lg:row-start-2"} border-brand-100 bg-white p-5 sm:p-6`}
         >
           <div>
           <div className="min-w-0">
@@ -394,10 +395,10 @@ export default function WorkspacePanel({
           {admin ? (
             <div className="mt-4">
               <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">Пакет</p>
-              <div className="mt-2 flex flex-wrap items-center gap-3 rounded-xl border border-violet-100 bg-linear-to-r from-violet-50 to-white p-4">
-                {data.client.tier === "VIP" ? <SupportCrownIcon className="size-8 text-brand-500" /> : data.client.tier === "PRO" ? <BriefcaseIcon className="size-8 text-brand-500" /> : <ClientCheckIcon className="size-8 text-brand-500" />}
-                <div className="min-w-0 flex-1"><p className="font-semibold">Пакет {data.client.tier}</p><p className="mt-1 text-xs text-neutral-500">{data.client.tier === "VIP" ? "Индивидуальное сопровождение и приоритетная поддержка." : data.client.tier === "PRO" ? "Подготовка к поиску работы в международных школах." : "Ваш первый шаг к международной карьере."}</p></div>
-                <span className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white px-3 py-1 text-xs"><span className={`size-2 rounded-full ${data.client.paid_at ? "bg-emerald-500" : "bg-neutral-400"}`} />{data.client.paid_at ? "Активен" : "Заморожен"}</span>
+              <div className="mt-2 grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 rounded-xl border border-violet-100 bg-linear-to-r from-violet-50 to-white p-4">
+                {data.client.tier === "VIP" ? <SupportCrownIcon className="size-8 text-brand-500 sm:row-span-2" /> : data.client.tier === "PRO" ? <BriefcaseIcon className="size-8 text-brand-500 sm:row-span-2" /> : <ClientCheckIcon className="size-8 text-brand-500 sm:row-span-2" />}
+                <div className="contents"><p className="col-start-2 row-start-1 min-w-0 font-semibold">Пакет {data.client.tier}</p><p className="col-span-2 col-start-2 row-start-2 text-xs text-neutral-500 sm:col-span-1">{data.client.tier === "VIP" ? "Индивидуальное сопровождение и приоритетная поддержка." : data.client.tier === "PRO" ? "Подготовка к поиску работы в международных школах." : "Ваш первый шаг к международной карьере."}</p></div>
+                <span className="col-start-3 row-start-1 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white px-3 py-1 text-xs sm:row-span-2"><span className={`size-2 rounded-full ${data.client.paid_at ? "bg-emerald-500" : "bg-neutral-400"}`} />{data.client.paid_at ? "Активен" : "Заморожен"}</span>
               </div>
               <div className="mt-4 border-t border-brand-100 pt-4">
                 <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">Доступно и забронировано</p>
@@ -429,7 +430,7 @@ export default function WorkspacePanel({
                 >
                   Лимит часов VIP (включая первый час)
                 </label>
-                <div className="mt-2 flex flex-wrap items-end gap-2">
+                <div className="mt-2 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
                 <div className="w-24 shrink-0">
                 <input
                   id="client-hours"
@@ -440,10 +441,10 @@ export default function WorkspacePanel({
                   required
                   value={hours}
                   onChange={(event) => setHours(event.target.value)}
-                  className={fieldClass}
+                  className={`${fieldClass} h-12 sm:h-auto`}
                 />
                 </div>
-                <button disabled={pending} className={buttonClass}>
+                <button disabled={pending} className={`${buttonClass} h-12 sm:h-auto`}>
                   Сохранить
                 </button>
                 </div>
@@ -490,6 +491,7 @@ export default function WorkspacePanel({
         </div>
       </div>
       <ConsultationProfileSection initial={data.profile} admin={admin} onSaved={(profile) => setData(current => ({ ...current, profile, client: { ...current.client, name: profile.name } }))} />
+      <ClientFiles clientId={data.client.id} admin={admin} writable={admin || Boolean(data.client.active && data.client.paid_at)} />
     </div>
   );
 }

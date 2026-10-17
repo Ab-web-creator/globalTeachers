@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { BrandLogo } from "@/app/components/svg";
+import { BrandLogo, HeaderBackArrowIcon } from "@/app/components/svg";
 import { AdminTimeZoneSync } from "./local-time";
 import { cookies } from "next/headers";
 import { adminTimeZoneCookie, validTimeZone } from "../../../lib/admin/timezone";
@@ -11,7 +11,7 @@ import AdminMobileMenu from "./admin-mobile-menu";
 import AdminHeader from "./admin-header";
 import { unreadCount } from "../../../lib/mailbox/messages";
 
-type Props = { active?: "applications" | "mail" | "analytics" | "clients" | "calendar"; unread?: number; showLogout?: boolean; showTabs?: boolean };
+type Props = { active?: "applications" | "mail" | "analytics" | "clients" | "calendar"; unread?: number; showLogout?: boolean; showTabs?: boolean; backHref?: string };
 
 // The current or hovered section is underlined like the home page navigation.
 function Tab({ href, current, badge, children }: { href: string; current: boolean; badge?: ReactNode; children: ReactNode }) {
@@ -23,7 +23,7 @@ function Tab({ href, current, badge, children }: { href: string; current: boolea
   );
 }
 
-export default async function AdminNav({ active, unread, showLogout = false, showTabs = true }: Props) {
+export default async function AdminNav({ active, unread, showLogout = false, showTabs = true, backHref }: Props) {
   const timeZone = validTimeZone((await cookies()).get(adminTimeZoneCookie)?.value);
   const mailUnread = showTabs ? (unread ?? await unreadCount().catch(() => 0)) : 0;
   // Local development skips the login, but the button stays visible so the layout matches production.
@@ -34,9 +34,12 @@ export default async function AdminNav({ active, unread, showLogout = false, sho
       {showTabs && <AdminVisitorExclusion />}
       {showTabs && <IncomingCalls />}
       <div className="mx-auto flex w-full max-w-400 flex-wrap items-center justify-between gap-3 px-5 py-1 sm:px-10 lg:px-16 xl:px-20">
+        <div className="flex min-w-0 items-center gap-2">
+          {backHref && <Link href={backHref} aria-label="Вернуться к клиентам" className="-ml-2 flex size-9 shrink-0 items-center justify-center rounded-xl text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-brand-500 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500 sm:hidden"><HeaderBackArrowIcon /></Link>}
         <Link href="/" aria-label="TeacherNavigator — на главную страницу сайта">
           <BrandLogo className="w-20" aria-hidden="true" />
         </Link>
+        </div>
         {showTabs && (
           <nav aria-label="Разделы администратора" className="hidden gap-1 overflow-x-auto uppercase sm:flex sm:w-auto">
             <Tab href="/admin" current={active === "applications" || active === "analytics"}>Заявки</Tab>

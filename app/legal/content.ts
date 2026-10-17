@@ -16,7 +16,8 @@ export type LegalDocument = {
 };
 
 export const operator = {
-  name: "TeacherNavigator (предварительное наименование)",
-  address: "Страна и юридический адрес будут указаны после подтверждения реквизитов.",
-  email: "privacy@example.com",
+  introduction: "По вопросам обработки персональных данных, доступа к ним, исправления или удаления вы можете обратиться к нам:",
+  email: "info@teachernavigator.com",
+  website: "https://teachernavigator.com",
+  registrationNotice: "Юридические реквизиты компании будут указаны после завершения регистрации.",
 };

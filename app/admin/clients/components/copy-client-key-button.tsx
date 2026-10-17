@@ -29,7 +29,7 @@ export default function CopyClientKeyButton({ clientId }: { clientId: string }) 
 
   return (
     <div className="flex flex-col items-end gap-2">
-      <button type="button" onClick={() => void copy()} disabled={busy} className="flex items-center justify-center gap-2 rounded-full border border-brand-200 bg-white px-4 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-300 disabled:opacity-50">
+      <button type="button" onClick={() => void copy()} disabled={busy} className="flex h-9 items-center justify-center gap-2 sm:h-auto rounded-full border border-brand-200 bg-white px-4 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-300 disabled:opacity-50">
         <CopyKeyIcon className="size-4" />
         {busy ? "Загрузка…" : copied ? "Ключ скопирован" : "Скопировать ключ"}
       </button>

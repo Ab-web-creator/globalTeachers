@@ -37,7 +37,7 @@ export default function ConsultationProfileSection({ initial, admin, onSaved }: 
     finally { setBusy(false); }
   }
   return (
-    <section className="mt-10 rounded-3xl border border-brand-100 bg-white p-5 sm:p-8" aria-labelledby="client-profile-heading">
+    <section className={`mt-10 border-brand-100 bg-white p-5 sm:p-8 ${admin ? "-mx-5 border-y sm:mx-0 sm:rounded-3xl sm:border" : "rounded-3xl border"}`} aria-labelledby="client-profile-heading">
       <h2 id="client-profile-heading" className="text-2xl font-semibold">{admin ? "Анкета клиента" : "Ваша анкета"}</h2>
       {missing.length > 0 ? (
         <p role="status" className="mt-7 rounded-xl border border-amber-200 bg-amber-50 p-4 text-base text-amber-900">

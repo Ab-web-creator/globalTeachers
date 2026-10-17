@@ -28,7 +28,7 @@ export default async function Page({
       <AdminNav />
       <main className="bg-brand-50 px-5 py-10">
         <CallSession
-          returnPath={clientId ? `/admin/clients?client=${clientId}` : "/admin"}
+          returnPath={clientId ? `/admin/clients/${clientId}` : "/admin"}
           id={call.id}
           name={call.name}
           expires={call.expires_at.toISOString()}

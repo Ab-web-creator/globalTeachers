@@ -451,7 +451,7 @@ function InvitationDialog({
       {invitation?.status === "sent" && (
         <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-brand-100 pt-5">
           <Link
-            href={`/admin/clients?client=${invitation.client_id}`}
+            href={`/admin/clients/${invitation.client_id}`}
             className="inline-flex min-h-12 w-fit items-center justify-center rounded-xl bg-brand-500 px-6 py-3 text-base font-medium text-white transition-colors hover:bg-brand-600"
           >
             Открыть страницу клиента →
