@@ -67,13 +67,13 @@ export default async function MessageView({ message, readOnly = false, readingPa
         {!readOnly && (
           <div role="toolbar" aria-label="Действия с письмом" className="absolute bottom-0 left-1/2 z-10 flex -translate-x-1/2 translate-y-1/2 items-center gap-0 rounded-full border border-neutral-200 bg-white px-0.5 py-0 shadow-[0_0_2px_rgb(0_0_0/0.06)] transition-opacity [@media(hover:hover)]:pointer-events-none [@media(hover:hover)]:opacity-0 group-hover/email:pointer-events-auto group-hover/email:opacity-100 group-focus-within/email:pointer-events-auto group-focus-within/email:opacity-100">
             {message.folder !== "trash" && <>
-              <MessageActionButton id={message.id} endpoint="/admin/mail/delete" returnTo={folder} icon={<DeleteApplicationIcon className="size-4" />} label="Удалить" busyLabel="Удаляем…" confirmation="Переместить письмо в корзину? Оно будет храниться там 14 дней." danger iconOnly compact />
+              <MessageActionButton id={message.id} endpoint="/admin/mail/delete" returnTo={folder} icon={<DeleteApplicationIcon className="size-4" />} label="Удалить" busyLabel="Удаляем…" confirmation="Переместить письмо в корзину? Оно будет храниться там 14 дней." danger />
               <span aria-hidden="true" className="mx-0.5 h-4 border-l border-neutral-200" />
             </>}
             <Link href={`/admin/mail/new?reply=${message.id}`} aria-label="Ответить" title="Ответить" className="flex size-7 items-center justify-center rounded-full text-neutral-400 hover:text-neutral-500"><ReplyMailIcon className="size-4" /></Link>
             <Link href={`/admin/mail/new?reply=${message.id}&all=1`} aria-label="Ответить всем" title="Ответить всем" className="flex size-7 items-center justify-center rounded-full text-neutral-400 hover:text-neutral-500"><ReplyAllMailIcon className="size-4" /></Link>
             <Link href={`/admin/mail/new?forward=${message.id}`} aria-label="Переслать" title="Переслать" className="flex size-7 items-center justify-center rounded-full text-neutral-400 hover:text-neutral-500"><ForwardMailIcon className="size-4" /></Link>
-            {inbound && <MessageActionButton id={message.id} endpoint="/admin/mail/unread" returnTo={folder} icon={<MarkUnreadIcon className="size-4" />} label="Отметить непрочитанным" busyLabel="Отмечаем…" iconOnly compact />}
+            {inbound && <MessageActionButton id={message.id} endpoint="/admin/mail/unread" returnTo={folder} icon={<MarkUnreadIcon className="size-4" />} label="Отметить непрочитанным" busyLabel="Отмечаем…" />}
           </div>
         )}
       </header>

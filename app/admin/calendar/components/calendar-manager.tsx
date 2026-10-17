@@ -28,15 +28,15 @@ export default function CalendarManager({ slots }: { slots: AppointmentSlot[] })
       </p>
       {timeZone && (
         <div className="mt-10">
-          <div className="grid items-start gap-x-15 gap-y-20 xl:grid-cols-[repeat(2,minmax(0,32rem))]">
-            {Array.from({ length: 4 + extraDays }, (_, dayOffset) => (
-              <div key={dayOffset} className={dayOffset > extraDays ? "hidden xl:block" : undefined}>
+          <div className="grid items-start grid-cols-1 gap-x-14 gap-y-20 md:grid-cols-2 xl:grid-cols-3">
+            {Array.from({ length: 6 + extraDays }, (_, dayOffset) => (
+              <div key={dayOffset} className={dayOffset > extraDays ? "hidden md:block" : undefined}>
                 <CalendarDayPicker timeZone={timeZone} slots={slots} dayOffset={dayOffset} />
               </div>
             ))}
           </div>
-          <button type="button" onClick={() => setExtraDays(current => current + 4)} className="mt-10 rounded-xl border border-brand-200 bg-white px-6 py-3 text-base font-medium text-brand-600 transition-colors hover:bg-brand-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500">
-            Show 4 more days
+          <button type="button" onClick={() => setExtraDays(current => current + 3)} className="mt-10 rounded-full border border-brand-500 bg-white px-6 py-2 text-base font-medium text-brand-600 transition-colors hover:bg-brand-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500">
+            Show 3 more days
           </button>
         </div>
       )}

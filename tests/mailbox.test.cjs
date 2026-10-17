@@ -129,7 +129,7 @@ test('admin send route authorizes, validates and sends replies from the mailbox'
   assert.deepEqual(queries.at(-1).values, [id, 'sent-1']);
 }));
 
-test('admin delete route authorizes, validates and removes only the chosen email', async () => withEnvironment(async () => {
+test('admin delete route authorizes, validates and moves only the chosen email to trash', async () => withEnvironment(async () => {
   const { POST: remove } = require('../app/admin/mail/delete/route.ts');
   const calls = [];
   let rowCount = 1;
@@ -144,7 +144,7 @@ test('admin delete route authorizes, validates and removes only the chosen email
   assert.equal((await remove(request({ id: 'invalid' }))).status, 400);
   assert.equal(calls.length, 0);
   assert.equal((await remove(request({ id }))).status, 204);
-  assert.match(calls.at(-1).sql, /DELETE FROM mailbox_messages WHERE id = \$1/);
+  assert.match(calls.at(-1).sql, /UPDATE mailbox_messages SET deleted_at = COALESCE\(deleted_at, now\(\)\) WHERE id = \$1/);
   assert.deepEqual(calls.at(-1).values, [id]);
   rowCount = 0;
   assert.equal((await remove(request({ id }))).status, 404);

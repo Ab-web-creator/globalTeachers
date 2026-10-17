@@ -13,6 +13,9 @@ export default function ClientAccess({
   hasPhoto = false,
   tier,
   initialUnread = 0,
+  email,
+  paid,
+  remainingHours,
 }: {
   authenticated: boolean;
   accessLink: string | null;
@@ -20,6 +23,9 @@ export default function ClientAccess({
   hasPhoto?: boolean;
   tier?: "START" | "PRO" | "VIP";
   initialUnread?: number;
+  email?: string;
+  paid?: boolean;
+  remainingHours?: number;
 }) {
   const started = useRef(false);
   const [error, setError] = useState("");
@@ -89,7 +95,7 @@ export default function ClientAccess({
 
   return (
     <>
-      <header className="border-b border-brand-100 bg-white/80 backdrop-blur-lg">
+      <header className="relative z-30 border-b border-brand-100 bg-white/80 backdrop-blur-lg">
         <nav
           aria-label="Личная страница"
           className="mx-auto flex max-w-400 flex-wrap items-center justify-between gap-3 px-6 py-2 sm:px-10 lg:px-16 xl:px-20"
@@ -110,7 +116,7 @@ export default function ClientAccess({
                   {copied ? "Ключ скопирован ✓" : "Скопировать ключ"}
                 </button>
               )}
-              <ClientProfilePhoto name={name} hasPhoto={hasPhoto} tier={tier} />
+              <ClientProfilePhoto name={name} hasPhoto={hasPhoto} tier={tier} email={email} paid={paid} remainingHours={remainingHours} />
               <button
                 type="button"
                 disabled={busy}

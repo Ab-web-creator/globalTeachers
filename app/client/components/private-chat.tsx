@@ -104,10 +104,10 @@ export default function PrivateChat({
             id="private-chat-title"
             className="truncate text-xl font-semibold"
           >
-            {admin ? name : "Личный чат"}
+            {admin ? name : "Давайте поболтаем"}
           </h2>
           <p className="mt-1 text-sm text-neutral-500">
-            Только вы и {admin ? "клиент" : "администратор"}
+            {admin ? "Только вы и клиент" : "О планах, сомнениях и всём, что хочется обсудить."}
           </p>
         </div>
       </header>
@@ -156,7 +156,7 @@ export default function PrivateChat({
                 className={`flex flex-col ${own ? "items-end" : "items-start"}`}
               >
                 <p
-                  className={`max-w-4/5 whitespace-pre-wrap break-words rounded-3xl px-4 py-2.5 text-base leading-relaxed ${own ? "rounded-br-md bg-brand-500 text-white" : "rounded-bl-md border border-brand-100 bg-white text-brand-950"}`}
+                  className={`relative max-w-4/5 after:absolute after:bottom-0 after:h-2 after:w-2 after:content-[''] whitespace-pre-wrap break-words rounded-xl px-4 py-2.5 text-base leading-relaxed ${own ? "rounded-br-none bg-brand-500 text-white after:-right-1.5 after:bg-brand-500 after:[clip-path:polygon(0_0,0_100%,100%_100%)]" : item.author === "admin" ? "rounded-bl-none bg-brand-50 text-brand-950 after:-left-1.5 after:bg-brand-50 after:[clip-path:polygon(100%_0,0_100%,100%_100%)]" : "rounded-bl-none bg-brand-50 text-brand-950 after:-left-1.5 after:bg-brand-50 after:[clip-path:polygon(100%_0,0_100%,100%_100%)]"}`}
                 >
                   {item.body}
                 </p>

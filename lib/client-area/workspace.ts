@@ -259,3 +259,22 @@ export async function markClientChatRead(clientId: string, ids: string[]) {
     [clientId, ids],
   );
 }
+
+/** Cancel only the authenticated client's upcoming booking and restore its credit. */
+export async function cancelAppointment(clientId: string, slotId: string) {
+  const transaction = await database().connect();
+  try {
+    await transaction.query("BEGIN");
+    const client = await transaction.query("SELECT id FROM private_clients WHERE id=$1 AND active AND paid_at IS NOT NULL FOR UPDATE", [clientId]);
+    if (!client.rowCount) throw new Error("Аккаунт заморожен. Свяжитесь с администратором.");
+    const slot = await transaction.query("UPDATE appointment_slots SET booked_by=NULL, booked_at=NULL, open=true WHERE id=$1 AND booked_by=$2 AND starts_at>now() RETURNING id", [slotId, clientId]);
+    if (!slot.rowCount) throw new Error("Можно отменить только свою предстоящую встречу.");
+    await transaction.query("DELETE FROM appointment_email_jobs WHERE slot_id=$1", [slotId]);
+    await transaction.query("COMMIT");
+  } catch (error) {
+    await transaction.query("ROLLBACK");
+    throw error;
+  } finally {
+    transaction.release();
+  }
+}

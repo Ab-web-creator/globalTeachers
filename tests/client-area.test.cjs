@@ -33,6 +33,7 @@ const {
 const {
   addChatMessage,
   bookAppointment,
+  cancelAppointment,
   closeAppointmentSlot,
   getWorkspace,
   listPrivateClients,
@@ -911,6 +912,24 @@ test(
           assert.equal((await getWorkspace(id)).client.booked_hours, 2);
         },
       );
+
+      await t.test("clients cancel only their own future bookings and can reuse the credit", async () => {
+        const id = randomUUID();
+        await db.query("INSERT INTO private_clients(id,email,name,tier,key_hash,active,paid_at) VALUES($1,'cancel-test@example.com','Cancel Test','START',$2,true,now())", [id, randomUUID()]);
+        const first = await openAppointmentSlot(future(120));
+        const second = await openAppointmentSlot(future(122));
+        await bookAppointment(id, first);
+        await assert.rejects(cancelAppointment(clients[0].id, first));
+        assert.equal((await getWorkspace(id)).client.booked_hours, 1);
+        await cancelAppointment(id, first);
+        assert.equal((await getWorkspace(id)).client.booked_hours, 0);
+        assert.equal((await db.query("SELECT open,booked_by FROM appointment_slots WHERE id=$1", [first])).rows[0].open, true);
+        assert.equal((await db.query("SELECT count(*)::int AS count FROM appointment_email_jobs WHERE slot_id=$1", [first])).rows[0].count, 0);
+        await assert.rejects(cancelAppointment(id, first));
+        await bookAppointment(id, second);
+        await db.query("UPDATE appointment_slots SET starts_at=now()-interval '1 hour',ends_at=now() WHERE id=$1", [second]);
+        await assert.rejects(cancelAppointment(id, second), /предстоящую/);
+      });
 
       await t.test(
         "admin opens multiple full hours atomically and rejects minute-based slots",

@@ -10,6 +10,7 @@ import {
 import {
   ConsultationDetailIcon,
   VideoCallIcon,
+  MobileMenuCloseIcon,
   supportCalendarIconPath,
 } from "@/app/components/svg";
 import AppointmentCalendar from "./appointment-calendar";
@@ -43,6 +44,19 @@ export default function WorkspacePanel({
   const [data, setData] = useState(initial);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const feedbackDialog = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const dialog = feedbackDialog.current;
+    if (!dialog) return;
+    if (error || notice) {
+      if (!dialog.open) dialog.showModal();
+    } else if (dialog.open) dialog.close();
+  }, [error, notice]);
+  function dismissFeedback() {
+    setError("");
+    setNotice("");
+  }
+
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState("");
   const [hours, setHours] = useState(String(initial.client.allowance_hours));
@@ -200,6 +214,26 @@ export default function WorkspacePanel({
     }
   }
 
+  async function cancelBooking(slotId: string) {
+    if (sending.current || !window.confirm("Отменить эту запись? Час вернётся в ваш пакет, и вы сможете выбрать другое время.")) return;
+    sending.current = true;
+    setPending(true);
+    setError("");
+    setNotice("");
+    try {
+      await post("/api/client/bookings", { action: "cancel", slotId });
+      setSelectedSlot("");
+      setNotice("Запись отменена. Выберите другой свободный час.");
+      await refresh();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Не удалось отменить запись.");
+      await refresh().catch(() => undefined);
+    } finally {
+      sending.current = false;
+      setPending(false);
+    }
+  }
+
   async function saveHours(event: FormEvent) {
     event.preventDefault();
     if (sending.current) return;
@@ -238,22 +272,23 @@ export default function WorkspacePanel({
       : slotLabel(value);
   return (
     <div>
-      {error && (
-        <p
-          role="alert"
-          className="mb-6 rounded-xl bg-red-50 p-4 text-base text-red-700"
-        >
-          {error}
-        </p>
-      )}
-      {notice && (
-        <p
-          role="status"
-          className="mb-6 rounded-xl bg-brand-50 p-4 text-base text-brand-700"
-        >
-          {notice}
-        </p>
-      )}
+      <dialog
+        ref={feedbackDialog}
+        aria-labelledby="workspace-feedback-title"
+        aria-describedby="workspace-feedback-message"
+        onCancel={event => { event.preventDefault(); dismissFeedback(); }}
+        onClick={event => {
+          if (event.target !== event.currentTarget) return;
+          const bounds = event.currentTarget.getBoundingClientRect();
+          if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) dismissFeedback();
+        }}
+        className="fixed inset-0 m-auto w-[calc(100%-2rem)] max-w-md rounded-3xl border border-brand-100 bg-white p-6 text-brand-950 shadow-xl backdrop:bg-brand-950/30"
+      >
+        <button type="button" aria-label="Закрыть" onClick={dismissFeedback} className="absolute top-3 right-3 flex size-9 items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500"><MobileMenuCloseIcon /></button>
+        <h2 id="workspace-feedback-title" className="pr-8 text-xl font-semibold">{error ? "Не удалось выполнить действие" : "Готово"}</h2>
+        <p id="workspace-feedback-message" className={`mt-4 text-base leading-relaxed ${error ? "text-red-700" : "text-neutral-600"}`}>{error || notice}</p>
+        <button type="button" onClick={dismissFeedback} className="mt-6 rounded-full bg-brand-500 px-6 py-2 text-base font-medium text-white hover:bg-brand-600">Понятно</button>
+      </dialog>
       {admin && missingProfileFields(data.profile).length > 0 && (
         <p role="status" className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-base text-amber-900">
           Анкета клиента не завершена. <span className="text-red-600">Не заполнено:</span> {missingProfileFields(data.profile).join(", ")}.
@@ -265,9 +300,8 @@ export default function WorkspacePanel({
         </p>
       )}
       {!admin && <ClientWelcomeSection name={data.client.name} />}
-      <div className="grid items-start gap-6 lg:grid-cols-2 lg:items-stretch">
-        <div className="flex min-w-0 flex-col gap-6">
-          {!admin && <AppointmentCall bookings={data.bookings} />}
+      <div className="grid items-start gap-6 lg:grid-cols-2 lg:items-stretch lg:gap-y-0">
+        <div className="order-2 flex min-w-0 flex-col gap-6 lg:col-start-2 lg:row-start-1 lg:row-span-2">
           <PrivateChat
             messages={data.messages}
             name={data.client.name}
@@ -289,11 +323,12 @@ export default function WorkspacePanel({
             onSend={sendMessage}
           />
         </div>
-        <div className="min-w-0">
+        <div className="order-1 min-w-0 lg:contents">
+        {!admin && <div className="mb-6 lg:col-start-1 lg:row-start-1"><AppointmentCall bookings={data.bookings} /></div>}
         <section
           data-consultations-card
           aria-labelledby="private-calendar-title"
-          className="w-fit max-w-full rounded-3xl border border-brand-100 bg-white/90 p-5 shadow-sm sm:p-7"
+          className="w-fit max-w-full lg:col-start-1 lg:row-start-2 rounded-3xl border border-brand-100 bg-white/90 p-5 shadow-sm sm:p-7"
         >
           <div>
           <div className="min-w-0">
@@ -394,13 +429,16 @@ export default function WorkspacePanel({
                   <p className="mt-1 text-sm text-neutral-500">
                     60 минут · {timeZone}
                   </p>
+                  {!admin && data.client.paid_at && new Date(slot.starts_at).getTime() > now && (
+                    <button type="button" disabled={pending} onClick={() => void cancelBooking(slot.id)} className="mt-3 rounded-full border border-brand-200 bg-white px-4 py-2 text-sm text-neutral-600 hover:bg-brand-50 disabled:opacity-50">Отменить запись</button>
+                  )}
                 </li>
               ))}
             </ul>
           )}
           </div>
         </section>
-        {!admin && <PackageSupportSection tier={data.client.tier} />}
+        {!admin && <div className="lg:col-start-1 lg:row-start-3"><PackageSupportSection tier={data.client.tier} /></div>}
 
         </div>
       </div>
