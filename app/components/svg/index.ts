@@ -69,7 +69,7 @@ export { UserProfileIcon } from "./icons/user-profile";
 
 export { SupportCrownIcon } from "./icons/support-crown";
 
-export { personalBotanicalUrl, personalGoldSprigUrl } from "./assets";
+export { personalGoldSprigUrl } from "./assets";
 
 export { PersonalSeparatorIllustration } from "./illustrations/personal-separator";
 
