@@ -3,7 +3,7 @@
 import Link from "next/link";
 import LocalTime from "../../components/local-time";
 import cardStyles from "../../components/application-card.module.css";
-import { ApplicationCalendarIcon, ApplicationStarIcon, AppointmentClockIcon, BriefcaseIcon, ClientCheckIcon, EnvelopeIcon, SupportCrownIcon, UserProfileIcon } from "@/app/components/svg";
+import { ApplicationCalendarIcon, ApplicationStarIcon, AppointmentClockIcon, BriefcaseIcon, StartClientIcon, EnvelopeIcon, SupportCrownIcon, UserProfileIcon } from "@/app/components/svg";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import type { PrivateClient } from "../../../../lib/client-area/types";
@@ -142,7 +142,7 @@ export default function ClientDirectory({
 
 function ClientSummaryCard({ client, href }: { client: PrivateClient; href: string }) {
   const paid = Boolean(client.paid_at);
-  const Icon = !paid ? UserProfileIcon : client.tier === "VIP" ? SupportCrownIcon : client.tier === "PRO" ? BriefcaseIcon : ClientCheckIcon;
+  const Icon = !paid ? UserProfileIcon : client.tier === "VIP" ? SupportCrownIcon : client.tier === "PRO" ? BriefcaseIcon : StartClientIcon;
   return (
     <Link href={href} aria-label={`Открыть карточку ${client.name}`} className="block w-full overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-md transition-shadow hover:shadow-lg focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500 sm:w-80">
       <header className={`relative isolate flex flex-col gap-2 overflow-hidden px-4 py-3 ${paid ? tierHeaderColors[client.tier] : "bg-linear-to-r from-neutral-300 to-neutral-200 text-neutral-800"}`}>

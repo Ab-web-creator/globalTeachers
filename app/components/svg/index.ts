@@ -79,3 +79,5 @@ export { BritishFlagIcon, KyrgyzFlagIcon, RussianFlagIcon, UzbekFlagIcon } from 
 export { CandidateGroupIcon, ClientCheckIcon, BriefcaseIcon, SnowflakeIcon, ReplyMailIcon, ReplyAllMailIcon, ForwardMailIcon } from "./icons/mail-folders";
 
 export { FileUploadIcon } from "./icons/file-upload";
+
+export { StartClientIcon } from "./icons/start-client";

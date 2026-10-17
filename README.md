@@ -228,9 +228,9 @@ It uses the port reported by Next.js, including when the default port is busy,
 and removes expired legacy confirmation records every minute. Stopping the development server stops
 its worker. Production uses the PM2 worker configured by `scripts/deploy.sh`.
 
-### Mailbox (infoadminga@teachernavigator.com)
+### Mailbox (tn.connect@teachernavigator.com)
 
-Admin mailbox mail is sent from `CONSULTATION_EMAIL_FROM` (`TeacherNavigator <infoadminga@teachernavigator.com>`).
+Admin mailbox mail is sent from `CONSULTATION_EMAIL_FROM` (`TeacherNavigator <tn.connect@teachernavigator.com>`).
 Apply `013_mailbox.sql`, then open `/admin/mail` to read incoming mail, reply,
 and write new emails. Applicant profiles link to a prefilled compose form.
 
@@ -250,7 +250,7 @@ Receiving API, and stores it once per Resend email id. Failed processing returns
 500 so Resend retries; a stored email only retries its forward, which uses a
 stable idempotency key. Forwarded copies set Reply-To to the original sender;
 replying from Gmail sends from the Gmail address, so reply from `/admin/mail` to
-answer as infoadminga@. Attachments stay in Resend and are opened through a fresh signed
+answer as tn.connect@. Attachments stay in Resend and are opened through a fresh signed
 link. Received HTML is shown in a sandboxed iframe without scripts. Each compose
 form uses one id as the database key and Resend idempotency key, so a repeated
 submission cannot send twice.

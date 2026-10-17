@@ -8,7 +8,7 @@ require.extensions['.ts'] = (module, filename) => module._compile(ts.transpileMo
 }).outputText, filename);
 const { isJunkEmail, isSpam } = require('../lib/mailbox/spam.ts');
 
-const mailbox = 'infoadminga@teachernavigator.com';
+const mailbox = 'tn.connect@teachernavigator.com';
 
 test('bot probes with a code subject and an empty body are junk', () => {
   assert.equal(isJunkEmail({ subject: '#15597965-4da8a56e', text: '-' }), true);
@@ -28,11 +28,11 @@ test('real emails are never junk', () => {
 test('only email addressed to the mailbox reaches the inbox', () => {
   const email = { subject: 'Вопрос', text: 'Здравствуйте' };
   assert.equal(isSpam({ ...email, to: [mailbox] }, mailbox), false);
-  assert.equal(isSpam({ ...email, to: ['Teacher Navigator <InfoAdminGa@TeacherNavigator.com>'] }, mailbox), false);
+  assert.equal(isSpam({ ...email, to: ['Teacher Navigator <TN.Connect@TeacherNavigator.com>'] }, mailbox), false);
   assert.equal(isSpam({ ...email, to: ['someone@example.com'], cc: [mailbox] }, mailbox), false);
   assert.equal(isSpam({ ...email, to: ['ulysses@teachernavigator.com'] }, mailbox), true);
   assert.equal(isSpam({ ...email, to: ['noreply@teachernavigator.com'] }, mailbox), true);
-  assert.equal(isSpam({ ...email, to: ['xinfoadminga@teachernavigator.com'] }, mailbox), true);
+  assert.equal(isSpam({ ...email, to: ['xtn.connect@teachernavigator.com'] }, mailbox), true);
   assert.equal(isSpam({ ...email, to: [] }, mailbox), true);
   assert.equal(isSpam({ subject: '#15597965-4da8a56e', text: '-', to: [mailbox] }, mailbox), true);
 });

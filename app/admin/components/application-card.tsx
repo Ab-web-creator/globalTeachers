@@ -3,7 +3,7 @@ import Link from "next/link";
 import LocalTime from "./local-time";
 import DeleteApplicationButton from "./delete-application-button";
 import styles from "./application-card.module.css";
-import { BriefcaseIcon, ClientCheckIcon, SupportCrownIcon, EnvelopeIcon, UserProfileIcon, ApplicationEnglishIcon, ApplicationEducationIcon, ApplicationCalendarIcon, ApplicationStarIcon } from "@/app/components/svg";
+import { BriefcaseIcon, StartClientIcon, SupportCrownIcon, EnvelopeIcon, UserProfileIcon, ApplicationEnglishIcon, ApplicationEducationIcon, ApplicationCalendarIcon, ApplicationStarIcon } from "@/app/components/svg";
 
 export default function ApplicationCard({ application }: { application: Application }) {
   const confirmed = application.status === "confirmed";
@@ -19,7 +19,7 @@ export default function ApplicationCard({ application }: { application: Applicat
     ? clientHeaderColors[application.paid_tier]
     : "bg-linear-to-r from-neutral-300 to-neutral-200 text-neutral-800";
   const NameIcon = paid
-    ? application.paid_tier === "VIP" ? SupportCrownIcon : application.paid_tier === "PRO" ? BriefcaseIcon : ClientCheckIcon
+    ? application.paid_tier === "VIP" ? SupportCrownIcon : application.paid_tier === "PRO" ? BriefcaseIcon : StartClientIcon
     : UserProfileIcon;
   const statusLabel = application.status === "not-enough-english" ? "Английский не на уровне"
     : application.status === "not-enough-education" ? "Образование не то"
