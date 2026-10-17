@@ -70,6 +70,12 @@ button {
   outline-offset: 5px;
 }
 
+/* Form fields keep the focus ring inside their border. :where keeps this weak enough for form-specific rules below. */
+:where(input:not([type="radio"], [type="checkbox"]), select, textarea):focus-visible {
+  outline-width: 2px;
+  outline-offset: -2px;
+}
+
 .payment-form :focus-visible {
   outline-width: 2px;
   outline-offset: -5px;

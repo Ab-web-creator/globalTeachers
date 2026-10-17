@@ -8,7 +8,7 @@ import type { ClientTier, Invitation } from "../../../../lib/client-area/types";
 
 type Props = { messageId: string; tier?: ClientTier };
 const actionClass =
-  "rounded-xl border border-brand-200 px-3 py-2 text-sm text-neutral-600 hover:bg-brand-50 disabled:opacity-50";
+  "rounded-full border border-brand-200 px-5 py-2 text-sm text-neutral-600 hover:bg-brand-50 disabled:opacity-50";
 const fieldClass =
   "w-full rounded-xl border border-brand-200 px-4 py-3 text-base focus:outline-2 focus:-outline-offset-2 focus:outline-brand-500";
 

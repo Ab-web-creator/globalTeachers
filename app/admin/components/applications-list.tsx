@@ -9,10 +9,10 @@ export default function ApplicationsList({ filter, search, data }: { filter: App
   const url = (next: number) => `/admin?${new URLSearchParams({ status: filter, q: search, page: String(next) })}`;
   return (
     <>
-      <p className="mt-6 mb-4 text-sm text-neutral-500">Найдено адресов: {data.total}. Откройте карточку пользователя, чтобы сравнить ответы всех попыток.</p>
-      <div className="grid items-start gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <p className="mt-6 mb-4 text-sm text-neutral-500">Найдено: {data.total}</p>
+      <div className="grid items-stretch gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {data.applications.map((application) => <ApplicationCard key={application.id} application={application} />)}
-        {!data.total && <p className="rounded-2xl border border-brand-100 bg-white p-8 text-center text-base text-neutral-500 sm:col-span-2 xl:col-span-3">Заявок пока нет или ничего не найдено по вашему запросу.</p>}
+        {!data.total && <p className="rounded-2xl border border-brand-100 bg-white p-8 text-center text-base text-neutral-500 col-span-full">Заявок пока нет или ничего не найдено по вашему запросу.</p>}
       </div>
       <nav aria-label="Страницы заявок" className="mt-6 flex items-center justify-between gap-4 text-lg">
         {data.page > 1 ? <Link href={url(data.page - 1)} className="text-brand-600">← Назад</Link> : <span />}

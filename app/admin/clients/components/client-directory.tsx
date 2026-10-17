@@ -5,7 +5,7 @@ import LocalTime from "../../components/local-time";
 import CopyClientKeyButton from "./copy-client-key-button";
 import ApplicationPaymentControl from "../../components/application-payment-control";
 import CallClientButton from "./call-client-button";
-import { SearchIcon, SubjectPickerChevronIcon } from "@/app/components/svg";
+import { SubjectPickerChevronIcon } from "@/app/components/svg";
 import { useEffect, useState, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
 import type { PrivateClient } from "../../../../lib/client-area/types";
@@ -14,6 +14,12 @@ const tierBadgeColors = {
   START: "border border-blue-300 bg-blue-50 text-blue-700",
   PRO: "bg-violet-50 text-violet-700",
   VIP: "border border-amber-300 bg-amber-50 text-amber-800",
+};
+
+const tierCardColors = {
+  START: "from-sky-50 via-cyan-50 to-emerald-50",
+  PRO: "from-violet-50 via-pink-50 to-rose-50",
+  VIP: "from-amber-50 via-orange-50 to-pink-50",
 };
 
 export default function ClientDirectory({
@@ -88,49 +94,7 @@ export default function ClientDirectory({
     .filter((client) => client.id !== selectedId);
   return (
     <section aria-label="Клиенты" className="mt-10">
-      <div className="flex items-center gap-3 overflow-x-auto rounded-xl border border-brand-100 bg-white p-2 sm:gap-5 sm:px-3">
-        <nav
-          className="flex shrink-0 items-center gap-2 p-1"
-          aria-label="Пакет"
-        >
-          {["all", "START", "PRO", "VIP"].map((value) => (
-            <Link
-              key={value}
-              href={href({ tier: value, page: "1", client: "" })}
-              scroll={false}
-              aria-current={tier === value ? "true" : undefined}
-              className={`rounded-xl border px-4 py-2 text-sm font-medium transition-colors ${tier === value ? "border-brand-500 bg-brand-500 text-white" : "border-brand-200 bg-white text-neutral-600 hover:border-brand-400 hover:bg-brand-50 hover:text-brand-700"}`}
-            >
-              {value === "all" ? "Все" : value}
-            </Link>
-          ))}
-        </nav>
-        <form
-          action="/admin/clients"
-          className="ml-auto flex min-w-64 max-w-md flex-1 items-center gap-2"
-        >
-          <input type="hidden" name="tier" value={tier} />
-          <label htmlFor="client-search" className="sr-only">
-            Найти клиента
-          </label>
-          <div className="relative min-w-0 flex-1">
-            <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-5 -translate-y-1/2 text-neutral-400" />
-            <input
-              key={query}
-              id="client-search"
-              type="search"
-              name="q"
-              defaultValue={query}
-              placeholder="Поиск по имени или email"
-              className="w-full min-w-0 rounded-full border border-brand-100 bg-white py-2.5 pr-4 pl-10 text-base focus:-outline-offset-2"
-            />
-          </div>
-          <button className="shrink-0 rounded-full bg-brand-500 px-5 py-2.5 text-sm font-medium text-white hover:bg-brand-600">
-            Найти
-          </button>
-        </form>
-      </div>
-      <p className="mt-4 text-sm text-neutral-500">
+      <p className="text-sm text-neutral-500">
         Найдено: {filtered.length} · Ожидающие ответа — выше
       </p>
       {error && (
@@ -139,7 +103,7 @@ export default function ClientDirectory({
         </p>
       )}
       {selected && children && (
-        <article className="mt-6 rounded-3xl border border-brand-200 bg-white p-4 sm:p-6">
+        <article className={`mt-6 rounded-3xl border border-brand-200 bg-linear-to-br p-4 sm:p-6 ${tierCardColors[selected.tier]}`}>
           <div className="mb-6 flex items-start justify-between gap-4">
             <div className="min-w-0">
               <h2 className="break-words text-xl font-semibold">
@@ -184,7 +148,7 @@ export default function ClientDirectory({
             href={href({ client: client.id })}
             scroll={false}
             aria-label={`Открыть карточку ${client.name}`}
-            className="block w-full rounded-2xl border border-brand-100 bg-white p-5 transition-colors hover:border-brand-300 hover:bg-brand-50 sm:w-72"
+            className={`block w-full rounded-2xl border border-brand-100 bg-linear-to-br p-5 transition-colors hover:border-brand-300 sm:w-72 ${tierCardColors[client.tier]}`}
           >
             <div className="flex items-center justify-between gap-2">
               <p className="min-w-0 break-words font-semibold">{client.name}</p>

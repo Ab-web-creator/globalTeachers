@@ -45,12 +45,13 @@ export default function ApplicationPaymentControl({ messageId, clientId, paid, i
   return (
     <div>
       <div className="flex flex-wrap items-center gap-3">
-        <div className="relative">
+        <div className="relative inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white py-2 pl-5 pr-3 text-base leading-5 text-neutral-600 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-brand-500 lg:text-sm">
+          <span aria-hidden="true">{tier === "START" ? "Клиент Start" : tier === "PRO" ? "Клиент Pro" : tier === "VIP" ? "Клиент ViP" : "Не заплатил(а)"}</span>
           <select aria-label="Оплаченный пакет" value={tier} onChange={(event) => void markPaid(event.target.value as ClientTier | "")} disabled={busy}
-            className="block appearance-none rounded-full border border-brand-200 bg-white py-2 pl-3 pr-12 text-base leading-5 text-neutral-600 lg:text-sm focus:outline-2 focus:-outline-offset-2 focus:outline-brand-500">
+            className="absolute inset-0 h-full w-full cursor-pointer appearance-none rounded-full pr-12 text-base opacity-0 lg:text-sm">
             <option value="">Не заплатил(а)</option><option value="START">Клиент Start</option><option value="PRO">Клиент Pro</option><option value="VIP">Клиент ViP</option>
           </select>
-          <SubjectPickerChevronIcon className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-neutral-500" />
+          <SubjectPickerChevronIcon className="pointer-events-none size-4 shrink-0 text-neutral-500" />
         </div>
       </div>
       {error && <p role="alert" className="mt-2 text-sm text-red-700">{error}</p>}

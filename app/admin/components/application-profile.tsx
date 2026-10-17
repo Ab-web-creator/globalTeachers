@@ -55,11 +55,11 @@ export default function ApplicationProfile({
               </p>
               <p className="mt-3 text-sm text-brand-600">
                 {application.status === "not-enough-english"
-                  ? "Недостаточный уровень английского"
+                  ? "Английский не на уровне"
                   : application.status === "not-enough-education"
-                    ? "Недостаточное образование"
+                    ? "Образование не то"
                     : application.status === "unsupported_subjects"
-                      ? "Неподходящие предметы"
+                      ? "Предметы не те"
                       : application.status === "confirmed"
                         ? "Заявка получена"
                         : application.status === "payment"

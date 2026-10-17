@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ClientDirectory from "./components/client-directory";
+import ClientFilters from "./components/client-filters";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { sessionCookie, validSession } from "../../../lib/admin/session";
@@ -39,11 +40,14 @@ export default async function AdminClientsPage({
     clientId ? getWorkspace(clientId, true) : Promise.resolve(null),
   ]).catch(() => null);
   return (
-    <div className="min-h-dvh bg-brand-50 text-brand-700">
+    <div className="min-h-dvh bg-white text-brand-700">
       <AdminNav active="clients" showLogout={!development} />
       <main className="mx-auto max-w-400 px-5 py-8 sm:px-10 lg:px-16 xl:px-20">
-        <h1 className="text-3xl font-semibold">Личные страницы клиентов</h1>
-        <p className="mt-7 text-base text-neutral-600">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <h1 className="text-3xl font-semibold">Личные страницы клиентов</h1>
+          {data && <ClientFilters />}
+        </div>
+        <p className="mt-7 max-w-[67ch] text-base text-neutral-600">
           Здесь отображаются только клиенты с отметкой «Оплачено». Все заявки
           находятся на странице «Заявки». Ключ от личной страницы отправляется кнопкой Send Key в письме клиента.
         </p>

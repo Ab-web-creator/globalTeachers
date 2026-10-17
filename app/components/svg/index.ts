@@ -70,3 +70,6 @@ export { personalBotanicalUrl, personalGoldSprigUrl } from "./assets";
 export { PersonalSeparatorIllustration } from "./illustrations/personal-separator";
 
 export { AppointmentClockIcon } from "./icons/appointment-clock";
+
+export { BritishFlagIcon, KyrgyzFlagIcon, RussianFlagIcon, UzbekFlagIcon } from "./icons/language-flags";
+export { CandidateGroupIcon, ClientCheckIcon, BriefcaseIcon, SnowflakeIcon, ReplyMailIcon, ReplyAllMailIcon, ForwardMailIcon } from "./icons/mail-folders";

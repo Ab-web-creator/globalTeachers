@@ -193,6 +193,7 @@ test(
         "050_client_payment_status.sql",
         "051_frozen_client_accounts.sql",
         "052_client_consultation_profile.sql",
+        "053_mailbox_trash.sql",
       ]) {
         await db.query(fs.readFileSync(`database/migrations/${name}`, "utf8"));
       }

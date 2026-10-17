@@ -99,14 +99,17 @@ const records = `WITH histories AS (
   LEFT JOIN consultation_pending p ON p.id = latest.id
   LEFT JOIN consultation_applications c ON c.id = latest.id
 )`;
+// Explicit Russian case folding also works with databases using the C locale.
+const searchText = (expression: string) =>
+  `translate(lower(${expression}), 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ', 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя')`;
 const where = `WHERE ($1 = 'all' OR ($1 = 'paid' AND paid_at IS NOT NULL) OR ($1 = 'payment' AND status = 'payment' AND paid_at IS NULL) OR ($1 = 'draft' AND latest_is_draft) OR ($1 NOT IN ('draft', 'payment', 'paid') AND status = $1))
-  AND ($2 = '' OR strpos(lower(email), lower($2)) > 0 OR EXISTS (
+  AND ($2 = '' OR strpos(${searchText("email")}, ${searchText("$2::text")}) > 0 OR EXISTS (
     SELECT 1 FROM jsonb_array_elements(attempts) AS attempt,
       jsonb_each_text(attempt->'answers') AS answer
-    WHERE strpos(lower(answer.value), lower($2)) > 0
+    WHERE strpos(${searchText("answer.value")}, ${searchText("$2::text")}) > 0
   ) OR EXISTS (
     SELECT 1 FROM jsonb_each_text(answers) AS answer
-    WHERE strpos(lower(answer.value), lower($2)) > 0
+    WHERE strpos(${searchText("answer.value")}, ${searchText("$2::text")}) > 0
   ))`;
 
 export async function listApplications(

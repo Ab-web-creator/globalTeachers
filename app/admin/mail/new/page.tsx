@@ -23,19 +23,30 @@ export default async function NewMailPage({ searchParams }: { searchParams: Prom
   const developmentAccess = process.env.NODE_ENV === "development";
   if (!developmentAccess && !validSession((await cookies()).get(sessionCookie)?.value)) redirect("/admin");
   const params = await searchParams;
-  const original = typeof params.reply === "string" ? await openMessage(params.reply) : null;
+  const forwarding = typeof params.forward === "string";
+  const originalId = forwarding ? params.forward : params.reply;
+  const original = typeof originalId === "string" ? await openMessage(originalId) : null;
   const timeZone = validTimeZone((await cookies()).get(adminTimeZoneCookie)?.value);
   const reply = original ? replyDetails(original, timeZone) : null;
   const to = typeof params.to === "string" ? params.to.slice(0, 500) : "";
   const mailbox = addressOf(process.env.CONSULTATION_EMAIL_FROM ?? "");
+  if (reply && original) {
+    if (forwarding) {
+      reply.to = "";
+      reply.subject = /^fwd:/i.test(original.subject) ? original.subject : `Fwd: ${original.subject}`;
+    } else if (params.all === "1") {
+      const recipients = [...reply.to.split(","), ...original.to_addresses, ...original.cc_addresses].map(addressOf);
+      reply.to = [...new Map(recipients.filter(address => address && address.toLowerCase() !== mailbox.toLowerCase()).map(address => [address.toLowerCase(), address])).values()].join(", ");
+    }
+  }
   const unread = await unreadCount().catch(() => 0);
   return (
     <MailShell active={original ? null : "new"} unread={unread} mailbox={mailbox} showLogout={!developmentAccess}>
       <header className="flex shrink-0 items-center justify-between gap-4 border-b border-brand-100 px-6 py-4">
-        <h1 className="text-xl font-semibold">{original ? "Ответ" : "Новое письмо"}</h1>
+        <h1 className="text-xl font-semibold">{forwarding ? "Переслать письмо" : original ? "Ответ" : "Новое письмо"}</h1>
         {original && <Link href={`/admin/mail/${original.id}`} className="text-sm text-brand-600">← К письму</Link>}
       </header>
-      <ComposeForm key={original?.id ?? "new"} to={reply?.to ?? to} subject={reply?.subject ?? (typeof params.subject === "string" ? params.subject.slice(0,300) : "")} text={!original && typeof params.text === "string" ? params.text.slice(0,50000) : ""} quote={reply?.quote} replyTo={original?.id} mailbox={mailbox} />
+      <ComposeForm key={original?.id ?? "new"} to={reply?.to ?? to} subject={reply?.subject ?? (typeof params.subject === "string" ? params.subject.slice(0,300) : "")} text={!original && typeof params.text === "string" ? params.text.slice(0,50000) : ""} quote={reply?.quote} replyTo={forwarding ? undefined : original?.id} mailbox={mailbox} />
     </MailShell>
   );
 }

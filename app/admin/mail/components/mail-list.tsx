@@ -15,7 +15,7 @@ export default function MailList({ folder, data, selectedId }: Props) {
   return (
     <>
       <header className="flex shrink-0 items-center justify-between gap-4 border-b border-brand-100 px-6 py-4 xl:flex-col xl:items-start xl:gap-1 xl:px-4">
-        <h1 className="text-xl font-semibold">{folder === "frozen" ? "Замороженные" : folder === "candidates" ? "Candidates" : folder === "vip-clients" ? "VIP клиенты" : folder === "pro-clients" ? "Клиенты PRO" : folder === "start-clients" ? "Клиенты START" : folder === "inbox" ? "Входящие" : folder === "spam" ? "Спам" : "Отправленные"}</h1>
+        <h1 className="text-xl font-semibold">{folder === "trash" ? "Корзина" : folder === "frozen" ? "Замороженные" : folder === "candidates" ? "Candidates" : folder === "vip-clients" ? "VIP клиенты" : folder === "pro-clients" ? "Клиенты PRO" : folder === "start-clients" ? "Клиенты START" : folder === "inbox" ? "Входящие" : folder === "spam" ? "Спам" : "Отправленные"}</h1>
         {!!data?.total && <p className="text-sm text-neutral-500">{(data.page - 1) * mailPageSize + 1}–{Math.min(data.page * mailPageSize, data.total)} из {data.total} · местное время</p>}
       </header>
       {!data ? (
@@ -28,7 +28,7 @@ export default function MailList({ folder, data, selectedId }: Props) {
               return (
                 <li key={message.id}>
                   <MailMessageLink id={message.id} previewHref={`/admin/mail?${new URLSearchParams({ folder, page: String(data.page), message: message.id })}`} selected={selectedId === message.id} className={`grid grid-cols-1 gap-x-4 gap-y-1 px-6 py-3 hover:bg-brand-50 sm:grid-cols-[13rem_minmax(0,1fr)_auto] xl:grid-cols-1 xl:px-4 ${unread ? "bg-brand-50/60" : ""} ${selectedId === message.id ? "xl:bg-brand-100 xl:shadow-[inset_3px_0_0_var(--color-brand-500)]" : ""}`}>
-                    <span className={`flex min-w-0 items-center gap-2 truncate ${unread ? "font-semibold" : ""}`}>
+                    <span className={`flex min-w-0 items-center gap-2 truncate text-sm ${unread ? "font-semibold" : ""}`}>
                       {unread && <span className="size-2 shrink-0 rounded-full bg-brand-500" aria-label="Не прочитано" />}
                       <span className="truncate">{folder !== "sent" ? displayName(message.from_address) : `Кому: ${message.to_addresses.map(displayName).join(", ")}`}</span>
                     </span>
@@ -38,13 +38,13 @@ export default function MailList({ folder, data, selectedId }: Props) {
                     </span>
                     <span className="flex items-center gap-2 text-sm whitespace-nowrap text-neutral-500">
                       {message.has_attachments && <span aria-label="Есть вложения">📎</span>}
-                      <LocalTime value={new Date(message.created_at).toISOString()} compact />
+                      <LocalTime value={new Date(message.created_at).toISOString()} />
                     </span>
                   </MailMessageLink>
                 </li>
               );
             })}
-            {!data.total && <li className="p-10 text-center text-neutral-500">{(folder === "start-clients" || folder === "pro-clients" || folder === "vip-clients") ? "Заявок на оплату пока нет." : folder === "inbox" ? "Входящих писем пока нет." : folder === "spam" ? "Спама нет." : "Отправленных писем пока нет."}</li>}
+            {!data.total && <li className="p-10 text-center text-neutral-500">{folder === "trash" ? "Корзина пуста." : (folder === "start-clients" || folder === "pro-clients" || folder === "vip-clients") ? "Заявок на оплату пока нет." : folder === "inbox" ? "Входящих писем пока нет." : folder === "spam" ? "Спама нет." : "Отправленных писем пока нет."}</li>}
           </ul>
           {data.pages > 1 && (
             <nav aria-label="Страницы писем" className="flex shrink-0 items-center justify-between gap-4 border-t border-brand-100 px-6 py-3 text-sm xl:flex-wrap xl:gap-2 xl:px-4">

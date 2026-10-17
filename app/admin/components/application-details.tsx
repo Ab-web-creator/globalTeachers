@@ -7,9 +7,9 @@ import { consultationSteps } from "../../consultation/components/consultation-st
 import { answerLabels } from "../../../lib/consultation/answers";
 
 const attemptStatuses: Record<ApplicationAttempt["status"], string> = {
-  "not-enough-english": "Недостаточный уровень английского",
-  "not-enough-education": "Недостаточное образование",
-  unsupported_subjects: "Неподходящие предметы",
+  "not-enough-english": "Английский не на уровне",
+  "not-enough-education": "Образование не то",
+  unsupported_subjects: "Предметы не те",
   draft: "Незавершённая форма",
   payment: "Оформление пакета · Оплата не подтверждена",
   pending: "Ожидает подтверждения",

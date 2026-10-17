@@ -15,7 +15,7 @@ export default function ApplicationsSection({
   search: string;
 }) {
   return (
-    <section>
+    <section className="min-w-0 max-w-full">
       <header className="flex flex-wrap items-end justify-between gap-5">
         <div>
           <p className="text-sm font-semibold tracking-widest text-brand-500 uppercase">
@@ -30,8 +30,8 @@ export default function ApplicationsSection({
           </p>
         </div>
       </header>
-      <div className="mt-8 rounded-3xl border border-brand-100 bg-white p-5 sm:p-6">
-        <div className="grid items-center gap-4 lg:grid-cols-[1fr_auto]">
+      <div className="mt-8 min-w-0 overflow-hidden rounded-3xl border border-brand-100 bg-white p-5 sm:p-6">
+        <div className="grid min-w-0 grid-cols-1 items-center gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,auto)]">
           <h2 className="text-2xl font-semibold leading-tight tracking-tight">Все обращения</h2>
           <ApplicationFilters filter={filter} search={search} />
         </div>

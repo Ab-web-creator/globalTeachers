@@ -8,46 +8,50 @@ import AdminVisitorExclusion from "./admin-visitor-exclusion";
 import styles from "./admin-nav.module.css";
 import IncomingCalls from "./incoming-calls";
 import AdminMobileMenu from "./admin-mobile-menu";
+import AdminHeader from "./admin-header";
+import { unreadCount } from "../../../lib/mailbox/messages";
 
 type Props = { active?: "applications" | "mail" | "analytics" | "clients" | "calendar"; unread?: number; showLogout?: boolean; showTabs?: boolean };
 
-function Tab({ href, current, children }: { href: string; current: boolean; children: ReactNode }) {
+// The current or hovered section is underlined like the home page navigation.
+function Tab({ href, current, badge, children }: { href: string; current: boolean; badge?: ReactNode; children: ReactNode }) {
   return (
-    <Link href={href} aria-current={current ? "page" : undefined} className={`${styles.tab} flex shrink-0 items-center gap-2 rounded-xl border py-2.5 text-base font-medium transition ${current ? "border-brand-500 px-5 text-brand-700" : "border-transparent px-3 text-neutral-500 hover:bg-brand-50 hover:text-brand-700"}`}>
-      {children}
+    <Link href={href} aria-current={current ? "page" : undefined} className={`${styles.tab} group flex shrink-0 items-center gap-1 rounded-xl px-3 py-2 text-sm font-medium transition ${current ? "text-brand-700" : "text-neutral-500 hover:text-brand-700"}`}>
+      <span className={`decoration-current decoration-[3px] underline-offset-8 ${current ? "underline" : "group-hover:underline"}`}>{children}</span>
+      {badge}
     </Link>
   );
 }
 
-export default async function AdminNav({ active, unread = 0, showLogout = false, showTabs = true }: Props) {
+export default async function AdminNav({ active, unread, showLogout = false, showTabs = true }: Props) {
   const timeZone = validTimeZone((await cookies()).get(adminTimeZoneCookie)?.value);
+  const mailUnread = showTabs ? (unread ?? await unreadCount().catch(() => 0)) : 0;
+  // Local development skips the login, but the button stays visible so the layout matches production.
+  const logout = showLogout || (process.env.NODE_ENV === "development" && showTabs);
   return (
-    <header className="sticky top-0 z-30 shrink-0 border-b border-brand-100 bg-white/95 backdrop-blur-lg">
+    <AdminHeader>
       <AdminTimeZoneSync serverTimeZone={timeZone} />
       {showTabs && <AdminVisitorExclusion />}
       {showTabs && <IncomingCalls />}
-      <div className="mx-auto flex w-full max-w-400 flex-wrap items-center justify-between gap-3 px-5 py-4 sm:px-10 lg:px-16 xl:px-20">
-        <Link href="/admin" aria-label="Админ — TeacherNavigator" className="flex items-center gap-4">
-          <BrandLogo className="w-24" aria-hidden="true" />
-          <span className="hidden border-l border-brand-200 pl-4 text-sm font-medium tracking-widest text-neutral-400 uppercase lg:block">Рабочее пространство</span>
+      <div className="mx-auto flex w-full max-w-400 flex-wrap items-center justify-between gap-3 px-5 py-1 sm:px-10 lg:px-16 xl:px-20">
+        <Link href="/" aria-label="TeacherNavigator — на главную страницу сайта">
+          <BrandLogo className="w-20" aria-hidden="true" />
         </Link>
         {showTabs && (
-          <nav aria-label="Разделы администратора" className="hidden gap-1 overflow-x-auto rounded-2xl bg-brand-50 p-1 sm:flex sm:w-auto">
-            <Tab href="/admin" current={active === "applications"}>Заявки</Tab>
-            <Tab href="/admin/analytics" current={active === "analytics"}>Посещаемость</Tab>
+          <nav aria-label="Разделы администратора" className="hidden gap-1 overflow-x-auto uppercase sm:flex sm:w-auto">
+            <Tab href="/admin" current={active === "applications" || active === "analytics"}>Заявки</Tab>
             <Tab href="/admin/clients" current={active === "clients"}>Клиенты</Tab>
             <Tab href="/admin/calendar" current={active === "calendar"}>Календарь</Tab>
-            <Tab href="/admin/mail" current={active === "mail"}>
-              Почта{unread > 0 && <span className="rounded-full bg-brand-500 px-2 py-0.5 text-xs font-medium text-white">{unread}</span>}
+            <Tab href="/admin/mail" current={active === "mail"} badge={mailUnread > 0 && <span className="relative -top-1.5 -ml-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-red-600 text-xs font-medium leading-none text-white">{mailUnread}</span>}>
+              Почта
             </Tab>
           </nav>
         )}
         <div className="flex items-center gap-2">
-          <Link href="/" className="whitespace-nowrap rounded-xl px-3 py-2 text-sm font-medium text-neutral-500 hover:bg-brand-50 hover:text-brand-700 sm:text-base">На сайт ↗</Link>
-          {showLogout && <form action="/admin/logout" method="post"><button className="rounded-xl border border-brand-200 px-4 py-2 text-base font-medium hover:bg-brand-50">Выйти</button></form>}
-          {showTabs && <AdminMobileMenu />}
+          {logout && <form action="/admin/logout" method="post"><button className="rounded-xl border border-brand-200 px-4 py-2 text-base font-medium hover:bg-brand-50">Выйти</button></form>}
+          {showTabs && <AdminMobileMenu active={active} logout={logout} />}
         </div>
       </div>
-    </header>
+    </AdminHeader>
   );
 }

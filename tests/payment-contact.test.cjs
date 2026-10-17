@@ -59,7 +59,7 @@ test('contact requests validate, save only contact fields, and avoid duplicate n
 
 test('unpaid START, PRO and VIP messages share Candidates instead of paid-client folders', { skip: !process.env.TEST_DATABASE_URL }, async () => {
   const { Pool } = require('pg');
-  const { listMessages, getMessage, folderMessageCounts } = require('../lib/mailbox/messages.ts');
+  const { listMessages, getMessage, folderMessageCounts, deleteMessage, unreadCount } = require('../lib/mailbox/messages.ts');
   const savedEnv = { ...process.env }, savedPool = global.consultationPool, savedFetch = global.fetch;
   const admin = new Pool({ connectionString: process.env.TEST_DATABASE_URL });
   const schema = `test_payment_folders_${Date.now()}`;
@@ -69,7 +69,7 @@ test('unpaid START, PRO and VIP messages share Candidates instead of paid-client
   Object.assign(process.env, { DATABASE_URL: process.env.TEST_DATABASE_URL, SITE_URL: 'https://example.com', RESEND_API_KEY: 'test', CONSULTATION_EMAIL_FROM: 'info@example.com', CONSULTATION_EMAIL_TO: 'team@example.com' });
   global.fetch = async () => Response.json({ id: 'mock-email' });
   try {
-    for (const name of ['013_mailbox.sql', '035_payment_contact_requests.sql', '037_mailbox_spam.sql', '038_client_area.sql']) {
+    for (const name of ['013_mailbox.sql', '035_payment_contact_requests.sql', '037_mailbox_spam.sql', '038_client_area.sql', '053_mailbox_trash.sql']) {
       await db.query(fs.readFileSync(`database/migrations/${name}`, 'utf8'));
     }
     await db.query("ALTER TABLE private_clients ADD COLUMN paid_at timestamptz, ADD COLUMN frozen_at timestamptz");
@@ -106,6 +106,19 @@ test('unpaid START, PRO and VIP messages share Candidates instead of paid-client
     await db.query("UPDATE private_clients SET paid_at=now(),frozen_at=NULL WHERE email='pro@example.com'");
     assert.equal((await getMessage(proMessage.id)).folder, "pro-clients");
     assert.equal((await listMessages("frozen", 1)).total, 0);
+    const beforeUnread = await unreadCount();
+    assert.equal(await deleteMessage(proMessage.id), true);
+    assert.equal((await getMessage(proMessage.id)).folder, 'trash');
+    assert.equal((await listMessages('pro-clients', 1)).total, 0);
+    assert.equal((await listMessages('trash', 1)).total, 1);
+    assert.equal(await unreadCount(), beforeUnread - 1);
+    await db.query("UPDATE mailbox_messages SET deleted_at=now()-interval '13 days' WHERE id=$1", [proMessage.id]);
+    await deleteMessage(proMessage.id);
+    assert.equal((await listMessages('trash', 1)).total, 1);
+    await db.query("UPDATE mailbox_messages SET deleted_at=now()-interval '15 days' WHERE id=$1", [proMessage.id]);
+    assert.equal((await listMessages('trash', 1)).total, 0);
+    assert.equal(await getMessage(proMessage.id), null);
+
 
 
   } finally {

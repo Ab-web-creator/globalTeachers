@@ -9,7 +9,7 @@ export default async function MailInboxSection({ folder, data, requestedMessage 
   // A default preview is read-only; explicitly selecting a message marks it read.
   const message = selected ? await (requestedMessage === selected.id ? openMessage(selected.id) : getMessage(selected.id)) : null;
   return (
-    <div className="flex min-h-0 flex-1 flex-col xl:grid xl:grid-cols-[20rem_minmax(0,1fr)]">
+    <div className="flex min-h-0 flex-1 flex-col xl:grid xl:grid-cols-[17rem_minmax(0,1fr)]">
       <div className="flex min-h-0 min-w-0 flex-1 flex-col xl:border-r xl:border-brand-100">
         <MailList folder={folder} data={data} selectedId={selected?.id} />
       </div>

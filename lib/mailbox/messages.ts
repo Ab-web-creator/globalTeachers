@@ -1,7 +1,7 @@
 import { database } from "../consultation/database";
 import { emailConfig, sendEmail } from "../consultation/email";
 
-export type MailFolder = "inbox" | "sent" | "candidates" | "frozen" | "start-clients" | "pro-clients" | "vip-clients" | "spam";
+export type MailFolder = "inbox" | "sent" | "candidates" | "frozen" | "start-clients" | "pro-clients" | "vip-clients" | "spam" | "trash";
 
 // Paid status routes all incoming correspondence; unpaid payment requests share the Candidates folder.
 const senderEmail = `lower(btrim(regexp_replace(COALESCE(mailbox_messages.reply_to[1], mailbox_messages.from_address), '^.*<([^>]+)>.*$', '\\1')))`;
@@ -18,6 +18,7 @@ const candidateMessage = `direction = 'inbound' AND NOT spam AND NOT EXISTS (${p
 )`;
 
 const paymentContactFolder = `CASE
+  WHEN deleted_at IS NOT NULL THEN 'trash'
   WHEN spam THEN 'spam'
   WHEN ${frozenMessage} THEN 'frozen'
   WHEN ${candidateMessage} THEN 'candidates'
@@ -27,7 +28,7 @@ const paymentContactFolder = `CASE
   ELSE 'inbox' END`;
 
 export function messageFolder(message: Pick<MailMessage, "direction" | "folder">): MailFolder {
-  return message.direction === "outbound" ? "sent" : message.folder ?? "inbox";
+  return message.folder === "trash" ? "trash" : message.direction === "outbound" ? "sent" : message.folder ?? "inbox";
 }
 export type MailAttachment = { id: string; filename: string; content_type: string; size?: number };
 export type MailMessage = {
@@ -39,8 +40,13 @@ export type MailSummary = Pick<MailMessage, "id" | "from_address" | "to_addresse
 
 export const mailPageSize = 30;
 
+export async function purgeExpiredTrash() {
+  await database().query("DELETE FROM mailbox_messages WHERE deleted_at <= now() - interval '14 days'");
+}
+
 export async function listMessages(folder: MailFolder, page: number) {
-  const condition = folder === "sent" ? "direction = 'outbound' AND sent_at IS NOT NULL"
+  await purgeExpiredTrash();
+  const folderCondition = folder === "sent" ? "direction = 'outbound' AND sent_at IS NOT NULL"
     : folder === "frozen" ? frozenMessage
     : folder === "candidates" ? candidateMessage
     : folder === "start-clients" ? paymentContactMessage("START")
@@ -48,9 +54,10 @@ export async function listMessages(folder: MailFolder, page: number) {
     : folder === "vip-clients" ? paymentContactMessage("VIP")
     : folder === "spam" ? "direction = 'inbound' AND spam"
     : `direction = 'inbound' AND NOT (spam OR ${frozenMessage} OR ${candidateMessage} OR ${paymentContactMessage("START")} OR ${paymentContactMessage("PRO")} OR ${paymentContactMessage("VIP")})`;
+  const condition = folder === "trash" ? "deleted_at IS NOT NULL" : `deleted_at IS NULL AND (${folderCondition})`;
   const counts = await database().query(
     `SELECT count(*) FILTER (WHERE ${condition})::int AS total,
-       count(*) FILTER (WHERE direction = 'inbound' AND read_at IS NULL AND NOT spam)::int AS unread
+       count(*) FILTER (WHERE direction = 'inbound' AND read_at IS NULL AND NOT spam AND deleted_at IS NULL)::int AS unread
      FROM mailbox_messages`,
   );
   const { total, unread } = counts.rows[0];
@@ -70,10 +77,11 @@ export async function listMessages(folder: MailFolder, page: number) {
 export type FolderCounts = Partial<Record<MailFolder, { total: number; unread: number }>>;
 
 export async function folderMessageCounts(): Promise<FolderCounts> {
+  await purgeExpiredTrash();
   const result = await database().query(
-    `SELECT CASE WHEN direction = 'outbound' THEN 'sent' ELSE ${paymentContactFolder} END AS folder,
+    `SELECT CASE WHEN deleted_at IS NOT NULL THEN 'trash' WHEN direction = 'outbound' THEN 'sent' ELSE ${paymentContactFolder} END AS folder,
        count(*)::int AS total,
-       count(*) FILTER (WHERE direction = 'inbound' AND read_at IS NULL)::int AS unread
+       count(*) FILTER (WHERE direction = 'inbound' AND read_at IS NULL AND deleted_at IS NULL)::int AS unread
      FROM mailbox_messages WHERE direction = 'inbound' OR sent_at IS NOT NULL
      GROUP BY 1`,
   );
@@ -81,12 +89,13 @@ export async function folderMessageCounts(): Promise<FolderCounts> {
 }
 
 export async function unreadCount() {
-  const result = await database().query("SELECT count(*)::int AS unread FROM mailbox_messages WHERE direction = 'inbound' AND read_at IS NULL AND NOT spam");
+  const result = await database().query("SELECT count(*)::int AS unread FROM mailbox_messages WHERE direction = 'inbound' AND read_at IS NULL AND NOT spam AND deleted_at IS NULL");
   return result.rows[0].unread as number;
 }
 
 /** Read-only lookup for the Gmail copy links; unlike opening it in the admin, this keeps it unread. */
 export async function getMessage(id: string) {
+  await purgeExpiredTrash();
   if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
   const result = await database().query(`SELECT *, ${paymentContactFolder} AS folder FROM mailbox_messages WHERE id = $1 AND (direction = 'inbound' OR sent_at IS NOT NULL)`, [id]);
   return (result.rows[0] as MailMessage | undefined) ?? null;
@@ -94,6 +103,7 @@ export async function getMessage(id: string) {
 
 /** Opening an inbound email marks it as read. */
 export async function openMessage(id: string) {
+  await purgeExpiredTrash();
   if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
   const result = await database().query(
     `UPDATE mailbox_messages SET read_at = COALESCE(read_at, now())
@@ -146,9 +156,9 @@ export async function sendMessage(mail: OutgoingMail): Promise<SendResult> {
   }
 }
 
-/** Permanently remove an email from the admin mailbox. Replies keep existing; their link to it is cleared. */
+/** Move to trash without extending the retention period on repeated requests. */
 export async function deleteMessage(id: string) {
-  const result = await database().query("DELETE FROM mailbox_messages WHERE id = $1", [id]);
+  const result = await database().query("UPDATE mailbox_messages SET deleted_at = COALESCE(deleted_at, now()) WHERE id = $1", [id]);
   return result.rowCount === 1;
 }
 

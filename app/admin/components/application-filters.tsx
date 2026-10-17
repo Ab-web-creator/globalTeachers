@@ -2,13 +2,14 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import type { ApplicationFilter } from "../../../lib/admin/applications";
 import { SearchIcon } from "@/app/components/svg";
 
 const statuses = [
-  { value: "not-enough-english", label: "Недостаточный уровень английского" },
-  { value: "not-enough-education", label: "Недостаточное образование" },
-  { value: "unsupported_subjects", label: "Неподходящие предметы" },
+  { value: "not-enough-english", label: "Английский не на уровне" },
+  { value: "not-enough-education", label: "Образование не то" },
+  { value: "unsupported_subjects", label: "Предметы не те" },
   { value: "all", label: "Все заявки" },
   { value: "payment", label: "Кандидаты" },
   { value: "paid", label: "Оплаченные клиенты" },
@@ -29,6 +30,21 @@ export default function ApplicationFilters({
   const [status, setStatus] = useState<ApplicationFilter>(filter);
   const [pending, startTransition] = useTransition();
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const filterStrip = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const strip = filterStrip.current;
+    if (!strip) return;
+    function scrollFilters(event: WheelEvent) {
+      if (!strip || event.ctrlKey || strip.scrollWidth <= strip.clientWidth) return;
+      if (Math.abs(event.deltaX) >= Math.abs(event.deltaY)) return;
+      const distance = event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? strip.clientWidth : 1);
+      event.preventDefault();
+      strip.scrollLeft += distance;
+    }
+    strip.addEventListener("wheel", scrollFilters, { passive: false });
+    return () => strip.removeEventListener("wheel", scrollFilters);
+  }, []);
 
   useEffect(() => {
     function restoreFilters() {
@@ -79,7 +95,14 @@ export default function ApplicationFilters({
       }}
       className="contents"
     >
-      <div className="relative min-w-0 lg:col-start-2 lg:row-start-1 lg:w-80">
+      <div className="flex min-w-0 flex-wrap items-center gap-3 lg:col-start-2 lg:row-start-1">
+        <Link
+          href="/admin/analytics"
+          className="inline-flex h-10 shrink-0 items-center justify-center rounded-full border border-brand-200 bg-white px-4 py-2 text-base font-medium text-neutral-600 transition-colors hover:bg-brand-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500"
+        >
+          Посещаемость
+        </Link>
+        <div className="relative min-w-0 flex-1 lg:w-80">
         <SearchIcon className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-neutral-400" />
         <input
           id="application-search"
@@ -93,15 +116,16 @@ export default function ApplicationFilters({
             update(event.target.value, status, 250);
           }}
           maxLength={200}
-          className="block w-full min-w-0 rounded-xl border border-brand-200 bg-white py-3 pr-4 pl-11 text-base"
+          className="block h-10 w-full min-w-0 rounded-full border border-brand-200 bg-white py-2 pr-4 pl-11 text-base text-neutral-600 placeholder:text-neutral-500"
         />
+        </div>
       </div>
-      <fieldset className="flex flex-wrap gap-2 border-t border-brand-100 pt-4 text-base lg:col-span-2 lg:col-start-1 lg:row-start-2">
-        <legend className="sr-only">Статус заявки</legend>
+      <div className="-mx-5 min-w-0 overflow-hidden sm:-mx-6 lg:col-span-2 lg:col-start-1 lg:row-start-2">
+      <div ref={filterStrip} role="radiogroup" aria-label="Статус заявки" tabIndex={0} className="relative flex w-full min-w-0 max-w-full gap-2 overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden border-0 bg-neutral-400 p-2 text-base focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-neutral-500">
         {statuses.map((option) => (
           <label
             key={option.value}
-            className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-base font-medium transition focus-within:outline-2 focus-within:outline-brand-500 ${status === option.value ? "border-brand-200 bg-brand-100 text-brand-600" : "border-transparent text-neutral-500 hover:bg-brand-50"}`}
+            className={`flex shrink-0 cursor-pointer items-center gap-2 whitespace-nowrap rounded-lg border px-3 py-2 text-sm font-medium transition has-focus-visible:outline-2 has-focus-visible:-outline-offset-2 has-focus-visible:outline-neutral-500 ${status === option.value ? "border-neutral-500 bg-neutral-600 text-white" : "border-neutral-300 bg-neutral-200 text-neutral-700 hover:border-white hover:bg-white"}`}
           >
             <input
               type="radio"
@@ -117,7 +141,8 @@ export default function ApplicationFilters({
             {option.label}
           </label>
         ))}
-      </fieldset>
+      </div>
+      </div>
     </form>
   );
 }
