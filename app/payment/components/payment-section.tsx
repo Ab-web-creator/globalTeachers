@@ -128,7 +128,7 @@ export default function PaymentSection({ program, detailsComplete, validateDetai
         </label>
         {visibleErrors["payment-terms"] && <p id="payment-terms-error" role="alert" className="mt-2 text-sm text-red-700">Подтвердите, что вы ознакомились с условиями.</p>}
         <button type="button" aria-disabled={!canContinue} onClick={openContact} className="mt-7 inline-flex min-h-16 w-fit items-center justify-center rounded-2xl bg-brand-500 px-10 py-4 text-lg font-semibold text-white hover:bg-brand-600 aria-disabled:cursor-not-allowed aria-disabled:bg-neutral-200 aria-disabled:text-neutral-500 aria-disabled:shadow-none">{`Оплатить $${paymentAmount}`}</button>
-        <p className="mt-4 text-sm leading-relaxed text-neutral-500">Данные карты не отправляются и не сохраняются. Списаний не будет.</p>
+        <p className="mt-4 text-sm leading-relaxed text-neutral-500">Платёж обрабатывается через защищённый платёжный сервис. Данные карты не сохраняются на наших серверах.</p>
       </div>
       {contact && <PaymentContactDialog tier={program.tier} initialName={contact.name} initialEmail={contact.email} onClose={() => setContact(null)} />}
     </ProgramSection>

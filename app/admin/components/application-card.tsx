@@ -4,7 +4,7 @@ import {
 } from "../../../lib/admin/applications";
 import Link from "next/link";
 import LocalTime from "./local-time";
-import { EnvelopeIcon } from "@/app/components/svg";
+import { BriefcaseIcon, ClientCheckIcon, SupportCrownIcon, EnvelopeIcon, UserProfileIcon } from "@/app/components/svg";
 
 export default function ApplicationCard({
   application,
@@ -32,8 +32,18 @@ export default function ApplicationCard({
       >
         <div className="relative isolate flex flex-wrap items-center gap-x-2 gap-y-6">
           <span aria-hidden="true" className={`pointer-events-none absolute -top-3 -right-5 -left-5 -z-10 h-12 rounded-t-2xl sm:-right-6 sm:-left-6 ${headerColor}`} />
-          <h2 className="min-w-0 break-words text-lg font-semibold leading-tight tracking-tight">
-            {application.answers.name || "Без имени"}
+          <h2 className="flex min-w-0 items-start gap-2 text-base font-semibold leading-tight tracking-tight">
+            <span className="mt-0.5 shrink-0" title={application.paid_at ? "Оплаченный клиент" : "Пользователь"}>
+              {application.paid_at
+                ? application.paid_tier === "VIP"
+                  ? <SupportCrownIcon className="size-5 text-amber-700" />
+                  : application.paid_tier === "PRO"
+                    ? <BriefcaseIcon className="size-5 text-brand-600" />
+                    : <ClientCheckIcon className="size-5 text-brand-600" />
+                : <UserProfileIcon className="size-5 text-neutral-500" />}
+              <span className="sr-only">{application.paid_at ? "Оплаченный клиент: " : "Пользователь: "}</span>
+            </span>
+            <span className="min-w-0 break-words">{application.answers.name || "Без имени"}</span>
           </h2>
           {displayTier && (
             <span className="inline-flex rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-600">

@@ -66,10 +66,24 @@ export async function createAppointmentCall(clientId: string) {
 }
 
 export async function startAdminAppointmentCall(clientId: string) {
-  const room = await createAppointmentCall(clientId);
   const connection = await database().connect();
   try {
     await connection.query("BEGIN");
+    const client = await connection.query(
+      "SELECT name, email FROM private_clients WHERE id = $1 AND active AND last_seen_at > now() - interval '20 seconds' FOR UPDATE",
+      [clientId],
+    );
+    if (!client.rowCount) throw new Error("Клиент не в сети или звонок уже идёт.");
+    const token = randomBytes(32).toString("hex");
+    const roomResult = await connection.query(
+      `INSERT INTO browser_calls(id, token_hash, invitation_token, email, name, expires_at, admin_client_id, initiated_by)
+      VALUES ($1, $2, $3, $4, $5, now() + interval '4 hours', $6, 'admin')
+      ON CONFLICT (admin_client_id) DO UPDATE SET expires_at = now() + interval '4 hours'
+      WHERE browser_calls.state IN ('waiting', 'ended', 'declined') RETURNING id`,
+      [randomUUID(), tokenHash(token), token, client.rows[0].email, client.rows[0].name, clientId],
+    );
+    if (!roomResult.rowCount) throw new Error("Клиент не в сети или звонок уже идёт.");
+    const room = roomResult.rows[0];
     const result = await connection.query(
       `UPDATE browser_calls SET state = 'ringing', initiated_by = 'admin',
       updated_at = now(), admin_seen = now(), client_seen = NULL
@@ -101,8 +115,8 @@ export async function incomingAppointmentCall(clientId: string) {
   );
   const result = await database().query(
     `SELECT call.id, call.invitation_token AS token, call.name, call.expires_at
-    FROM browser_calls call JOIN appointment_slots slot ON slot.id = call.appointment_slot_id
-    WHERE slot.booked_by = $1 AND slot.starts_at <= now() AND slot.ends_at > now()
+    FROM browser_calls call
+    WHERE call.admin_client_id = $1
       AND call.expires_at > now() AND call.state = 'ringing' AND call.initiated_by = 'admin'
       AND call.updated_at > now() - interval '60 seconds'
       AND call.admin_seen > now() - interval '20 seconds' LIMIT 1`,
@@ -117,4 +131,8 @@ export async function incomingAppointmentCall(clientId: string) {
         expires: call.expires_at.toISOString(),
       }
     : null;
+}
+
+export async function adminCallAllowed(clientId: string, session?: string) {
+  return (await clientFromSession(session)) === clientId;
 }

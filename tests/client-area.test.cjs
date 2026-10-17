@@ -195,6 +195,7 @@ test(
         "051_frozen_client_accounts.sql",
         "052_client_consultation_profile.sql",
         "053_mailbox_trash.sql",
+        "054_admin_direct_calls.sql",
       ]) {
         await db.query(fs.readFileSync(`database/migrations/${name}`, "utf8"));
       }
@@ -1104,7 +1105,7 @@ test(
             "UPDATE appointment_slots SET starts_at = now() - interval '5 minutes', ends_at = now() + interval '55 minutes' WHERE id = $1",
             [slot],
           );
-          const room = await createAppointmentCall(clients[0].id);
+          let room = await createAppointmentCall(clients[0].id);
           assert.equal(
             (await createAppointmentCall(clients[0].id)).id,
             room.id,
@@ -1174,9 +1175,10 @@ test(
             lastVisit,
           );
           const outgoing = await startAdminAppointmentCall(clients[0].id);
-          assert.equal(outgoing.id, room.id);
+          assert.notEqual(outgoing.id, room.id);
           const clientIncoming = await incomingAppointmentCall(clients[0].id);
-          assert.equal(clientIncoming.token, room.token);
+          room = clientIncoming;
+          assert.equal(room.id, outgoing.id);
           assert.equal(await incomingAppointmentCall(clients[1].id), null);
           const adminIncoming = await callsGet(
             request("/api/calls?incoming=1", undefined, adminCookie),
@@ -1250,10 +1252,14 @@ test(
             createAppointmentCall(clients[0].id),
             /только во время/,
           );
-          await assert.rejects(
-            startAdminAppointmentCall(clients[0].id),
-            /только во время/,
-          );
+          await callsPost(request("/api/calls", { id: room.id, action: "end" }, adminCookie));
+          const outsideMeeting = await startAdminAppointmentCall(clients[0].id);
+          assert.equal(outsideMeeting.id, room.id);
+          assert.equal((await incomingAppointmentCall(clients[0].id)).id, room.id);
+          assert.equal((await callsPost(clientAnswer("accept", clients[0].cookie))).status, 204);
+          assert.equal((await callsPost(clientAnswer("ring", clients[0].cookie))).status, 403);
+          assert.equal((await callsPost(clientAnswer("end", clients[0].cookie))).status, 204);
+          assert.equal((await callsPost(clientAnswer("ring", clients[0].cookie))).status, 403);
         },
       );
 

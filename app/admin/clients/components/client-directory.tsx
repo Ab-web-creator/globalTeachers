@@ -12,7 +12,7 @@ import type { PrivateClient } from "../../../../lib/client-area/types";
 
 const tierBadgeColors = {
   START: "border border-blue-300 bg-blue-50 text-blue-700",
-  PRO: "bg-violet-50 text-violet-700",
+  PRO: "border border-violet-300 bg-violet-50 text-violet-700",
   VIP: "border border-amber-300 bg-amber-50 text-amber-800",
 };
 

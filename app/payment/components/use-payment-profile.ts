@@ -187,7 +187,7 @@ export default function usePaymentProfile() {
             ) as PaymentProfile,
         );
         setStatus(
-          "Email подтверждён. Ваше имя заполнено автоматически. Вы можете его изменить.",
+          "Email подтверждён. Ваши данные заполнены автоматически. Вы можете их изменить.",
         );
       } else setStatus("Email подтверждён.");
       setChallenge("");

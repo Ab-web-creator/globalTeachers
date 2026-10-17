@@ -5,7 +5,7 @@ import { trustedRequestOrigin } from "../../../lib/request-origin";
 import { database } from "../../../lib/consultation/database";
 import { findCall, iceServers, tokenHash } from "../../../lib/calls/server";
 import { getApplication } from "../../../lib/admin/applications";
-import { appointmentCallAllowed } from "../../../lib/client-area/appointment-call";
+import { adminCallAllowed, appointmentCallAllowed } from "../../../lib/client-area/appointment-call";
 import { clientSessionCookie } from "../../../lib/client-area/access";
 
 const admin = (r: NextRequest) =>
@@ -42,6 +42,9 @@ export async function GET(r: NextRequest) {
   const call = await findCall(r.nextUrl.searchParams.get("id") ?? "", token);
   if (!call) return new Response(null, { status: 404 });
   if (token && call.appointment_slot_id && !await appointmentCallAllowed(call.appointment_slot_id, r.cookies.get(clientSessionCookie)?.value)) {
+    return new Response(null, { status: 401 });
+  }
+  if (token && call.admin_client_id && !await adminCallAllowed(call.admin_client_id, r.cookies.get(clientSessionCookie)?.value)) {
     return new Response(null, { status: 401 });
   }
   const role = token ? "client" : "admin";
@@ -121,9 +124,12 @@ export async function POST(r: NextRequest) {
   if (token && call.appointment_slot_id && !await appointmentCallAllowed(call.appointment_slot_id, r.cookies.get(clientSessionCookie)?.value)) {
     return new Response(null, { status: 401 });
   }
+  if (token && call.admin_client_id && !await adminCallAllowed(call.admin_client_id, r.cookies.get(clientSessionCookie)?.value)) {
+    return new Response(null, { status: 401 });
+  }
   const role = token ? "client" : "admin";
   if (input.action === "ring") {
-    if (role !== "client") return new Response(null, { status: 403 });
+    if (role !== "client" || call.admin_client_id) return new Response(null, { status: 403 });
     const client = await database().connect();
     try {
       await client.query("BEGIN");

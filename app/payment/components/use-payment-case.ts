@@ -50,7 +50,7 @@ export default function usePaymentCase(
           body: JSON.stringify({
             email: normalized,
             tier,
-            profile: { name: profile.name },
+            profile: { name: profile.name, subject: profile.subject, english: profile.english },
             draft: { id: identity.id, token: identity.token },
             revision: identity.revision,
           }),
