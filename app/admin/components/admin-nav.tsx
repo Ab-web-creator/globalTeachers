@@ -48,7 +48,7 @@ export default async function AdminNav({ active, unread, showLogout = false, sho
           </nav>
         )}
         <div className="flex items-center gap-2">
-          {logout && <form action="/admin/logout" method="post"><button className="rounded-xl border border-brand-200 px-4 py-2 text-base font-medium hover:bg-brand-50">Выйти</button></form>}
+          {logout && <form action="/admin/logout" method="post"><button className="rounded-xl border-brand-200 px-4 sm:border py-2 text-base font-medium hover:bg-brand-50">Выйти</button></form>}
           {showTabs && <AdminMobileMenu active={active} logout={logout} />}
         </div>
       </div>
