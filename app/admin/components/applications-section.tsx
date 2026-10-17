@@ -30,7 +30,7 @@ export default function ApplicationsSection({
           </p>
         </div>
       </header>
-      <div className="mt-8 min-w-0 overflow-hidden rounded-3xl border border-brand-100 bg-white p-5 sm:p-6">
+      <div className="-mx-5 mt-8 min-w-0 overflow-hidden border-y border-brand-100 bg-white p-5 sm:mx-0 sm:rounded-3xl sm:border sm:p-6">
         <div className="grid min-w-0 grid-cols-1 items-center gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,auto)]">
           <h2 className="text-2xl font-semibold leading-tight tracking-tight">Все обращения</h2>
           <ApplicationFilters filter={filter} search={search} />
