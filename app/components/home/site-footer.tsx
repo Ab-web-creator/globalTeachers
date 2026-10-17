@@ -23,7 +23,7 @@ export default function SiteFooter() {
         </div>
         <div className="flex flex-col gap-4 border-t border-white/25 py-5 text-sm leading-normal text-white/90 lg:flex-row lg:items-center lg:justify-between lg:text-xs">
           <p>© {new Date().getFullYear()} TeacherNavigator. Все права защищены.</p>
-          <div className="flex flex-wrap gap-x-5 gap-y-2">
+          <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs sm:text-sm lg:text-xs">
             <Link href="/privacy" className="underline-offset-4 hover:underline">Политика конфиденциальности</Link>
             <span aria-hidden="true">·</span>
             <Link href="/terms" className="underline-offset-4 hover:underline">Пользовательское соглашение</Link>

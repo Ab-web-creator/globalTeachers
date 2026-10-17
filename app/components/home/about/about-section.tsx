@@ -10,7 +10,7 @@ const benefits = [
 
 export default function AboutSection() {
   return (
-    <section id="about" aria-labelledby="about-title" className="scroll-mt-16 bg-linear-to-b from-brand-50/60 to-white py-12 sm:py-16 lg:py-20">
+    <section id="about" aria-labelledby="about-title" className="scroll-mt-4 bg-linear-to-b from-brand-50/60 to-white py-12 sm:py-16 lg:py-20">
       <div className="mx-auto grid w-full max-w-400 items-center gap-8 sm:px-10 lg:grid-cols-2 lg:gap-16 lg:px-16 xl:gap-20 xl:px-20">
         <div data-reveal className="px-6 py-2 sm:px-0 lg:py-4">
           <p className="mb-4 text-sm font-semibold tracking-widest text-brand-500 sm:text-base uppercase">О нас</p>
@@ -26,7 +26,7 @@ export default function AboutSection() {
               <span>{benefit}</span>
             </li>))}
           </ul>
-          <Link href="/consultation" className="mt-6 inline-flex rounded-2xl sm:rounded-full action-gradient-outline px-8 py-2.5 sm:py-4 text-base font-medium text-brand-700 transition hover:shadow-md sm:mt-8">
+          <Link href="/consultation" className="mt-6 inline-flex w-full justify-center rounded-2xl border border-neutral-300 sm:w-auto sm:rounded-full px-8 py-2.5 sm:py-4 text-base font-medium text-brand-700 transition hover:shadow-md sm:mt-8">
             Начать свой путь
           </Link>
         </div>

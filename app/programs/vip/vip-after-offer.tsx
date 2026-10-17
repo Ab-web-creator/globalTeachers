@@ -65,7 +65,7 @@ export default function VipAfterOffer() {
           {steps.map(({ title, icon, text }, index) => (<li key={title} data-active={index === activeStep} className="group relative flex items-start gap-4 text-left md:flex-col">
             <div className="relative flex shrink-0 md:w-full">
               {index < steps.length - 1 && <span aria-hidden="true" className="absolute top-8 left-8 hidden h-px w-full bg-brand-200 md:block" />}
-              <span aria-hidden="true" className={`relative flex size-16 items-center justify-center rounded-full bg-brand-50 text-brand-400 transition-colors duration-500 group-data-[active=true]:bg-brand-200 group-data-[active=true]:text-brand-600 motion-reduce:transition-none ${activeStep === -1 ? "group-hover:bg-brand-200 group-hover:text-brand-600" : ""}`}>
+              <span aria-hidden="true" className={`relative flex size-16 items-center justify-center rounded-full bg-brand-50 text-brand-400 transition-colors duration-500 group-data-[active=true]:bg-violet-100 group-data-[active=true]:text-brand-600 motion-reduce:transition-none ${activeStep === -1 ? "group-hover:bg-violet-100 group-hover:text-brand-600" : ""}`}>
                 <StrokeIcon path={icon} className="size-7" />
               </span>
             </div>

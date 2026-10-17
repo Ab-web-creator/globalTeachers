@@ -1,4 +1,6 @@
 export { BrandLogo } from "./illustrations/brand-logo";
+export { MenuHomeIcon, MenuPricingIcon } from "./icons/menu-cards";
+export { ApplicationEnglishIcon, ApplicationEducationIcon, ApplicationCalendarIcon, ApplicationStarIcon } from "./icons/application-details";
 export { ServiceCategoryIllustration } from "./illustrations/service-category-illustration";
 export { StrokeIcon } from "./icons/stroke-icon";
 export { JobSearchIcon } from "./icons/job-search-icon";

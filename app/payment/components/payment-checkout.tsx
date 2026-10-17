@@ -35,6 +35,7 @@ export default function PaymentCheckout({ program }: { program: Program }) {
   return (
     <>
       <PaymentDetailsSection
+        showGradient={program.tier === "VIP"}
         highlightBeginnerEnglish={requiresEnglish}
         profileState={{
           ...profileState,

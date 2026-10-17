@@ -35,9 +35,12 @@ export function FaqToggleIcon(svgProps: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function MobileMenuCloseIcon(svgProps: SVGProps<SVGSVGElement>) {
+export function MobileMenuCloseIcon({ highContrast = false, ...svgProps }: SVGProps<SVGSVGElement> & { highContrast?: boolean }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="size-6" aria-hidden="true" {...svgProps}><path d="m6 6 12 12M6 18 18 6" /></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="size-6" aria-hidden="true" {...svgProps}>
+      {highContrast && <path d="m6 6 12 12M6 18 18 6" stroke="#262626" strokeWidth="3.5" strokeLinecap="round" />}
+      <path d="m6 6 12 12M6 18 18 6" />
+    </svg>
   );
 }
 

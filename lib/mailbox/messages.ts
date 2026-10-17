@@ -57,10 +57,11 @@ export async function listMessages(folder: MailFolder, page: number) {
   const condition = folder === "trash" ? "deleted_at IS NOT NULL" : `deleted_at IS NULL AND (${folderCondition})`;
   const counts = await database().query(
     `SELECT count(*) FILTER (WHERE ${condition})::int AS total,
+       count(*) FILTER (WHERE (${condition}) AND direction = 'inbound' AND read_at IS NULL)::int AS folder_unread,
        count(*) FILTER (WHERE direction = 'inbound' AND read_at IS NULL AND NOT spam AND deleted_at IS NULL)::int AS unread
      FROM mailbox_messages`,
   );
-  const { total, unread } = counts.rows[0];
+  const { total, unread, folder_unread: folderUnread } = counts.rows[0];
   const pages = Math.max(1, Math.ceil(total / mailPageSize));
   const current = Math.min(Math.max(1, Number.isInteger(page) ? page : 1), pages);
   const result = await database().query(
@@ -71,7 +72,7 @@ export async function listMessages(folder: MailFolder, page: number) {
      ORDER BY created_at DESC, id DESC LIMIT $1 OFFSET $2`,
     [mailPageSize, (current - 1) * mailPageSize],
   );
-  return { messages: result.rows as MailSummary[], total, unread, page: current, pages };
+  return { messages: result.rows as MailSummary[], total, unread, folderUnread, page: current, pages };
 }
 
 export type FolderCounts = Partial<Record<MailFolder, { total: number; unread: number }>>;

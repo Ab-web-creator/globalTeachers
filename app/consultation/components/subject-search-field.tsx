@@ -16,9 +16,9 @@ export default function SubjectSearchField({ query, selected, onQueryChange, onR
   }, []);
 
   return (
-    <div className="flex h-full min-w-0 items-center rounded-xl border border-brand-200 bg-white p-2 pr-14 focus-within:border-brand-500">
+    <div className="flex min-h-12.5 min-w-0 items-center sm:h-full rounded-xl border border-brand-200 bg-white p-2 pr-14 focus-within:border-brand-500">
       <label htmlFor="subject-search" className="sr-only">Поиск по предметам</label>
-      <div className="flex w-full min-w-0 items-center gap-2 overflow-x-auto">
+      <div className="flex w-full min-w-0 flex-wrap items-center gap-2 sm:flex-nowrap sm:overflow-x-auto">
         <SelectedSubjects selected={selected} onRemove={(subject) => { onRemove(subject); search.current?.focus({ preventScroll: true }); }} />
         <input
           ref={search}

@@ -1,0 +1,13 @@
+.ornament {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: url("/images/footer-reference-pattern.webp") right center / auto 180% repeat-x;
+  opacity: 0.12;
+  mask-image: linear-gradient(to right, transparent 50%, #000 100%);
+}
+
+.paidOrnament {
+  opacity: 0.2;
+}

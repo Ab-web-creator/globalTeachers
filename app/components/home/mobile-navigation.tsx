@@ -1,59 +1,78 @@
-import { MobileMenuCloseIcon } from "@/app/components/svg";
+import { BriefcaseIcon, CandidateGroupIcon, CardChevronIcon, MenuHomeIcon, MenuPricingIcon, MobileMenuCloseIcon } from "@/app/components/svg";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import MenuLanguages from "./menu-languages";
 import { navigationItems } from "./navigation-items";
-import styles from "./site-header.module.css";
 
 type MobileNavigationProps = { onClose: () => void; };
 
 export default function MobileNavigation({ onClose }: MobileNavigationProps) {
   const dialog = useRef<HTMLDialogElement>(null);
+  const closeButton = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const element = dialog.current;
     const previousOverflow = document.body.style.overflow;
     element?.showModal();
     document.body.style.overflow = "hidden";
+    const alignCloseButton = () => {
+      const trigger = document.querySelector<HTMLButtonElement>('button[aria-controls="mobile-menu"]');
+      const button = closeButton.current;
+      if (!trigger || !button) return;
+      const bounds = trigger.getBoundingClientRect();
+      Object.assign(button.style, {
+        position: "fixed",
+        top: `${bounds.top}px`,
+        left: `${bounds.left}px`,
+        width: `${bounds.width}px`,
+        height: `${bounds.height}px`,
+      });
+    };
+    alignCloseButton();
+    window.addEventListener("resize", alignCloseButton);
     const desktop = window.matchMedia("(min-width: 768px)");
     const closeOnDesktop = () => { if (desktop.matches) onClose(); };
     desktop.addEventListener("change", closeOnDesktop);
     return () => {
       desktop.removeEventListener("change", closeOnDesktop);
+      window.removeEventListener("resize", alignCloseButton);
       document.body.style.overflow = previousOverflow;
       element?.close();
     };
   }, [onClose]);
 
-  return (
+  return createPortal(
     <dialog
       ref={dialog}
       id="mobile-menu"
       aria-label="Меню сайта"
-      onCancel={onClose}
-      onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}
-      className={`${styles.mobileMenuColors} fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none bg-transparent p-3 text-brand-700 backdrop:bg-neutral-900/25 backdrop:backdrop-blur-sm sm:p-6`}
+      onCancel={(event) => { event.preventDefault(); onClose(); }}
+      onClick={(event) => {
+        if (event.target !== event.currentTarget) return;
+        const bounds = event.currentTarget.getBoundingClientRect();
+        if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) onClose();
+      }}
+      className="fixed inset-x-0 top-0 bottom-auto m-0 max-h-[85dvh] w-full max-w-none overflow-y-auto border-0 bg-neutral-900/10 p-4 pb-12 text-neutral-800 backdrop-blur-xs backdrop:bg-transparent sm:p-6 sm:pb-12"
     >
-      <div className="ml-auto flex max-h-full w-full max-w-sm flex-col overflow-y-auto rounded-3xl bg-white shadow-2xl shadow-neutral-900/20 sm:max-w-md">
-        <div className="flex items-center justify-between gap-4 px-5 pt-5 sm:px-7 sm:pt-7">
-          <MenuLanguages />
-          <button type="button" onClick={onClose} aria-label="Закрыть меню" autoFocus className="flex size-11 items-center justify-center rounded-2xl sm:rounded-full text-brand-500 transition hover:bg-brand-50">
-            <MobileMenuCloseIcon />
+      <div className="mx-auto flex w-full max-w-lg flex-col">
+        <div className="flex items-center justify-between gap-4">
+          <div className="-translate-y-1"><MenuLanguages pill /></div>
+          <button ref={closeButton} type="button" onClick={onClose} aria-label="Закрыть меню" autoFocus className="z-10 flex size-11 shrink-0 items-center justify-center rounded-full bg-transparent text-white focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-white">
+            <MobileMenuCloseIcon highContrast />
           </button>
         </div>
-        <div aria-hidden="true" className="mx-7 my-6 flex items-center gap-4 text-brand-300">
-          <span className="h-px flex-1 bg-brand-100" />
-          <span className="size-2 rotate-45 bg-brand-400" />
-          <span className="h-px flex-1 bg-brand-100" />
-        </div>
-        <nav aria-label="Мобильная навигация" className="flex flex-col items-stretch gap-2 px-5 pb-8 text-center text-xl font-normal sm:px-7">
-          <Link href="/#home" onClick={onClose} className="rounded-xl bg-brand-50 px-4 py-3 text-brand-500">Главная страница</Link>
-          {navigationItems.map(({ label, href }) => (
-            <Link key={label} href={href} onClick={onClose} className="rounded-xl px-4 py-3 transition hover:bg-brand-50 hover:text-brand-500">{label}</Link>
+        <nav aria-label="Мобильная навигация" className="mt-10 flex flex-col gap-3 pb-2">
+          {[{ label: "Главная страница", href: "/#home", Icon: MenuHomeIcon }, ...navigationItems.map((item, index) => ({ ...item, Icon: [CandidateGroupIcon, BriefcaseIcon, MenuPricingIcon][index] }))].map(({ label, href, Icon }) => (
+            <Link key={href} href={href} onClick={onClose} className="flex min-h-16 items-center gap-3 rounded-2xl bg-white px-4 py-2 text-base font-medium shadow-lg transition-colors hover:bg-neutral-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500 sm:gap-4 sm:text-lg">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-neutral-700"><Icon className="size-6" /></span>
+              <span className="min-w-0 flex-1">{label}</span>
+              <CardChevronIcon className="size-4 shrink-0 text-neutral-500" />
+            </Link>
           ))}
-          <Link href="/consultation" onClick={onClose} className="rounded-xl px-4 py-3 transition hover:bg-brand-50 hover:text-brand-500">Получить консультацию</Link>
+          <Link href="/consultation" onClick={onClose} className="mt-2 flex min-h-16 items-center justify-center rounded-2xl border border-white bg-blue-900 px-4 py-4 text-center text-lg font-semibold text-white transition-colors hover:bg-blue-950 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-blue-300">Получить консультацию</Link>
         </nav>
       </div>
-    </dialog>
+    </dialog>, document.body,
   );
 }

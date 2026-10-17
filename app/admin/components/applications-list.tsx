@@ -10,7 +10,7 @@ export default function ApplicationsList({ filter, search, data }: { filter: App
   return (
     <>
       <p className="mt-6 mb-4 text-sm text-neutral-500">Найдено: {data.total}</p>
-      <div className="grid items-stretch gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-3">
         {data.applications.map((application) => <ApplicationCard key={application.id} application={application} />)}
         {!data.total && <p className="rounded-2xl border border-brand-100 bg-white p-8 text-center text-base text-neutral-500 col-span-full">Заявок пока нет или ничего не найдено по вашему запросу.</p>}
       </div>

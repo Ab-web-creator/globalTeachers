@@ -11,8 +11,8 @@ export default function SelectedSubjects({ selected, onRemove }: Props) {
   return (
     <div role="group" aria-label="Выбранные предметы" className="contents">
       {selected.map((subject) => (
-        <span key={subject} className="flex shrink-0 items-center gap-1 rounded-md bg-brand-100 pl-3 text-sm text-brand-700">
-          <span title={subject} className="min-w-0 truncate">{subject}</span>
+        <span key={subject} className="flex max-w-full items-center gap-1 sm:shrink-0 rounded-md bg-brand-100 pl-3 text-sm text-brand-700">
+          <span title={subject} className="min-w-0 break-words sm:truncate">{subject}</span>
           <button type="button" aria-label={`Убрать ${subject}`} onClick={() => onRemove(subject)} className="flex size-8 shrink-0 items-center justify-center rounded-md hover:bg-brand-200 focus-visible:-outline-offset-2">
             <SubjectTagRemoveIcon />
           </button>

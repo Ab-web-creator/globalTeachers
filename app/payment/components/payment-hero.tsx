@@ -23,14 +23,14 @@ export default function PaymentHero({ program }: { program: Program }) {
         <p key={paragraph} className={`${index === 0 ? "mt-7" : "mt-4"} max-w-xl text-lg leading-relaxed text-neutral-600`}>{paragraph}</p>
       ))}
       {isPro ? (
-        <div className="mt-5 flex items-center gap-4 rounded-xl bg-brand-50 px-5 py-4 text-brand-500">
+        <div className="-mx-6 mt-5 flex items-center gap-4 bg-brand-50 px-6 py-4 text-brand-500 sm:mx-0 sm:rounded-xl sm:px-5">
           <GiftIcon className="size-7 shrink-0" />
           <p className="border-l border-brand-300 pl-4 text-base font-semibold leading-relaxed sm:text-lg">Поддержка в течение 30 дней.</p>
         </div>
       ) : isPackageCheckout ? (
         <p className="mt-5 border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-600">{program.supportSummary}</p>
       ) : (
-        <div className="mt-5 flex w-full max-w-lg items-center gap-4 rounded-xl bg-brand-50 px-5 py-4 text-brand-500">
+        <div className="-mx-6 mt-5 flex items-center gap-4 bg-brand-50 px-6 py-4 text-brand-500 sm:mx-0 sm:w-full sm:max-w-lg sm:rounded-xl sm:px-5">
           <GiftIcon className="size-7 shrink-0" />
           <div className="min-w-0 flex-1 border-l border-brand-300 pl-4 text-base font-semibold leading-relaxed sm:text-lg">
             <p>Индивидуальная консультация</p>

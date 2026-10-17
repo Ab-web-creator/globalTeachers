@@ -4,9 +4,9 @@ import { DeleteApplicationIcon } from "@/app/components/svg";
 import { useRouter } from "next/navigation";
 import { useRef, useState, useTransition } from "react";
 
-type Props = { id: string; status: "pending" | "confirmed"; name: string; returnToList?: boolean; };
+type Props = { id: string; status: "pending" | "confirmed"; name: string; returnToList?: boolean; compact?: boolean; };
 
-export default function DeleteApplicationButton({ id, status, name, returnToList = false }: Props) {
+export default function DeleteApplicationButton({ id, status, name, returnToList = false, compact = false }: Props) {
   const router = useRouter();
   const busy = useRef(false);
   const [deleting, setDeleting] = useState(false);
@@ -35,9 +35,9 @@ export default function DeleteApplicationButton({ id, status, name, returnToList
 
   return (
     <div className="flex flex-col items-end gap-2">
-      <button type="button" onClick={remove} disabled={deleting || refreshing} aria-label={`Удалить этого пользователя: ${name}`} title="Удалить этого пользователя" className="flex min-h-10 items-center justify-center gap-2 rounded-xl px-3 text-sm text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-700 disabled:cursor-wait disabled:opacity-50">
+      <button type="button" onClick={remove} disabled={deleting || refreshing} aria-label={`Удалить этого пользователя: ${name}`} title="Удалить этого пользователя" className={`flex shrink-0 items-center justify-center rounded-lg text-sm text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-700 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-red-500 disabled:cursor-wait disabled:opacity-50 ${compact ? "size-9" : "min-h-10 gap-2 px-3"}`}>
         <DeleteApplicationIcon />
-        <span>Удалить этого пользователя</span>
+        {!compact && <span>Удалить этого пользователя</span>}
       </button>
       {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
     </div>

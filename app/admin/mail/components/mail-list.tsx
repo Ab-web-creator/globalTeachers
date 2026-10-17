@@ -1,7 +1,7 @@
 import MailMessageLink from "./mail-message-link";
 import LocalTime from "../../components/local-time";
 import Link from "next/link";
-import { mailPageSize, type listMessages, type MailFolder } from "../../../../lib/mailbox/messages";
+import { type listMessages, type MailFolder } from "../../../../lib/mailbox/messages";
 
 // Show "Anna Petrova" rather than "Anna Petrova <anna@example.org>"; the full address is on the message page.
 function displayName(value: string) {
@@ -16,7 +16,7 @@ export default function MailList({ folder, data, selectedId }: Props) {
     <>
       <header className="flex shrink-0 items-center justify-between gap-4 border-b border-brand-100 px-6 py-4 xl:flex-col xl:items-start xl:gap-1 xl:px-4">
         <h1 className="text-xl font-semibold">{folder === "trash" ? "Корзина" : folder === "frozen" ? "Замороженные" : folder === "candidates" ? "Candidates" : folder === "vip-clients" ? "VIP клиенты" : folder === "pro-clients" ? "Клиенты PRO" : folder === "start-clients" ? "Клиенты START" : folder === "inbox" ? "Входящие" : folder === "spam" ? "Спам" : "Отправленные"}</h1>
-        {!!data?.total && <p className="text-sm text-neutral-500">{(data.page - 1) * mailPageSize + 1}–{Math.min(data.page * mailPageSize, data.total)} из {data.total} · местное время</p>}
+        {data && <p className="text-sm text-neutral-500">Непрочитано: {data.folderUnread} · Всего: {data.total}</p>}
       </header>
       {!data ? (
         <p role="alert" className="m-6 rounded-2xl border border-amber-200 bg-amber-50 p-6 text-sm">Не удалось загрузить письма. Проверьте DATABASE_URL и выполните npm run db:migrate.</p>
@@ -33,7 +33,7 @@ export default function MailList({ folder, data, selectedId }: Props) {
                       <span className="truncate">{folder !== "sent" ? displayName(message.from_address) : `Кому: ${message.to_addresses.map(displayName).join(", ")}`}</span>
                     </span>
                     <span className="min-w-0 truncate text-sm">
-                      <span className={unread ? "font-semibold" : ""}>{message.subject || "(без темы)"}</span>
+                      <span className="font-semibold">{message.subject || "(без темы)"}</span>
                       {message.snippet && <span className="text-neutral-500 xl:mt-1 xl:block xl:truncate"><span className="xl:hidden"> — </span>{message.snippet}</span>}
                     </span>
                     <span className="flex items-center gap-2 text-sm whitespace-nowrap text-neutral-500">

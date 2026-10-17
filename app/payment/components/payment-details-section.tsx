@@ -23,10 +23,12 @@ export default function PaymentDetailsSection({
   profileState,
   errors,
   highlightBeginnerEnglish,
+  showGradient = false,
 }: {
   profileState: ReturnType<typeof usePaymentProfile>;
   errors: Record<string, string>;
   highlightBeginnerEnglish: boolean;
+  showGradient?: boolean;
 }) {
   const {
     email,
@@ -50,6 +52,9 @@ export default function PaymentDetailsSection({
       id="payment-details"
       label="Ваши данные"
       title="Ваши контактные данные"
+      fade={showGradient ? "sky" : undefined}
+      fadeDirection="down"
+      fadeToWhite
     >
       <p className="mt-7 max-w-2xl text-lg leading-relaxed text-neutral-600">
         Укажите ваши контактные данные, предмет и уровень английского, чтобы продолжить оформление.
