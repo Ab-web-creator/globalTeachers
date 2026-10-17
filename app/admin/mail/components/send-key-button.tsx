@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { AboutBenefitCheckIcon, AccessKeyIcon, CallWindowCloseIcon } from "@/app/components/svg";
+import { AboutBenefitCheckIcon, AccessKeyIcon, CallWindowCloseIcon, FormSelectChevronIcon } from "@/app/components/svg";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { ClientTier, Invitation } from "../../../../lib/client-area/types";
 
-type Props = { messageId: string; tier?: ClientTier };
+type Props = { messageId: string; tier?: ClientTier; paid: boolean; frozen: boolean };
 const actionClass =
   "rounded-full border border-brand-200 px-5 py-2 text-sm text-neutral-600 hover:bg-brand-50 disabled:opacity-50";
 const fieldClass =
@@ -24,7 +24,7 @@ async function action(body: object): Promise<Invitation> {
   return result;
 }
 
-export default function SendKeyButton({ messageId, tier }: Props) {
+export default function SendKeyButton({ messageId, tier, paid, frozen }: Props) {
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -56,7 +56,9 @@ export default function SendKeyButton({ messageId, tier }: Props) {
       <button
         type="button"
         onClick={() => {
-          void prepare();
+          // Unpaid recipients get a warning first instead of the automatic countdown.
+          if (paid) void prepare();
+          else setOpen(true);
         }}
         className={actionClass}
       >
@@ -79,6 +81,20 @@ export default function SendKeyButton({ messageId, tier }: Props) {
                 Выберите пакет клиента. После подготовки письмо отправится
                 автоматически через десять секунд.
               </p>
+              {!paid && (
+                <p
+                  role="alert"
+                  className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-base text-amber-900"
+                >
+                  {/* Matches the status the client sees on their personal page. */}
+                  {frozen
+                    ? "Этот клиент не отмечен как оплативший. Его личная страница находится в состоянии «Аккаунт заморожен»:"
+                    : "Этот клиент не отмечен как оплативший. Его личная страница будет в состоянии «Ожидает оплаты»:"}{" "}
+                  он сможет её открыть, но не сможет писать сообщения,
+                  загружать файлы и записываться на консультации, пока оплата
+                  не отмечена.
+                </p>
+              )}
               <label className="mt-5 block text-sm font-medium">
                 Пакет
                 <span className="relative mt-2 block">
@@ -92,12 +108,7 @@ export default function SendKeyButton({ messageId, tier }: Props) {
                     <option>PRO</option>
                     <option>VIP</option>
                   </select>
-                  <span
-                    aria-hidden="true"
-                    className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2"
-                  >
-                    ⌄
-                  </span>
+                  <FormSelectChevronIcon />
                 </span>
               </label>
               {error && (
@@ -113,7 +124,11 @@ export default function SendKeyButton({ messageId, tier }: Props) {
                 }}
                 className="mt-5 rounded-xl bg-brand-500 px-6 py-3 text-white disabled:opacity-50"
               >
-                {busy ? "Подготавливаем…" : "Подготовить письмо"}
+                {busy
+                  ? "Подготавливаем…"
+                  : paid
+                    ? "Подготовить письмо"
+                    : "Всё равно подготовить письмо"}
               </button>
             </>
           )}

@@ -26,6 +26,7 @@ export async function messagePaymentDetails(messageId: string) {
   if (!/^[^\s@<>,;]+@[^\s@<>,;]+\.[^\s@<>,;]+$/.test(email)) throw new Error("Адрес клиента некорректен.");
   const result = await database().query(
     `SELECT (SELECT paid_at FROM private_clients WHERE email=$1) AS paid_at,
+      (SELECT frozen_at FROM private_clients WHERE email=$1) AS frozen_at,
       (SELECT tier FROM private_clients WHERE email=$1) AS client_tier,
       (SELECT id FROM consultation_attempts WHERE lower(email)=$1 AND btrim(COALESCE(answers->>'name','')) <> '' ORDER BY submitted_at DESC,id DESC LIMIT 1) AS application_id,
       (SELECT name FROM payment_contact_requests WHERE lower(email)=$1 ORDER BY (id=$2) DESC,created_at DESC LIMIT 1) AS name,

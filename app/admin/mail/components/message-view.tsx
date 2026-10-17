@@ -33,7 +33,7 @@ export default async function MessageView({ message, readOnly = false, readingPa
     <Link href={`/admin/mail/${message.id}`} className="rounded-xl bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600">Ответить в админке</Link>
   ) : (
     <div className="ml-auto flex min-w-0 flex-wrap items-center justify-end gap-2">
-      {inbound && <SendKeyButton messageId={message.id} tier={payment?.contact_tier ?? (message.folder === "start-clients" ? "START" : message.folder === "pro-clients" ? "PRO" : message.folder === "vip-clients" ? "VIP" : undefined)} />}
+      {inbound && <SendKeyButton messageId={message.id} paid={Boolean(payment?.paid_at)} frozen={Boolean(payment?.frozen_at)} tier={payment?.contact_tier ?? (message.folder === "start-clients" ? "START" : message.folder === "pro-clients" ? "PRO" : message.folder === "vip-clients" ? "VIP" : undefined)} />}
       {payment && <ApplicationPaymentControl key={`${message.id}:${payment.paid_at}:${payment.tier}`} messageId={message.id} paid={Boolean(payment.paid_at)} initialTier={payment.tier} />}
 
     </div>
