@@ -55,7 +55,7 @@ export function invitationEmailHtml(
         <tr><td bgcolor="#ffffff" style="padding:28px 24px;border:1px solid #e9e7f2;border-radius:20px;">
           <p style="margin:0 0 20px;color:#5750cf;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;">Ваша личная страница готова</p>
           ${paragraphs}
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px;border-top:1px solid #eeedf5;"><tr><td style="padding-top:20px;color:#898597;font-size:13px;line-height:1.7;">Хотите сохранить ключ в другом приложении? Откройте личную страницу и нажмите «Скопировать ключ». Также можно скопировать ссылку выше через меню вашего почтового приложения.</td></tr></table>
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px;border-top:1px solid #eeedf5;"><tr><td style="padding-top:20px;color:#898597;font-size:13px;line-height:1.7;">Хотите сохранить ключ у себя на компьютере — например, в заметках или менеджере паролей? Откройте личную страницу, нажмите «Скопировать ключ» и вставьте его в нужное приложение.</td></tr></table>
         </td></tr>
         <tr><td align="center" style="padding:20px 12px;color:#9691a3;font-size:12px;line-height:1.7;">Персональное приглашение TeacherNavigator.<br>Храните ключ в безопасности и не передавайте другим людям.</td></tr>
       </table>
