@@ -1,138 +1,138 @@
 import type { ProgramIconName } from "@/app/components/svg";
 
 export const hero = {
-  intro: ["Вы уже знаете, что хотите работать в международной школе: понимаете, в каком направлении двигаться, какие страны и школы вам интересны, и готовы начать откликаться на вакансии."],
-  highlight: "Теперь главный вопрос — насколько убедительно вы выглядите для работодателя?",
+  intro: ["programs.pro.content.message1115"],
+  highlight: "programs.pro.content.message1116",
 };
 
 export const problem = {
   paragraphs: [
-    "Можно иметь хорошее образование, многолетний опыт и серьёзные профессиональные достижения — и при этом не получать приглашений на интервью.",
-    "Иногда кандидат просто не умеет правильно представить свой опыт.",
+    "programs.pro.content.message1117",
+    "programs.pro.content.message1118",
   ],
-  closing: "PRO создан для того, чтобы подготовить вас к международному поиску профессионально.",
+  closing: "programs.pro.content.message1119",
 };
 
 export const presentationProblems = [
-  "CV не показывает сильные стороны.",
-  "Портфолио перегружено или его вообще нет.",
-  "Сопроводительное письмо одинаковое для всех школ.",
-  "LinkedIn не работает на кандидата.",
-  "А на интервью сложно уверенно рассказать о себе на английском языке.",
+  "programs.pro.content.message1120",
+  "programs.pro.content.message1121",
+  "programs.pro.content.message1122",
+  "programs.pro.content.message1123",
+  "programs.pro.content.message1124",
 ];
 
 export const approach = {
   paragraphs: [
-    "В START вы получаете направление и можете двигаться дальше самостоятельно. В PRO мы идём значительно дальше.",
-    "В результате у вас появляется не только понимание того, где искать работу, но и готовый профессиональный комплект для выхода на международный рынок.",
+    "programs.pro.content.message1125",
+    "programs.pro.content.message1126",
   ],
-  flowTitle: "Мы работаем непосредственно над тем, что увидит международная школа:",
-  flow: "вашим профессиональным CV → сопроводительным письмом → педагогическим портфолио → профилем в LinkedIn → заявками в школы → подготовкой к интервью.",
+  flowTitle: "programs.pro.content.message1127",
+  flow: "programs.pro.content.message1128",
 };
 
-export const inclusionsIntroduction = "Сначала мы анализируем ваш опыт, образование и квалификацию и выстраиваем стратегию поиска. А затем начинается полноценная подготовка: CV, сопроводительное письмо, Teacher Portfolio и LinkedIn, ориентированные на международные школы.";
+export const inclusionsIntroduction = "programs.pro.content.message1129";
 
 export const inclusions: { title: string; paragraphs: string[]; icon: ProgramIconName }[] = [
   {
     icon: "compass",
-    title: "Всё из START",
+    title: "programs.pro.content.message1130",
     paragraphs: [
-      "Сначала мы анализируем ваш опыт, образование и квалификацию, определяем подходящие страны и школы и выстраиваем стратегию поиска.",
-      "А затем начинается полноценная подготовка.",
+      "programs.pro.content.message1131",
+      "programs.pro.content.message1132",
     ],
   },
   {
     icon: "letter",
-    title: "Сопроводительное письмо",
+    title: "programs.pro.content.message1133",
     paragraphs: [
-      "Хорошее cover letter — не пересказ CV.",
-      "Мы подготовим основу профессионального сопроводительного письма и покажем, как адаптировать его под конкретную школу и вакансию.",
+      "programs.pro.content.message1134",
+      "programs.pro.content.message1135",
     ],
   },
   {
     icon: "link",
     title: "LinkedIn",
-    paragraphs: ["Приведём профиль в профессиональный вид и поможем представить ваш опыт так, чтобы он соответствовал международному поиску работы."],
+    paragraphs: ["programs.pro.content.message1136"],
   },
   {
     icon: "folder",
     title: "Teacher Portfolio",
     paragraphs: [
-      "Поможем собрать и структурировать профессиональное портфолио.",
-      "Проекты, достижения учащихся, мероприятия, учебные материалы, фотографии, сертификаты и другие примеры вашей работы должны не просто занимать страницы, а показывать вас как педагога.",
+      "programs.pro.content.message1137",
+      "programs.pro.content.message1138",
     ],
   },
   {
     icon: "document",
-    title: "Профессиональное CV",
+    title: "programs.pro.content.message1139",
     paragraphs: [
-      "Мы подготовим для вас CV, ориентированное на международные школы.",
-      "Не просто перечислим места работы, а поможем показать ваш опыт, ответственность, профессиональные достижения и сильные стороны.",
+      "programs.pro.content.message1140",
+      "programs.pro.content.message1141",
     ],
   },
 ];
 
 export const cvQuestion = {
-  lead: "Ваше CV должно ясно отвечать школе на главный вопрос:",
-  question: "Почему стоит пригласить на интервью именно Вас?",
+  lead: "programs.pro.content.message1142",
+  question: "programs.pro.content.message1143",
 };
 
 export const practice = {
-  description: "PRO не заканчивается на подготовке документов. Мы проводим пробное интервью, помогаем разобраться с вакансиями и заявками и остаёмся на связи, пока вы делаете первые шаги на международном рынке.",
+  description: "programs.pro.content.message1144",
   inclusions: [
     {
       icon: "search",
-      title: "Помощь с заявками и вакансиями",
+      title: "programs.pro.content.message1145",
       paragraphs: [
-        "Нашли интересную позицию, но не уверены, стоит ли подаваться?",
-        "Мы поможем разобраться в требованиях вакансии и понять, насколько она соответствует вашему профилю.",
-        "Если школа использует собственную application form, поможем разобраться с её заполнением и профессиональной подачей информации.",
+        "programs.pro.content.message1146",
+        "programs.pro.content.message1147",
+        "programs.pro.content.message1148",
       ],
     },
     {
       icon: "mic",
-      title: "Подготовка к интервью",
+      title: "programs.pro.content.message1149",
       paragraphs: [
-        "Получить приглашение — только половина задачи. Теперь необходимо уверенно рассказать о своём опыте, педагогическом подходе, работе с учениками, classroom management, differentiation, safeguarding и других аспектах работы международной школы.",
-        "Мы разберём наиболее вероятные вопросы и подготовим ваши собственные профессиональные примеры, затем проведём пробное интервью.",
+        "programs.pro.content.message1150",
+        "programs.pro.content.message1151",
       ],
     },
     {
       icon: "chat",
-      title: "Пробное интервью",
+      title: "programs.pro.content.message1152",
       paragraphs: [
-        "Не просто список вопросов для самостоятельной подготовки.",
-        "Мы проведём полноценное mock interview, после которого разберём ответы и определим, что стоит улучшить перед настоящим собеседованием.",
+        "programs.pro.content.message1153",
+        "programs.pro.content.message1154",
       ],
     },
   ] satisfies { title: string; paragraphs: string[]; icon: ProgramIconName }[],
 };
 
 export const preparationQuestions = [
-  "как должно выглядеть международное CV;",
-  "что включить в портфолио;",
-  "как написать cover letter;",
-  "как представить себя в LinkedIn;",
-  "что говорить на интервью.",
+  "programs.pro.content.message1155",
+  "programs.pro.content.message1156",
+  "programs.pro.content.message1157",
+  "programs.pro.content.message1158",
+  "programs.pro.content.message1159",
 ];
 
 export const support = {
   paragraphs: [
-    "Вопросы обычно появляются именно тогда, когда начинается реальный поиск: вы находите интересную вакансию, школа присылает анкету или неожиданно приглашает на интервью.",
-    "Поэтому в PRO предусмотрена поддержка в течение 30 дней. Вы сможете обратиться к нам, когда понадобится второе мнение, совет по заявке или помощь с выбором следующего шага.",
+    "programs.pro.content.message1160",
+    "programs.pro.content.message1161",
   ],
 };
 
 export const audience = {
   paragraphs: [
-    "PRO — для вас, если вы готовы самостоятельно искать вакансии и отправлять заявки, но хотите выйти на международный рынок полностью подготовленным.",
-    "После этого поиск остаётся в ваших руках — но начинаете вы его уже с профессиональными документами, подготовленным интервью и понятной стратегией.",
+    "programs.pro.content.message1162",
+    "programs.pro.content.message1163",
   ],
-  listTitle: "Вам не нужно самостоятельно разбираться:",
-  closing: "Мы подготовим всё это вместе с вами.",
+  listTitle: "programs.pro.content.message1164",
+  closing: "programs.pro.content.message1165",
 };
 
 export const cta = {
-  title: "Ваш опыт уже есть. Теперь важно правильно его представить",
-  text: "Вы можете месяцами отправлять одно и то же резюме и гадать, почему школы не отвечают. Или один раз подготовить свою профессиональную презентацию так, чтобы она действительно отражала ваш опыт.",
+  title: "programs.pro.content.message1166",
+  text: "programs.pro.content.message1167",
 };

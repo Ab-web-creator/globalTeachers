@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import QueuedImage from "@/app/components/queued-image";
 import Link from "next/link";
 import { CameraIcon } from "@/app/components/svg";
@@ -23,16 +24,16 @@ const badgeColors: Record<string, string> = {
 };
 
 export default function ProgramsSection() {
+  const t = useTranslations();
   return (
     <section id="plans" aria-labelledby="programs-title" className="scroll-mt-16 bg-white py-12 sm:py-16 lg:py-20">
       <div className="mx-auto max-w-400 px-6 sm:px-10 lg:px-16 xl:px-20">
         <header data-reveal className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
           <div>
-            <p className="mb-4 text-sm font-semibold tracking-widest text-brand-500">Наши тарифы</p>
-            <h2 id="programs-title" className="max-w-3xl text-4xl sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl leading-none font-semibold tracking-wide text-brand-700">Выберите свой путь<br className="hidden sm:block" /> к международной карьере</h2>
+            <p className="mb-4 text-sm font-semibold tracking-widest text-brand-500">{t("home.categories.programsSection.message0344")}</p>
+            <h2 id="programs-title" className="max-w-3xl text-4xl sm:text-5xl md:text-4xl xl:text-5xl 2xl:text-6xl leading-none font-semibold tracking-wide text-brand-700">{t("home.categories.programsSection.message0345")}<br className="hidden sm:block" /> {" "}{t("home.categories.programsSection.message0346")}</h2>
             <p className="mt-7 max-w-3xl text-base leading-normal text-neutral-600 sm:text-lg">
-              Сравните пакеты START, PRO и VIP и выберите тот, который подходит вашим целям и желаемому уровню поддержки.
-            </p>
+              {t("home.categories.programsSection.message0347")}</p>
           </div>
         </header>
         <ul className="mt-10 grid gap-20 sm:gap-5 lg:grid-cols-3 lg:gap-x-8 xl:gap-x-12">
@@ -44,29 +45,28 @@ export default function ProgramsSection() {
 }
 
 function ProgramCardFooter({ program }: ProgramCardFooterProps) {
+  const t = useTranslations();
   return (
     <div className="@container border-t border-brand-100 pt-3 pb-2 sm:mx-3">
       <div className="flex flex-col items-start gap-4 @min-[17rem]:flex-row @min-[17rem]:items-center @min-[17rem]:justify-between">
         <p className="flex min-h-14 min-w-0 items-center text-brand-500 @min-[17rem]:flex-1">
           {program.price === null ? (<span className="flex flex-col items-start gap-1">
-            <span className="rounded-md bg-brand-100 px-2 py-1 text-sm font-semibold text-brand-600">Индивидуально</span>
-            <span className="text-xs leading-normal text-neutral-600">Стоимость после консультации</span>
+            <span className="rounded-md bg-brand-100 px-2 py-1 text-sm font-semibold text-brand-600">{t("home.categories.programsSection.message0348")}</span>
+            <span className="text-xs leading-normal text-neutral-600">{t("home.categories.programsSection.message0349")}</span>
           </span>) : (<span className="flex flex-col">
             <span className="text-3xl font-semibold tracking-tight">${program.price}</span>
-            <span className="text-base lg:text-xs leading-normal text-neutral-600">единоразовая</span>
+            <span className="text-base lg:text-xs leading-normal text-neutral-600">{t("home.categories.programsSection.message0350")}</span>
           </span>)}
         </p>
-        <Link href={`/programs/${program.tier.toLowerCase()}`} aria-describedby={program.tier === "VIP" ? "vip-consultation-note" : undefined} className="shrink-0 rounded-2xl sm:rounded-full bg-linear-to-r from-blue-100 to-violet-200 px-5 py-2.5 sm:py-3 text-base lg:text-sm font-medium whitespace-nowrap text-brand-700 transition hover:from-blue-200 hover:to-violet-300 hover:shadow-md after:absolute after:inset-0 after:rounded-2xl" aria-label={`Подробнее о программе ${program.tier}`}>
-          Подробнее
-        </Link>
+        <Link href={`/programs/${program.tier.toLowerCase()}`} aria-describedby={program.tier === "VIP" ? "vip-consultation-note" : undefined} className="shrink-0 rounded-2xl sm:rounded-full bg-linear-to-r from-blue-100 to-violet-200 px-5 py-2.5 sm:py-3 text-base lg:text-sm font-medium whitespace-nowrap text-brand-700 transition hover:from-blue-200 hover:to-violet-300 hover:shadow-md after:absolute after:inset-0 after:rounded-2xl" aria-label={t.content(`Подробнее о программе ${program.tier}`)}>
+          {t("home.categories.programsSection.message0352")}</Link>
       </div>
       {program.tier === "VIP" && (
         <div id="vip-consultation-note" className="pointer-events-none mt-5 lg:invisible lg:absolute lg:right-32 lg:bottom-4 lg:z-20 lg:mt-0 lg:w-96 lg:rounded-2xl lg:border lg:border-brand-100 lg:bg-white lg:p-5 lg:opacity-0 lg:shadow-xl lg:transition-opacity lg:group-hover:visible lg:group-hover:opacity-100 lg:group-focus-within:visible lg:group-focus-within:opacity-100 motion-reduce:transition-none">
           <p className="flex items-center gap-2 text-base font-semibold text-neutral-900">
             <CameraIcon className="size-5 shrink-0 text-neutral-500" />
-            Первая консультация — $99
-          </p>
-          <p className="mt-2 text-sm leading-relaxed text-neutral-600">60 минут онлайн. При оформлении VIP стоимость консультации засчитывается в пакет.</p>
+            {t("home.categories.programsSection.message0353")}</p>
+          <p className="mt-2 text-sm leading-relaxed text-neutral-600">{t("home.categories.programsSection.message0354")}</p>
         </div>
       )}
     </div>
@@ -89,34 +89,36 @@ function ProgramInclusions({ program, detailed = false }: {
   program: Program;
   detailed?: boolean;
 }) {
+  const t = useTranslations();
   return (
     <div className="mt-3">
-      <p className="text-base font-semibold text-blue-700">{program.inclusionLabel}</p>
-      <p className="mt-1 text-base leading-normal text-neutral-600">{program.supportSummary}</p>
+      <p className="text-base font-semibold text-blue-700">{t.content(program.inclusionLabel)}</p>
+      <p className="mt-1 text-base leading-normal text-neutral-600">{t.content(program.supportSummary)}</p>
       {detailed && program.inheritedServices.length > 0 && (<div className="mt-3">
-        <p className="text-base lg:text-sm font-medium text-neutral-900">Уже включено из предыдущих программ:</p>
+        <p className="text-base lg:text-sm font-medium text-neutral-900">{t("home.categories.programsSection.message0355")}</p>
         <ul className="mt-2 list-disc space-y-1 pl-5 text-base lg:text-sm text-neutral-600">
-          {program.inheritedServices.map(service => <li key={service}>{service}</li>)}
+          {program.inheritedServices.map(service => <li key={service}>{t.content(service)}</li>)}
         </ul>
-        <p className="mt-3 text-base lg:text-sm font-medium text-neutral-900">Дополнения и расширенные возможности:</p>
+        <p className="mt-3 text-base lg:text-sm font-medium text-neutral-900">{t("home.categories.programsSection.message0356")}</p>
       </div>)}
     </div>
   );
 }
 
 function CategoryCard({ program }: CategoryCardProps) {
+  const t = useTranslations();
   const [imageFailed, setImageFailed] = useState(false);
   return (
     <li data-reveal className="group relative flex flex-col bg-white transition-colors duration-300 sm:hover:bg-brand-50 sm:focus-within:bg-brand-50 sm:hover:border-brand-300 sm:focus-within:border-brand-300 before:absolute before:-top-12 before:left-1/2 before:w-screen before:-translate-x-1/2 before:h-1.75 before:bg-linear-to-r before:from-blue-100 before:to-violet-200 first:before:hidden sm:before:hidden sm:rounded-2xl sm:border sm:border-neutral-200/60 sm:p-2.5 lg:row-span-4 lg:grid lg:grid-rows-subgrid lg:gap-y-0">
       <div className="relative aspect-video overflow-hidden rounded-xl bg-brand-100">
-        {imageFailed ? <p className="flex h-full items-center justify-center text-brand-500">Фото программы {program.tier}</p> : <QueuedImage src={program.image} alt={program.alt} fill sizes="(max-width: 1024px) 90vw, 30vw" className="object-cover object-top" onError={() => setImageFailed(true)} />}
-        <span className={`absolute top-3 left-3 rounded-full border border-white/80 px-4 py-1.5 text-center text-base lg:text-sm font-semibold whitespace-nowrap text-white shadow-md sm:right-3 sm:left-auto ${badgeColors[program.tier]}`}>Пакет {program.tier}</span>
+        {imageFailed ? <p className="flex h-full items-center justify-center text-brand-500">{t("home.categories.programsSection.message0357")}{" "}{t.content(program.tier)}</p> : <QueuedImage src={program.image} alt={t.content(program.alt)} fill sizes="(max-width: 1024px) 90vw, 30vw" className="object-cover object-top" onError={() => setImageFailed(true)} />}
+        <span className={`absolute top-3 left-3 rounded-full border border-white/80 px-4 py-1.5 text-center text-base lg:text-sm font-semibold whitespace-nowrap text-white shadow-md sm:right-3 sm:left-auto ${badgeColors[program.tier]}`}>{t("client.packageSupportSection.message0149")}{" "}{t.content(program.tier)}</span>
       </div>
       <div className="flex flex-col pt-5 sm:px-3">
         <div className="flex items-start justify-between gap-3">
-          <h3 className="min-w-0 text-2xl leading-tight font-medium tracking-tight transition-colors duration-300 group-hover:text-brand-600 group-focus-within:text-brand-600">{program.title}</h3>
+          <h3 className="min-w-0 text-2xl leading-tight font-medium tracking-tight transition-colors duration-300 group-hover:text-brand-600 group-focus-within:text-brand-600">{t.content(program.title)}</h3>
         </div>
-        <p className="mt-2 text-base leading-normal text-neutral-600">{program.description}</p>
+        <p className="mt-2 text-base leading-normal text-neutral-600">{t.content(program.description)}</p>
       </div>
       <div className="sm:px-3">
         <ProgramInclusions program={program} />

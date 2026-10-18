@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "@/lib/i18n/use-translations";
 import type { Program } from "../../components/home/categories/programs";
 import ProgramCta from "../components/program-cta";
 import ProgramHero from "../components/program-hero";
@@ -14,7 +17,8 @@ import VipStrategy from "./vip-strategy";
 import VipValue from "./vip-value";
 
 export default function VipDetails({ program }: { program: Program; }) {
-  const title = <>От первого шага до предложения</>;
+  const t = useTranslations();
+  const title = <>{t("programs.vip.vipDetails.message1331")}</>;
 
   return (
     <ProgramPageLayout bottomPadding="60px" hero={<ProgramHero tier="VIP" image="/images/vip-personal-support-hero-cropped.webp" title={title} intro={hero.intro} introClassName="text-lg" highlight={hero.highlight} matchTextHeight />}>
@@ -27,7 +31,7 @@ export default function VipDetails({ program }: { program: Program; }) {
       <VipValue />
       <VipAudience />
       <VipImportant />
-      <ProgramCta tier="VIP" price={program.price} title={cta.title} text={cta.text} image="/images/benefits/flights.webp" />
+      <ProgramCta tier="VIP" price={program.price} title={t.content(cta.title)} text={cta.text} image="/images/benefits/flights.webp" />
     </ProgramPageLayout>
   );
 }

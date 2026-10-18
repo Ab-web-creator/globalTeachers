@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import Image from "next/image";
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import {
@@ -30,6 +31,7 @@ export default function ClientProfilePhoto({
   hasPhoto: boolean;
   tier?: "START" | "PRO" | "VIP";
 }) {
+  const t = useTranslations();
   const [photo, setPhoto] = useState(
     hasPhoto ? "/api/client/profile-photo" : "",
   );
@@ -82,14 +84,14 @@ export default function ClientProfilePhoto({
         }}
       >
         <summary
-          aria-label="Профиль"
+          aria-label={t("client.clientProfilePhoto.message0112")}
           className="flex cursor-pointer list-none items-center gap-2 rounded-full p-1 text-brand-700 hover:bg-brand-50 focus-visible:-outline-offset-2 [&::-webkit-details-marker]:hidden"
         >
           <span className="relative flex size-9 items-center justify-center overflow-hidden rounded-full border border-brand-200 bg-brand-50">
             {photo ? (
               <Image
                 src={photo}
-                alt={`Фото ${name}`}
+                alt={t.content(`Фото ${name}`)}
                 fill
                 sizes="36px"
                 unoptimized
@@ -97,7 +99,7 @@ export default function ClientProfilePhoto({
                 onError={() => setPhoto("")}
               />
             ) : (
-              <Image src="/images/client/default-male-avatar.png" alt="Портрет мужчины" fill sizes="36px" className="object-cover" />
+              <Image src="/images/client/default-male-avatar.png" alt={t("client.clientProfilePhoto.message0114")} fill sizes="36px" className="object-cover" />
             )}
           </span>
           <FormSelectChevronIcon className="mr-1 size-4 transition-transform group-open:rotate-180" />
@@ -105,21 +107,21 @@ export default function ClientProfilePhoto({
         <div className="absolute top-full left-0 z-40 mt-3 sm:right-0 sm:left-auto w-60 rounded-2xl border border-brand-100 bg-white p-3 shadow-lg">
           <div className="flex items-center gap-2 px-2 py-2">
             <p className="min-w-0 break-words text-sm font-semibold">{name}</p>
-            {tier && <span className="ml-auto shrink-0 rounded-full bg-brand-50 px-2 py-1 text-xs font-semibold text-brand-600">{tier}</span>}
+            {tier && <span className="ml-auto shrink-0 rounded-full bg-brand-50 px-2 py-1 text-xs font-semibold text-brand-600">{t.content(tier)}</span>}
           </div>
           <div className="space-y-2 border-b border-brand-100 px-2 pt-1 pb-3 text-sm">
-            {email && <p className="flex items-start gap-2 text-neutral-500"><ClientProfileFieldIcon field="email" className="mt-0.5 size-4 shrink-0 text-brand-500" /><span className="min-w-0 break-all">{email}</span></p>}
-            {subject && <p className="flex items-start gap-2 text-neutral-600"><ClientProfileFieldIcon field="subject" className="mt-0.5 size-4 shrink-0 text-brand-500" /><span className="min-w-0 break-words">{subject}</span></p>}
-            {country && <p className="flex items-start gap-2 text-neutral-600"><ClientProfileFieldIcon field="country" className="mt-0.5 size-4 shrink-0 text-brand-500" /><span className="min-w-0 break-words">{country}</span></p>}
-            {remainingHours !== undefined && <p className="flex items-start gap-2 text-neutral-600"><AppointmentClockIcon className="mt-0.5 size-4 shrink-0 text-brand-500" /><span>Доступно часов: {remainingHours}</span></p>}
-            <p className={paid ? "text-emerald-700" : "text-amber-700"}>{paid ? "Аккаунт активен" : frozen ? "Аккаунт заморожен" : "Ожидает оплаты"}</p>
+            {t.content(email && <p className="flex items-start gap-2 text-neutral-500"><ClientProfileFieldIcon field="email" className="mt-0.5 size-4 shrink-0 text-brand-500" /><span className="min-w-0 break-all">{t.content(email)}</span></p>)}
+            {t.content(subject && <p className="flex items-start gap-2 text-neutral-600"><ClientProfileFieldIcon field="subject" className="mt-0.5 size-4 shrink-0 text-brand-500" /><span className="min-w-0 break-words">{subject.split("; ").map(value => t.content(value)).join("; ")}</span></p>)}
+            {t.content(country && <p className="flex items-start gap-2 text-neutral-600"><ClientProfileFieldIcon field="country" className="mt-0.5 size-4 shrink-0 text-brand-500" /><span className="min-w-0 break-words">{t.content(country)}</span></p>)}
+            {remainingHours !== undefined && <p className="flex items-start gap-2 text-neutral-600"><AppointmentClockIcon className="mt-0.5 size-4 shrink-0 text-brand-500" /><span>{t("client.clientProfilePhoto.message0115")}{" "}{remainingHours}</span></p>}
+            <p className={paid ? "text-emerald-700" : "text-amber-700"}>{t.content(paid ? "Аккаунт активен" : frozen ? "Аккаунт заморожен" : "Ожидает оплаты")}</p>
           </div>
           <label className={`relative flex w-full items-center gap-2 rounded-xl px-2 py-3 text-left text-sm text-brand-600 hover:bg-brand-50 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-brand-500 ${busy ? "opacity-50" : "cursor-pointer"}`}>
             <ProfilePhotoIcon className="size-5" />
-            {busy ? "Загружаем…" : "Изменить фото"}
+            {t.content(busy ? "Загружаем…" : "Изменить фото")}
             <input
               type="file"
-              aria-label="Изменить фото"
+              aria-label={t("client.clientProfilePhoto.message0120")}
               accept="image/jpeg,image/png,image/webp"
               disabled={busy}
               onChange={(event) => void upload(event)}
@@ -128,14 +130,14 @@ export default function ClientProfilePhoto({
           </label>
         </div>
       </details>
-      {error && (
+      {t.content(error && (
         <p
           role="alert"
           className="absolute top-full left-0 z-40 mt-3 sm:right-0 sm:left-auto w-56 rounded-xl bg-white p-2 text-center text-xs text-red-700 shadow-sm"
         >
-          {error}
+          {t.content(error)}
         </p>
-      )}
+      ))}
     </div>
   );
 }

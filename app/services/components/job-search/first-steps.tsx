@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { JobSearchStepIcon, jobSearchStepPaths, StepConnectorArrowIcon } from "@/app/components/svg";
 import useScrollReveal from "@/app/components/home/use-scroll-reveal";
 import type { ReactNode } from "react";
@@ -20,26 +21,27 @@ type Accent = (typeof stepAccents)[number];
 export default function FirstSteps({ children }: {
   children?: ReactNode;
 }) {
+  const t = useTranslations();
   useScrollReveal("#job-search-step-cards [data-reveal]", true);
   return (
     <section aria-labelledby="job-search-first-steps" className="py-12 sm:py-16 lg:py-20">
-      <SectionLabel>Первые шаги</SectionLabel>
+      <SectionLabel>{t("services.jobSearch.firstSteps.message1698")}</SectionLabel>
       <div className="flex flex-col gap-7">
-        <SectionHeading id="job-search-first-steps">С чего начать?</SectionHeading>
+        <SectionHeading id="job-search-first-steps">{t("home.faq.faqContent.message0396")}</SectionHeading>
         <div className="max-w-3xl text-lg leading-relaxed text-neutral-600">
-          <p>{firstStepsIntroduction}</p>
-          <p className="mt-4">{firstStepsOutcome}</p>
+          <p>{t.content(firstStepsIntroduction)}</p>
+          <p className="mt-4">{t.content(firstStepsOutcome)}</p>
         </div>
       </div>
       <div className="mt-10 lg:-mx-4 lg:mt-4 lg:overflow-x-auto lg:px-4 lg:pt-6 lg:pb-4">
         <ol id="job-search-step-cards" className="grid gap-6 sm:grid-cols-2 lg:grid-cols-[repeat(4,minmax(13rem,1fr)_auto)_minmax(13rem,1fr)] lg:gap-3">
           {firstSteps.map(({ title, text }, index) => (<li key={title} className="lg:contents">
-            <StepCard number={index + 1} title={title} text={text} accent={stepAccents[index]} />
+            <StepCard number={index + 1} title={t.content(title)} text={text} accent={stepAccents[index]} />
             {index < firstSteps.length - 1 && <StepConnector index={index} />}
           </li>))}
         </ol>
       </div>
-      {children && <div className="mt-16 sm:mt-20">{children}</div>}
+      {t.content(children && <div className="mt-16 sm:mt-20">{t.content(children)}</div>)}
     </section>
   );
 }
@@ -50,6 +52,7 @@ function StepCard({ number, title, text, accent }: {
   text: string;
   accent: Accent;
 }) {
+  const t = useTranslations();
   return (
     <div data-reveal className="relative flex h-full gap-4 overflow-hidden rounded-3xl bg-white py-4 pr-5 pl-3 shadow-card shadow-neutral-300/60 ring-1 ring-neutral-100 sm:flex-col sm:gap-0 sm:p-5 sm:pb-7">
       <div className="flex shrink-0 items-start gap-3">
@@ -59,8 +62,8 @@ function StepCard({ number, title, text, accent }: {
         </span>
       </div>
       <div className="min-w-0 sm:mt-5">
-        <p className="text-base font-bold leading-snug text-neutral-900">{title}</p>
-        <p className="mt-3 text-sm leading-relaxed text-neutral-500">{text}</p>
+        <p className="text-base font-bold leading-snug text-neutral-900">{t.content(title)}</p>
+        <p className="mt-3 text-sm leading-relaxed text-neutral-500">{t.content(text)}</p>
       </div>
       <span aria-hidden="true" className={`pointer-events-none absolute inset-0 rounded-3xl border-r-6 border-b-6 ${accent.bar}`} />
     </div>

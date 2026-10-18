@@ -1,46 +1,46 @@
 export const introduction = [
-  "Хорошее CV — это не просто список мест, где вы работали. Это первое профессиональное знакомство школы с вами.",
-  "До собеседования работодатель ещё не знает, насколько хорошо вы преподаёте. Он видит только то, как вы представили своё образование, опыт, достижения и профессиональные навыки.",
-  "Поэтому задача CV и портфолио — помочь школе быстро понять, кто вы как педагог и почему ваш опыт может быть ей интересен.",
+  "services.cvPortfolio.content.message1422",
+  "services.cvPortfolio.content.message1423",
+  "services.cvPortfolio.content.message1424",
 ];
 
-export const heroQuote = "Хорошее представление опыта открывает двери к новым возможностям.";
+export const heroQuote = "services.cvPortfolio.content.message1425";
 
 export const cvSections = [
-  { title: "Контактная информация", label: "Contact", icon: "idCard" as const, image: "/images/benefits/visa-passport.jpg", text: "Имя, страна проживания, email, телефон и необходимые профессиональные ссылки." },
-  { title: "Образование и квалификация", label: "Education", icon: "graduation" as const, image: "/images/benefits/education-classroom.jpg", text: "Высшее образование, педагогическая квалификация, лицензии и значимые профессиональные сертификаты." },
-  { title: "Опыт работы", label: "Experience", icon: "briefcase" as const, image: "/images/benefits/development.webp", text: "Школы, должности, предметы, возраст учащихся, учебные программы и основные обязанности." },
-  { title: "Профессиональные достижения", label: "Achievements", icon: "trophy" as const, image: "/images/benefits/salary.webp", text: "Не только то, что вы делали, но и результаты вашей работы: проекты, мероприятия, экзамены, конкурсы, развитие программ, руководство командами и другие достижения." },
-  { title: "Дополнительные навыки", label: "Skills", icon: "languages" as const, image: "/images/benefits/flights.webp", text: "Языки, технологии, extracurricular activities и другие компетенции, которые могут быть полезны школе." },
+  { title: "services.cvPortfolio.content.message1426", label: "Contact", icon: "idCard" as const, image: "/images/benefits/visa-passport.jpg", text: "services.cvPortfolio.content.message1427" },
+  { title: "services.cvPortfolio.content.message1428", label: "Education", icon: "graduation" as const, image: "/images/benefits/education-classroom.jpg", text: "services.cvPortfolio.content.message1429" },
+  { title: "services.cvPortfolio.content.message1430", label: "Experience", icon: "briefcase" as const, image: "/images/benefits/development.webp", text: "services.cvPortfolio.content.message1431" },
+  { title: "services.cvPortfolio.content.message1432", label: "Achievements", icon: "trophy" as const, image: "/images/benefits/salary.webp", text: "services.cvPortfolio.content.message1433" },
+  { title: "services.cvPortfolio.content.message1434", label: "Skills", icon: "languages" as const, image: "/images/benefits/flights.webp", text: "services.cvPortfolio.content.message1435" },
 ];
 
 export const experienceExamples = {
-  weak: "«Проводил уроки, составлял планы, проверял тетради, оценивал учащихся и общался с родителями...»",
-  strong: "«Разработал новую программу для Year 7, руководил школьным ансамблем и подготовил учащихся к публичным выступлениям...»",
+  weak: "services.cvPortfolio.content.message1436",
+  strong: "services.cvPortfolio.content.message1437",
 };
 
 export const experienceNotes = {
-  weak: { words: ["Преподавал", "Планировал", "Оценивал", "Проверял", "Общался"], sticker: "Слишком обобщенно" },
-  strong: { words: ["Разработал", "Руководил", "Подготовил", "Организовал", "Улучшил"], sticker: "Конкретно и убедительно" },
+  weak: { words: ["services.cvPortfolio.content.message1438", "services.cvPortfolio.content.message1439", "services.cvPortfolio.content.message1440", "services.cvPortfolio.content.message1441", "services.cvPortfolio.content.message1442"], sticker: "services.cvPortfolio.content.message1443" },
+  strong: { words: ["services.cvPortfolio.content.message1444", "services.cvPortfolio.content.message1445", "services.cvPortfolio.content.message1446", "services.cvPortfolio.content.message1447", "services.cvPortfolio.content.message1448"], sticker: "services.cvPortfolio.content.message1449" },
 };
 
 export const portfolioItems = [
-  { title: "Примеры учебных проектов", text: "Короткое описание проекта, его цели и результата — с фотографиями или работами учеников. Покажите, какую роль вы сыграли и чему научились учащиеся.", image: "/images/portfolio/projects.webp" },
-  { title: "Фотографии и материалы с мероприятий", text: "Концерты, выставки, конкурсы и праздники, которые вы организовали или в которых участвовали. Добавьте пару фотографий и одну строку о вашем вкладе.", image: "/images/portfolio/events.webp" },
-  { title: "Примеры планирования", text: "План урока или юнита, который показывает, как вы выстраиваете обучение. Хорошо, если в нём видны цели, дифференциация и способы оценивания.", image: "/images/portfolio/planning.webp" },
-  { title: "Достижения учащихся", text: "Результаты экзаменов, победы в конкурсах и заметный прогресс ваших учеников. Цифры и конкретные примеры говорят убедительнее общих слов.", image: "/images/portfolio/achievements-teacher.webp" },
-  { title: "Сертификаты и профессиональное развитие", text: "Курсы, тренинги и сертификаты, которые подтверждают вашу квалификацию. Выберите самые значимые и актуальные для международной школы.", image: "/images/portfolio/certificates.webp" },
-  { title: "Extracurricular activities", text: "Кружки, клубы, спортивные секции и другие занятия за пределами уроков. Международные школы особенно ценят учителей, готовых вести такие активности.", image: "/images/portfolio/clubs.webp" },
-  { title: "Проекты, которыми вы руководили", text: "Инициативы, где вы вели команду коллег или учеников — от идеи до результата. Это показывает ваши лидерские качества и умение доводить дело до конца.", image: "/images/portfolio/leadership.webp" },
-  { title: "Примеры созданных вами учебных материалов", text: "Рабочие листы, презентации и пособия, которые вы разработали сами. Несколько аккуратных примеров покажут ваш подход к преподаванию лучше любого описания.", image: "/images/portfolio/materials.webp" },
+  { title: "services.cvPortfolio.content.message1450", text: "services.cvPortfolio.content.message1451", image: "/images/portfolio/projects.webp" },
+  { title: "services.cvPortfolio.content.message1452", text: "services.cvPortfolio.content.message1453", image: "/images/portfolio/events.webp" },
+  { title: "services.cvPortfolio.content.message1454", text: "services.cvPortfolio.content.message1455", image: "/images/portfolio/planning.webp" },
+  { title: "services.cvPortfolio.content.message1456", text: "services.cvPortfolio.content.message1457", image: "/images/portfolio/achievements-teacher.webp" },
+  { title: "services.cvPortfolio.content.message1458", text: "services.cvPortfolio.content.message1459", image: "/images/portfolio/certificates.webp" },
+  { title: "Extracurricular activities", text: "services.cvPortfolio.content.message1460", image: "/images/portfolio/clubs.webp" },
+  { title: "services.cvPortfolio.content.message1461", text: "services.cvPortfolio.content.message1462", image: "/images/portfolio/leadership.webp" },
+  { title: "services.cvPortfolio.content.message1463", text: "services.cvPortfolio.content.message1464", image: "/images/portfolio/materials.webp" },
 ];
 
 export const reviewQuestions = [
-  "Понятно ли из первых секунд, какой вы специалист?",
-  "Видны ли ваше образование и квалификация?",
-  "Показаны ли достижения, а не только обязанности?",
-  "Легко ли найти последние места работы?",
-  "Нет ли лишней информации?",
-  "Соответствует ли CV конкретной вакансии?",
-  "Нет ли опечаток и ошибок в контактных данных?",
+  "services.cvPortfolio.content.message1465",
+  "services.cvPortfolio.content.message1466",
+  "services.cvPortfolio.content.message1467",
+  "services.cvPortfolio.content.message1468",
+  "services.cvPortfolio.content.message1469",
+  "services.cvPortfolio.content.message1470",
+  "services.cvPortfolio.content.message1471",
 ];

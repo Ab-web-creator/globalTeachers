@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { useEffect, useRef, useState } from "react";
 import useCallRingtone from "../../components/calls/use-call-ringtone";
 import { VideoCallIcon, PhoneCallIcon } from "@/app/components/svg";
@@ -13,6 +14,7 @@ export default function AppointmentCall({
 }: {
   bookings: AppointmentSlot[];
 }) {
+  const t = useTranslations();
   const [incoming, setIncoming] = useState<Room | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const [now, setNow] = useState(0);
@@ -113,19 +115,16 @@ export default function AppointmentCall({
         className="fixed inset-0 m-auto w-full max-w-md rounded-3xl border border-brand-100 bg-white p-6 text-brand-950 shadow-xl backdrop:bg-neutral-950/50"
       >
         <h2 id="incoming-appointment-title" className="text-xl font-semibold">
-          Входящий звонок
-        </h2>
+          {t("client.appointmentCall.message0016")}</h2>
         <p className="mt-4 text-base">
-          Вам звонит администратор TeacherNavigator.
-        </p>
+          {t("client.appointmentCall.message0017")}</p>
         {blocked && (
           <button
             type="button"
             onClick={enableSound}
             className="mt-3 text-brand-600 underline"
           >
-            Включить звук
-          </button>
+            {t("client.appointmentCall.message0018")}</button>
         )}
         <div className="mt-6 flex gap-3">
           <button
@@ -134,22 +133,20 @@ export default function AppointmentCall({
             onClick={() => void answer("accept")}
             className="rounded-xl bg-brand-500 px-5 py-3 text-white disabled:opacity-50"
           >
-            Принять
-          </button>
+            {t("client.appointmentCall.message0019")}</button>
           <button
             type="button"
             disabled={busy}
             onClick={() => void answer("decline")}
             className="rounded-xl border border-brand-200 px-5 py-3 disabled:opacity-50"
           >
-            Отклонить
-          </button>
+            {t("client.appointmentCall.message0020")}</button>
         </div>
-        {error && (
+        {t.content(error && (
           <p role="alert" className="relative mt-4 text-sm text-red-300">
-            {error}
+            {t.content(error)}
           </p>
-        )}
+        ))}
       </dialog>
       <div
         aria-hidden="true"
@@ -169,14 +166,10 @@ export default function AppointmentCall({
           id="appointment-call-title"
           className="font-serif text-xl sm:text-2xl"
         >
-          Звонок администратору
-        </h2>
+          {t("client.appointmentCall.message0021")}</h2>
       </div>
       <p className="relative mt-7 text-base leading-relaxed text-white/80">
-        Позвонить можно во время вашей забронированной консультации. Разрешите
-        доступ к камере и микрофону, затем нажмите «Позвонить» в окне
-        видеосвязи.
-      </p>
+        {t("client.appointmentCall.message0022")}</p>
       <button
         type="button"
         disabled={!current || busy}
@@ -185,19 +178,18 @@ export default function AppointmentCall({
         }}
         className="relative mt-5 inline-flex min-h-12 w-fit items-center gap-3 rounded-full border border-white/30 bg-white px-6 py-3 text-base font-semibold text-brand-600 transition-colors hover:bg-brand-100 disabled:cursor-not-allowed disabled:border-white/10 disabled:bg-white/10 disabled:text-white/45"
       >
-        {busy ? "Подключаемся…" : "Позвонить"}
+        {t.content(busy ? "Подключаемся…" : "Позвонить")}
         <PhoneCallIcon className="size-5" />
       </button>
       {!current && (
         <p className="relative mt-4 text-sm text-white/60">
-          Кнопка станет доступна в начале вашей встречи.
-        </p>
+          {t("client.appointmentCall.message0025")}</p>
       )}
-      {error && (
+      {t.content(error && (
         <p role="alert" className="relative mt-4 text-sm text-red-300">
-          {error}
+          {t.content(error)}
         </p>
-      )}
+      ))}
       {room && new Date(room.expires).getTime() > now && (
         <div className="relative mt-6 text-brand-700">
           <CallRoom {...room} onDismiss={() => setRoom(null)} />

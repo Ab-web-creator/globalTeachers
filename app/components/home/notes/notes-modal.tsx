@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { useEffect, useId, useRef, useState } from "react";
 import { Oswald } from "next/font/google";
 import { MobileMenuCloseIcon, NewNoteIcon, NotesInfoIcon, SearchIcon } from "@/app/components/svg";
@@ -22,12 +23,13 @@ const oswald = Oswald({ subsets: ["latin", "cyrillic"], weight: "600", display: 
 export default function NotesModal({
   buttonClassName,
   onOpenChange,
-  locale = "ru",
+  locale,
 }: {
   buttonClassName: string;
   onOpenChange: (open: boolean) => void;
   locale?: NotesLocale;
 }) {
+  const t = useTranslations();
   const dialog = useRef<HTMLDialogElement>(null);
   const currentNotes = useRef<Note[]>([]);
   const [notes, setNotes] = useState<Note[]>([]);
@@ -36,7 +38,7 @@ export default function NotesModal({
   const [open, setOpen] = useState(false);
   const [storageError, setStorageError] = useState(false);
   const headingId = useId();
-  const messages = notesMessages[locale];
+  const messages = notesMessages[locale ?? "ru"];
 
   useEffect(() => {
     if (!open) return;
@@ -101,8 +103,8 @@ export default function NotesModal({
       <button
         type="button"
         onClick={openNotes}
-        aria-label={messages.open}
-        title={messages.open}
+        aria-label={t.content(messages.open)}
+        title={t.content(messages.open)}
         aria-haspopup="dialog"
         className={buttonClassName}
       >
@@ -134,7 +136,7 @@ export default function NotesModal({
               id={headingId}
               className={`${oswald.className} w-full text-xl font-semibold tracking-tight text-gray-400 sm:w-auto sm:flex-1 uppercase`}
             >
-              {messages.heading}
+              {t.content(messages.heading)}
             </h2>
             <div className="flex w-full items-center gap-2 sm:w-auto sm:flex-1 sm:justify-end">
               {notes.length > 0 && (
@@ -142,16 +144,16 @@ export default function NotesModal({
                 <SearchIcon className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-neutral-500" />
                 <input
                   type="text"
-                  aria-label={messages.search}
-                  placeholder={messages.search}
+                  aria-label={t.content(messages.search)}
+                  placeholder={t.content(messages.search)}
                   value={search}
                   onChange={(event) => setSearch(event.target.value)}
                   className={`${styles.searchField} w-full min-w-0 rounded-full border border-brand-200 py-2 pr-11 pl-11 text-base`}
                 />
-                {search && (
+                {t.content(search && (
                   <button
                     type="button"
-                    aria-label="Очистить поиск"
+                    aria-label={t("home.notes.notesModal.message0447")}
                     onClick={(event) => {
                       setSearch("");
                       event.currentTarget.parentElement?.querySelector("input")?.focus();
@@ -160,7 +162,7 @@ export default function NotesModal({
                   >
                     <MobileMenuCloseIcon className="size-6" strokeWidth={1} />
                   </button>
-                )}
+                ))}
                 </div>
               )}
               <button
@@ -174,12 +176,12 @@ export default function NotesModal({
                 className={`${styles.newNoteButton} inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full border border-brand-200 bg-white px-4 py-2 text-base font-semibold text-neutral-600 shadow-sm transition hover:border-brand-300 hover:bg-brand-50`}
               >
                 <NewNoteIcon className="size-5 shrink-0" />
-                {messages.newNote}
+                {t.content(messages.newNote)}
               </button>
             <button
               type="button"
               onClick={() => dialog.current?.close()}
-              aria-label={messages.close}
+              aria-label={t.content(messages.close)}
               className="flex size-10 shrink-0 items-center justify-center rounded-full text-neutral-500 hover:bg-brand-50 hover:text-brand-700"
             >
               <MobileMenuCloseIcon />
@@ -188,7 +190,7 @@ export default function NotesModal({
             </div>
             {notes.length > 0 && (
               <p className="mt-2 text-base text-neutral-500">
-                {messages.count(notes.length)}
+                {t.language !== "ru" ? t("notes.count", { count: notes.length }) : messages.count(notes.length)}
               </p>
             )}
             {storageError && (
@@ -196,7 +198,7 @@ export default function NotesModal({
                 role="alert"
                 className="mt-4 text-sm leading-relaxed text-amber-800"
               >
-                {messages.storageError}
+                {t.content(messages.storageError)}
               </p>
             )}
           </header>
@@ -221,7 +223,7 @@ export default function NotesModal({
                       )
                     }
                     onDelete={() => {
-                      if (window.confirm(messages.confirmDelete)) {
+                      if (window.confirm(t.content(messages.confirmDelete))) {
                         commit(
                           currentNotes.current.filter(
                             (item) => item.id !== note.id,
@@ -255,10 +257,10 @@ export default function NotesModal({
             ) : (
               <div className="flex min-h-64 flex-col items-center justify-center rounded-2xl border border-dashed border-brand-200 bg-white p-8 text-center">
                 <p className="text-lg font-semibold">
-                  {notes.length ? messages.noMatches : messages.empty}
+                  {t.content(notes.length ? messages.noMatches : messages.empty)}
                 </p>
                 <p className="mt-3 max-w-md text-base leading-relaxed text-neutral-500">
-                  {notes.length ? messages.noMatchesHint : messages.emptyHint}
+                  {t.content(notes.length ? messages.noMatchesHint : messages.emptyHint)}
                 </p>
               </div>
             )}
@@ -266,7 +268,7 @@ export default function NotesModal({
           <footer className="shrink-0 border-t border-brand-100 px-5 py-3 sm:px-8">
             <div className="flex items-start gap-2 text-neutral-500">
               <NotesInfoIcon className="mt-0.5 size-5 shrink-0" />
-              <p className="text-sm leading-relaxed">{messages.device}</p>
+              <p className="text-sm leading-relaxed">{t.content(messages.device)}</p>
             </div>
           </footer>
         </div>

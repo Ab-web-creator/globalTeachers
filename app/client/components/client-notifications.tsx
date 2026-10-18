@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { useEffect, useState } from "react";
 import { NotificationBellIcon } from "@/app/components/svg";
 
@@ -8,6 +9,7 @@ export default function ClientNotifications({
 }: {
   initialUnread: number;
 }) {
+  const t = useTranslations();
   const [unread, setUnread] = useState(initialUnread);
   useEffect(() => {
     let stopped = false;
@@ -55,10 +57,10 @@ export default function ClientNotifications({
       className="flex min-h-11 shrink-0 items-center gap-2 rounded-xl px-2 py-3 text-left text-sm text-brand-600 hover:bg-brand-50"
     >
       <NotificationBellIcon className="size-5 shrink-0" />
-      <span className="sr-only sm:not-sr-only">Уведомления</span>
+      <span className="sr-only sm:not-sr-only">{t("client.clientNotifications.message0107")}</span>
       {unread > 0 && (
         <span
-          aria-label={`Новых сообщений: ${unread}`}
+          aria-label={t.content(`Новых сообщений: ${unread}`)}
           aria-live="polite"
           className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-500 px-1.5 text-xs font-semibold text-white"
         >

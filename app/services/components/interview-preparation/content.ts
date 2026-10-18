@@ -1,62 +1,62 @@
 export const introduction = [
-  "Собеседование в международной школе — это не только проверка ваших предметных знаний.",
-  "Это знакомство, во время которого мы стремимся понять, разделяете ли вы наши ценности.",
-  "Мы ценим открытость, креативность и готовность к постоянному профессиональному росту.",
+  "services.interviewPreparation.content.message1568",
+  "services.interviewPreparation.content.message1569",
+  "services.interviewPreparation.content.message1570",
 ];
 
-export const interviewTopicsIntroduction = "Вопросы зависят от школы и должности, но чаще всего затрагивают несколько основных тем.";
+export const interviewTopicsIntroduction = "services.interviewPreparation.content.message1571";
 
-export const interviewTopicsTakeaway = "Хорошая подготовка помогает чувствовать себя уверенно и показать свои сильные стороны.";
+export const interviewTopicsTakeaway = "services.interviewPreparation.content.message1572";
 
 export const interviewTopics = [
-  { title: "Ваш опыт", text: "Расскажите о себе, своей специальности, учениках, с которыми вы работали, и наиболее значимых профессиональных достижениях." },
-  { title: "Ваш подход к преподаванию", text: "Как вы планируете урок? Как вовлекаете учеников? Как понимаете, что они усвоили материал?" },
-  { title: "Работа с разными учениками", text: "Как вы поддерживаете детей с разными способностями и потребностями? Как используете differentiation?" },
-  { title: "Поведение и атмосфера в классе", text: "Как вы устанавливаете правила? Что делаете в сложных ситуациях? Как строите отношения с учениками?" },
-  { title: "Safeguarding", text: "Международная школа может отдельно проверять ваше понимание безопасности и благополучия детей." },
-  { title: "Работа с коллегами и родителями", text: "Будьте готовы привести примеры командной работы, профессиональных разногласий и общения с родителями." },
+  { title: "home.heroSection.message0412", text: "services.interviewPreparation.content.message1573" },
+  { title: "services.interviewPreparation.content.message1574", text: "services.interviewPreparation.content.message1575" },
+  { title: "services.interviewPreparation.content.message1576", text: "services.interviewPreparation.content.message1577" },
+  { title: "services.interviewPreparation.content.message1578", text: "services.interviewPreparation.content.message1579" },
+  { title: "Safeguarding", text: "services.interviewPreparation.content.message1580" },
+  { title: "services.interviewPreparation.content.message1581", text: "services.interviewPreparation.content.message1582" },
 ];
 
 export const interviewQuestions = [
-  "Почему вы хотите работать за рубежом?",
-  "Почему решили уйти из нынешней школы?",
-  "Как выглядит хороший урок?",
-  "Расскажите о сложной ситуации с учеником.",
-  "Как вы работаете с родителями?",
-  "Как вы используете технологии?",
-  "Что вы можете дать школьному сообществу помимо своих уроков?",
-  "Что вы сделаете, если ученик расскажет вам о проблеме, связанной с его безопасностью?",
+  "services.interviewPreparation.content.message1583",
+  "services.interviewPreparation.content.message1584",
+  "services.interviewPreparation.content.message1585",
+  "services.interviewPreparation.content.message1586",
+  "services.interviewPreparation.content.message1587",
+  "services.interviewPreparation.content.message1588",
+  "services.interviewPreparation.content.message1589",
+  "services.interviewPreparation.content.message1590",
 ];
 
 export const preparationSteps = [
-  "Изучите школу и вакансию.",
-  "Перечитайте своё CV — вас могут спросить о любой его части.",
-  "Подготовьте несколько сильных примеров из своей практики.",
-  "Продумайте вопросы, которые хотите задать школе.",
-  "Проверьте английский, звук, камеру и интернет, если интервью проходит онлайн.",
-  "Не пытайтесь угадывать «правильный» ответ — говорите о своей реальной практике.",
+  "services.interviewPreparation.content.message1591",
+  "services.interviewPreparation.content.message1592",
+  "services.interviewPreparation.content.message1593",
+  "services.interviewPreparation.content.message1594",
+  "services.interviewPreparation.content.message1595",
+  "services.interviewPreparation.content.message1596",
 ];
 
 export const schoolResearch = {
   paragraphs: [
-    "Один из самых важных этапов подготовки — изучить школу до интервью. Посмотрите её сайт, curriculum, возраст учащихся, ценности, extracurricular programme и последние новости.",
+    "services.interviewPreparation.content.message1597",
   ],
-  weakAnswer: "«Я хочу работать в международной школе и жить за границей»",
-  verdict: "Такой ответ говорит в основном о ваших целях.",
-  better: "Но школе гораздо интереснее услышать, почему вас заинтересовала именно она и что вы можете ей предложить.",
-  tip: "упомяните конкретные программы, ценности школы или её проекты, которые вас вдохновили.",
+  weakAnswer: "services.interviewPreparation.content.message1598",
+  verdict: "services.interviewPreparation.content.message1599",
+  better: "services.interviewPreparation.content.message1600",
+  tip: "services.interviewPreparation.content.message1601",
 };
 
 export const speakWithExamples = {
-  intro: "Старайтесь не ограничиваться общими фразами:",
-  weakPhrases: ["«Я хорошо работаю в команде»", "«Я умею находить подход к каждому ученику»."],
-  stepsIntro: "Гораздо убедительнее рассказать о конкретной ситуации:",
-  steps: ["Какая была перед вами задача?", "Что сделали вы?", "Что получилось в результате?"],
-  outcome: "Так школа видит не характеристику, которую кандидат дал сам себе, а реальный пример его работы.",
-  tip: "используйте конкретные детали — проекты, учеников, результаты, цифры, если они есть.",
-  note: "Конкретные примеры впечатляют больше, чем красивые слова",
+  intro: "services.interviewPreparation.content.message1602",
+  weakPhrases: ["services.interviewPreparation.content.message1603", "services.interviewPreparation.content.message1604"],
+  stepsIntro: "services.interviewPreparation.content.message1605",
+  steps: ["services.interviewPreparation.content.message1606", "services.interviewPreparation.content.message1607", "services.interviewPreparation.content.message1608"],
+  outcome: "services.interviewPreparation.content.message1609",
+  tip: "services.interviewPreparation.content.message1610",
+  note: "services.interviewPreparation.content.message1611",
 };
 
-export const unexpectedQuestionsIntroduction = "Помимо вопросов об опыте и методике, школы часто задают вопросы, которые проверяют вашу мотивацию, гибкость мышления и то, насколько вы впишетесь в их сообщество. Они могут застать врасплох, но к ним можно подготовиться заранее. Например, на интервью могут спросить:";
+export const unexpectedQuestionsIntroduction = "services.interviewPreparation.content.message1612";
 
-export const unexpectedQuestionsTip = "не старайтесь дать идеальные ответы. Лучше опирайтесь на реальные ситуации из собственного опыта — это ценится больше всего.";
+export const unexpectedQuestionsTip = "services.interviewPreparation.content.message1613";

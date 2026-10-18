@@ -1,3 +1,5 @@
+import { translateMetadata } from "@/lib/i18n/server";
+import { getTranslations } from "@/lib/i18n/server";
 import { cookies } from "next/headers";
 import { adminCallAllowed, appointmentCallAllowed } from "../../../lib/client-area/appointment-call";
 import { clientSessionCookie } from "../../../lib/client-area/access";
@@ -5,11 +7,13 @@ import { database } from "../../../lib/consultation/database";
 import { tokenHash } from "../../../lib/calls/server";
 import CallSession from "../../components/calls/call-session";
 export const dynamic = "force-dynamic";
-export const metadata = {
-  title: "Видеоконсультация",
-  robots: { index: false, follow: false },
-  referrer: "no-referrer" as const,
-};
+export async function generateMetadata() {
+  return translateMetadata({
+    title: "Видеоконсультация",
+    robots: { index: false, follow: false },
+    referrer: "no-referrer" as const,
+  });
+}
 export default async function Page({
   params,
 }: {
@@ -17,6 +21,7 @@ export default async function Page({
     token: string;
   }>;
 }) {
+  const t = await getTranslations();
   const { token } = await params;
   const result = /^[a-f0-9]{64}$/.test(token)
     ? await database().query(
@@ -38,8 +43,7 @@ export default async function Page({
         />
       ) : (
         <p className="mx-auto max-w-3xl px-4 py-12 text-xl sm:p-0">
-          Срок действия приглашения истёк или ссылка недействительна.
-        </p>
+          {t("call.token.page.message0002")}</p>
       )}
     </main>
   );

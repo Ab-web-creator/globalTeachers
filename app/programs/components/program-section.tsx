@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "@/lib/i18n/use-translations";
 import type { ReactNode } from "react";
 import SectionHeading from "../../services/components/section-heading";
 import SectionFade from "../../services/components/cv-portfolio/section-fade";
@@ -24,26 +27,27 @@ type Props = {
 
 // A full-width page section: optional gradient fade, eyebrow, heading, then content; `aside` sits in a second column on lg.
 export default function ProgramSection({ id, label, title, fade, fadeDirection = "up", fadeToWhite = false, fadeHalfHeight = false, fadeQuarterHeight = false, aside, asideClassName = "", asideAlign = "center", decoration, children, footer }: Props) {
+  const t = useTranslations();
   const header = (
     <>
-      <SectionLabel>{label}</SectionLabel>
-      <SectionHeading id={id}>{title}</SectionHeading>
+      <SectionLabel>{t.content(label)}</SectionLabel>
+      <SectionHeading id={id}>{t.content(title)}</SectionHeading>
     </>
   );
 
   return (
     <section aria-labelledby={id} className={`relative isolate py-12 sm:py-16 lg:py-20 ${aside ? "grid items-center gap-10 lg:grid-cols-2 lg:gap-x-16" : ""}`}>
       {fade && <SectionFade tone={fade} direction={fadeDirection} toWhite={fadeToWhite} halfHeight={fadeHalfHeight} quarterHeight={fadeQuarterHeight} />}
-      {decoration && <div aria-hidden="true" className="pointer-events-none absolute top-20 right-0 -z-10 hidden lg:block">{decoration}</div>}
+      {t.content(decoration && <div aria-hidden="true" className="pointer-events-none absolute top-20 right-0 -z-10 hidden lg:block">{t.content(decoration)}</div>)}
       {aside ? (
         <>
-          <div>{header}{children}</div>
-          <div className={`${asideAlign === "end" ? "lg:self-end" : ""} ${asideClassName}`}>{aside}</div>
+          <div>{header}{t.content(children)}</div>
+          <div className={`${asideAlign === "end" ? "lg:self-end" : ""} ${asideClassName}`}>{t.content(aside)}</div>
         </>
       ) : (
-        <>{header}{children}</>
+        <>{header}{t.content(children)}</>
       )}
-      {footer && <div className={aside ? "lg:col-span-2" : "mt-10"}>{footer}</div>}
+      {t.content(footer && <div className={aside ? "lg:col-span-2" : "mt-10"}>{t.content(footer)}</div>)}
     </section>
   );
 }

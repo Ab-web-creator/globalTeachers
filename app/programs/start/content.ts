@@ -2,49 +2,49 @@ import type { ProgramIconName } from "@/app/components/svg";
 
 export const hero = {
   intro: [
-    "Для самостоятельного поиска работы с понятным планом и без типичных ошибок.",
-    "Можно искать ответы самостоятельно — читать форумы, смотреть сотни вакансий и пробовать разобраться в требованиях разных стран и школ.",
-    "Но без чёткого понимания своей отправной точки легко потратить месяцы на неподходящие вакансии, неправильно оценить свои шансы или упустить перспективные возможности.",
+    "home.categories.programs.message0362",
+    "programs.start.content.message1185",
+    "programs.start.content.message1186",
   ],
-  highlight: "А можно сначала понять свою точку старта.",
+  highlight: "programs.start.content.message1187",
 };
 
 export const questions = [
-  "Подходит ли мой опыт?",
-  "В каких странах у меня действительно есть шансы?",
-  "Какие школы стоит рассматривать?",
-  "Достаточно ли моей квалификации?",
-  "Правильно ли составлено моё CV?",
-  "Где вообще искать подходящие вакансии?",
+  "programs.start.content.message1188",
+  "programs.start.content.message1189",
+  "programs.start.content.message1190",
+  "programs.start.content.message1191",
+  "programs.start.content.message1192",
+  "programs.start.content.message1193",
 ];
 
 export const approach = {
   paragraphs: [
-    "Мы начинаем не с общих советов, а с вас. Разбираем ваше образование, педагогическую квалификацию, стаж, специальность и профессиональный опыт.",
-    "Смотрим, как ваш профиль выглядит с точки зрения международной школы и какие направления стоит рассматривать. Затем проводим персональную консультацию 60–90 минут, после которой у вас должен появиться конкретный план действий.",
+    "programs.start.content.message1194",
+    "programs.start.content.message1195",
   ],
-  outcome: "Куда подаваться? → Что подготовить? → Что улучшить? → Где искать? → Что делать дальше?",
+  outcome: "programs.start.content.message1196",
 };
 
 export const inclusions: { title: string; text: string; icon: ProgramIconName }[] = [
-  { icon: "profile", title: "Анализ вашего профиля", text: "Разберём образование, квалификацию, опыт и сильные стороны." },
-  { icon: "globe", title: "Страны и школы", text: "Определим направления, которые имеет смысл рассматривать именно с вашим профилем." },
-  { icon: "chat", title: "Персональная консультация 60 минут", text: "Разберём ваши вопросы и выстроим последовательность дальнейших действий." },
-  { icon: "checklist", title: "Проверка готовности документов", text: "Вы получите список документов, которые могут понадобиться для международного поиска." },
-  { icon: "document", title: "Рекомендации по CV и сопроводительному письму", text: "Покажем, что стоит изменить, добавить или убрать перед началом активных откликов." },
-  { icon: "search", title: "Ресурсы для поиска работы", text: "Вы получите площадки и источники, где сможете самостоятельно искать вакансии международных школ." },
-  { icon: "calendar", title: "7 дней поддержки", text: "После консультации можно будет задать дополнительные вопросы, которые появятся, когда вы начнёте действовать." },
+  { icon: "profile", title: "programs.start.content.message1197", text: "programs.start.content.message1198" },
+  { icon: "globe", title: "programs.start.content.message1199", text: "programs.start.content.message1200" },
+  { icon: "chat", title: "programs.start.content.message1201", text: "programs.start.content.message1202" },
+  { icon: "checklist", title: "programs.start.content.message1203", text: "programs.start.content.message1204" },
+  { icon: "document", title: "programs.start.content.message1205", text: "programs.start.content.message1206" },
+  { icon: "search", title: "programs.start.content.message1207", text: "programs.start.content.message1208" },
+  { icon: "calendar", title: "programs.start.content.message1209", text: "programs.start.content.message1210" },
 ];
 
 export const audience = {
   paragraphs: [
-    "START — для вас, если вы готовы искать работу самостоятельно, но не хотите начинать вслепую.",
-    "Наша задача — помочь вам избежать хаотичных действий и дать понятное направление, профессиональную оценку и план, с которым вы сможете двигаться дальше самостоятельно.",
+    "programs.start.content.message1211",
+    "programs.start.content.message1212",
   ],
-  note: "Мы не будем делать весь поиск вместо вас.",
+  note: "programs.start.content.message1213",
 };
 
 export const cta = {
-  title: "Начните с понимания своих возможностей",
-  text: "Иногда один правильно выбранный следующий шаг экономит гораздо больше времени, чем десятки отправленных заявок не туда.",
+  title: "programs.start.content.message1214",
+  text: "programs.start.content.message1215",
 };

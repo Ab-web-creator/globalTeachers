@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { consultationSteps } from "./consultation-steps";
 
 type FormNavigationProps = {
@@ -7,11 +10,12 @@ type FormNavigationProps = {
 };
 
 export default function FormNavigation({ step, sending, onBack }: FormNavigationProps) {
+  const t = useTranslations();
   return (
     <div data-form-navigation className="flex shrink-0 gap-3 pt-6">
-      {step > 0 && <button type="button" onClick={onBack} className="rounded-xl border border-brand-200 px-4 py-3 text-sm hover:bg-brand-50">Назад</button>}
+      {step > 0 && <button type="button" onClick={onBack} className="rounded-xl border border-brand-200 px-4 py-3 text-sm hover:bg-brand-50">{t("home.siteHeader.message0455")}</button>}
       <button type="submit" className="action-gradient flex min-h-12 flex-1 items-center justify-center gap-3 rounded-xl px-4 py-3 font-medium text-white focus-visible:outline-1 focus-visible:-outline-offset-2 focus-visible:outline-brand-500">
-        {sending ? "Отправляем…" : step < consultationSteps.length - 1 ? "Далее" : "Отправить заявку"}
+        {t.content(sending ? "Отправляем…" : step < consultationSteps.length - 1 ? "Далее" : "Отправить заявку")}
       </button>
     </div>
   );

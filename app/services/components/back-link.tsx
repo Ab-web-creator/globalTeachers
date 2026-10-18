@@ -1,13 +1,16 @@
+"use client";
+
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { BackLinkArrowIcon } from "@/app/components/svg";
 import Link from "next/link";
 
 export default function BackLink({ href = "/#categories", className = "" }: { href?: string; className?: string; }) {
+  const t = useTranslations();
   return (
     <Link href={href} className={`group z-20 hidden w-fit items-center gap-1 rounded-xl bg-white/90 py-1 pr-4 pl-1 text-sm text-neutral-500 shadow-sm md:inline-flex ${className}`}>
       <span className="flex size-8 items-center justify-center rounded-full transition-colors duration-200 motion-reduce:transition-none group-hover:bg-neutral-200 group-hover:text-neutral-600">
         <BackLinkArrowIcon />
       </span>
-      Назад
-    </Link>
+      {t("home.siteHeader.message0455")}</Link>
   );
 }

@@ -1,10 +1,12 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { VipSupportJourneyIllustration } from "@/app/components/svg";
 import { useEffect, useRef, useState } from "react";
 import styles from "./support-journey-animation.module.css";
 
 export default function SupportJourneyAnimation() {
+  const t = useTranslations();
   const container = useRef<HTMLDivElement>(null);
   const [started, setStarted] = useState(false);
 
@@ -43,7 +45,7 @@ export default function SupportJourneyAnimation() {
 
   return (
     <div ref={container} data-started={started} className={`${styles.journey} ml-auto hidden w-full max-w-md lg:block`}>
-      <VipSupportJourneyIllustration className="h-auto w-full" />
+      <VipSupportJourneyIllustration translate={t.content} className="h-auto w-full" />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { PlatformExternalLinkIcon } from "@/app/components/svg";
 import useScrollReveal from "@/app/components/home/use-scroll-reveal";
 import Image from "next/image";
@@ -37,21 +38,19 @@ const desktopLogoHeights: Record<string, string> = {
 };
 
 export default function RecruitmentPlatforms() {
+  const t = useTranslations();
   useScrollReveal("#recruitment-platform-cards [data-reveal]", true);
   return (
     <section id="job-platforms" aria-labelledby="recruitment-platforms" className="relative left-1/2 w-screen -translate-x-1/2 scroll-mt-16 overflow-hidden bg-linear-to-t from-violet-50 via-sky-50/60 to-transparent py-12 sm:py-16 lg:py-20">
       <div className="mx-auto max-w-400 px-6 sm:px-10 lg:px-16 xl:px-20">
         <div className="max-w-3xl">
-          <SectionLabel>Полезные ресурсы</SectionLabel>
+          <SectionLabel>{t("services.jobSearch.recruitmentPlatforms.message1702")}</SectionLabel>
           <SectionHeading id="recruitment-platforms" className="text-brand-950">
-            Полезные платформы для{" "}<br className="hidden sm:block" />поиска вакансий
-          </SectionHeading>
+            {t("services.jobSearch.recruitmentPlatforms.message1703")}{t.content(" ")}<br className="hidden sm:block" />{t("services.jobSearch.recruitmentPlatforms.message1704")}</SectionHeading>
           <p className="mt-7 text-lg leading-relaxed text-neutral-600">
-            Существует несколько веб-платформ, на которых международные школы из разных стран публикуют вакансии. Используйте их, чтобы найти позиции, которые соответствуют вашему опыту, предмету и желаемой стране.
-          </p>
+            {t("services.jobSearch.recruitmentPlatforms.message1705")}</p>
           <p className="mt-4 text-lg leading-relaxed text-neutral-600">
-            <strong className="font-semibold text-brand-950">Совет:</strong> создайте профиль на нескольких платформах и настройте уведомления о новых вакансиях — так вы не пропустите подходящие возможности.
-          </p>
+            <strong className="font-semibold text-brand-950">{t("services.interviewPreparation.researchTip.message1631")}</strong> {" "}{t("services.jobSearch.recruitmentPlatforms.message1706")}</p>
         </div>
         <ul id="recruitment-platform-cards" className="mt-10 grid gap-4 sm:gap-6 md:grid-cols-2 lg:gap-8 xl:grid-cols-3">
           {recruitmentPlatforms.map((platform, index) => (<li data-reveal key={platform.name} className="flex">
@@ -67,32 +66,33 @@ export default function RecruitmentPlatforms() {
 }
 
 function PlatformCard({ name, text, href, logo, logoClass, background, image, imageClass = "", ornament = false }: PlatformCardProps) {
+  const t = useTranslations();
   const external = href?.startsWith("https://") ?? false;
   const className = `group relative isolate grid w-full grid-cols-[minmax(0,1fr)_auto] items-start gap-x-4 gap-y-2 overflow-hidden rounded-3xl p-5 sm:flex sm:min-h-52 sm:items-stretch sm:gap-5 sm:p-6 ${background}`;
   const content = (<>
     {ornament && <span aria-hidden="true" className={styles.ornament} />}
     <span className={`col-start-1 row-span-3 row-start-1 flex min-w-0 flex-col items-start sm:flex-1 sm:py-2 ${image ? "" : "col-span-2"}`}>
       <span className={`col-start-1 row-start-1 flex min-w-0 w-full items-center sm:min-h-12 ${image ? "" : "col-span-2"}`}>
-        {logo && name !== "Teacher Horizons" ? (<Image src={logo} alt={name} width={240} height={64} className={`h-auto max-h-10 max-w-full object-contain object-left sm:max-h-none ${desktopLogoHeights[logoClass ?? ""] ?? ""} w-auto`} />) : (<span className="text-xl font-semibold leading-tight tracking-tight text-brand-950">{name}</span>)}
+        {logo && name !== "Teacher Horizons" ? (<Image src={logo} alt={t.content(name)} width={240} height={64} className={`h-auto max-h-10 max-w-full object-contain object-left sm:max-h-none ${desktopLogoHeights[logoClass ?? ""] ?? ""} w-auto`} />) : (<span className="text-xl font-semibold leading-tight tracking-tight text-brand-950">{t.content(name)}</span>)}
       </span>
-      <span className="mt-2 text-base leading-normal text-neutral-700 sm:mt-3 sm:mb-5 sm:leading-relaxed">{text}</span>
-      {href && (<span aria-hidden="true" className="mt-4 flex items-center gap-2 text-sm font-semibold text-brand-500 sm:mt-auto sm:size-11 sm:shrink-0 sm:justify-center sm:rounded-full sm:bg-white sm:shadow-sm">
-        <span className="underline underline-offset-4 sm:hidden">Открыть платформу</span>
+      <span className="mt-2 text-base leading-normal text-neutral-700 sm:mt-3 sm:mb-5 sm:leading-relaxed">{t.content(text)}</span>
+      {t.content(href && (<span aria-hidden="true" className="mt-4 flex items-center gap-2 text-sm font-semibold text-brand-500 sm:mt-auto sm:size-11 sm:shrink-0 sm:justify-center sm:rounded-full sm:bg-white sm:shadow-sm">
+        <span className="underline underline-offset-4 sm:hidden">{t("services.jobSearch.recruitmentPlatforms.message1709")}</span>
         <span className="hidden sm:block"><PlatformExternalLinkIcon /></span>
-      </span>)}
+      </span>))}
     </span>
-    {image && (<span className="relative col-start-2 row-span-2 row-start-1 size-20 shrink-0 overflow-hidden rounded-2xl sm:h-auto sm:w-2/5">
+    {t.content(image && (<span className="relative col-start-2 row-span-2 row-start-1 size-20 shrink-0 overflow-hidden rounded-2xl sm:h-auto sm:w-2/5">
       <Image src={image} alt="" fill sizes="(min-width: 1600px) 180px, (min-width: 1280px) 13vw, (min-width: 768px) 20vw, (min-width: 640px) 40vw, 80px" className={`object-cover ${imageClass}`} />
-      {name === "Teacher Horizons" && logo && (<span className="absolute top-3 right-3 aspect-square w-1/3 max-w-12">
+      {t.content(name === "Teacher Horizons" && logo && (<span className="absolute top-3 right-3 aspect-square w-1/3 max-w-12">
         <Image src={logo} alt="" fill sizes="48px" className="object-contain" />
-      </span>)}
-    </span>)}
+      </span>))}
+    </span>))}
   </>
   );
   if (!href)
     return <div className={className}>{content}</div>;
   return (
-    <a href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined} aria-label={external ? `${name} — открыть платформу в новой вкладке` : name} className={`${className} transition-shadow duration-200 hover:shadow-md motion-reduce:transition-none`}>
+    <a href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined} aria-label={t.content(external ? `${name} — открыть платформу в новой вкладке` : name)} className={`${className} transition-shadow duration-200 hover:shadow-md motion-reduce:transition-none`}>
       {content}
     </a>
   );

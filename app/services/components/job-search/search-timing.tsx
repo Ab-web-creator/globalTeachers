@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { JobSearchIcon, type GuideIconName } from "@/app/components/svg";
 import { useEffect, useState } from "react";
 import SectionHeading from "../section-heading";
@@ -60,6 +61,7 @@ const seasonMs = 6000;
 const pauseMs = 1000;
 
 export default function SearchTiming() {
+  const t = useTranslations();
   const [active, setActive] = useState(0);
   const [playing, setPlaying] = useState(true);
   useEffect(() => {
@@ -89,9 +91,9 @@ export default function SearchTiming() {
       {playing && <SeasonEffect season={seasons[active]} />}
       <div className="relative grid items-start gap-10 xl:grid-cols-3 xl:gap-12">
         <div>
-          <SectionLabel>Когда начинать поиск?</SectionLabel>
-          <SectionHeading id="search-timing">Лучшее время для поиска</SectionHeading>
-          <p className="mt-7 text-lg xl:text-base max-w-[65ch] leading-relaxed text-neutral-600">{searchTimingIntroduction}</p>
+          <SectionLabel>{t("services.jobSearch.searchTiming.message1722")}</SectionLabel>
+          <SectionHeading id="search-timing">{t("services.jobSearch.searchTiming.message1723")}</SectionHeading>
+          <p className="mt-7 text-lg xl:text-base max-w-[65ch] leading-relaxed text-neutral-600">{t.content(searchTimingIntroduction)}</p>
         </div>
         <div className="min-w-0 xl:col-span-2">
           <SeasonTimeline active={active} playing={playing} />
@@ -124,6 +126,7 @@ function SeasonTimeline({ active, playing }: {
   active: number;
   playing: boolean;
 }) {
+  const t = useTranslations();
   return (
     <div className="pb-4">
       <ol className="grid md:grid-cols-4">
@@ -140,8 +143,8 @@ function SeasonTimeline({ active, playing }: {
                 <span className="relative size-3 rounded-full bg-brand-500" />
               </div>
               <div className="min-w-0 pt-3 md:contents">
-                <span className={`inline-block rounded-full bg-brand-300/20 px-3 py-2 text-sm font-medium text-brand-600 md:row-start-3 md:justify-self-center ${columns[index]} ${playing && index === active ? "period-blink" : ""}`}>{period}</span>
-                <p className={`mt-3 text-base leading-relaxed text-neutral-600 md:row-start-4 md:mt-5 md:px-4 md:text-center ${columns[index]}`}>{text}</p>
+                <span className={`inline-block rounded-full bg-brand-300/20 px-3 py-2 text-sm font-medium text-brand-600 md:row-start-3 md:justify-self-center ${columns[index]} ${playing && index === active ? "period-blink" : ""}`}>{t.content(period)}</span>
+                <p className={`mt-3 text-base leading-relaxed text-neutral-600 md:row-start-4 md:mt-5 md:px-4 md:text-center ${columns[index]}`}>{t.content(text)}</p>
               </div>
             </li>
           );

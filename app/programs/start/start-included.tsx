@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { programIconPaths, type ProgramIconName } from "@/app/components/svg";
 import IconCard from "../../services/components/icon-card";
 import ProgramSection from "../components/program-section";
@@ -38,14 +41,15 @@ const cardColors = {
 }>>;
 
 export default function StartIncluded() {
+  const t = useTranslations();
   return (
-    <ProgramSection id="start-inclusions" label="Состав программы" title="Что входит в START" fade="violet" fadeDirection="down" fadeQuarterHeight>
-      <p className="mt-7 max-w-3xl text-lg leading-relaxed text-neutral-600">Всё необходимое для уверенного старта: оценка вашего опыта, ответы на ключевые вопросы и пошаговый план самостоятельного поиска работы.</p>
+    <ProgramSection id="start-inclusions" label={t("payment.paymentIncludedSection.message1070")} title={t("programs.start.startIncluded.message1221")} fade="violet" fadeDirection="down" fadeQuarterHeight>
+      <p className="mt-7 max-w-3xl text-lg leading-relaxed text-neutral-600">{t("programs.start.startIncluded.message1222")}</p>
       <ul className="mt-10 grid gap-4 [&>li>h3]:leading-tight max-sm:[&>li]:gap-y-1 max-sm:[&>li>span]:size-8 max-sm:[&>li>span>svg]:size-4 md:grid-cols-2 xl:grid-cols-3">
         {inclusions.map(({ icon, title, text }) => {
           const colors = cardColors[icon as keyof typeof cardColors];
           return (
-            <IconCard compact key={title} icon={programIconPaths[icon]} title={title} paragraphs={[text]} surface={colors?.surface} tone={colors?.icon} />
+            <IconCard compact key={title} icon={programIconPaths[icon]} title={t.content(title)} paragraphs={[text]} surface={colors?.surface} tone={colors?.icon} />
           );
         })}
       </ul>

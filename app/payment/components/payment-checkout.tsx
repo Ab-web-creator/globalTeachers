@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { useState } from "react";
 import type { Program } from "../../components/home/categories/programs";
 import PaymentDetailsSection from "./payment-details-section";
@@ -10,6 +11,7 @@ import { englishNotice, isBeginnerEnglish } from "../../consultation/components/
 import PaymentEnglishDialog from "./payment-english-dialog";
 
 export default function PaymentCheckout({ program }: { program: Program }) {
+  const t = useTranslations();
   const [attempted, setAttempted] = useState(false);
   const [englishNoticeOpen, setEnglishNoticeOpen] = useState(false);
   const profileState = usePaymentProfile();
@@ -51,21 +53,20 @@ export default function PaymentCheckout({ program }: { program: Program }) {
         }}
         errors={attempted ? errors : {}}
       />
-      {registration.error && (
+      {t.content(registration.error && (
         <div
           role="alert"
           className="mx-auto max-w-400 px-6 py-4 text-base text-red-700 sm:px-10 lg:px-16 xl:px-20"
         >
-          {registration.error}{" "}
+          {t.content(registration.error)}{t.content(" ")}
           <button
             type="button"
             onClick={registration.retry}
             className="underline"
           >
-            Повторить сохранение
-          </button>
+            {t("payment.paymentCheckout.message1023")}</button>
         </div>
-      )}
+      ))}
       <PaymentSection
         program={program}
         detailsComplete={detailsComplete}

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { useRouter } from "next/navigation";
 import useCallRingtone from "./use-call-ringtone";
 import useCallFullscreen from "./use-call-fullscreen";
@@ -25,6 +26,7 @@ export type CallRoomProps = {
 export default function useCallSession({
   id, token, name, expires, returnPath = "/admin", minimized = false, onMinimize, onRestore, onDismiss,
 }: CallRoomProps) {
+  const t = useTranslations();
   const router = useRouter();
   const [focusedVideo, setFocusedVideo] = useState<"local" | "remote">("remote");
   const callFrameRef = useRef<HTMLElement>(null);
@@ -451,7 +453,7 @@ export default function useCallSession({
     setCamera(!camera);
   }
   const callActive = ["ringing", "accepted"].includes(state);
-  const expiresLabel = new Date(expires).toLocaleString("ru-RU", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+  const expiresLabel = t.formatDate(new Date(expires), { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
   const statusText = connected
     ? "Соединение установлено"
     : ({

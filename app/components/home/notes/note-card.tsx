@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { NoteDragHandleIcon, NoteTrashIcon } from "@/app/components/svg";
 import type { Note } from "../../../../lib/notes/storage";
@@ -29,6 +30,7 @@ export default function NoteCard({
   onReorder,
   onMove,
 }: Props) {
+  const t = useTranslations();
   const card = useRef<HTMLElement>(null);
   const title = useRef<HTMLInputElement>(null);
   const body = useRef<HTMLTextAreaElement>(null);
@@ -86,7 +88,7 @@ export default function NoteCard({
       ref={card}
       data-note-id={note.id}
       tabIndex={editing ? -1 : 0}
-      aria-label={note.title || messages.untitled}
+      aria-label={t.content(note.title || messages.untitled)}
       onClick={(event) => {
         if (suppressClick.current) {
           suppressClick.current = false;
@@ -119,8 +121,8 @@ export default function NoteCard({
     >
       <div
         tabIndex={0}
-        aria-label={messages.drag}
-        title={messages.drag}
+        aria-label={t.content(messages.drag)}
+        title={t.content(messages.drag)}
         className="flex shrink-0 touch-none items-center gap-2 cursor-grab active:cursor-grabbing"
         onClick={(event) => {
           event.stopPropagation();
@@ -162,8 +164,8 @@ export default function NoteCard({
           <span className={`${styles.fieldFrame} block min-w-0 flex-1`}>
           <input
             ref={title}
-            aria-label={messages.title}
-            placeholder={messages.title}
+            aria-label={t.content(messages.title)}
+            placeholder={t.content(messages.title)}
             value={note.title}
             onChange={(event) => onChange("title", event.target.value)}
             onKeyDown={(event) => {
@@ -183,8 +185,8 @@ export default function NoteCard({
         <div className={`${styles.fieldFrame} mt-3 min-w-0`}>
         <textarea
           ref={body}
-          aria-label={messages.body}
-          placeholder={messages.body}
+          aria-label={t.content(messages.body)}
+          placeholder={t.content(messages.body)}
           value={note.body}
           onChange={(event) => onChange("body", event.target.value)}
           className={`${styles.textField} block font-sans max-h-60 min-h-20 w-full min-w-0 resize-none overflow-y-auto rounded-md bg-transparent text-base leading-normal text-neutral-700 outline-none placeholder:text-neutral-500`}
@@ -195,16 +197,16 @@ export default function NoteCard({
       )}
       <footer className="mt-auto flex shrink-0 items-center justify-between gap-4 pt-2 text-sm text-neutral-400">
         <time dateTime={new Date(note.updatedAt).toISOString()} className="text-neutral-400">
-          {new Intl.DateTimeFormat("ru-RU", {
+          {t.formatDate(note.updatedAt, {
             day: "2-digit",
             month: "short",
             year: "numeric",
-          }).format(note.updatedAt)}
+          })}
         </time>
         <button
           type="button"
-          aria-label={messages.delete}
-          title={messages.delete}
+          aria-label={t.content(messages.delete)}
+          title={t.content(messages.delete)}
           onClick={onDelete}
           className="-mr-2 flex size-9 shrink-0 items-center justify-center rounded-lg transition hover:bg-red-50 hover:text-red-600"
         >

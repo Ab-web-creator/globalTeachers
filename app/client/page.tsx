@@ -1,5 +1,5 @@
+import { translateMetadata } from "@/lib/i18n/server";
 import styles from "./client-theme.module.css";
-import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import {
   clientAccessLink,
@@ -10,11 +10,13 @@ import { getWorkspace } from "../../lib/client-area/workspace";
 import ClientAccess from "./components/client-access";
 import WorkspacePanel from "./components/workspace-panel";
 
-export const metadata: Metadata = {
-  title: "Личная страница — TeacherNavigator",
-  robots: { index: false, follow: false },
-  referrer: "no-referrer",
-};
+export async function generateMetadata() {
+  return translateMetadata({
+    title: "Личная страница — TeacherNavigator",
+    robots: { index: false, follow: false },
+    referrer: "no-referrer",
+  });
+}
 export const dynamic = "force-dynamic";
 
 export default async function ClientPage() {

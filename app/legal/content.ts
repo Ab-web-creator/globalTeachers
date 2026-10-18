@@ -16,8 +16,8 @@ export type LegalDocument = {
 };
 
 export const operator = {
-  introduction: "По вопросам обработки персональных данных, доступа к ним, исправления или удаления вы можете обратиться к нам:",
+  introduction: "legal.content.message0687",
   email: "tn.connect@teachernavigator.com",
   website: "https://teachernavigator.com",
-  registrationNotice: "Юридические реквизиты компании будут указаны после завершения регистрации.",
+  registrationNotice: "legal.content.message0688",
 };

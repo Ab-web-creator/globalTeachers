@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { programIconPaths } from "@/app/components/svg";
 import Image from "next/image";
 import SectionLabel from "../../services/components/job-search/section-label";
@@ -7,20 +10,21 @@ import { searchIntroduction, searchStages } from "./content";
 import TreePotAnimation from "./tree-pot-animation";
 
 export default function VipSearch() {
+  const t = useTranslations();
   return (
     <section aria-labelledby="vip-search" className="relative isolate py-12 sm:py-16 lg:py-20">
       <div className="grid items-start gap-8 min-[1000px]:grid-cols-12">
         <div className="w-full min-w-0 min-[1000px]:col-span-8 min-[1000px]:max-w-3xl">
-          <SectionLabel>Поиск вместе</SectionLabel>
-          <SectionHeading id="vip-search">Когда поиск <span className="text-brand-500">уже начался</span></SectionHeading>
-          <p className="mt-7 text-lg leading-relaxed text-neutral-600">{searchIntroduction}</p>
+          <SectionLabel>{t("programs.vip.vipSearch.message1345")}</SectionLabel>
+          <SectionHeading id="vip-search">{t("programs.vip.vipSearch.message1346")}{" "}<span className="text-brand-500">{t("programs.vip.vipSearch.message1347")}</span></SectionHeading>
+          <p className="mt-7 text-lg leading-relaxed text-neutral-600">{t.content(searchIntroduction)}</p>
           <div className="mt-10 [&_[role=tab]]:py-2 [&_[role=tab]_svg]:hidden sm:[&_[role=tab]]:py-4 sm:[&_[role=tab]_svg]:block">
-            <VerticalStageTabs id="vip-search" autoPreview label="Этапы поиска" labels={["Вакансии", "Заявки", "Интервью"]} paths={[programIconPaths.search, programIconPaths.document, programIconPaths.chat]} stages={searchStages} />
+            <VerticalStageTabs id="vip-search" autoPreview label={t("programs.vip.vipSearch.message1348")} labels={["Вакансии", "Заявки", "Интервью"]} paths={[programIconPaths.search, programIconPaths.document, programIconPaths.chat]} stages={searchStages} />
           </div>
         </div>
         <div className="hidden w-full min-[1000px]:col-span-4 min-[1000px]:mt-24 min-[1000px]:self-start min-[1000px]:block">
           <div className="relative mx-auto w-3/4">
-            <Image src="/images/vip-career-tree-box-v6.webp" alt="Японский клён в сиреневом горшке с изображениями CV, школы и заметок для интервью" width={971} height={1620} sizes="(min-width: 1600px) 336px, 25vw" className="h-auto w-full object-contain" />
+            <Image src="/images/vip-career-tree-box-v6.webp" alt={t("programs.vip.vipSearch.message1351")} width={971} height={1620} sizes="(min-width: 1600px) 336px, 25vw" className="h-auto w-full object-contain" />
             <TreePotAnimation />
           </div>
         </div>

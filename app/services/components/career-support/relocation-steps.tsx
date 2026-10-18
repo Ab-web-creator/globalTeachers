@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import useScrollReveal from "@/app/components/home/use-scroll-reveal";
 import { careerStageIconTones, RelocationDocumentsIllustration, relocationIconPaths, StrokeIcon } from "@/app/components/svg";
 import SectionLabel from "../job-search/section-label";
@@ -7,15 +8,16 @@ import SectionHeading from "../section-heading";
 import { relocation } from "./content";
 
 export default function RelocationSteps() {
+  const t = useTranslations();
   useScrollReveal("#career-relocation-cards [data-reveal]", true);
   return (
     <section aria-labelledby="support-relocation" className="py-12 sm:py-16 lg:py-20">
       <div className="grid items-center gap-10 lg:grid-cols-3 lg:gap-12">
         <div className="lg:col-span-2">
-          <SectionLabel>После оффера</SectionLabel>
-          <SectionHeading id="support-relocation">И после предложения наша{" "}<br className="hidden sm:block" />работа ещё не заканчивается</SectionHeading>
-          {relocation.paragraphs.map((text, index) => <p key={text} className={`${index === 0 ? "mt-7" : "mt-4"} max-w-2xl text-lg leading-relaxed text-neutral-600`}>{text}</p>)}
-          <p className="mt-5 max-w-2xl border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-600">{relocation.help}</p>
+          <SectionLabel>{t("programs.vip.vipAfterOffer.message1322")}</SectionLabel>
+          <SectionHeading id="support-relocation">{t("services.careerSupport.relocationSteps.message1414")}{t.content(" ")}<br className="hidden sm:block" />{t("services.careerSupport.relocationSteps.message1415")}</SectionHeading>
+          {relocation.paragraphs.map((text, index) => <p key={text} className={`${index === 0 ? "mt-7" : "mt-4"} max-w-2xl text-lg leading-relaxed text-neutral-600`}>{t.content(text)}</p>)}
+          <p className="mt-5 max-w-2xl border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-600">{t.content(relocation.help)}</p>
         </div>
         <RelocationDocumentsIllustration />
       </div>
@@ -25,8 +27,8 @@ export default function RelocationSteps() {
             <StrokeIcon path={relocationIconPaths[index]} className="size-6" />
           </span>
           <div className="min-w-0">
-            <h3 className="text-lg font-semibold leading-snug text-brand-950">{title}</h3>
-            <p className="mt-1 text-base leading-relaxed text-neutral-600 sm:mt-2">{text}</p>
+            <h3 className="text-lg font-semibold leading-snug text-brand-950">{t.content(title)}</h3>
+            <p className="mt-1 text-base leading-relaxed text-neutral-600 sm:mt-2">{t.content(text)}</p>
           </div>
         </li>))}
       </ol>

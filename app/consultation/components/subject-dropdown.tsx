@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { useLayoutEffect, useRef, type ReactNode, type RefObject } from "react";
 import { createPortal } from "react-dom";
 
@@ -7,6 +10,7 @@ type Props = {
 };
 
 export default function SubjectDropdown({ anchor, children }: Props) {
+  const t = useTranslations();
   const dropdown = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -43,7 +47,7 @@ export default function SubjectDropdown({ anchor, children }: Props) {
 
   return createPortal(
     <div ref={dropdown} className="fixed z-50 flex max-h-96 flex-col overflow-hidden rounded-xl bg-white shadow-xl">
-      {children}
+      {t.content(children)}
     </div>,
     document.body,
   );

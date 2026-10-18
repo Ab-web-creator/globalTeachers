@@ -1,9 +1,11 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { useEffect, useRef, useState } from "react";
 import { StrokeIcon, programIconPaths } from "@/app/components/svg";
 
 export default function NewFileFolderDialog({ onCreate, onClose }: { onCreate: (name: string) => Promise<void>; onClose: () => void }) {
+  const t = useTranslations();
   const dialogRef = useRef<HTMLDialogElement>(null);
   const submitting = useRef(false);
   const [name, setName] = useState("");
@@ -40,14 +42,14 @@ export default function NewFileFolderDialog({ onCreate, onClose }: { onCreate: (
       }}
       className="fixed inset-0 m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-sm overflow-y-auto rounded-3xl border-0 bg-white p-6 text-brand-700 shadow-2xl backdrop:bg-neutral-950/40 backdrop:backdrop-blur-sm">
       <div className="mb-4 flex size-12 items-center justify-center rounded-2xl bg-brand-50 text-brand-500"><StrokeIcon path={programIconPaths.openFolder} className="size-7" /></div>
-      <h2 id="new-folder-title" className="text-xl font-semibold">Новая папка</h2>
+      <h2 id="new-folder-title" className="text-xl font-semibold">{t("client.newFileFolderDialog.message0140")}</h2>
       <form onSubmit={event => { event.preventDefault(); void create(); }} className="mt-5">
-        <label htmlFor="new-file-folder-name" className="text-sm font-medium">Название папки</label>
-        <input id="new-file-folder-name" autoFocus required maxLength={80} disabled={busy} value={name} onChange={event => setName(event.target.value)} placeholder="Например, Учебные материалы" className="mt-2 w-full rounded-xl border border-brand-200 px-3 py-3 text-base focus:outline-2 focus:-outline-offset-2 focus:outline-brand-500" />
-        {error && <p role="alert" className="mt-3 text-sm text-red-600">{error}</p>}
+        <label htmlFor="new-file-folder-name" className="text-sm font-medium">{t("client.newFileFolderDialog.message0141")}</label>
+        <input id="new-file-folder-name" autoFocus required maxLength={80} disabled={busy} value={name} onChange={event => setName(event.target.value)} placeholder={t("client.newFileFolderDialog.message0142")} className="mt-2 w-full rounded-xl border border-brand-200 px-3 py-3 text-base focus:outline-2 focus:-outline-offset-2 focus:outline-brand-500" />
+        {t.content(error && <p role="alert" className="mt-3 text-sm text-red-600">{t.content(error)}</p>)}
         <div className="mt-6 flex justify-end gap-2">
-          <button type="button" disabled={busy} onClick={onClose} className="rounded-xl px-4 py-2.5 text-sm font-semibold text-brand-500 hover:bg-brand-50">Отмена</button>
-          <button disabled={busy || !name.trim()} className="rounded-xl bg-brand-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-600 disabled:opacity-50">{busy ? "Создаём…" : "Создать"}</button>
+          <button type="button" disabled={busy} onClick={onClose} className="rounded-xl px-4 py-2.5 text-sm font-semibold text-brand-500 hover:bg-brand-50">{t("common.cancel")}</button>
+          <button disabled={busy || !name.trim()} className="rounded-xl bg-brand-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-600 disabled:opacity-50">{t.content(busy ? "Создаём…" : "Создать")}</button>
         </div>
       </form>
     </dialog>

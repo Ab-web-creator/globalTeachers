@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { ConsultationBenefitIcon } from "@/app/components/svg";
 import ProgramSection from "../../programs/components/program-section";
 
@@ -33,8 +36,9 @@ const benefits = [
 ] as const;
 
 export default function VipConsultationBenefitsSection() {
+  const t = useTranslations();
   return (
-    <ProgramSection id="vip-consultation-benefits" label="Ваша консультация" title="Что вы получите">
+    <ProgramSection id="vip-consultation-benefits" label={t("payment.vipConsultationBenefitsSection.message1105")} title={t("payment.vipConsultationBenefitsSection.message1106")}>
       <ul className="mt-10 grid gap-4 md:grid-cols-2 lg:gap-6">
         {benefits.map(({ icon, title, description, background, iconColor }, index) => (
           <li key={title} className={`flex flex-col rounded-3xl border border-neutral-200/70 bg-linear-to-br p-5 shadow-sm sm:p-7 ${background}`}>
@@ -44,8 +48,8 @@ export default function VipConsultationBenefitsSection() {
               </span>
               <span aria-hidden="true" className="text-sm font-medium tabular-nums text-neutral-400">0{index + 1}</span>
             </div>
-            <h3 className="max-w-sm text-xl font-semibold leading-snug text-brand-700">{title}</h3>
-            <p className="mt-3 text-base leading-relaxed text-neutral-600">{description}</p>
+            <h3 className="max-w-sm text-xl font-semibold leading-snug text-brand-700">{t.content(title)}</h3>
+            <p className="mt-3 text-base leading-relaxed text-neutral-600">{t.content(description)}</p>
           </li>
         ))}
       </ul>

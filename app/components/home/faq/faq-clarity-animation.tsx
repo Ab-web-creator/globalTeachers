@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { whenHeroSlidesReady } from "@/app/components/image-schedule";
 import { FaqClarityIllustration } from "@/app/components/svg";
 import Link from "next/link";
@@ -7,6 +8,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import styles from "./faq-clarity-animation.module.css";
 
 export default function FaqClarityAnimation({ hidden }: { hidden: boolean }) {
+  const t = useTranslations();
   const container = useRef<HTMLDivElement>(null);
   const [started, setStarted] = useState(false);
   const [ornament, setOrnament] = useState("");
@@ -84,10 +86,9 @@ export default function FaqClarityAnimation({ hidden }: { hidden: boolean }) {
 
   return (
     <div ref={container} data-started={started} className={`${styles.art} pointer-events-none absolute right-0 bottom-0 hidden w-5/12 max-w-lg overflow-hidden xl:right-4 ${hidden ? "" : "lg:block"}`}>
-      <FaqClarityIllustration ornament={ornament} className="h-auto w-full" />
+      <FaqClarityIllustration translate={t.content} ornament={ornament} className="h-auto w-full" />
       <Link href="/consultation" data-faq-note className="action-gradient pointer-events-auto absolute top-[85.49%] left-[4.55%] mt-3 inline-flex items-center justify-center gap-3 whitespace-nowrap rounded-full px-6 py-3 text-base font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-500">
-        Начать с консультации
-      </Link>
+        {t("home.faq.faqClarityAnimation.message0377")}</Link>
     </div>
   );
 }

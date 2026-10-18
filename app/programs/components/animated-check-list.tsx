@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { programIconPaths, StrokeIcon, type ProgramIconName } from "@/app/components/svg";
 import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./animated-check-list.module.css";
@@ -7,7 +8,8 @@ import styles from "./animated-check-list.module.css";
 export default function AnimatedCheckList({ items, icon = "question", columns = false }: {
   items: readonly string[]; icon?: ProgramIconName; columns?: boolean;
 }) {
-  const questions = useMemo(() => items.map((text) => text.replace(/[;.]$/, "")), [items]);
+  const t = useTranslations();
+  const questions = useMemo(() => items.map((text) => t.content(text).replace(/[;.]$/, "")), [items, t]);
   const container = useRef<HTMLDivElement>(null);
   const [started, setStarted] = useState(false);
   const [progress, setProgress] = useState({ question: 0, letter: 0 });
@@ -54,19 +56,19 @@ export default function AnimatedCheckList({ items, icon = "question", columns = 
               <span aria-hidden="true" className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-500">
                 <StrokeIcon path={programIconPaths[icon]} className="size-4" />
               </span>
-              <span aria-label={question} className="leading-relaxed text-neutral-700">
+              <span aria-label={t.content(question)} className="leading-relaxed text-neutral-700">
                 <span aria-hidden="true">
                   {question.split(" ").map((word, index) => (
                     <span key={index}>
-                      {index > 0 && " "}
+                      {t.content(index > 0 && " ")}
                       <span className="inline-block whitespace-nowrap">
                         {Array.from(word).map((character, position) => {
                           const preceding = question.split(" ").slice(0, index).reduce((total, text) => total + text.length + 1, 0);
                           const bold = questionIndex < progress.question || (questionIndex === progress.question && preceding + position < progress.letter);
                           return (
                             <span key={position} className={styles.letter}>
-                              <span className="invisible font-semibold">{character}</span>
-                              <span className={styles.visible} style={{ fontWeight: bold ? 600 : 400 }}>{character}</span>
+                              <span className="invisible font-semibold">{t.content(character)}</span>
+                              <span className={styles.visible} style={{ fontWeight: bold ? 600 : 400 }}>{t.content(character)}</span>
                             </span>
                           );
                         })}

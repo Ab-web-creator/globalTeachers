@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { BrandLogo, HeaderBackArrowIcon, MenuToggleIcon } from "@/app/components/svg";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -9,6 +10,7 @@ import MobileNavigation from "./mobile-navigation";
 import useCompactHeader from "./use-compact-header";
 
 export default function SiteHeader({ inFlow = false }: { inFlow?: boolean; }) {
+  const t = useTranslations();
   const [menuOpen, setMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
@@ -24,17 +26,17 @@ export default function SiteHeader({ inFlow = false }: { inFlow?: boolean; }) {
     <header ref={headerRef} inert={hideHeader} aria-hidden={hideHeader} className={`${inFlow ? "relative shrink-0" : "fixed inset-x-0 top-0"} z-40 isolate transition-opacity duration-200 motion-reduce:transition-none ${compact ? "bg-white text-brand-700 shadow-sm" : !hidden ? "bg-transparent text-white" : "bg-transparent text-white"} ${hideHeader ? "pointer-events-none opacity-0" : "opacity-100"}`}>
       <div className={`mx-auto flex max-w-400 items-center justify-between gap-6 px-6 transition-[min-height] duration-200 motion-reduce:transition-none sm:px-10 lg:px-16 xl:px-20 ${menuOpen ? "invisible" : ""} ${compact ? "min-h-14 lg:min-h-16" : "min-h-16 lg:min-h-18"}`}>
         <div className="flex min-w-0 items-center gap-2 sm:gap-3">
-          {backHref && (
-            <Link href={backHref} aria-label="Назад" className="-ml-2 flex size-9 shrink-0 items-center justify-center rounded-xl text-neutral-500 sm:ml-0 transition-colors hover:bg-neutral-100 hover:text-brand-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500 md:hidden">
+          {t.content(backHref && (
+            <Link href={backHref} aria-label={t("home.siteHeader.message0455")} className="-ml-2 flex size-9 shrink-0 items-center justify-center rounded-xl text-neutral-500 sm:ml-0 transition-colors hover:bg-neutral-100 hover:text-brand-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500 md:hidden">
               <HeaderBackArrowIcon />
             </Link>
-          )}
+          ))}
           <Link href="/" aria-label="TeacherNavigator home" className="shrink-0 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-500">
             <BrandLogo variant={compact ? "light" : "dark"} globeScale={0.7} centerWordmark className={`transition-[width] duration-200 motion-reduce:transition-none ${compact ? "w-24 lg:w-28" : "w-28 lg:w-32"}`} aria-hidden="true" />
           </Link>
         </div>
         <DesktopNavigation onHero={!compact} />
-        <button type="button" aria-expanded={menuOpen} aria-controls="mobile-menu" aria-label={menuOpen ? "Закрыть меню" : "Открыть меню"} onClick={() => setMenuOpen(!menuOpen)} className={`rounded-xl p-3 md:hidden ${compact ? "text-brand-500" : "text-white"}`}>
+        <button type="button" aria-expanded={menuOpen} aria-controls="mobile-menu" aria-label={t.content(menuOpen ? "Закрыть меню" : "Открыть меню")} onClick={() => setMenuOpen(!menuOpen)} className={`rounded-xl p-3 md:hidden ${compact ? "text-brand-500" : "text-white"}`}>
           <MenuToggleIcon open={menuOpen} />
         </button>
       </div>

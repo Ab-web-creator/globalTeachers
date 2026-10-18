@@ -1,9 +1,11 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import styles from "./count-up.module.css";
 
 export default function CountUp({ value, delay = 0 }: { value: number; delay?: number }) {
+  const t = useTranslations();
   const container = useRef<HTMLSpanElement>(null);
   const [rolling, setRolling] = useState(false);
   const formatted = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -39,7 +41,7 @@ export default function CountUp({ value, delay = 0 }: { value: number; delay?: n
 
   return (
     <span ref={container} className="inline-flex tabular-nums">
-      <span className="sr-only">{formatted}+</span>
+      <span className="sr-only">{t.content(formatted)}+</span>
       <span aria-hidden="true" className="inline-flex">
         {formatted.split("").map((character, index) => {
           if (character === " ") return <span key={index} className="whitespace-pre"> </span>;
@@ -53,7 +55,7 @@ export default function CountUp({ value, delay = 0 }: { value: number; delay?: n
 
           return (
             <span key={index} className={styles.digit} style={style}>
-              <span className={rolling ? styles.fallback : undefined}>{character}</span>
+              <span className={rolling ? styles.fallback : undefined}>{t.content(character)}</span>
               {rolling && <span className={styles.reel}>
                 {Array.from({ length: steps + 1 }, (_, step) => <span key={step} className={styles.cell}>{step % 10}</span>)}
               </span>}

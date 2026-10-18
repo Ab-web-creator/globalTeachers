@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "@/lib/i18n/use-translations";
 import type { ChangeEvent } from "react";
 import PlansFields from "./plans-fields";
 import ExperienceFields from "./experience-fields";
@@ -24,6 +27,7 @@ const fields: Field[] = [
 ];
 
 export default function FormFields({ step, answers, onChange }: { step: number; answers: Answers; onChange: (name: keyof Answers, value: string) => void }) {
+  const t = useTranslations();
   function update(event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
     onChange(event.target.name as keyof Answers, event.target.value);
   }
@@ -32,16 +36,16 @@ export default function FormFields({ step, answers, onChange }: { step: number; 
     <div className="flex min-w-0 flex-col gap-6">
       {fields.filter((field) => names.includes(field.name)).map((field) => (
         <label key={field.name} className="block text-sm font-medium" htmlFor={`consultation-${field.name}`}>
-          {field.label}{field.optional ? <span className="font-normal text-neutral-500"> (необязательно)</span> : <RequiredMark />}
+          {t.content(field.label)}{field.optional ? <span className="font-normal text-neutral-500"> {" "}{t("consultation.choiceField.message0462")}</span> : <RequiredMark />}
           {field.options ? (
             <FormSelect id={`consultation-${field.name}`} name={field.name} value={answers[field.name]} onChange={update} autoComplete={field.autocomplete} required className={fieldClass}>
-              <option value="" disabled>{field.placeholder ?? "Выберите вариант"}</option>
-              {field.options.map((option) => <option key={option}>{option}</option>)}
+              <option value="" disabled>{t.content(field.placeholder ?? "Выберите вариант")}</option>
+              {field.options.map((option) => <option value={option} key={option}>{t.content(option)}</option>)}
             </FormSelect>
           ) : field.multiline ? (
-            <textarea id={`consultation-${field.name}`} name={field.name} value={answers[field.name]} onChange={update} placeholder={field.placeholder} required rows={3} maxLength={1500} className={`${fieldClass} mt-2 resize-y`} />
+            <textarea id={`consultation-${field.name}`} name={field.name} value={answers[field.name]} onChange={update} placeholder={t.content(field.placeholder)} required rows={3} maxLength={1500} className={`${fieldClass} mt-2 resize-y`} />
           ) : (
-            <input id={`consultation-${field.name}`} name={field.name} type={field.type ?? "text"} autoComplete={field.autocomplete} value={answers[field.name]} onChange={update} placeholder={field.placeholder} required={!field.optional} maxLength={200} pattern={field.type === "email" ? undefined : field.optional ? undefined : ".*\\S.*"} className={`${fieldClass} mt-2`} />
+            <input id={`consultation-${field.name}`} name={field.name} type={field.type ?? "text"} autoComplete={field.autocomplete} value={answers[field.name]} onChange={update} placeholder={t.content(field.placeholder)} required={!field.optional} maxLength={200} pattern={field.type === "email" ? undefined : field.optional ? undefined : ".*\\S.*"} className={`${fieldClass} mt-2`} />
           )}
         </label>
       ))}

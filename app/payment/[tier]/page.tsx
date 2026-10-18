@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { translateMetadata } from "@/lib/i18n/server";
 import { notFound } from "next/navigation";
 import PageHeader from "../../components/page-header";
 import { programs } from "../../components/home/categories/programs";
@@ -22,11 +23,11 @@ async function getProgram(params: Props["params"]) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const program = await getProgram(params);
-  return {
+  return await translateMetadata({
     title: `Оплата ${program.tier} — TeacherNavigator`,
     description: `Выбранная программа ${program.tier}: стоимость и оформление оплаты.`,
     robots: { index: false, follow: true },
-  };
+  });
 }
 
 export default async function PaymentPage({ params }: Props) {

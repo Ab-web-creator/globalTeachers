@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { ResearchIdeaIcon } from "@/app/components/svg";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type FormEvent } from "react";
@@ -17,6 +18,7 @@ import { englishNotice, isBeginnerEnglish } from "./english-notice";
 import { getSubjectNotice, subjectNotices, type SubjectNoticeKind } from "./subject-notices";
 
 export default function ConsultationForm() {
+  const t = useTranslations();
   const router = useRouter();
   const [outcome, setOutcome] = useState<"unsupported_subjects" | "not-enough-education" | "not-enough-english" | null>(null);
   const [step, setStep] = useState(0);
@@ -157,21 +159,21 @@ export default function ConsultationForm() {
         <div ref={scrollArea} className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
           <div className="bg-white px-4 py-5 lg:px-8 lg:py-8 xl:px-10 xl:py-10">
             <StepIndicator step={step} />
-            <h2 ref={heading} tabIndex={-1} id="form-heading" className="mt-5 text-2xl font-semibold tracking-tight outline-none sm:mt-8">{consultationSteps[step].title}</h2>
-            <p id="step-description" className={`mt-2 text-sm leading-relaxed ${outcome === "not-enough-english" ? "text-purple-900" : "text-neutral-500"}`}>{outcome === "not-enough-english" ? <>Вы указали, что ваш уровень английского — «{answers.english}».</> : outcome === "not-enough-education" ? "Вы указали, что ваш уровень образования — среднее специальное." : consultationSteps[step].description}</p>
+            <h2 ref={heading} tabIndex={-1} id="form-heading" className="mt-5 text-2xl font-semibold tracking-tight outline-none sm:mt-8">{t.content(consultationSteps[step].title)}</h2>
+            <p id="step-description" className={`mt-2 text-sm leading-relaxed ${outcome === "not-enough-english" ? "text-purple-900" : "text-neutral-500"}`}>{outcome === "not-enough-english" ? <>{t("consultation.consultationForm.message0474")}{answers.english}».</> : outcome === "not-enough-education" ? "Вы указали, что ваш уровень образования — среднее специальное." : consultationSteps[step].description}</p>
           </div>
           <div className="px-4 py-6 lg:px-8 lg:py-8 xl:px-10 xl:py-10">
-            <fieldset disabled aria-label={outcome === "unsupported_subjects" ? "Выбранные предметы" : outcome === "not-enough-english" ? "Выбранный уровень английского" : "Выбранное образование"}>
+            <fieldset disabled aria-label={t.content(outcome === "unsupported_subjects" ? "Выбранные предметы" : outcome === "not-enough-english" ? "Выбранный уровень английского" : "Выбранное образование")}>
               <FormFields step={step} answers={answers} onChange={() => {}} />
             </fieldset>
-            {outcome === "unsupported_subjects" && <p role="status" className="mt-7 text-base leading-relaxed">Мы не предоставляем услуги сопровождения преподавателям с выбранными предметами.</p>}
+            {outcome === "unsupported_subjects" && <p role="status" className="mt-7 text-base leading-relaxed">{t("consultation.consultationForm.message0479")}</p>}
           </div>
         </div>
         <div className="flex shrink-0 flex-col gap-3 px-4 pt-6 pb-5 lg:px-8 lg:pb-8 xl:px-10 xl:pb-10">
-          {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
+          {t.content(error && <p role="alert" className="text-sm text-red-700">{t.content(error)}</p>)}
           <div className="flex gap-3">
-            {outcome !== "unsupported_subjects" && <button type="button" disabled={sending} onClick={() => { void closeOutcome("/#plans"); }} className="min-h-12 flex-1 rounded-xl border border-brand-200 px-4 py-3 text-sm font-medium hover:bg-brand-50 disabled:opacity-50">{outcome === "not-enough-english" ? "Выбрать программу" : "Выбрать Start"}</button>}
-            <button type="button" disabled={sending} onClick={() => { void closeOutcome("/"); }} className="action-gradient min-h-12 flex-1 rounded-xl px-4 py-3 font-medium text-white disabled:opacity-50">{sending ? "Отправляем…" : "Закрыть"}</button>
+            {outcome !== "unsupported_subjects" && <button type="button" disabled={sending} onClick={() => { void closeOutcome("/#plans"); }} className="min-h-12 flex-1 rounded-xl border border-brand-200 px-4 py-3 text-sm font-medium hover:bg-brand-50 disabled:opacity-50">{t.content(outcome === "not-enough-english" ? "Выбрать программу" : "Выбрать Start")}</button>}
+            <button type="button" disabled={sending} onClick={() => { void closeOutcome("/"); }} className="action-gradient min-h-12 flex-1 rounded-xl px-4 py-3 font-medium text-white disabled:opacity-50">{t.content(sending ? "Отправляем…" : "Закрыть")}</button>
           </div>
         </div>
       </div> : !sent ? <form inert={noticeOpen} noValidate onSubmit={submit} className="flex min-h-0 flex-1 flex-col">
@@ -180,15 +182,15 @@ export default function ConsultationForm() {
             <div className="flex min-h-full flex-col">
               <div className={`bg-white px-4 lg:px-8 xl:px-10 ${isEnglishStep ? "pt-5 pb-4 lg:pt-8 xl:pt-10" : "py-5 lg:py-8 xl:py-10"}`}>
                 <StepIndicator step={step} />
-                <h2 ref={heading} tabIndex={-1} id="form-heading" className="mt-5 text-2xl font-semibold tracking-tight outline-none sm:mt-8">{consultationSteps[step].title}</h2>
-                {consultationSteps[step].description && <p id="step-description" className="mt-2 text-sm leading-relaxed text-neutral-500">{consultationSteps[step].description}</p>}
+                <h2 ref={heading} tabIndex={-1} id="form-heading" className="mt-5 text-2xl font-semibold tracking-tight outline-none sm:mt-8">{t.content(consultationSteps[step].title)}</h2>
+                {consultationSteps[step].description && <p id="step-description" className="mt-2 text-sm leading-relaxed text-neutral-500">{t.content(consultationSteps[step].description)}</p>}
               </div>
               <div className={`flex min-w-0 flex-1 flex-col gap-6 bg-white px-4 lg:px-8 xl:px-10 ${isEnglishStep ? "pt-5.25 pb-6 lg:pb-8 xl:pb-10" : "py-6 lg:py-8 xl:py-10"}`}>
                 <div>
                   {consultationSteps[step].fields[0] === "firstName"
                     ? <NameFields value={answers} error={error} errorField={errorField} errorRef={errorMessage} onChange={(value) => { setError(""); setAnswers((previous) => ({ ...previous, ...value })); }} />
                     : <FormFields step={step} answers={answers} onChange={(name, value) => { setError(""); setAnswers((previous) => ({ ...previous, [name]: value })); if (name === "english" && isBeginnerEnglish(value)) setEnglishNoticeOpen(true); if (name === "education" && value === "Среднее специальное") setEducationNoticeOpen(true); }} />}
-                  {error && consultationSteps[step].fields[0] !== "firstName" && <p ref={errorMessage} id="step-error" role="alert" className={`mt-2 text-sm text-red-700 ${["country", "email", "subject", "goals"].includes(consultationSteps[step].fields[0]) ? "px-4" : ""}`}>{error}</p>}
+                  {t.content(error && consultationSteps[step].fields[0] !== "firstName" && <p ref={errorMessage} id="step-error" role="alert" className={`mt-2 text-sm text-red-700 ${["country", "email", "subject", "goals"].includes(consultationSteps[step].fields[0]) ? "px-4" : ""}`}>{t.content(error)}</p>)}
                 </div>
               </div>
             </div>
@@ -229,29 +231,29 @@ export default function ConsultationForm() {
               <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-brand-100 bg-white text-brand-500 shadow-sm">
                 <ResearchIdeaIcon aria-hidden="true" className="size-6" />
               </span>
-              <h3 id="consultation-notice-title" className="min-w-0 text-2xl font-semibold leading-snug tracking-tight text-brand-950">{notice.title}</h3>
+              <h3 id="consultation-notice-title" className="min-w-0 text-2xl font-semibold leading-snug tracking-tight text-brand-950">{t.content(notice.title)}</h3>
             </div>
-          ) : <h3 id="consultation-notice-title" className="text-2xl font-semibold">{notice.title}</h3>}
+          ) : <h3 id="consultation-notice-title" className="text-2xl font-semibold">{t.content(notice.title)}</h3>}
           <div id="consultation-notice-reason" className={`mt-7 space-y-5 text-base leading-relaxed ${englishNoticeOpen ? "text-neutral-600" : ""}`}>
-            {typeof notice.reason === "string" ? englishNoticeOpen ? notice.reason.split(/ (?=С начальным уровнем)/).map((paragraph) => <p key={paragraph}>{paragraph}</p>) : <p>{notice.reason}</p> : notice.reason.map((paragraph) => (
-              <p key={paragraph.text}>{paragraph.lead && <><strong>{paragraph.lead}</strong>{" "}</>}{paragraph.text}</p>
+            {typeof notice.reason === "string" ? englishNoticeOpen ? notice.reason.split(/ (?=С начальным уровнем)/).map((paragraph) => <p key={paragraph}>{t.content(paragraph)}</p>) : <p>{t.content(notice.reason)}</p> : notice.reason.map((paragraph) => (
+              <p key={paragraph.text}>{t.content(paragraph.lead && <><strong>{t.content(paragraph.lead)}</strong>{t.content(" ")}</>)}{t.content(paragraph.text)}</p>
             ))}
           </div>
-          {notice.exclusion && <p id="consultation-notice-exclusion" className="mt-4 text-base font-semibold leading-relaxed">{notice.exclusion}</p>}
-          {!educationNoticeOpen && !englishNoticeOpen && noticeKind && <p className="mt-7 text-base leading-relaxed">{subjectNotices[noticeKind].recommendation}</p>}
-          {educationNoticeOpen && <p id="education-notice-recommendation" className="mt-4 text-base leading-relaxed">{educationNotice.recommendation}</p>}
+          {t.content(notice.exclusion && <p id="consultation-notice-exclusion" className="mt-4 text-base font-semibold leading-relaxed">{t.content(notice.exclusion)}</p>)}
+          {!educationNoticeOpen && !englishNoticeOpen && noticeKind && <p className="mt-7 text-base leading-relaxed">{t.content(subjectNotices[noticeKind].recommendation)}</p>}
+          {educationNoticeOpen && <p id="education-notice-recommendation" className="mt-4 text-base leading-relaxed">{t.content(educationNotice.recommendation)}</p>}
           {englishNoticeOpen && (
             <div className="mt-7 rounded-2xl border border-brand-100 bg-brand-50/70 p-5 sm:p-6">
-              <p className="text-sm font-semibold text-brand-600">С чего начать</p>
-              <p id="english-notice-recommendation" className="mt-3 text-base leading-relaxed text-brand-800">{englishNotice.recommendation}</p>
+              <p className="text-sm font-semibold text-brand-600">{t("consultation.consultationForm.message0483")}</p>
+              <p id="english-notice-recommendation" className="mt-3 text-base leading-relaxed text-brand-800">{t.content(englishNotice.recommendation)}</p>
             </div>
           )}
-          {notice.recommendStart && <p className="mt-4 text-base leading-relaxed">Однако программа <strong>START</strong> поможет вам оценить свои возможности и рассмотреть альтернативные пути международной карьеры.</p>}
-          {error && <p role="alert" className="mt-4 text-sm text-red-700">{error}</p>}
-          {!englishNoticeOpen && <button ref={noticeButton} type="button" disabled={sending} onClick={() => { void finishCase(educationNoticeOpen ? "not-enough-education" : "unsupported_subjects").catch((cause) => setError(cause instanceof Error ? cause.message : "Не удалось сохранить заявку. Попробуйте ещё раз.")); }} className="mt-6 min-h-12 rounded-xl bg-brand-500 px-5 py-3 font-medium text-white hover:bg-brand-600">{sending ? "Сохраняем…" : "Продолжить"}</button>}
+          {notice.recommendStart && <p className="mt-4 text-base leading-relaxed">{t("consultation.consultationForm.message0484")}{" "}<strong>START</strong> {" "}{t("consultation.consultationForm.message0485")}</p>}
+          {t.content(error && <p role="alert" className="mt-4 text-sm text-red-700">{t.content(error)}</p>)}
+          {!englishNoticeOpen && <button ref={noticeButton} type="button" disabled={sending} onClick={() => { void finishCase(educationNoticeOpen ? "not-enough-education" : "unsupported_subjects").catch((cause) => setError(cause instanceof Error ? cause.message : "Не удалось сохранить заявку. Попробуйте ещё раз.")); }} className="mt-6 min-h-12 rounded-xl bg-brand-500 px-5 py-3 font-medium text-white hover:bg-brand-600">{t.content(sending ? "Сохраняем…" : "Продолжить")}</button>}
         </div>
         {englishNoticeOpen && <div className="mt-8 flex shrink-0 flex-col gap-3 border-t border-brand-100 pt-6">
-          <button ref={noticeButton} type="button" disabled={sending} onClick={() => { void finishCase("not-enough-english").catch((cause) => setError(cause instanceof Error ? cause.message : "Не удалось сохранить заявку. Попробуйте ещё раз.")); }} className="action-gradient min-h-12 rounded-xl px-6 py-3 text-base font-semibold text-white transition-shadow hover:shadow-md disabled:opacity-50">{sending ? "Сохраняем…" : "Продолжить"}</button>
+          <button ref={noticeButton} type="button" disabled={sending} onClick={() => { void finishCase("not-enough-english").catch((cause) => setError(cause instanceof Error ? cause.message : "Не удалось сохранить заявку. Попробуйте ещё раз.")); }} className="action-gradient min-h-12 rounded-xl px-6 py-3 text-base font-semibold text-white transition-shadow hover:shadow-md disabled:opacity-50">{t.content(sending ? "Сохраняем…" : "Продолжить")}</button>
         </div>}
       </div>}
     </section>

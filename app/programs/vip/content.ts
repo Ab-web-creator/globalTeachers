@@ -2,130 +2,130 @@ import type { ProgramIconName } from "@/app/components/svg";
 
 export const hero = {
   intro: [
-    "Поиск работы в международной школе — это не один отклик и не одно собеседование. Это месяцы, в течение которых появляются вакансии, меняются планы, приходят ответы от школ, назначаются интервью, запрашиваются документы и возникают предложения, которые нужно оценивать.",
-    "Можно пройти весь этот путь самостоятельно. А можно пройти его вместе с человеком, который знает этот процесс изнутри.",
+    "programs.vip.content.message1231",
+    "programs.vip.content.message1232",
   ],
-  highlight: "Именно для этого создан VIP.",
+  highlight: "programs.vip.content.message1233",
 };
 
 export const difference = {
   tiers: [
-    { tier: "START", text: "Помогаем понять, куда двигаться." },
-    { tier: "PRO", text: "Профессионально готовим вас к поиску." },
-    { tier: "VIP", text: "Остаёмся рядом, когда поиск уже начался." },
+    { tier: "START", text: "programs.vip.content.message1234" },
+    { tier: "PRO", text: "programs.vip.content.message1235" },
+    { tier: "VIP", text: "programs.vip.content.message1236" },
   ],
   paragraphs: [
-    "От определения стратегии и подготовки документов до вакансий, заявок, интервью и предложения от школы — мы проходим каждый этап поиска вместе с вами, а не просто передаём вам готовые материалы и рекомендации.",
-    "Вы не получаете план со словами «теперь действуйте». Когда появляется новая вакансия, приходит ответ от школы или нужно принять важное решение, вы точно знаете, к кому обратиться.",
+    "programs.vip.content.message1237",
+    "programs.vip.content.message1238",
   ],
-  closing: "Мы действуем вместе с вами.",
+  closing: "programs.vip.content.message1239",
 };
 
 export const strategy = {
-  paragraphs: ["Мы подробно разбираем ваш опыт, образование, квалификацию, предмет, семейную ситуацию и карьерные цели."],
-  items: ["какие страны рассматривать;", "какие школы подходят вашему профилю;", "на какие позиции ориентироваться;", "когда начинать поиск;", "какие требования могут стать препятствием;", "на чём сделать акцент при подаче."],
-  closing: "Вместо случайных откликов появляется персональная стратегия поиска.",
+  paragraphs: ["programs.vip.content.message1240"],
+  items: ["programs.vip.content.message1241", "programs.vip.content.message1242", "programs.vip.content.message1243", "programs.vip.content.message1244", "programs.vip.content.message1245", "programs.vip.content.message1246"],
+  closing: "programs.vip.content.message1247",
 };
 
 export const preparation = {
-  paragraphs: ["Программа VIP включает все возможности START и PRO. Мы вместе готовим документы, профессиональный профиль и материалы для подачи заявок. Всё необходимое для уверенного выхода на международный рынок труда.", "Но на этом работа не заканчивается."],
+  paragraphs: ["programs.vip.content.message1248", "programs.vip.content.message1249"],
   items: [
-    { label: "профессиональное CV", icon: "document" },
-    { label: "сопроводительные письма", icon: "letter" },
+    { label: "programs.vip.content.message1250", icon: "document" },
+    { label: "programs.vip.content.message1251", icon: "letter" },
     { label: "Teacher Portfolio", icon: "folder" },
-    { label: "LinkedIn-профиль", icon: "link" },
-    { label: "подготовку к интервью", icon: "mic" },
-    { label: "пробное собеседование", icon: "chat" },
+    { label: "programs.vip.content.message1252", icon: "link" },
+    { label: "programs.vip.content.message1253", icon: "mic" },
+    { label: "programs.vip.content.message1254", icon: "chat" },
   ] satisfies { label: string; icon: ProgramIconName }[],
-  closing: "Именно здесь начинается главное отличие VIP.",
+  closing: "programs.vip.content.message1255",
 };
 
-export const searchIntroduction = "На каждом этапе поиска мы помогаем оценить возможности, подготовить убедительную заявку и уверенно пройти интервью. Вы принимаете решения с пониманием следующего шага и поддержкой специалиста.";
+export const searchIntroduction = "programs.vip.content.message1256";
 
 export const searchStages = [
   {
     id: "vip-vacancies",
-    title: "Вакансии рассматриваем вместе",
+    title: "programs.vip.content.message1257",
     paragraphs: [
-      "Не нужно самостоятельно просматривать десятки объявлений и каждый раз задаваться вопросом: подхожу ли я? Стоит ли откликаться? Насколько хороша эта школа?",
-      "Мы помогаем оценивать найденные возможности с учётом вашего конкретного профиля и выбранной стратегии. Смотрим требования школы, должность, страну, квалификационные и визовые условия.",
+      "programs.vip.content.message1258",
+      "programs.vip.content.message1259",
     ],
-    closing: "Наша цель — не максимальное количество откликов, а осмысленный поиск подходящих возможностей.",
+    closing: "programs.vip.content.message1260",
   },
   {
     id: "vip-applications",
-    title: "Каждая заявка — не просто отправленное CV",
+    title: "programs.vip.content.message1261",
     paragraphs: [
-      "Международные школы могут требовать application forms, cover letters, professional statements, references и дополнительные ответы.",
-      "В VIP мы помогаем пройти эти этапы и адаптировать подачу под конкретную позицию.",
+      "programs.vip.content.message1262",
+      "programs.vip.content.message1263",
     ],
-    closing: "Вы не остаётесь один на один с очередной формой и вопросом: «Что здесь лучше написать?»",
+    closing: "programs.vip.content.message1264",
   },
   {
     id: "vip-interviews",
-    title: "Получили приглашение? Готовимся к конкретной школе.",
+    title: "programs.vip.content.message1265",
     paragraphs: [
-      "Не к абстрактному «интервью в международной школе». К этой школе.",
-      "Изучаем её curriculum, ценности, требования вакансии и особенности позиции. Разбираем возможные вопросы. Выбираем сильные примеры из вашего опыта.",
-      "При необходимости готовимся к следующему этапу интервью или разговору с руководством школы.",
+      "programs.vip.content.message1266",
+      "programs.vip.content.message1267",
+      "programs.vip.content.message1268",
     ],
-    closing: "После интервью разбираем, как оно прошло и что можно улучшить перед следующим этапом.",
+    closing: "programs.vip.content.message1269",
   },
 ];
 
 export const offer = {
-  paragraphs: ["Получить предложение от школы — важный шаг, но не стоит торопиться с решением. Высокая зарплата ещё не означает выгодные условия работы. Важно внимательно изучить весь контракт, прежде чем его принять."],
-  itemsTitle: "Мы смотрим на предложение целиком:",
+  paragraphs: ["programs.vip.content.message1270"],
+  itemsTitle: "programs.vip.content.message1271",
   items: [
-    { label: "зарплата", icon: "wallet" },
-    { label: "жильё", icon: "home" },
-    { label: "налоги", icon: "receipt" },
-    { label: "медицинская страховка", icon: "health" },
-    { label: "перелёты", icon: "plane" },
-    { label: "обучение детей", icon: "school" },
-    { label: "визовая поддержка", icon: "passport" },
+    { label: "programs.vip.content.message1272", icon: "wallet" },
+    { label: "programs.vip.content.message1273", icon: "home" },
+    { label: "programs.vip.content.message1274", icon: "receipt" },
+    { label: "programs.vip.content.message1275", icon: "health" },
+    { label: "programs.vip.content.message1276", icon: "plane" },
+    { label: "programs.vip.content.message1277", icon: "school" },
+    { label: "programs.vip.content.message1278", icon: "passport" },
     { label: "relocation", icon: "truck" },
-    { label: "продолжительность контракта", icon: "calendar" },
-    { label: "испытательный срок", icon: "clock" },
-    { label: "другие условия", icon: "more" },
+    { label: "programs.vip.content.message1279", icon: "calendar" },
+    { label: "programs.vip.content.message1280", icon: "clock" },
+    { label: "programs.vip.content.message1281", icon: "more" },
   ] satisfies { label: string; icon: ProgramIconName }[],
-  closing: "Помогаем понять, какие вопросы необходимо задать школе до подписания договора. А если предложений несколько — спокойно сравниваем их.",
+  closing: "programs.vip.content.message1282",
 };
 
 export const afterOffer = {
   paragraphs: [
-    "После подписания контракта начинается новая часть процесса.",
-    "Официальным оформлением визы и разрешения на работу обычно занимается школа в соответствии с законодательством страны, но со стороны кандидата тоже потребуется множество документов и действий.",
+    "programs.vip.content.message1283",
+    "programs.vip.content.message1284",
   ],
-  flow: "коммуникация со школой → документы → рабочая виза → подготовка к переезду.",
-  closing: "Мы помогаем понимать, что происходит и что необходимо сделать на вашей стороне. Поддержка охватывает четыре направления:",
+  flow: "programs.vip.content.message1285",
+  closing: "programs.vip.content.message1286",
 };
 
 export const value = {
-  description: "Ценность VIP выходит за рамки подготовки CV, подбора вакансий и отдельных консультаций. Это постоянная профессиональная поддержка на каждом этапе поиска работы: от первых заявок до обсуждения предложения от школы.",
-  statement: "Вы покупаете сопровождение процесса.",
+  description: "programs.vip.content.message1287",
+  statement: "programs.vip.content.message1288",
   moments: [
-    { title: "Новая вакансия", text: "Есть с кем обсудить, подходит ли она вам.", icon: "search" },
-    { title: "Сложная анкета", text: "Есть к кому обратиться, чтобы разобраться с вопросами школы.", icon: "document" },
-    { title: "Приглашение на интервью", text: "Вы знаете, как готовиться к разговору со школой.", icon: "mic" },
-    { title: "Предложение от школы", text: "Есть с кем спокойно разобрать условия.", icon: "letter" },
-    { title: "Возник вопрос?", text: "Вы не ищете ответы в одиночку и не начинаете каждый раз с нуля.", icon: "question" },
+    { title: "programs.vip.content.message1289", text: "programs.vip.content.message1290", icon: "search" },
+    { title: "programs.vip.content.message1291", text: "programs.vip.content.message1292", icon: "document" },
+    { title: "programs.vip.content.message1293", text: "programs.vip.content.message1294", icon: "mic" },
+    { title: "programs.vip.content.message1295", text: "programs.vip.content.message1296", icon: "letter" },
+    { title: "programs.vip.content.message1297", text: "programs.vip.content.message1298", icon: "question" },
   ] satisfies { title: string; text: string; icon: ProgramIconName }[],
 };
 
 export const audience = {
-  paragraphs: ["VIP — для педагога, который серьёзно решил выйти на международный рынок, но не хочет самостоятельно разбираться в каждом этапе процесса."],
-  itemsTitle: "Особенно если:",
-  items: ["у вас мало свободного времени;", "вы впервые ищете работу за рубежом;", "рассматриваете несколько стран;", "переезжаете с семьёй;", "не хотите рисковать сильной возможностью из-за ошибки в заявке или интервью;", "вам важно иметь постоянную профессиональную поддержку."],
+  paragraphs: ["programs.vip.content.message1299"],
+  itemsTitle: "programs.vip.content.message1300",
+  items: ["programs.vip.content.message1301", "programs.vip.content.message1302", "programs.vip.content.message1303", "programs.vip.content.message1304", "programs.vip.content.message1305", "programs.vip.content.message1306"],
 };
 
 export const important = {
-  paragraphs: ["Мы не можем гарантировать получение предложения от школы. И не можем принимать решения вместо работодателя."],
-  note: "Решение о найме всегда принимает международная школа.",
-  closing: "VIP означает, что со своей стороны вы подходите к поиску подготовленно, последовательно и не в одиночку.",
+  paragraphs: ["programs.vip.content.message1307"],
+  note: "programs.vip.content.message1308",
+  closing: "programs.vip.content.message1309",
 };
 
 export const cta = {
-  title: "От решения искать работу за рубежом — до предложения от международной школы",
-  text: "Вы продолжаете жить, работать и заниматься своими делами. А когда международный поиск требует следующего шага — мы проходим его вместе с вами.",
+  title: "programs.vip.content.message1310",
+  text: "programs.vip.content.message1311",
 };

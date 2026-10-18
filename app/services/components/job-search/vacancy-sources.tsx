@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import Image from "next/image";
 import useScrollReveal from "@/app/components/home/use-scroll-reveal";
 import SectionHeading from "../section-heading";
@@ -8,21 +9,22 @@ import { vacancySources, vacancySourcesIntroduction } from "./content";
 import RegionMap from "./region-map";
 
 export default function VacancySources() {
+  const t = useTranslations();
   useScrollReveal("#vacancy-sources-descriptions [data-reveal]", true);
   return (
     <section aria-labelledby="vacancy-sources" className="py-12 sm:py-16 lg:py-20">
       <div className="grid items-start gap-10 xl:grid-cols-2 xl:gap-14">
         <div>
-          <SectionLabel>Источники вакансий</SectionLabel>
-          <SectionHeading id="vacancy-sources">Так где же искать вакансии?</SectionHeading>
-          <p className="mt-7 max-w-2xl text-lg leading-relaxed text-neutral-600">{vacancySourcesIntroduction}</p>
+          <SectionLabel>{t("services.jobSearch.vacancySources.message1724")}</SectionLabel>
+          <SectionHeading id="vacancy-sources">{t("services.jobSearch.vacancySources.message1725")}</SectionHeading>
+          <p className="mt-7 max-w-2xl text-lg leading-relaxed text-neutral-600">{t.content(vacancySourcesIntroduction)}</p>
           <ul id="vacancy-sources-descriptions" className="mt-10 space-y-6">
           {vacancySources.map(({ title, text }) => (
             <li data-reveal key={title} className="flex gap-4">
               <span aria-hidden="true" className="mt-2.5 size-2 shrink-0 rounded-full bg-brand-500" />
               <div>
-                <h3 className="text-lg font-semibold leading-snug">{title}</h3>
-                <p className="mt-1.5 text-lg leading-relaxed text-neutral-600">{text}</p>
+                <h3 className="text-lg font-semibold leading-snug">{t.content(title)}</h3>
+                <p className="mt-1.5 text-lg leading-relaxed text-neutral-600">{t.content(text)}</p>
               </div>
             </li>
           ))}

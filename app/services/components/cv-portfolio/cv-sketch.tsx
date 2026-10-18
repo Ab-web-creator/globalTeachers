@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "@/lib/i18n/use-translations";
 import type { ReactNode } from "react";
 
 function Bar({ className = "" }: { className?: string }) {
@@ -5,10 +8,11 @@ function Bar({ className = "" }: { className?: string }) {
 }
 
 function Region({ label, active, children }: { label: string; active: boolean; children: ReactNode }) {
+  const t = useTranslations();
   return (
     <div className={`relative rounded-xl p-3 transition-colors duration-300 ${active ? "bg-brand-50 text-brand-300 ring-2 ring-brand-300" : "text-neutral-200"}`}>
-      <span className={`absolute -top-3 right-3 rounded-full bg-brand-500 px-2.5 py-0.5 text-xs font-semibold text-white transition-opacity duration-300 ${active ? "opacity-100" : "opacity-0"}`}>{label}</span>
-      {children}
+      <span className={`absolute -top-3 right-3 rounded-full bg-brand-500 px-2.5 py-0.5 text-xs font-semibold text-white transition-opacity duration-300 ${active ? "opacity-100" : "opacity-0"}`}>{t.content(label)}</span>
+      {t.content(children)}
     </div>
   );
 }
@@ -27,9 +31,10 @@ function Entry({ lines }: { lines: string[] }) {
 }
 
 export default function CvSketch({ labels, active }: { labels: string[]; active: number }) {
+  const t = useTranslations();
   return (
     <div aria-hidden="true" className="flex aspect-3/4 flex-col justify-between gap-2 rounded-2xl border border-neutral-200 bg-white p-5 shadow-xl shadow-neutral-900/5">
-      <Region label={labels[0]} active={active === 0}>
+      <Region label={t.content(labels[0])} active={active === 0}>
         <div className="flex items-center gap-4">
           <span className="size-14 shrink-0 rounded-full bg-current" />
           <div className="flex-1 space-y-2">
@@ -41,21 +46,21 @@ export default function CvSketch({ labels, active }: { labels: string[]; active:
           </div>
         </div>
       </Region>
-      <Region label={labels[1]} active={active === 1}>
+      <Region label={t.content(labels[1])} active={active === 1}>
         <Heading />
         <div className="space-y-3">
           <Entry lines={["w-5/6"]} />
           <Entry lines={["w-2/3"]} />
         </div>
       </Region>
-      <Region label={labels[2]} active={active === 2}>
+      <Region label={t.content(labels[2])} active={active === 2}>
         <Heading />
         <div className="space-y-3">
           <Entry lines={["w-full", "w-11/12", "w-3/4"]} />
           <Entry lines={["w-full", "w-4/5", "w-2/3"]} />
         </div>
       </Region>
-      <Region label={labels[3]} active={active === 3}>
+      <Region label={t.content(labels[3])} active={active === 3}>
         <Heading />
         <div className="space-y-2">
           {["w-3/4", "w-2/3", "w-4/5", "w-3/5"].map((width, index) => (
@@ -63,7 +68,7 @@ export default function CvSketch({ labels, active }: { labels: string[]; active:
           ))}
         </div>
       </Region>
-      <Region label={labels[4]} active={active === 4}>
+      <Region label={t.content(labels[4])} active={active === 4}>
         <Heading />
         <div className="flex flex-wrap gap-2">
           {["w-12", "w-16", "w-10", "w-14", "w-20", "w-12", "w-16"].map((width, index) => <span key={index} className={`h-4 rounded-full bg-current ${width}`} />)}

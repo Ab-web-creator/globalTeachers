@@ -1,5 +1,5 @@
 export const navigationItems = [
-  { label: "О нас", href: "/#about" },
-  { label: "Вакансии", href: "/services/job-search#job-platforms" },
-  { label: "Тарифы", href: "/#plans" },
+  { label: "navigation.about", href: "/#about" },
+  { label: "navigation.jobs", href: "/services/job-search#job-platforms" },
+  { label: "navigation.pricing", href: "/#plans" },
 ];

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { useEffect } from "react";
 import useStagePreview from "../use-stage-preview";
 import previewStyles from "../vertical-stage-tabs.module.css";
@@ -13,6 +14,7 @@ import PortfolioSpread from "./portfolio-spread";
 import SectionFade from "./section-fade";
 
 export default function TeacherPortfolio() {
+  const t = useTranslations();
   const count = portfolioExamples.length;
   const { container, active, exiting, select, stopPreview } = useStagePreview(true, count);
 
@@ -39,10 +41,10 @@ export default function TeacherPortfolio() {
     <section aria-labelledby="teacher-portfolio" className="relative isolate py-12 sm:py-16 lg:py-20">
       <SectionFade direction="down" halfHeight />
       <div>
-        <SectionLabel>Портфолио</SectionLabel>
-        <SectionHeading id="teacher-portfolio">А что такое Teacher Portfolio?</SectionHeading>
+        <SectionLabel>{t("services.cvPortfolio.teacherPortfolio.message1558")}</SectionLabel>
+        <SectionHeading id="teacher-portfolio">{t("services.cvPortfolio.teacherPortfolio.message1559")}</SectionHeading>
         <div className="mt-7 max-w-[55ch] space-y-4 text-lg leading-relaxed text-neutral-600">
-          <p>Портфолио дополняет CV и позволяет показать вашу работу более наглядно. Оно особенно полезно, если вы можете показать результат своей работы, а не только рассказать о нём. В него могут входить:</p>
+          <p>{t("services.cvPortfolio.teacherPortfolio.message1560")}</p>
         </div>
       </div>
       <ul className="mt-10 space-y-6 sm:hidden">
@@ -52,8 +54,8 @@ export default function TeacherPortfolio() {
               <Image src={image} alt="" fill sizes="100vw" className={`object-cover ${image === "/images/portfolio/achievements-teacher.webp" || image === "/images/portfolio/leadership.webp" ? "object-top" : ""}`} />
             </div>
             <div className="p-5">
-              <h3 className="text-xl font-semibold leading-snug">{title}</h3>
-              <p className="mt-3 text-base leading-relaxed text-neutral-600">{text}</p>
+              <h3 className="text-xl font-semibold leading-snug">{t.content(title)}</h3>
+              <p className="mt-3 text-base leading-relaxed text-neutral-600">{t.content(text)}</p>
             </div>
           </li>
         ))}
@@ -61,28 +63,26 @@ export default function TeacherPortfolio() {
       <div ref={container} onFocusCapture={stopPreview} onPointerDownCapture={stopPreview} className="mt-10 hidden sm:block">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold tracking-widest text-brand-600 uppercase">Пример портфолио</p>
-            <p className="mt-2 text-sm text-neutral-500">Откройте раздел и посмотрите, как можно представить свою работу.</p>
+            <p className="text-sm font-semibold tracking-widest text-brand-600 uppercase">{t("services.cvPortfolio.teacherPortfolio.message1561")}</p>
+            <p className="mt-2 text-sm text-neutral-500">{t("services.cvPortfolio.teacherPortfolio.message1562")}</p>
           </div>
-          <p className="text-sm tabular-nums text-neutral-500">Раздел {active + 1} из {count}</p>
+          <p className="text-sm tabular-nums text-neutral-500">{t("services.cvPortfolio.teacherPortfolio.message1563")}{" "}{active + 1} {" "}{t("client.clientFiles.message0105")}{" "}{count}</p>
         </div>
         <div className="relative mt-6 rounded-2xl border border-brand-200 bg-brand-100 p-2 shadow-sm sm:p-3">
           <div className="flex flex-col items-stretch gap-3 pb-2 sm:flex-row sm:items-start">
-          <div role="tablist" aria-label="Разделы портфолио" onPointerEnter={stopPreview} className="grid min-w-0 grid-cols-2 gap-2 sm:flex sm:flex-1 sm:flex-wrap">
+          <div role="tablist" aria-label={t("services.cvPortfolio.teacherPortfolio.message1564")} onPointerEnter={stopPreview} className="grid min-w-0 grid-cols-2 gap-2 sm:flex sm:flex-1 sm:flex-wrap">
             {portfolioExamples.map(({ tab }, index) => (<button key={tab} type="button" role="tab" id={`portfolio-tab-${index}`} aria-selected={active === index} aria-controls="portfolio-spread" onClick={() => select(index)} className={`rounded-lg border px-2 py-2 text-sm font-medium sm:rounded-none sm:rounded-t-lg sm:px-4 transition-colors ${active === index ? "border-white bg-white text-brand-600" : "border-brand-200 bg-brand-50 text-neutral-600 hover:bg-white"}`}>
-              {tab}
+              {t.content(tab)}
             </button>))}
           </div>
           <div onPointerEnter={stopPreview} className="flex shrink-0 justify-between gap-2 sm:ml-auto sm:justify-start">
-            <button type="button" aria-label="Предыдущий раздел" aria-controls="portfolio-spread" onClick={() => select((active + count - 1) % count)} className="group inline-flex items-center gap-1 rounded-xl bg-white/90 py-1 pr-4 pl-1 text-sm text-brand-500 shadow-sm">
+            <button type="button" aria-label={t("services.cvPortfolio.teacherPortfolio.message1565")} aria-controls="portfolio-spread" onClick={() => select((active + count - 1) % count)} className="group inline-flex items-center gap-1 rounded-xl bg-white/90 py-1 pr-4 pl-1 text-sm text-brand-500 shadow-sm">
               <span className="flex size-8 items-center justify-center rounded-full transition-colors duration-200 motion-reduce:transition-none group-hover:bg-neutral-200 group-hover:text-brand-600">
                 <BackLinkArrowIcon />
               </span>
-              Назад
-            </button>
-            <button type="button" aria-label="Следующий раздел" aria-controls="portfolio-spread" onClick={() => select((active + 1) % count)} className="group inline-flex items-center gap-1 rounded-xl bg-white/90 py-1 pr-1 pl-4 text-sm text-brand-500 shadow-sm">
-              Далее
-              <span className="flex size-8 items-center justify-center rounded-full transition-colors duration-200 motion-reduce:transition-none group-hover:bg-neutral-200 group-hover:text-brand-600">
+              {t("home.siteHeader.message0455")}</button>
+            <button type="button" aria-label={t("services.cvPortfolio.teacherPortfolio.message1566")} aria-controls="portfolio-spread" onClick={() => select((active + 1) % count)} className="group inline-flex items-center gap-1 rounded-xl bg-white/90 py-1 pr-1 pl-4 text-sm text-brand-500 shadow-sm">
+              {t("consultation.formNavigation.message0572")}<span className="flex size-8 items-center justify-center rounded-full transition-colors duration-200 motion-reduce:transition-none group-hover:bg-neutral-200 group-hover:text-brand-600">
                 <BackLinkArrowIcon className="rotate-180" />
               </span>
             </button>

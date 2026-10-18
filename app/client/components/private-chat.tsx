@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from "react";
 import { CallChatIcon, ChatSendIcon, PrivateChatIcon, TwoHeartsIcon } from "@/app/components/svg";
 import type { ChatMessage } from "../../../lib/client-area/types";
@@ -41,6 +42,7 @@ export default function PrivateChat({
   onDeleteMessage,
   onClearMessages,
 }: Props) {
+  const t = useTranslations();
   const [clearDialogOpen, setClearDialogOpen] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   useEffect(() => {
@@ -112,17 +114,16 @@ export default function PrivateChat({
     });
   }, [messages, admin, name]);
   useEffect(() => () => heartAnimations.current.forEach((animation) => animation.cancel()), []);
-  const dateFormat = new Intl.DateTimeFormat("ru-RU", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    timeZone,
-  });
-  const timeFormat = new Intl.DateTimeFormat("ru-RU", {
-    hour: "2-digit",
-    minute: "2-digit",
-    timeZone,
-  });
+  const dateFormat = {
+    format: (value: Date) => t.formatDate(value, {
+      day: "numeric", month: "long", year: "numeric", timeZone,
+    }),
+  };
+  const timeFormat = {
+    format: (value: Date) => t.formatDate(value, {
+      hour: "2-digit", minute: "2-digit", timeZone,
+    }),
+  };
 
   useEffect(() => {
     const log = logRef.current;
@@ -177,10 +178,10 @@ export default function PrivateChat({
             id="private-chat-title"
             className={`break-words font-semibold ${admin ? "text-base" : "text-base sm:text-lg"}`}
           >
-            {admin ? "Поговорим от души" : "Давайте поболтаем"}
+            {t.content(admin ? "Поговорим от души" : "Давайте поболтаем")}
           </h2>
           <p className={`${admin ? "mt-0" : "mt-1"} text-sm text-neutral-500`}>
-            {admin ? <>тут только вы и ваш клиент<span className="hidden sm:inline">: разговор приватный</span></> : <>О планах, сомнениях<span className="hidden sm:inline"> и всём, что хочется обсудить</span>.</>}
+            {admin ? <>{t("client.privateChat.message0153")}<span className="hidden sm:inline">{t("client.privateChat.message0154")}</span></> : <>{t("client.privateChat.message0155")}<span className="hidden sm:inline"> {" "}{t("client.privateChat.message0156")}</span>.</>}
           </p>
         </div>
       </header>
@@ -192,7 +193,7 @@ export default function PrivateChat({
             log.scrollHeight - log.scrollTop - log.clientHeight < 40;
         }}
         role="log"
-        aria-label="Личная переписка"
+        aria-label={t("client.privateChat.message0157")}
         aria-live="polite"
         aria-relevant="additions text"
         className={`flex flex-col gap-3 overflow-y-auto overscroll-auto bg-white px-4 py-5 sm:px-5 ${viewportHeight ? "min-h-0 flex-1" : `h-96 sm:h-112 ${fillHeight ? "lg:h-0 lg:min-h-64 lg:flex-1" : ""}`}`}
@@ -202,11 +203,11 @@ export default function PrivateChat({
             <span className="mx-auto flex size-14 items-center justify-center rounded-full bg-white text-brand-400">
               <CallChatIcon className="size-6" />
             </span>
-            <p className="mt-4 text-base font-medium">Начните разговор</p>
+            <p className="mt-4 text-base font-medium">{t("client.privateChat.message0158")}</p>
             <p className="mt-2 text-sm leading-relaxed text-neutral-500">
-              {admin
+              {t.content(admin
                 ? "Напишите клиенту — сообщения сохранятся на его личной странице."
-                : "Задайте вопрос или обсудите предстоящую консультацию. Переписка останется здесь."}
+                : "Задайте вопрос или обсудите предстоящую консультацию. Переписка останется здесь.")}
             </p>
           </div>
         )}
@@ -222,7 +223,7 @@ export default function PrivateChat({
             <div key={item.id} className="shrink-0">
               {day !== previous && (
                 <p className="my-3 text-center text-sm font-medium text-neutral-500">
-                  {day}
+                  {t.content(day)}
                 </p>
               )}
               <div
@@ -235,18 +236,18 @@ export default function PrivateChat({
                 >
                   {item.body}
                 </p>
-                {admin && item.client_deleted_at && <span className="mt-1 text-xs font-medium text-red-600">Клиент удалил это сообщение · исходный текст сохранён</span>}
+                {t.content(admin && item.client_deleted_at && <span className="mt-1 text-xs font-medium text-red-600">{t("client.privateChat.message0161")}</span>)}
                 {admin && Boolean(item.client_edit_history?.length) && (
                   <details className="mt-2 max-w-4/5 rounded-lg border border-amber-200 bg-amber-50 p-2 text-xs text-amber-900">
-                    <summary className="cursor-pointer font-medium">Клиент изменил сообщение · история ({item.client_edit_history!.length})</summary>
-                    <ol className="mt-2 space-y-2">{item.client_edit_history!.map((entry, revision) => <li key={revision} className="whitespace-pre-wrap break-words"><span className="font-medium">Версия {revision + 1} · {timeFormat.format(new Date(entry.changed_at))}</span><p className="mt-1">{entry.body}</p></li>)}</ol>
+                    <summary className="cursor-pointer font-medium">{t("client.privateChat.message0162")}{item.client_edit_history!.length})</summary>
+                    <ol className="mt-2 space-y-2">{item.client_edit_history!.map((entry, revision) => <li key={revision} className="whitespace-pre-wrap break-words"><span className="font-medium">{t("client.privateChat.message0163")}{" "}{revision + 1} · {t.content(timeFormat.format(new Date(entry.changed_at)))}</span><p className="mt-1">{entry.body}</p></li>)}</ol>
                   </details>
                 )}
-                {admin && item.hidden_from_client && !item.client_deleted_at && <span className="mt-1 text-xs text-amber-700">Удалено у клиента · видно только вам</span>}
+                {admin && item.hidden_from_client && !item.client_deleted_at && <span className="mt-1 text-xs text-amber-700">{t("client.privateChat.message0164")}</span>}
                 <div className="mt-1 flex max-w-full flex-wrap items-center justify-end gap-0.5 has-[form]:flex-col has-[form]:items-end">
-                  <p title={`${day}, ${timeFormat.format(date)} (${timeZone})`} className="pr-1 text-xs text-neutral-400">
-                    {!(admin && own) && <>{own ? "Вы" : item.author === "admin" ? "TeacherNavigator" : name} · </>}
-                    <time dateTime={new Date(item.created_at).toISOString()}>{timeFormat.format(date)}</time>
+                  <p title={t.content(`${day}, ${timeFormat.format(date)} (${timeZone})`)} className="pr-1 text-xs text-neutral-400">
+                    {!(admin && own) && <>{t.content(own ? "Вы" : item.author === "admin" ? "TeacherNavigator" : name)} · </>}
+                    <time dateTime={new Date(item.created_at).toISOString()}>{t.content(timeFormat.format(date))}</time>
                   </p>
                   {own && (admin || active) && onEditMessage && onDeleteMessage && (
                     <ChatMessageActions admin={admin} body={item.body} onEdit={body => onEditMessage(item.id, body)} onDelete={() => onDeleteMessage(item.id)} />
@@ -266,8 +267,8 @@ export default function PrivateChat({
         >
           <textarea
             ref={inputRef}
-            aria-label="Сообщение"
-            placeholder="Написать сообщение…"
+            aria-label={t("client.privateChat.message0166")}
+            placeholder={t("client.privateChat.message0167")}
             rows={1}
             maxLength={5000}
             value={draft}
@@ -291,7 +292,7 @@ export default function PrivateChat({
           <button
             type="submit"
             aria-label={
-              pending ? "Отправляем сообщение" : "Отправить сообщение"
+              t.content(pending ? "Отправляем сообщение" : "Отправить сообщение")
             }
             disabled={pending || !active || !draft.trim()}
             className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-500 text-white transition-colors hover:bg-brand-600 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500 disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-400"
@@ -301,9 +302,8 @@ export default function PrivateChat({
         </form>
         <div className="mt-2 flex flex-wrap items-center justify-between gap-2 px-2">
         <p className="hidden text-xs text-neutral-400 sm:block">
-          Enter — отправить · Shift+Enter — новая строка
-        </p>
-        {admin && onClearMessages && <button type="button" onClick={() => setClearDialogOpen(true)} disabled={pending || !messages.length} className="ml-auto rounded text-xs text-red-600 underline-offset-4 hover:underline focus-visible:-outline-offset-2 disabled:opacity-40">Удалить все</button>}
+          {t("client.privateChat.message0170")}</p>
+        {admin && onClearMessages && <button type="button" onClick={() => setClearDialogOpen(true)} disabled={pending || !messages.length} className="ml-auto rounded text-xs text-red-600 underline-offset-4 hover:underline focus-visible:-outline-offset-2 disabled:opacity-40">{t("client.privateChat.message0171")}</button>}
         </div>
 
       </div>

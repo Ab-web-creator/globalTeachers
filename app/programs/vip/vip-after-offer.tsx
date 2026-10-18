@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { offerAcceptedCheckIconPath, programIconPaths, StrokeIcon } from "@/app/components/svg";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -18,6 +19,7 @@ const steps = [
 ];
 
 export default function VipAfterOffer() {
+  const t = useTranslations();
   const timeline = useRef<HTMLOListElement>(null);
   const [activeStep, setActiveStep] = useState(0);
 
@@ -48,15 +50,15 @@ export default function VipAfterOffer() {
       <SectionFade tone="violet" direction="down" toWhite />
       <div className="grid items-center gap-10 min-[1000px]:grid-cols-12 min-[1000px]:gap-8">
         <div className="min-[1000px]:col-span-7">
-          <SectionLabel>После оффера</SectionLabel>
-          <SectionHeading id="vip-after-offer">Предложение принято.<br /><span className="text-brand-500">Что дальше?</span></SectionHeading>
+          <SectionLabel>{t("programs.vip.vipAfterOffer.message1322")}</SectionLabel>
+          <SectionHeading id="vip-after-offer">{t("programs.vip.vipAfterOffer.message1323")}<br /><span className="text-brand-500">{t("programs.vip.vipAfterOffer.message1324")}</span></SectionHeading>
           <Prose paragraphs={afterOffer.paragraphs} />
-          <p className="mt-6 text-lg font-semibold leading-relaxed text-neutral-600">{afterOffer.closing}</p>
+          <p className="mt-6 text-lg font-semibold leading-relaxed text-neutral-600">{t.content(afterOffer.closing)}</p>
         </div>
         <div className="hidden min-[1000px]:col-span-5 min-[1000px]:block">
           <div className="relative mx-auto w-full max-w-sm">
-            <Image src="/images/vip-after-offer-transparent.webp" alt="Документы, паспорт и подготовка к переезду" width={1254} height={1254} sizes="(min-width: 640px) 384px, 90vw" className="h-auto w-full object-contain" />
-            <p style={{ fontFamily: '"Segoe Print", "Bradley Hand", cursive' }} className="absolute bottom-1/8 left-1/4 -rotate-12 rounded-sm bg-brand-500 px-4 py-3 text-left text-sm italic leading-relaxed text-white shadow-md sm:px-5 sm:py-4 sm:text-lg">Новый этап.<br />Мы рядом.</p>
+            <Image src="/images/vip-after-offer-transparent.webp" alt={t("programs.vip.vipAfterOffer.message1325")} width={1254} height={1254} sizes="(min-width: 640px) 384px, 90vw" className="h-auto w-full object-contain" />
+            <p style={{ fontFamily: '"Segoe Print", "Bradley Hand", cursive' }} className="absolute bottom-1/8 left-1/4 -rotate-12 rounded-sm bg-brand-500 px-4 py-3 text-left text-sm italic leading-relaxed text-white shadow-md sm:px-5 sm:py-4 sm:text-lg">{t("programs.vip.vipAfterOffer.message1326")}<br />{t("programs.vip.vipAfterOffer.message1327")}</p>
           </div>
         </div>
       </div>
@@ -70,8 +72,8 @@ export default function VipAfterOffer() {
               </span>
             </div>
             <div className="min-w-0">
-              <h3 className={`text-lg font-semibold leading-snug text-brand-950 transition-colors duration-500 group-data-[active=true]:text-brand-600 motion-reduce:transition-none ${activeStep === -1 ? "group-hover:text-brand-600" : ""}`}>{title}</h3>
-              {index === 0 ? (<span className="mt-3 inline-flex items-center gap-2 text-lg text-brand-600"><StrokeIcon path={offerAcceptedCheckIconPath} className="size-5" />Принято</span>) : (<p className="mt-3 text-lg leading-relaxed text-neutral-600">{text}</p>)}
+              <h3 className={`text-lg font-semibold leading-snug text-brand-950 transition-colors duration-500 group-data-[active=true]:text-brand-600 motion-reduce:transition-none ${activeStep === -1 ? "group-hover:text-brand-600" : ""}`}>{t.content(title)}</h3>
+              {index === 0 ? (<span className="mt-3 inline-flex items-center gap-2 text-lg text-brand-600"><StrokeIcon path={offerAcceptedCheckIconPath} className="size-5" />{t("programs.vip.vipAfterOffer.message1328")}</span>) : (<p className="mt-3 text-lg leading-relaxed text-neutral-600">{t.content(text)}</p>)}
             </div>
           </li>))}
         </ol>

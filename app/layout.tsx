@@ -4,6 +4,9 @@ import "./globals.css";
 import FontSizeInspector from "./components/font-size-inspector";
 import { CallSessionProvider } from "./components/calls/call-session";
 import VisitTracker from "./components/visit-tracker";
+import { LanguageProvider } from "@/lib/i18n/use-language";
+import { getLanguage } from "@/lib/i18n/server";
+import LanguageDocument from "./components/language-document";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -22,15 +25,19 @@ export const metadata: Metadata = {
   description: "Build your international teaching career with TeacherNavigator.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const language = await getLanguage();
   return (
     <html
-      lang="en"
+      lang={language}
       data-scroll-behavior="smooth"
       className={`${roboto.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">
-        <CallSessionProvider>{children}</CallSessionProvider>
+        <LanguageProvider language={language}>
+          <LanguageDocument />
+          <CallSessionProvider>{children}</CallSessionProvider>
+        </LanguageProvider>
         <VisitTracker />
         {process.env.NODE_ENV === "development" && <FontSizeInspector />}
       </body>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { SchoolMapPinIcon } from "@/app/components/svg";
 import { useEffect, useState } from "react";
 
@@ -22,6 +23,7 @@ const fadeOutMs = 1000;
 const pauseMs = 1500;
 
 export default function RegionMap() {
+  const t = useTranslations();
   const [lit, setLit] = useState<number | null>(null);
   const [fadingOut, setFadingOut] = useState(false);
 
@@ -64,7 +66,7 @@ export default function RegionMap() {
           <span
             className={`absolute ${label} rounded-lg border border-brand-200 bg-white px-2 py-1 text-center text-xs font-medium leading-tight transition-colors motion-reduce:text-brand-600 motion-reduce:transition-none ${fadingOut ? "duration-1000 ease-in" : "duration-500 ease-out"} ${lit === index ? "text-red-600" : "text-brand-500"}`}
           >
-            {name}
+            {t.content(name)}
           </span>
           <SchoolMapPinIcon className={`absolute ${pin} size-5 text-brand-600`} />
         </span>

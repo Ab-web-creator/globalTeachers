@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { programIconPaths, StrokeIcon } from "@/app/components/svg";
 import ProgramSection from "../components/program-section";
 import { audience } from "./content";
@@ -14,13 +17,14 @@ const itemColors = [
 ];
 
 export default function VipAudience() {
+  const t = useTranslations();
   return (
-    <ProgramSection id="vip-audience" label="Для кого" title="Кому подходит VIP?" fade="violet" fadeDirection="up" fadeToWhite>
+    <ProgramSection id="vip-audience" label={t("programs.vip.vipAudience.message1329")} title={t("programs.vip.vipAudience.message1330")} fade="violet" fadeDirection="up" fadeToWhite>
       <div className="mt-7 max-w-lg">
         {audience.paragraphs.map((text) => (
-          <p key={text} className="text-lg leading-relaxed text-neutral-600">{text}</p>
+          <p key={text} className="text-lg leading-relaxed text-neutral-600">{t.content(text)}</p>
         ))}
-        <h3 className="mt-4 text-lg font-semibold leading-relaxed text-brand-950">{audience.itemsTitle}</h3>
+        <h3 className="mt-4 text-lg font-semibold leading-relaxed text-brand-950">{t.content(audience.itemsTitle)}</h3>
       </div>
       <ul className="mt-10 grid gap-4 sm:grid-cols-2">
         {audience.items.map((text, index) => (
@@ -29,7 +33,7 @@ export default function VipAudience() {
               <StrokeIcon path={itemIcons[index]} className="size-4" />
             </span>
             <span className="max-w-lg text-lg leading-relaxed text-neutral-600 first-letter:uppercase">
-              {text.replace(/[;.]$/, "")}
+              {t.content(text).replace(/[;.]$/, "")}
             </span>
           </li>
         ))}

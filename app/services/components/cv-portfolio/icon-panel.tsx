@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { panelIconPaths, PanelTopicIcon } from "@/app/components/svg";
 import type { ReactNode } from "react";
 import SectionHeading from "../section-heading";
@@ -20,6 +23,7 @@ type IconPanelProps = {
 };
 
 export default function IconPanel({ id, title, headingClassName = "", icon, children, tone = "default", as: Container = "section" }: IconPanelProps) {
+  const t = useTranslations();
   const colors = tones[tone];
 
   return (
@@ -30,12 +34,12 @@ export default function IconPanel({ id, title, headingClassName = "", icon, chil
       <div className="contents sm:block sm:min-w-0">
         <div className="flex min-w-0 items-center sm:block">
           {tone === "default" || tone === "white" ? (
-            <SectionHeading id={id} size="small" className={headingClassName}>{title}</SectionHeading>
+            <SectionHeading id={id} size="small" className={headingClassName}>{t.content(title)}</SectionHeading>
           ) : (
-            <h2 id={id} className={`text-xl font-semibold leading-tight tracking-tight text-brand-950 ${headingClassName}`}>{title}</h2>
+            <h2 id={id} className={`text-xl font-semibold leading-tight tracking-tight text-brand-950 ${headingClassName}`}>{t.content(title)}</h2>
           )}
         </div>
-        <div className="col-span-2 min-w-0 pl-4 sm:pl-0">{children}</div>
+        <div className="col-span-2 min-w-0 pl-4 sm:pl-0">{t.content(children)}</div>
       </div>
     </Container>
   );

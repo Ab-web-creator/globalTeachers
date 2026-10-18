@@ -1,14 +1,16 @@
-import type { Metadata } from "next";
+import { translateMetadata } from "@/lib/i18n/server";
 import Image from "next/image";
 import PageHeader from "../components/page-header";
 import ConsultationIntro from "./components/consultation-intro";
 import ConsultationLayout from "./components/consultation-layout";
 import ConsultationAside from "./components/consultation-aside";
 
-export const metadata: Metadata = {
-  title: "Консультация — TeacherNavigator",
-  description: "Расскажите о своём педагогическом опыте и целях — по одному вопросу за шаг. Начните путь к работе в международной школе.",
-};
+export async function generateMetadata() {
+  return translateMetadata({
+    title: "Консультация — TeacherNavigator",
+    description: "Расскажите о своём педагогическом опыте и целях — по одному вопросу за шаг. Начните путь к работе в международной школе.",
+  });
+}
 
 export default function ConsultationPage() {
   return (

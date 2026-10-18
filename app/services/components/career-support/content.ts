@@ -1,82 +1,82 @@
 export const introduction = [
-  "Самостоятельный поиск работы за рубежом требует времени. Нужно находить подходящие вакансии, проверять требования школ, адаптировать документы, заполнять анкеты, готовиться к интервью и принимать решения по предложениям.",
-  "На каждом этапе появляются новые вопросы.",
-  "Карьерное сопровождение — это помощь не в одном отдельном вопросе, а на протяжении всего поиска работы.",
+  "services.careerSupport.content.message1370",
+  "services.careerSupport.content.message1371",
+  "services.careerSupport.content.message1372",
 ];
 
-export const heroQuote = ["Вы не одни на этом пути.", "Мы рядом, чтобы сделать его понятным и уверенным."];
+export const heroQuote = ["services.careerSupport.content.message1373", "services.careerSupport.content.message1374"];
 
 export const supportSections = [
   {
     id: "support-strategy",
-    title: "С чего начинается сопровождение?",
+    title: "services.careerSupport.content.message1375",
     paragraphs: [
-      "Прежде чем отправлять резюме, важно понять, что именно вы ищете и насколько ваши ожидания соответствуют вашему профессиональному профилю.",
-      "Мы анализируем ваш опыт, образование, квалификацию и цели. Обсуждаем страны и школы, которые стоит рассматривать, и определяем стратегию поиска.",
-      "Вместо случайных откликов появляется понятный план:",
-      "куда → когда → на какие позиции → с какими документами подаваться.",
+      "services.careerSupport.content.message1376",
+      "services.careerSupport.content.message1377",
+      "services.careerSupport.content.message1378",
+      "services.careerSupport.content.message1379",
     ],
   },
   {
     id: "support-vacancies",
-    title: "Поиск подходящих вакансий",
+    title: "services.careerSupport.content.message1380",
     paragraphs: [
-      "Не каждая вакансия подходит каждому кандидату.",
-      "Школы могут предъявлять разные требования к образованию, педагогической квалификации, стажу, английскому языку и опыту работы с определёнными учебными программами.",
-      "Поэтому важно не просто найти вакансию, а понять:",
-      "соответствуете ли вы требованиям → подходит ли вам школа → реалистично ли трудоустройство в этой стране → стоит ли подавать заявку.",
-      "Мы помогаем разбирать вакансии и концентрироваться на тех возможностях, которые действительно соответствуют вашему профилю.",
+      "services.careerSupport.content.message1381",
+      "services.careerSupport.content.message1382",
+      "services.careerSupport.content.message1383",
+      "services.careerSupport.content.message1384",
+      "services.careerSupport.content.message1385",
     ],
   },
   {
     id: "support-applications",
-    title: "Подготовка и отправка заявок",
+    title: "services.careerSupport.content.message1386",
     paragraphs: [
-      "Отклик в международную школу часто состоит не только из отправки CV.",
-      "Может потребоваться заполнить application form, подготовить cover letter, предоставить информацию об образовании и опыте, указать referees и ответить на дополнительные вопросы школы.",
-      "Мы помогаем пройти этот процесс последовательно и внимательно.",
-      "При этом решения и заявки остаются вашими — наша задача помочь вам представить свой опыт профессионально и избежать ненужных ошибок.",
+      "services.careerSupport.content.message1387",
+      "services.careerSupport.content.message1388",
+      "services.careerSupport.content.message1389",
+      "services.careerSupport.content.message1390",
     ],
   },
   {
     id: "support-interviews",
-    title: "Подготовка к каждому интервью",
+    title: "services.careerSupport.content.message1391",
     paragraphs: [
-      "Получили приглашение на собеседование — готовимся уже к конкретной школе.",
-      "Изучаем её программу, ценности и особенности вакансии. Разбираем возможные вопросы и определяем, какие примеры из вашего опыта лучше использовать на интервью.",
-      "Если впереди следующий этап отбора или demo lesson, готовимся к нему отдельно.",
+      "services.careerSupport.content.message1392",
+      "services.careerSupport.content.message1393",
+      "services.careerSupport.content.message1394",
     ],
   },
 ];
 
 export const offerConditions = [
-  "зарплату", "жильё", "перелёты", "обучение детей",
-  "визовую поддержку", "испытательный срок", "продолжительность контракта", "медицинскую страховку", "другие условия",
+  "services.careerSupport.content.message1395", "programs.vip.content.message1273", "programs.vip.content.message1276", "programs.vip.content.message1277",
+  "services.careerSupport.content.message1396", "programs.vip.content.message1280", "programs.vip.content.message1279", "services.careerSupport.content.message1397", "programs.vip.content.message1281",
 ];
 
-export const stagesIntroduction = "Сопровождение охватывает весь путь — от первой стратегии до интервью в конкретной школе. На каждом этапе мы работаем над тем, что важно именно сейчас.";
+export const stagesIntroduction = "services.careerSupport.content.message1398";
 
 export const offerReview = {
-  intro: ["Получить offer — ещё не значит автоматически его принять.", "Важно внимательно посмотреть на весь пакет: Если одновременно появляются несколько предложений, их нужно спокойно сравнить."],
-  help: "Мы помогаем разобраться в условиях и подготовить вопросы, которые стоит задать школе перед принятием решения.",
+  intro: ["services.careerSupport.content.message1399", "services.careerSupport.content.message1400"],
+  help: "services.careerSupport.content.message1401",
 };
 
 export const relocation = {
   paragraphs: [
-    "После принятия предложения начинается следующий этап.",
-    "Оформлением визы и официальных документов обычно занимается работодатель в соответствии с требованиями конкретной страны, однако кандидату необходимо вовремя предоставить нужные документы и выполнить необходимые действия со своей стороны.",
+    "services.careerSupport.content.message1402",
+    "services.careerSupport.content.message1403",
   ],
   steps: [
-    { title: "Документы", text: "Разбираемся, что нужно подготовить и передать школе." },
-    { title: "Рабочая виза", text: "Помогаем понять этапы оформления и ваши следующие действия." },
-    { title: "Подготовка к переезду", text: "Обсуждаем практические вопросы до отъезда." },
-    { title: "Коммуникация со школой", text: "Помогаем уточнить требования, сроки и дальнейшие шаги." },
+    { title: "programs.vip.vipAfterOffer.message1316", text: "services.careerSupport.content.message1404" },
+    { title: "programs.vip.vipAfterOffer.message1318", text: "services.careerSupport.content.message1405" },
+    { title: "programs.vip.vipAfterOffer.message1320", text: "services.careerSupport.content.message1406" },
+    { title: "programs.vip.vipAfterOffer.message1314", text: "services.careerSupport.content.message1407" },
   ],
-  help: "Мы помогаем вам не потеряться в процессе и понимать, что происходит на каждом этапе.",
+  help: "services.careerSupport.content.message1408",
 };
 
 export const supportMeaning = {
-  isNot: "Это не обещание найти работу вместо вас и не гарантия получения предложения от школы. Ваше активное участие в поиске, подготовке документов и прохождении интервью остаётся важной частью процесса.",
-  decision: "Решение о найме всегда принимает школа.",
-  is: "Сопровождение означает другое: вы не проходите незнакомый процесс в одиночку. У вас есть стратегия, профессиональная обратная связь и человек, к которому можно обратиться, когда появляется очередной вопрос или необходимо принять решение.",
+  isNot: "services.careerSupport.content.message1409",
+  decision: "services.careerSupport.content.message1410",
+  is: "services.careerSupport.content.message1411",
 };

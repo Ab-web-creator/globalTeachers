@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "@/lib/i18n/use-translations";
 import type { ReactNode } from "react";
 
 const accents: Record<string, string[]> = {
@@ -15,9 +18,11 @@ const accents: Record<string, string[]> = {
   "Подготовка к уверенному представлению себя международным школам": ["уверенному"],
 };
 
-export default function FeatureText({ text }: { text: string }) {
+export default function FeatureText({ text: message }: { text: string }) {
+  const t = useTranslations();
+  const text = t.content(message);
   const phrases = accents[text];
-  if (!phrases) return text;
+  if (!phrases || t.language !== "ru") return t.content(text);
 
   const parts: ReactNode[] = [];
   let cursor = 0;
@@ -25,9 +30,9 @@ export default function FeatureText({ text }: { text: string }) {
     const index = text.indexOf(phrase, cursor);
     if (index === -1) continue;
     parts.push(text.slice(cursor, index));
-    parts.push(<strong key={index} className="font-semibold">{phrase}</strong>);
+    parts.push(<strong key={index} className="font-semibold">{t.content(phrase)}</strong>);
     cursor = index + phrase.length;
   }
   parts.push(text.slice(cursor));
-  return <>{parts}</>;
+  return <>{t.content(parts)}</>;
 }

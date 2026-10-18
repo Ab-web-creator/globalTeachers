@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "@/lib/i18n/use-translations";
 import type { ReactNode } from "react";
 
 const sizes = {
@@ -6,9 +9,10 @@ const sizes = {
 };
 
 export default function SectionHeading({ id, size = "default", className = "", children }: { id: string; size?: keyof typeof sizes; className?: string; children: ReactNode }) {
+  const t = useTranslations();
   return (
     <h2 id={id} className={`font-semibold leading-tight tracking-tight ${sizes[size]} ${className}`}>
-      {children}
+      {t.content(children)}
     </h2>
   );
 }

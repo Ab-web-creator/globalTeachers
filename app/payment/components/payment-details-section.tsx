@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { useEffect, useEffectEvent } from "react";
 import PaymentEmailDialog from "./payment-email-dialog";
 import type usePaymentProfile from "./use-payment-profile";
@@ -35,6 +36,7 @@ export default function PaymentDetailsSection({
   highlightBeginnerEnglish: boolean;
   showGradient?: boolean;
 }) {
+  const t = useTranslations();
   const {
     email,
     profile,
@@ -55,23 +57,21 @@ export default function PaymentDetailsSection({
   return (
     <ProgramSection
       id="payment-details"
-      label="Ваши данные"
-      title="Ваши контактные данные"
+      label={t("payment.paymentDetailsSection.message1036")}
+      title={t("payment.paymentDetailsSection.message1037")}
       fade={showGradient ? "sky" : undefined}
       fadeDirection="down"
       fadeToWhite
     >
       <p className="mt-7 max-w-2xl text-lg leading-relaxed text-neutral-600">
-        Укажите ваши контактные данные, предмет и уровень английского, чтобы продолжить оформление.
-      </p>
+        {t("payment.paymentDetailsSection.message1038")}</p>
       <form
         onSubmit={(event) => event.preventDefault()}
         className="payment-form mt-10"
       >
         <div className="grid w-full gap-6 sm:grid-cols-2">
           <label htmlFor="payment-email" className="block text-sm font-medium">
-            Электронная почта
-            <RequiredMark />
+            {t("payment.paymentDetailsSection.message1039")}<RequiredMark />
             <input
               id="payment-email"
               aria-invalid={Boolean(errors["payment-email"])}
@@ -89,18 +89,18 @@ export default function PaymentDetailsSection({
               maxLength={254}
               className={`${fieldClass} mt-2`}
             />
-            {errors["payment-email"] && (
+            {t.content(errors["payment-email"] && (
               <span
                 id="payment-email-error"
                 className="mt-2 block text-sm font-normal text-red-700"
               >
-                {errors["payment-email"]}
+                {t.content(errors["payment-email"])}
               </span>
-            )}
+            ))}
           </label>
           <SubjectSelector
             id="payment-subject"
-            label="Ваш предмет"
+            label={t("consultation.consultationSteps.message0498")}
             value={profile.subject}
             onChange={(value) => changeField("subject", value)}
             availableSubjects={paymentSubjects}
@@ -109,7 +109,7 @@ export default function PaymentDetailsSection({
           />
           {nameFields.map((field) => (
             <label key={field.name} htmlFor={field.id} className="block text-sm font-medium">
-              {field.label}
+              {t.content(field.label)}
               <RequiredMark />
               <input
                 id={field.id}
@@ -119,24 +119,23 @@ export default function PaymentDetailsSection({
                 value={profile[field.name]}
                 onChange={(event) => changeField(field.name, event.target.value)}
                 autoComplete={field.autoComplete}
-                placeholder={field.placeholder}
+                placeholder={t.content(field.placeholder)}
                 required
                 maxLength={100}
                 className={`${fieldClass} mt-2`}
               />
-              {errors[field.id] && (
+              {t.content(errors[field.id] && (
                 <span
                   id={`${field.id}-error`}
                   className="mt-2 block text-sm font-normal text-red-700"
                 >
-                  {errors[field.id]}
+                  {t.content(errors[field.id])}
                 </span>
-              )}
+              ))}
             </label>
           ))}
           <label htmlFor="payment-english" className="block text-sm font-medium">
-            Уровень английского
-            <RequiredMark />
+            {t("payment.paymentDetailsSection.message1040")}<RequiredMark />
             <FormSelect
               id="payment-english"
               name="english"
@@ -147,33 +146,33 @@ export default function PaymentDetailsSection({
               aria-describedby={errors["payment-english"] ? "payment-english-error" : undefined}
               className={`${fieldClass} invalid:text-neutral-500`}
             >
-              <option value="" disabled>Выберите уровень английского</option>
+              <option value="" disabled>{t("payment.paymentDetailsSection.message1041")}</option>
               {englishLevels.map((level, index) => (
                 <option
                   key={level}
                   value={level}
                   className={highlightBeginnerEnglish && index < 2 ? "text-red-700" : "text-brand-700"}
                 >
-                  {highlightBeginnerEnglish ? level.split(" — ")[0] : level}{highlightBeginnerEnglish && index < 2 ? " — для этой программы требуется более высокий уровень" : ""}
+                  {highlightBeginnerEnglish ? t.content(level).split(" — ")[0] : t.content(level)}{t.content(highlightBeginnerEnglish && index < 2 ? " — для этой программы требуется более высокий уровень" : "")}
                 </option>
               ))}
             </FormSelect>
-            {errors["payment-english"] && (
+            {t.content(errors["payment-english"] && (
               <span id="payment-english-error" className="mt-2 block text-sm font-normal text-red-700">
-                {errors["payment-english"]}
+                {t.content(errors["payment-english"])}
               </span>
-            )}
+            ))}
           </label>
         </div>
-        {status && (
+        {t.content(status && (
           <p
             role="status"
             aria-live="polite"
             className="mt-7 text-sm text-brand-600"
           >
-            {status}
+            {t.content(status)}
           </p>
-        )}
+        ))}
       </form>
       {verification.dialogOpen && <PaymentEmailDialog {...verification} />}
     </ProgramSection>

@@ -1,16 +1,20 @@
+"use client";
+
+import { useTranslations } from "@/lib/i18n/use-translations";
 import { programIconPaths, StrokeIcon } from "@/app/components/svg";
 import { iconTones } from "../components/icon-tones";
 import ProgramSection from "../components/program-section";
 import { value } from "./content";
 
 export default function VipValue() {
+  const t = useTranslations();
   return (
     <div className="relative isolate">
       <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-linear-to-r from-sky-50 to-violet-100" />
-      <ProgramSection id="vip-value" label="Ценность VIP" title={<>Что вы на самом деле<br />покупаете в VIP?</>}>
+      <ProgramSection id="vip-value" label={t("programs.vip.vipValue.message1358")} title={<>{t("programs.vip.vipValue.message1359")}<br />{t("programs.vip.vipValue.message1360")}</>}>
         <div className="mt-7 max-w-lg text-lg leading-relaxed">
-          <p className="text-neutral-600">{value.description}</p>
-          <p className="mt-5 border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-600">{value.statement}</p>
+          <p className="text-neutral-600">{t.content(value.description)}</p>
+          <p className="mt-5 border-l-2 border-brand-300 pl-4 text-lg font-medium leading-relaxed text-brand-600">{t.content(value.statement)}</p>
         </div>
         <ul className="mt-10 grid gap-5 sm:grid-cols-2">
           {value.moments.map(({ title, text, icon }, index) => (<li key={title} className="flex w-full max-w-2xl items-start gap-5 rounded-3xl bg-white p-5">
@@ -18,8 +22,8 @@ export default function VipValue() {
               <StrokeIcon path={programIconPaths[icon]} className="size-6" />
             </span>
             <div className="min-w-0">
-              <h3 className="text-lg font-semibold leading-snug text-brand-950">{title}</h3>
-              <p className="text-base leading-relaxed text-neutral-600">{text}</p>
+              <h3 className="text-lg font-semibold leading-snug text-brand-950">{t.content(title)}</h3>
+              <p className="text-base leading-relaxed text-neutral-600">{t.content(text)}</p>
             </div>
           </li>))}
         </ul>
