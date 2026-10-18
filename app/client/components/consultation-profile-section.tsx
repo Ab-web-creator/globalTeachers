@@ -62,7 +62,7 @@ export default function ConsultationProfileSection({ initial, admin, onSaved }: 
           ))}
         </dl>
       ) : (
-        <form onSubmit={save} noValidate className="mt-7">
+        <form onSubmit={save} noValidate className={`mt-7 ${styles.form}`}>
           <fieldset disabled={busy} className="grid min-w-0 gap-6 sm:grid-cols-2">
             <label className={`block text-sm font-medium ${!answers.firstName.trim() ? styles.missing : ""}`}>Имя<input aria-invalid={!answers.firstName.trim()} value={answers.firstName} onChange={event => change("firstName", event.target.value)} autoComplete="given-name" maxLength={100} className={fieldClass} /></label>
             <label className={`block text-sm font-medium ${!answers.lastName.trim() ? styles.missing : ""}`}>Фамилия<input aria-invalid={!answers.lastName.trim()} value={answers.lastName} onChange={event => change("lastName", event.target.value)} autoComplete="family-name" maxLength={100} className={fieldClass} /></label>

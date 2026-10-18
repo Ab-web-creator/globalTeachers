@@ -1,4 +1,5 @@
 .page {
+  --client-border: var(--color-brand-700);
   --color-brand-50: #f5f8ff;
   --color-brand-100: #e5ebfb;
   --color-brand-200: #cfdbf4;
@@ -36,7 +37,7 @@
 
 .page [data-call-card] {
   background: linear-gradient(125deg, #285ed3, #7045bd);
-  border-color: #9d9aef;
+  border-color: var(--client-border);
   box-shadow: 0 3px 8px #4657b326;
   isolation: isolate;
 }
@@ -90,6 +91,7 @@
 
 .page [data-private-chat] {
   background-color: #ffffff;
+  border-color: var(--client-border);
   box-shadow: 0 2px 6px #405ca316;
 }
 
@@ -101,4 +103,98 @@
 
 .page > header {
   background-color: #f7faff;
+}
+
+.page[data-client-tier="START"] {
+  --color-brand-50: var(--color-accent-50);
+  --color-brand-100: var(--color-accent-100);
+  --color-brand-200: var(--color-accent-200);
+  --color-brand-300: var(--color-accent-300);
+  --color-brand-400: var(--color-accent-400);
+  --color-brand-500: var(--color-accent-500);
+  --color-brand-600: var(--color-accent-600);
+  --color-brand-700: var(--color-accent-700);
+  --color-brand-800: var(--color-accent-800);
+  --color-brand-900: var(--color-accent-900);
+  --color-brand-950: #102b1d;
+  --color-amber-50: var(--color-accent-50);
+  --color-amber-100: var(--color-accent-100);
+  --color-amber-500: var(--color-accent-500);
+  --color-amber-600: var(--color-accent-600);
+  --color-amber-700: var(--color-accent-700);
+  --color-orange-50: var(--color-accent-50);
+  --color-rose-100: var(--color-accent-100);
+  --personal-accent: var(--color-accent-600);
+  background-color: var(--color-brand-50);
+}
+
+.page[data-client-tier="VIP"] {
+  --client-border: #ffcc4d;
+  --color-brand-50: #fffbeb;
+  --color-brand-100: #fef3c7;
+  --color-brand-200: #fde68a;
+  --color-brand-300: #f5cf63;
+  --color-brand-400: #dfb43d;
+  --color-brand-500: #a47716;
+  --color-brand-600: #896010;
+  --color-brand-700: #8a8246;
+  --color-brand-800: #503918;
+  --color-brand-900: #3d2c16;
+  --color-brand-950: #281c0d;
+  --color-amber-50: var(--color-brand-50);
+  --color-amber-100: var(--color-brand-100);
+  --color-amber-500: var(--color-brand-500);
+  --color-amber-600: var(--color-brand-600);
+  --color-amber-700: var(--color-brand-700);
+  --color-orange-50: var(--color-brand-50);
+  --color-rose-100: var(--color-brand-100);
+  --personal-accent: var(--color-brand-600);
+  background-color: #ffffff;
+}
+
+.page:is([data-client-tier="START"], [data-client-tier="VIP"]) > header {
+  background-color: var(--color-brand-50);
+}
+
+.page[data-client-tier="VIP"] > header {
+  background-color: #ffffff;
+}
+
+.page:is([data-client-tier="START"], [data-client-tier="VIP"]) [data-personal-title] {
+  background-image: linear-gradient(120deg, var(--color-brand-400), var(--color-brand-600) 50%, var(--color-brand-800));
+}
+
+.page:is([data-client-tier="START"], [data-client-tier="VIP"]) [data-call-card] {
+  background: linear-gradient(125deg, var(--color-brand-600), var(--color-brand-800));
+  border-color: var(--client-border);
+  box-shadow: 0 3px 8px color-mix(in srgb, var(--color-brand-700) 15%, transparent);
+}
+
+.page[data-client-tier="START"] [data-call-card]::before {
+  filter: hue-rotate(55deg) saturate(.85) brightness(1.3);
+}
+
+.page[data-client-tier="VIP"] [data-call-card]::before {
+  filter: none;
+}
+
+.page:is([data-client-tier="START"], [data-client-tier="VIP"]) [data-consultations-card],
+.page:is([data-client-tier="START"], [data-client-tier="VIP"]) [data-private-chat] {
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--color-brand-700) 9%, transparent);
+}
+
+.page :where(
+  :global(.border-brand-100),
+  :global(.border-brand-200),
+  :global(.border-brand-300),
+  :global(.border-neutral-100),
+  :global(.border-neutral-200),
+  :global(.border-amber-100),
+  :global(.border-amber-200),
+  :global(.border-yellow-300),
+  :global(.divide-brand-100) > :not(:last-child),
+  :global(.divide-neutral-100) > :not(:last-child),
+  :global(.divide-neutral-200) > :not(:last-child)
+) {
+  border-color: var(--client-border);
 }

@@ -26,7 +26,7 @@ export default async function ClientPage() {
     ? await clientAccessLink(workspace.client.id)
     : null;
   return (
-    <div className={`${styles.page} min-h-dvh text-brand-700`}>
+    <div className={`${styles.page} min-h-dvh text-brand-700`} data-client-tier={workspace?.client.tier}>
       <ClientAccess
         authenticated={Boolean(workspace)}
         accessLink={accessLink}

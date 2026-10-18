@@ -6,9 +6,23 @@
 .missing :is(input:not([type="radio"]), select),
 .missing label > span:first-of-type,
 .missing fieldset > div {
-  border-color: var(--color-red-300);
+  border-color: var(--color-red-700);
 }
 
 .missing button[aria-haspopup] {
   color: var(--color-red-700);
+}
+
+.form {
+  --profile-field-border: var(--client-border, var(--color-brand-700));
+}
+
+.form :is(input:not([type="radio"]):not([type="checkbox"]), select, textarea),
+.form label > span:first-of-type,
+.form fieldset > div {
+  border-color: var(--profile-field-border);
+}
+
+.form .missing {
+  --profile-field-border: var(--color-red-700);
 }
