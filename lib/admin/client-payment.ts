@@ -6,9 +6,9 @@ import { clientTiers, type ClientTier } from "../client-area/types";
 export async function markApplicationPaid(id: string, tier: ClientTier) {
   if (!clientTiers.includes(tier)) throw new Error("Выберите пакет.");
   const result = await database().query(
-    `INSERT INTO private_clients(email, name, tier, key_hash, paid_at)
-    SELECT lower(email), btrim(answers->>'name'), $2, $3, now()
-    FROM consultation_attempts WHERE id = $1 AND btrim(COALESCE(answers->>'name', '')) <> ''
+    `INSERT INTO private_clients(email, first_name, last_name, tier, key_hash, paid_at)
+    SELECT lower(email), btrim(answers->>'firstName'), btrim(COALESCE(answers->>'lastName', '')), $2, $3, now()
+    FROM consultation_attempts WHERE id = $1 AND btrim(COALESCE(answers->>'firstName', '')) <> ''
     ON CONFLICT (email) DO UPDATE SET tier = EXCLUDED.tier, frozen_at = NULL, paid_at = COALESCE(private_clients.paid_at, EXCLUDED.paid_at)
     RETURNING id, tier`,
     [id, tier, hashToken(createToken())],
@@ -28,8 +28,9 @@ export async function messagePaymentDetails(messageId: string) {
     `SELECT (SELECT paid_at FROM private_clients WHERE email=$1) AS paid_at,
       (SELECT frozen_at FROM private_clients WHERE email=$1) AS frozen_at,
       (SELECT tier FROM private_clients WHERE email=$1) AS client_tier,
-      (SELECT id FROM consultation_attempts WHERE lower(email)=$1 AND btrim(COALESCE(answers->>'name','')) <> '' ORDER BY submitted_at DESC,id DESC LIMIT 1) AS application_id,
-      (SELECT name FROM payment_contact_requests WHERE lower(email)=$1 ORDER BY (id=$2) DESC,created_at DESC LIMIT 1) AS name,
+      (SELECT id FROM consultation_attempts WHERE lower(email)=$1 AND btrim(COALESCE(answers->>'firstName','')) <> '' ORDER BY submitted_at DESC,id DESC LIMIT 1) AS application_id,
+      (SELECT first_name FROM payment_contact_requests WHERE lower(email)=$1 ORDER BY (id=$2) DESC,created_at DESC LIMIT 1) AS first_name,
+      (SELECT last_name FROM payment_contact_requests WHERE lower(email)=$1 ORDER BY (id=$2) DESC,created_at DESC LIMIT 1) AS last_name,
       (SELECT tier FROM payment_contact_requests WHERE lower(email)=$1 ORDER BY (id=$2) DESC,created_at DESC LIMIT 1) AS contact_tier`,
     [email, messageId],
   );
@@ -45,12 +46,12 @@ export async function markMessagePaid(messageId: string, tier: ClientTier | null
     return { paid: false };
   }
   if (details.application_id) return markApplicationPaid(details.application_id, tier);
-  if (!details.name?.trim()) throw new Error("Сначала клиент должен указать имя и email в форме.");
+  if (!details.first_name?.trim()) throw new Error("Сначала клиент должен указать имя и email в форме.");
   const result = await database().query(
-    `INSERT INTO private_clients(email,name,tier,key_hash,paid_at) VALUES($1,$2,$3,$4,now())
+    `INSERT INTO private_clients(email,first_name,last_name,tier,key_hash,paid_at) VALUES($1,$2,$3,$4,$5,now())
     ON CONFLICT(email) DO UPDATE SET tier=EXCLUDED.tier, frozen_at=NULL, paid_at=COALESCE(private_clients.paid_at,EXCLUDED.paid_at)
     RETURNING id,tier`,
-    [details.email, details.name.trim(), tier, hashToken(createToken())],
+    [details.email, details.first_name.trim(), details.last_name.trim(), tier, hashToken(createToken())],
   );
   await ensurePaidClientAccess(result.rows[0].id);
   return result.rows[0];

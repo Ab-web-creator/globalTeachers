@@ -46,7 +46,7 @@ export default function ApplicationProfile({
                 {application.answers.name}
               </h1>
               {displayTier && (
-                <span className="mt-3 inline-flex rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-sm font-semibold text-brand-600">
+                <span className="mt-3 inline-flex rounded-full border border-brand-200 bg-brand-50 px-2 py-1 text-sm font-semibold text-brand-600">
                   {application.paid_at ? "Клиент" : "Кандидат"} {displayTier}
                 </span>
               )}

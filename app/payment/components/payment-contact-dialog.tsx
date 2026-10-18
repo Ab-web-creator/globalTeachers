@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
-type Props = { tier: string; initialName: string; initialEmail: string; onClose: () => void };
+type Props = { tier: string; initialFirstName: string; initialLastName: string; initialEmail: string; onClose: () => void };
 const fieldClass = "mt-2 w-full rounded-xl border border-brand-200 bg-white px-4 py-3 text-base focus:border-brand-500";
 
-export default function PaymentContactDialog({ tier, initialName, initialEmail, onClose }: Props) {
+export default function PaymentContactDialog({ tier, initialFirstName, initialLastName, initialEmail, onClose }: Props) {
   const paymentSubject = tier === "VIP" ? "индивидуальную консультацию по VIP-сопровождению" : `программу ${tier}`;
   const dialogRef = useRef<HTMLDialogElement>(null);
   const messageRef = useRef<HTMLTextAreaElement>(null);
@@ -35,7 +35,7 @@ export default function PaymentContactDialog({ tier, initialName, initialEmail, 
   async function submit(form: HTMLFormElement) {
     if (sending) return;
     const fields = new FormData(form);
-    const payload = { tier, name: String(fields.get("name")).trim(), email: String(fields.get("email")).trim(), message: String(fields.get("message")).trim() };
+    const payload = { tier, firstName: String(fields.get("firstName")).trim(), lastName: String(fields.get("lastName")).trim(), email: String(fields.get("email")).trim(), message: String(fields.get("message")).trim() };
     const serialized = JSON.stringify(payload);
     if (serialized !== payloadRef.current) {
       requestIdRef.current = crypto.randomUUID();
@@ -69,7 +69,8 @@ export default function PaymentContactDialog({ tier, initialName, initialEmail, 
           <p className="mt-7 text-base leading-relaxed">Свяжитесь с нами, чтобы узнать о других способах оплаты {tier === "VIP" ? "индивидуальной консультации по VIP-сопровождению" : `программы ${tier}`}. Списаний не было.</p>
           <form onSubmit={(event) => { event.preventDefault(); void submit(event.currentTarget); }} className="mt-7">
             <fieldset disabled={sending} className="space-y-5">
-              <label className="block text-sm font-medium">Ваше имя<input name="name" defaultValue={initialName} autoComplete="name" required pattern=".*\S.*" maxLength={200} className={fieldClass} /></label>
+              <label className="block text-sm font-medium">Ваше имя<input name="firstName" defaultValue={initialFirstName} autoComplete="given-name" required pattern=".*\S.*" maxLength={100} className={fieldClass} /></label>
+              <label className="block text-sm font-medium">Ваша фамилия<input name="lastName" defaultValue={initialLastName} autoComplete="family-name" required pattern=".*\S.*" maxLength={100} className={fieldClass} /></label>
               <label className="block text-sm font-medium">Email<input name="email" type="email" defaultValue={initialEmail} autoComplete="email" required maxLength={254} className={fieldClass} /></label>
               <label className="block text-sm font-medium">Сообщение<textarea ref={messageRef} name="message" required maxLength={2000} rows={4} placeholder={`Здравствуйте! Хочу оплатить ${paymentSubject}. Подскажите, пожалуйста, какие способы оплаты доступны.`} className={`${fieldClass} resize-y placeholder:font-normal placeholder:text-neutral-400`} /></label>
               {error && <p role="alert" className="text-sm text-red-700">{error}</p>}

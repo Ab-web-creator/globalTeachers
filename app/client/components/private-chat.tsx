@@ -166,21 +166,21 @@ export default function PrivateChat({
       ref={sectionRef}
       data-private-chat
       aria-labelledby="private-chat-title"
-      className={`relative overflow-hidden border-brand-100 bg-white ${admin ? "-mx-5 border-t sm:mx-0 sm:rounded-3xl sm:border sm:shadow-sm" : "rounded-xl border shadow-sm"} ${viewportHeight ? "flex h-[var(--chat-mobile-height,calc(100dvh-4rem))] min-h-0 flex-col sm:h-[min(42rem,80dvh)] sm:min-h-96 lg:h-[calc(100dvh-7rem)]" : fillHeight ? "lg:flex lg:min-h-0 lg:flex-1 lg:flex-col" : ""}`}
+      className={`relative overflow-hidden border-brand-100 bg-white ${admin ? "-mx-5 border-t sm:mx-0 sm:rounded-3xl sm:border sm:shadow-sm" : "rounded-xl border shadow-sm"} ${viewportHeight ? "flex h-[var(--chat-mobile-height,calc(100dvh-4rem))] min-h-0 flex-col sm:h-[min(42rem,80dvh)] sm:min-h-96 lg:h-[calc(100dvh-7rem)]" : fillHeight ? "lg:flex lg:max-h-[calc(100dvh-7rem)] lg:min-h-0 lg:flex-1 lg:flex-col" : ""}`}
     >
-      <header className="flex shrink-0 items-start gap-3 sm:items-center border-b border-brand-100 px-5 py-3 sm:px-6">
+      <header className="flex shrink-0 items-center gap-3 border-b border-brand-100 px-5 py-3 sm:px-6">
         <span className={`flex shrink-0 items-center justify-center rounded-full bg-brand-50 ${admin ? "size-12 text-brand-500" : "size-14 text-amber-600"}`}>
           <PrivateChatIcon className="size-8" />
         </span>
         <div className="min-w-0">
           <h2
             id="private-chat-title"
-            className={`break-words font-semibold ${admin ? "text-base" : "text-lg"}`}
+            className={`break-words font-semibold ${admin ? "text-base" : "text-base sm:text-lg"}`}
           >
             {admin ? "Поговорим от души" : "Давайте поболтаем"}
           </h2>
           <p className={`${admin ? "mt-0" : "mt-1"} text-sm text-neutral-500`}>
-            {admin ? <>тут только вы и ваш клиент<span className="hidden sm:inline">: разговор приватный</span></> : "О планах, сомнениях и всём, что хочется обсудить."}
+            {admin ? <>тут только вы и ваш клиент<span className="hidden sm:inline">: разговор приватный</span></> : <>О планах, сомнениях<span className="hidden sm:inline"> и всём, что хочется обсудить</span>.</>}
           </p>
         </div>
       </header>
@@ -195,7 +195,7 @@ export default function PrivateChat({
         aria-label="Личная переписка"
         aria-live="polite"
         aria-relevant="additions text"
-        className={`flex flex-col gap-3 overflow-y-auto overscroll-auto bg-white px-4 py-5 sm:px-5 ${viewportHeight ? "min-h-0 flex-1" : `h-96 sm:h-112 ${fillHeight ? "lg:h-0 lg:min-h-112 lg:flex-1" : ""}`}`}
+        className={`flex flex-col gap-3 overflow-y-auto overscroll-auto bg-white px-4 py-5 sm:px-5 ${viewportHeight ? "min-h-0 flex-1" : `h-96 sm:h-112 ${fillHeight ? "lg:h-0 lg:min-h-64 lg:flex-1" : ""}`}`}
       >
         {!messages.length && (
           <div className="m-auto max-w-xs text-center">

@@ -1,5 +1,6 @@
 import { database } from "../consultation/database";
-import { answerLabels } from "../consultation/answers";
+import type { Answers } from "../../app/consultation/components/form-fields";
+import { answerLabels, withFullName } from "../consultation/answers";
 import { draftIdentity, draftTokenHash } from "../consultation/drafts";
 import { paymentSubjects } from "./subjects";
 
@@ -39,7 +40,7 @@ export async function savePaymentCase(input: unknown) {
   const answers: Record<string, string> = Object.fromEntries(
     Object.keys(answerLabels).map((key) => [key, ""]),
   );
-  for (const key of ["name", "subject", "education", "english"]) {
+  for (const key of ["firstName", "lastName", "subject", "education", "english"]) {
     const value = profile[key] ?? "";
     if (
       typeof value !== "string" ||
@@ -60,7 +61,8 @@ export async function savePaymentCase(input: unknown) {
   answers.email = email;
   answers.packagePreference =
     data.tier === "START" ? "Start" : data.tier === "PRO" ? "Pro" : "VIP";
-  if (!answers.name) throw new Error("Укажите ваше имя.");
+  if (!answers.firstName) throw new Error("Укажите ваше имя.");
+  if (!answers.lastName) throw new Error("Укажите вашу фамилию.");
   const complete = true;
   const connection = await database().connect();
   try {
@@ -84,7 +86,7 @@ export async function savePaymentCase(input: unknown) {
       [
         identity.id,
         email,
-        JSON.stringify(answers),
+        JSON.stringify(withFullName(answers as Answers)),
         "payment",
         draftTokenHash(identity.token),
         data.revision,

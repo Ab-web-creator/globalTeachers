@@ -7,12 +7,14 @@ import RequiredMark from "./required-mark";
 import FormSelect from "./form-select";
 
 export type Answers = {
-  name: string; country: string; email: string; contact: string;
+  firstName: string; lastName: string; country: string; email: string; contact: string;
   subject: string; education: string; qualification: string;
   english: string; packagePreference: string; goals: string;
 };
+// Stored answers also carry the combined `name` written by the server.
+export type StoredAnswers = Answers & { name: string };
 export const emptyAnswers: Answers = {
-  name: "", country: "", email: "", contact: "", subject: "", education: "", qualification: "", english: "", packagePreference: "", goals: "",
+  firstName: "", lastName: "", country: "", email: "", contact: "", subject: "", education: "", qualification: "", english: "", packagePreference: "", goals: "",
 };
 const fieldClass = "w-full rounded-xl border border-brand-200 bg-white/80 px-4 py-3 text-base text-brand-700 placeholder:font-normal placeholder:text-neutral-400 focus:border-brand-500 focus:outline-1 focus:-outline-offset-2 focus:outline-brand-300";
 type Field = { name: keyof Answers; label: string; placeholder?: string; type?: string; autocomplete?: string; options?: string[]; multiline?: boolean; optional?: boolean };

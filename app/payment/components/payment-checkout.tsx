@@ -20,8 +20,9 @@ export default function PaymentCheckout({ program }: { program: Program }) {
   const errors: Record<string, string> = {};
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
     errors["payment-email"] = "Укажите корректный адрес электронной почты.";
-  if (!profile.name.trim()) errors["payment-name"] = "Укажите ваше имя.";
   if (!profile.subject.trim()) errors["payment-subject"] = "Выберите ваш предмет.";
+  if (!profile.firstName.trim()) errors["payment-first-name"] = "Укажите ваше имя.";
+  if (!profile.lastName.trim()) errors["payment-last-name"] = "Укажите вашу фамилию.";
   if (!profile.english.trim()) errors["payment-english"] = "Выберите ваш уровень английского.";
   else if (englishRestricted) errors["payment-english"] = englishNotice.reason;
   const detailsComplete = Object.keys(errors).length === 0;

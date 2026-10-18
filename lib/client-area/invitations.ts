@@ -4,6 +4,7 @@ import { emailConfig, sendEmail } from "../consultation/email";
 import { createToken, hashToken } from "../consultation/token";
 import { addressOf, getMessage } from "../mailbox/messages";
 import { clientTiers, type ClientTier, type Invitation } from "./types";
+import { fullName } from "../person-name";
 
 export async function getInvitation(id: string): Promise<Invitation | null> {
   const result = await database().query(
@@ -28,7 +29,7 @@ export async function prepareInvitation(
   if (!/^[^\s@<>,;]+@[^\s@<>,;]+\.[^\s@<>,;]+$/.test(email))
     throw new Error("Адрес получателя некорректен.");
   const request = await database().query(
-    `SELECT name, tier FROM payment_contact_requests
+    `SELECT first_name, last_name, tier FROM payment_contact_requests
     WHERE id = $1 OR email = $2 ORDER BY (id = $1) DESC, created_at DESC LIMIT 1`,
     [messageId, email],
   );
@@ -42,8 +43,13 @@ export async function prepareInvitation(
   const tier = requestedTier ?? saved?.tier ?? preference;
   if (!clientTiers.includes(tier))
     throw new Error("Выберите пакет клиента перед отправкой ключа.");
-  const name =
-    saved?.name ?? application.rows[0]?.answers?.name ?? email.split("@")[0];
+  const answers = application.rows[0]?.answers;
+  const person = saved
+    ? { firstName: saved.first_name, lastName: saved.last_name }
+    : answers?.firstName
+      ? { firstName: answers.firstName, lastName: answers.lastName ?? "" }
+      : { firstName: email.split("@")[0], lastName: "" };
+  const name = fullName(person);
   const { origin } = emailConfig();
   const key = createToken();
   const connection = await database().connect();
@@ -63,11 +69,11 @@ export async function prepareInvitation(
       inviteId = existing.rows[0].id;
     } else {
       const client = await connection.query(
-        `INSERT INTO private_clients(email, name, tier, key_hash)
-        VALUES ($1, $2, $3, $4)
+        `INSERT INTO private_clients(email, first_name, last_name, tier, key_hash)
+        VALUES ($1, $2, $3, $4, $5)
         ON CONFLICT (email) DO UPDATE SET key_hash = EXCLUDED.key_hash
         RETURNING id`,
-        [email, name, tier, hashToken(key)],
+        [email, person.firstName.trim(), person.lastName.trim(), tier, hashToken(key)],
       );
       const body = personalInvitationBody(name, `${origin}/client#${key}`);
       const inserted = await connection.query(

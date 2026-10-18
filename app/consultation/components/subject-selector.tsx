@@ -7,7 +7,7 @@ import SubjectPicker from "./subject-picker";
 import SubjectSearchField from "./subject-search-field";
 import { MAX_SUBJECTS, subjects } from "./subjects";
 
-export default function SubjectSelector({ value, onChange, availableSubjects = subjects, error, label = "Что вы преподаёте?", id }: { id?: string; label?: string; error?: string; value: string; onChange: (value: string) => void; availableSubjects?: readonly string[]; }) {
+export default function SubjectSelector({ value, onChange, availableSubjects = subjects, error, label = "Что вы преподаёте?", id, placeholderClassName = "text-neutral-400" }: { id?: string; label?: string; placeholderClassName?: string; error?: string; value: string; onChange: (value: string) => void; availableSubjects?: readonly string[]; }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const trigger = useRef<HTMLButtonElement>(null);
@@ -38,7 +38,7 @@ export default function SubjectSelector({ value, onChange, availableSubjects = s
       <legend id="subject-label" className="text-sm font-medium">{label}<RequiredMark /></legend>
       <div ref={anchor} className={`relative mt-2 min-h-12.5 min-w-0 sm:h-12.5 ${open ? "" : `rounded-xl border ${error ? "border-red-500" : "border-brand-200 hover:border-brand-400"} bg-white`}`}>
         <button id={id} ref={trigger} type="button" onClick={toggleOpen} aria-label={open ? "Закрыть выбор предметов" : selected.length ? `Изменить предметы: ${selected.join("; ")}` : "Выберите предметы"} aria-controls={open ? "subject-picker" : undefined} aria-expanded={open} aria-describedby={error ? "subject-label subject-error" : "subject-label step-description"} className={`${open ? "absolute right-1 top-1/2 z-10 size-10 -translate-y-1/2" : "absolute inset-0 flex w-full items-center justify-between gap-3 px-4 py-3"} rounded-xl text-left text-base text-brand-700 focus-visible:-outline-offset-2`}>
-          {!open && <span>{selected.length ? null : "Выберите предметы"}</span>}
+          {!open && <span className={placeholderClassName}>{selected.length ? null : "Выберите предметы"}</span>}
           <SubjectPickerChevronIcon className={`absolute size-5 shrink-0 text-brand-600 ${open ? "right-2.5 top-2.5 rotate-180" : "right-4 top-1/2 -translate-y-1/2"}`} />
         </button>
         {open ? (

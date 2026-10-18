@@ -1,9 +1,9 @@
 import { database } from "../consultation/database";
-import type { Answers } from "../../app/consultation/components/form-fields";
+import type { StoredAnswers } from "../../app/consultation/components/form-fields";
 
 export type ApplicationAttempt = {
   id: string;
-  answers: Answers;
+  answers: StoredAnswers;
   submitted_at: string;
   confirmed_at: string | null;
   status:
@@ -30,7 +30,7 @@ export type Application = {
   })[];
   id: string;
   email: string;
-  answers: Answers;
+  answers: StoredAnswers;
   status:
     | "not-enough-english"
     | "not-enough-education"

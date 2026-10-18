@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import type { Answers } from "../../consultation/components/form-fields";
+import type { StoredAnswers } from "../../consultation/components/form-fields";
 import ApplicationEditFields from "./application-edit-fields";
 
-type Props = { id: string; status: "pending" | "confirmed"; answers: Answers; onClose: () => void; onSaved: () => void };
+type Props = { id: string; status: "pending" | "confirmed"; answers: StoredAnswers; onClose: () => void; onSaved: () => void };
 
 export default function ApplicationEditDialog({ id, status, answers, onClose, onSaved }: Props) {
   const dialog = useRef<HTMLDialogElement>(null);

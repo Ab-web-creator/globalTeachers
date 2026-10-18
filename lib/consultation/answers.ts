@@ -1,7 +1,8 @@
-import type { Answers } from "../../app/consultation/components/form-fields";
+import type { Answers, StoredAnswers } from "../../app/consultation/components/form-fields";
+import { fullName } from "../person-name";
 import { MAX_SUBJECTS, subjects } from "../../app/consultation/components/subjects";
 
-export const answerLabels: Record<keyof Answers, string> = { name: "Имя", country: "Страна проживания", email: "Email", contact: "WhatsApp / Telegram", subject: "Специализация", education: "Образование", qualification: "Педагогическая квалификация", english: "Уровень английского", packagePreference: "Интересующая программа", goals: "Ситуация и вопросы (ранее)" };
+export const answerLabels: Record<keyof Answers, string> = { firstName: "Имя", lastName: "Фамилия", country: "Страна проживания", email: "Email", contact: "WhatsApp / Telegram", subject: "Специализация", education: "Образование", qualification: "Педагогическая квалификация", english: "Уровень английского", packagePreference: "Интересующая программа", goals: "Ситуация и вопросы (ранее)" };
 
 export class AnswerValidationError extends Error {
   constructor(public field: keyof Answers, message: string) {
@@ -27,6 +28,10 @@ export function parseAnswers(input: unknown): Answers {
   if (!result.subject.split("; ").every((subject) => subjects.includes(subject))) throw new AnswerValidationError("subject", "Выберите предметы из списка заново: один из выбранных вариантов недоступен.");
   if (!["", "Start", "Pro", "VIP"].includes(result.packagePreference)) throw new AnswerValidationError("packagePreference", "Выберите Start, Pro, VIP или оставьте выбор на потом.");
   return result as Answers;
+}
+
+export function withFullName(answers: Answers): StoredAnswers {
+  return { ...answers, name: fullName(answers) };
 }
 
 export function summarize(answers: Answers) {

@@ -6,7 +6,7 @@ import { countries } from "../../app/consultation/components/countries";
 import { subjects, MAX_SUBJECTS } from "../../app/consultation/components/subjects";
 
 export async function clientConsultationProfile(clientId: string): Promise<Answers> {
-  const client = (await database().query("SELECT name,email,consultation_profile FROM private_clients WHERE id=$1", [clientId])).rows[0];
+  const client = (await database().query("SELECT first_name,last_name,email,consultation_profile FROM private_clients WHERE id=$1", [clientId])).rows[0];
   if (!client) throw new Error("Клиент не найден.");
   const records = await database().query(
     `SELECT COALESCE(p.answers,c.answers,a.answers) AS answers FROM consultation_attempts a
@@ -21,7 +21,7 @@ export async function clientConsultationProfile(clientId: string): Promise<Answe
   for (const field of Object.keys(emptyAnswers) as (keyof Answers)[]) {
     if (typeof client.consultation_profile[field] === "string") answers[field] = client.consultation_profile[field];
   }
-  return { ...answers, name: client.name, email: client.email };
+  return { ...answers, firstName: client.first_name, lastName: client.last_name, email: client.email };
 }
 
 export async function saveClientConsultationProfile(clientId: string, input: unknown) {
@@ -34,7 +34,8 @@ export async function saveClientConsultationProfile(clientId: string, input: unk
     if (typeof value !== "string" || value.length > (field === "goals" ? 1500 : field === "subject" ? 1000 : 300)) throw new Error("Проверьте данные анкеты.");
     answers[field] = value.trim();
   }
-  if (!answers.name) throw new Error("Укажите имя.");
+  if (!answers.firstName) throw new Error("Укажите имя.");
+  if (!answers.lastName) throw new Error("Укажите фамилию.");
   const options: Partial<Record<keyof Answers, readonly string[]>> = {
     country: countries,
     education: ["Среднее специальное", "Бакалавр", "Магистр", "Докторская степень", "Профессор"],
@@ -51,8 +52,8 @@ export async function saveClientConsultationProfile(clientId: string, input: unk
   const { email: ignoredEmail, ...profile } = answers;
   void ignoredEmail;
   const saved = await database().query(
-    "UPDATE private_clients SET name=$2,consultation_profile=$3 WHERE id=$1 AND active RETURNING id",
-    [clientId, answers.name, JSON.stringify(profile)],
+    "UPDATE private_clients SET first_name=$2,last_name=$3,consultation_profile=$4 WHERE id=$1 AND active RETURNING id",
+    [clientId, answers.firstName, answers.lastName, JSON.stringify(profile)],
   );
   if (!saved.rowCount) throw new Error("Нет доступа к личной странице.");
   return clientConsultationProfile(clientId);

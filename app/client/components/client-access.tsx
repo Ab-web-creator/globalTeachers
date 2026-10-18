@@ -106,11 +106,11 @@ export default function ClientAccess({
           aria-label="Личная страница"
           className="mx-auto flex max-w-400 flex-wrap items-center justify-between gap-3 px-6 py-2 sm:px-10 lg:px-16 xl:px-20"
         >
-          <Link href="/" aria-label="TeacherNavigator — на главную" className="shrink-0">
+          <Link href="/" aria-label="TeacherNavigator — на главную" className={`shrink-0 ${authenticated ? "hidden sm:block" : ""}`}>
             <BrandLogo className="w-28" aria-hidden="true" />
           </Link>
           {authenticated && (
-            <div className="ml-auto flex flex-wrap items-center justify-end gap-2 sm:gap-3">
+            <div className="ml-auto flex w-full flex-wrap items-center justify-end gap-1 sm:w-auto sm:gap-3">
               <ClientNotifications initialUnread={initialUnread} />
               {accessLink && (
                 <button
@@ -119,15 +119,18 @@ export default function ClientAccess({
                   className="flex min-h-11 shrink-0 items-center gap-2 rounded-xl px-2 py-3 text-left text-sm text-brand-600 hover:bg-brand-50"
                 >
                   <CopyKeyIcon className="size-5 shrink-0" />
-                  {copied ? "Ключ скопирован ✓" : "Скопировать ключ"}
+                  {copied ? "Ключ скопирован ✓" : "Ключ"}
                 </button>
               )}
-              <ClientProfilePhoto name={name} hasPhoto={hasPhoto} tier={tier} email={email} paid={paid} frozen={frozen} remainingHours={remainingHours} subject={subject} country={country} />
+              {/* On phones the profile photo takes the logo's place at the left edge. */}
+              <div className="order-first mr-auto sm:order-none sm:mr-0">
+                <ClientProfilePhoto name={name} hasPhoto={hasPhoto} tier={tier} email={email} paid={paid} frozen={frozen} remainingHours={remainingHours} subject={subject} country={country} />
+              </div>
               <button
                 type="button"
                 disabled={busy}
                 onClick={() => void logout()}
-                className="min-h-11 shrink-0 rounded-xl border border-brand-200 bg-white px-5 py-2.5 text-sm font-medium text-neutral-600 hover:bg-brand-50 disabled:opacity-50"
+                className="min-h-11 shrink-0 rounded-xl border border-brand-200 bg-white px-3 py-2.5 text-sm sm:px-5 font-medium text-neutral-600 hover:bg-brand-50 disabled:opacity-50"
               >
                 {busy ? "Выходим…" : "Выйти"}
               </button>
@@ -176,7 +179,7 @@ export default function ClientAccess({
           >
             {busy
               ? "Открываем вашу страницу…"
-              : "Для входа откройте персональную ссылку из письма «Ваш ключ от личной страницы». Сохраните это письмо — оно понадобится для входа с другого устройства."}
+              : "Для входа откройте персональную ссылку из письма «Ваш ключ от личной страницы». Сохраните эту ссылку — это ваш ключ для входа с любого устройства."}
           </p>
         </div>
       )}

@@ -4,10 +4,10 @@ import { EditApplicationIcon } from "@/app/components/svg";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { createPortal } from "react-dom";
-import type { Answers } from "../../consultation/components/form-fields";
+import type { StoredAnswers } from "../../consultation/components/form-fields";
 import ApplicationEditDialog from "./application-edit-dialog";
 
-type Props = { id: string; status: "pending" | "confirmed"; answers: Answers; };
+type Props = { id: string; status: "pending" | "confirmed"; answers: StoredAnswers; };
 
 export default function EditApplicationButton({ id, status, answers }: Props) {
   const [open, setOpen] = useState(false);

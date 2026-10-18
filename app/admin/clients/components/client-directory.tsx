@@ -145,19 +145,18 @@ function ClientSummaryCard({ client, href }: { client: PrivateClient; href: stri
   const Icon = !paid ? UserProfileIcon : client.tier === "VIP" ? SupportCrownIcon : client.tier === "PRO" ? BriefcaseIcon : StartClientIcon;
   return (
     <Link href={href} target="_blank" rel="noopener noreferrer" aria-label={`Открыть карточку ${client.name} в новой вкладке`} className="block w-full overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-md transition-shadow hover:shadow-lg focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500 sm:w-80">
-      <header className={`relative isolate flex flex-col gap-2 overflow-hidden px-4 py-3 ${paid ? tierHeaderColors[client.tier] : "bg-linear-to-r from-neutral-300 to-neutral-200 text-neutral-800"}`}>
+      <header className={`relative isolate flex items-start gap-2 overflow-hidden px-4 py-3 ${paid ? tierHeaderColors[client.tier] : "bg-linear-to-r from-neutral-300 to-neutral-200 text-neutral-800"}`}>
         <span aria-hidden="true" className={`${cardStyles.ornament} ${paid ? cardStyles.paidOrnament : ""}`} />
-        <div className="flex items-center gap-2">
-          <Icon className="size-6 shrink-0" />
-          <h2 className="min-w-0 flex-1 break-words text-base font-semibold leading-tight">{client.name}</h2>
-          {!!client.unread_count && <span aria-label={`Непрочитанных сообщений: ${client.unread_count}`} className="flex h-6 min-w-6 shrink-0 items-center justify-center rounded-full bg-white px-1.5 text-xs font-semibold text-brand-600">{client.unread_count}</span>}
-        </div>
-        <span className={`inline-flex w-fit items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-semibold shadow-sm ${paid && client.tier === "VIP" ? "text-amber-700" : "text-brand-700"}`}>
+        <Icon className="size-6 shrink-0" />
+        {/* The name wraps under itself; the badge keeps its place on the first line. */}
+        <h2 className="mt-0.5 min-w-0 flex-1 break-words text-base font-semibold leading-tight">{client.name}</h2>
+        {!!client.unread_count && <span aria-label={`Непрочитанных сообщений: ${client.unread_count}`} className="flex h-6 min-w-6 shrink-0 items-center justify-center rounded-full bg-white px-1.5 text-xs font-semibold text-brand-600">{client.unread_count}</span>}
+        <span className={`inline-flex h-6 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-2 text-xs font-semibold shadow-sm ${paid && client.tier === "VIP" ? "text-amber-700" : "text-brand-700"}`}>
           {paid && <ApplicationStarIcon className="size-4" />}
-          {paid ? "Клиент" : "Кандидат"} {client.tier}
+          {paid ? "Клиент" : `Кандидат ${client.tier}`}
         </span>
       </header>
-      <dl className="mx-4 divide-y divide-neutral-200 text-sm">
+      <dl className="mx-4 mt-2 divide-y divide-neutral-200 text-sm">
         <div className="flex items-start gap-3 py-2">
           <EnvelopeIcon className="mt-0.5 size-4 shrink-0 text-neutral-600" />
           <div className="min-w-0"><dt className="text-xs text-neutral-500">Email</dt><dd className="mt-0.5 break-all text-neutral-800">{client.email}</dd></div>

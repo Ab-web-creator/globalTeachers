@@ -2,7 +2,8 @@ import { filterPaymentSubjects } from "./subjects";
 import { database } from "../consultation/database";
 
 export type PaymentProfile = {
-  name: string;
+  firstName: string;
+  lastName: string;
   subject: string;
   education: string;
   english: string;
@@ -39,7 +40,7 @@ export async function findPaymentProfile(
   if (!result.rowCount) return null;
   const answers = result.rows[0].answers;
   const profile = Object.fromEntries(
-    ["name", "subject", "education", "english"].map((key) => [
+    ["firstName", "lastName", "subject", "education", "english"].map((key) => [
       key,
       typeof answers[key] === "string" ? answers[key] : "",
     ]),

@@ -55,7 +55,7 @@ export default function ClientNotifications({
       className="flex min-h-11 shrink-0 items-center gap-2 rounded-xl px-2 py-3 text-left text-sm text-brand-600 hover:bg-brand-50"
     >
       <NotificationBellIcon className="size-5 shrink-0" />
-      Уведомления
+      <span className="sr-only sm:not-sr-only">Уведомления</span>
       {unread > 0 && (
         <span
           aria-label={`Новых сообщений: ${unread}`}

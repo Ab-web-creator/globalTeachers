@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 import { trustedRequestOrigin } from "../../../lib/request-origin";
 import { sessionCookie, validSession } from "../../../lib/admin/session";
 import { database } from "../../../lib/consultation/database";
-import { parseAnswers } from "../../../lib/consultation/answers";
+import { parseAnswers, withFullName } from "../../../lib/consultation/answers";
 
 export async function POST(request: NextRequest) {
   if (!trustedRequestOrigin(request)) return new Response("Forbidden", { status: 403 });
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
   }
   try {
     const table = input.status === "pending" ? "consultation_pending" : "consultation_applications";
-    const result = await database().query(`UPDATE ${table} SET email = $1, answers = $2::jsonb WHERE id = $3 AND answers = $4::jsonb`, [answers.email, JSON.stringify(answers), input.id, JSON.stringify(input.originalAnswers)]);
+    const result = await database().query(`UPDATE ${table} SET email = $1, answers = $2::jsonb WHERE id = $3 AND answers = $4::jsonb`, [answers.email, JSON.stringify(withFullName(answers)), input.id, JSON.stringify(input.originalAnswers)]);
     if (!result.rowCount) return Response.json({ error: "Заявка удалена или изменена. Обновите страницу перед редактированием." }, { status: 409 });
     return new Response(null, { status: 204 });
   } catch (cause) {

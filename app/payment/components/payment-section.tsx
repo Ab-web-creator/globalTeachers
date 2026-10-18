@@ -16,7 +16,7 @@ export default function PaymentSection({ program, detailsComplete, validateDetai
   const [cardNumber, setCardNumber] = useState("");
   const [expiry, setExpiry] = useState("");
   const [expiryError, setExpiryError] = useState(false);
-  const [contact, setContact] = useState<{ name: string; email: string } | null>(null);
+  const [contact, setContact] = useState<{ firstName: string; lastName: string; email: string } | null>(null);
   const [agreed, setAgreed] = useState(false);
   const [attempted, setAttempted] = useState(false);
 
@@ -49,10 +49,11 @@ export default function PaymentSection({ program, detailsComplete, validateDetai
       });
       return;
     }
-    const name = document.getElementById("payment-name");
+    const firstName = document.getElementById("payment-first-name");
+    const lastName = document.getElementById("payment-last-name");
     const email = document.getElementById("payment-email");
-    if (!canContinue || !(name instanceof HTMLInputElement) || !(email instanceof HTMLInputElement)) return;
-    setContact({ name: name.value.trim(), email: email.value.trim() });
+    if (!canContinue || !(firstName instanceof HTMLInputElement) || !(lastName instanceof HTMLInputElement) || !(email instanceof HTMLInputElement)) return;
+    setContact({ firstName: firstName.value.trim(), lastName: lastName.value.trim(), email: email.value.trim() });
   }
 
   return (
@@ -118,7 +119,7 @@ export default function PaymentSection({ program, detailsComplete, validateDetai
         <button type="button" aria-disabled={!canContinue} onClick={openContact} className="mt-7 inline-flex min-h-16 w-fit items-center justify-center rounded-2xl border border-transparent bg-brand-500 px-10 py-4 text-lg font-semibold text-white hover:bg-brand-600 aria-disabled:cursor-not-allowed aria-disabled:border-neutral-300 aria-disabled:bg-transparent aria-disabled:hover:bg-transparent aria-disabled:text-neutral-500 aria-disabled:shadow-none">{`Оплатить $${paymentAmount}`}</button>
         <p className="mt-4 text-sm leading-relaxed text-neutral-500">Платёж обрабатывается через защищённый платёжный сервис. Данные карты не сохраняются на наших серверах.</p>
       </div>
-      {contact && <PaymentContactDialog tier={program.tier} initialName={contact.name} initialEmail={contact.email} onClose={() => setContact(null)} />}
+      {contact && <PaymentContactDialog tier={program.tier} initialFirstName={contact.firstName} initialLastName={contact.lastName} initialEmail={contact.email} onClose={() => setContact(null)} />}
     </ProgramSection>
   );
 }

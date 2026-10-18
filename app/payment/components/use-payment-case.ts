@@ -12,7 +12,7 @@ export default function usePaymentCase(
   const [retry, setRetry] = useState(0);
   useEffect(() => {
     const normalized = email.trim().toLowerCase();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized) || !profile.name.trim()) return;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized) || !profile.firstName.trim()) return;
     let stopped = false;
     async function save() {
       const storageKey = `tn-payment-case:${normalized}`;
@@ -50,7 +50,7 @@ export default function usePaymentCase(
           body: JSON.stringify({
             email: normalized,
             tier,
-            profile: { name: profile.name, subject: profile.subject, english: profile.english },
+            profile: { firstName: profile.firstName, lastName: profile.lastName, subject: profile.subject, english: profile.english },
             draft: { id: identity.id, token: identity.token },
             revision: identity.revision,
           }),

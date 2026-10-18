@@ -23,6 +23,7 @@ import PrivateChat from "./private-chat";
 import ClientFiles from "./client-files";
 import PackageSupportSection from "./package-support-section";
 import type { ClientWorkspace } from "../../../lib/client-area/types";
+import { fullName } from "../../../lib/person-name";
 
 const fieldClass =
   "w-full rounded-xl border border-brand-200 bg-white px-4 py-3 text-base focus:outline-2 focus:-outline-offset-2 focus:outline-brand-500";
@@ -479,12 +480,12 @@ export default function WorkspacePanel({
           )}
           {!admin && bookingsCard}
         </section>
-        {admin && <ConsultationProfileSection initial={data.profile} admin={admin} onSaved={(profile) => setData(current => ({ ...current, profile, client: { ...current.client, name: profile.name } }))} />}
+        {admin && <ConsultationProfileSection initial={data.profile} admin={admin} onSaved={(profile) => setData(current => ({ ...current, profile, client: { ...current.client, name: fullName(profile) } }))} />}
         {!admin && <div className="lg:col-start-1 lg:row-start-3"><PackageSupportSection tier={data.client.tier} /></div>}
 
         </div>
       </div>
-      {!admin && <ConsultationProfileSection initial={data.profile} admin={admin} onSaved={(profile) => setData(current => ({ ...current, profile, client: { ...current.client, name: profile.name } }))} />}
+      {!admin && <ConsultationProfileSection initial={data.profile} admin={admin} onSaved={(profile) => setData(current => ({ ...current, profile, client: { ...current.client, name: fullName(profile) } }))} />}
       <ClientFiles clientId={data.client.id} admin={admin} writable={admin || Boolean(data.client.active && data.client.paid_at)} />
     </div>
   );

@@ -3,6 +3,7 @@ import type { Answers } from "../../app/consultation/components/form-fields";
 import { database } from "./database";
 import { createToken, hashToken } from "./token";
 import { draftIdentity, draftTokenHash } from "./drafts";
+import { withFullName } from "./answers";
 
 export async function removeExpiredApplications() {
   const result = await database().query("DELETE FROM consultation_pending WHERE expires_at <= now()");
@@ -29,7 +30,7 @@ export async function savePendingApplication(answers: Answers, draftInput?: unkn
          created_at = now(), expires_at = now() + interval '24 hours'
        WHERE consultation_pending.created_at <= now() - interval '60 seconds'
        RETURNING id`,
-      [id, answers.email.toLowerCase(), JSON.stringify(answers), hashToken(token)],
+      [id, answers.email.toLowerCase(), JSON.stringify(withFullName(answers)), hashToken(token)],
     );
     await client.query("COMMIT");
     return result.rowCount ? token : null;

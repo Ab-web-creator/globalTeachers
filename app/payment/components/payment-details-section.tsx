@@ -17,8 +17,13 @@ const englishLevels = [
   "Уверенный — могу работать на английском",
 ];
 
+const nameFields = [
+  { name: "firstName", id: "payment-first-name", label: "Ваше имя", placeholder: "Например: Анна", autoComplete: "given-name" },
+  { name: "lastName", id: "payment-last-name", label: "Ваша фамилия", placeholder: "Например: Иванова", autoComplete: "family-name" },
+] as const;
+
 const fieldClass =
-  "w-full rounded-xl border border-brand-200 bg-white px-4 py-3 text-base text-brand-700 placeholder:text-neutral-400 aria-invalid:border-red-500 focus:border-brand-500 focus:outline-2 focus:-outline-offset-2 focus:outline-brand-300";
+  "w-full rounded-xl border border-brand-200 bg-white px-4 py-3 text-base font-normal text-brand-700 placeholder:text-neutral-500 aria-invalid:border-red-500 focus:border-brand-500 focus:outline-2 focus:-outline-offset-2 focus:outline-brand-300";
 export default function PaymentDetailsSection({
   profileState,
   errors,
@@ -93,33 +98,42 @@ export default function PaymentDetailsSection({
               </span>
             )}
           </label>
-          <label htmlFor="payment-name" className="block text-sm font-medium">
-            Ваше имя
-            <RequiredMark />
-            <input
-              id="payment-name"
-              aria-invalid={Boolean(errors["payment-name"])}
-              aria-describedby={
-                errors["payment-name"] ? "payment-name-error" : undefined
-              }
-              name="name"
-              value={profile.name}
-              onChange={(event) => changeField("name", event.target.value)}
-              autoComplete="name"
-              placeholder="Например: Анна Иванова"
-              required
-              maxLength={200}
-              className={`${fieldClass} mt-2`}
-            />
-            {errors["payment-name"] && (
-              <span
-                id="payment-name-error"
-                className="mt-2 block text-sm font-normal text-red-700"
-              >
-                {errors["payment-name"]}
-              </span>
-            )}
-          </label>
+          <SubjectSelector
+            id="payment-subject"
+            label="Ваш предмет"
+            value={profile.subject}
+            onChange={(value) => changeField("subject", value)}
+            availableSubjects={paymentSubjects}
+            error={errors["payment-subject"]}
+            placeholderClassName="text-neutral-500"
+          />
+          {nameFields.map((field) => (
+            <label key={field.name} htmlFor={field.id} className="block text-sm font-medium">
+              {field.label}
+              <RequiredMark />
+              <input
+                id={field.id}
+                aria-invalid={Boolean(errors[field.id])}
+                aria-describedby={errors[field.id] ? `${field.id}-error` : undefined}
+                name={field.name}
+                value={profile[field.name]}
+                onChange={(event) => changeField(field.name, event.target.value)}
+                autoComplete={field.autoComplete}
+                placeholder={field.placeholder}
+                required
+                maxLength={100}
+                className={`${fieldClass} mt-2`}
+              />
+              {errors[field.id] && (
+                <span
+                  id={`${field.id}-error`}
+                  className="mt-2 block text-sm font-normal text-red-700"
+                >
+                  {errors[field.id]}
+                </span>
+              )}
+            </label>
+          ))}
           <label htmlFor="payment-english" className="block text-sm font-medium">
             Уровень английского
             <RequiredMark />
@@ -131,7 +145,7 @@ export default function PaymentDetailsSection({
               required
               aria-invalid={Boolean(errors["payment-english"])}
               aria-describedby={errors["payment-english"] ? "payment-english-error" : undefined}
-              className={fieldClass}
+              className={`${fieldClass} invalid:text-neutral-500`}
             >
               <option value="" disabled>Выберите уровень английского</option>
               {englishLevels.map((level, index) => (
@@ -150,14 +164,6 @@ export default function PaymentDetailsSection({
               </span>
             )}
           </label>
-          <SubjectSelector
-            id="payment-subject"
-            label="Ваш предмет"
-            value={profile.subject}
-            onChange={(value) => changeField("subject", value)}
-            availableSubjects={paymentSubjects}
-            error={errors["payment-subject"]}
-          />
         </div>
         {status && (
           <p

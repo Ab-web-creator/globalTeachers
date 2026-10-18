@@ -7,7 +7,7 @@ import FormFields, { emptyAnswers, type Answers } from "./form-fields";
 import SubmissionSuccess from "./submission-success";
 import StepIndicator from "./step-indicator";
 import FormNavigation from "./form-navigation";
-import NameFields, { type TeacherName } from "./name-fields";
+import NameFields from "./name-fields";
 
 import { consultationSteps } from "./consultation-steps";
 import { validateStep } from "./validate-step";
@@ -21,7 +21,6 @@ export default function ConsultationForm() {
   const [outcome, setOutcome] = useState<"unsupported_subjects" | "not-enough-education" | "not-enough-english" | null>(null);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>(emptyAnswers);
-  const [teacherName, setTeacherName] = useState<TeacherName>({ firstName: "", lastName: "" });
   const [sent, setSent] = useState(false);
   const [confirmationDestination, setConfirmationDestination] = useState("/");
   const [sending, setSending] = useState(false);
@@ -39,8 +38,7 @@ export default function ConsultationForm() {
   const errorMessage = useRef<HTMLParagraphElement>(null);
   const isEnglishStep = consultationSteps[step].fields[0] === "english";
 
-  const completeAnswers = { ...answers, name: `${teacherName.firstName.trim()} ${teacherName.lastName.trim()}`.trim() };
-  const draft = useDraftSave(completeAnswers, step, sending || sent || outcome !== null);
+  const draft = useDraftSave(answers, step, sending || sent || outcome !== null);
 
   useEffect(() => {
     if (!noticeOpen) return;
@@ -128,14 +126,15 @@ export default function ConsultationForm() {
       const response = await fetch("/api/consultation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...completeAnswers, draft: draft.getIdentity() }),
+        body: JSON.stringify({ ...answers, draft: draft.getIdentity() }),
       });
       const result = await response.json();
       if (!response.ok && result.field) {
-        const invalidStep = consultationSteps.findIndex((item) => item.fields[0] === result.field);
+        const stepField = result.field === "lastName" ? "firstName" : result.field;
+        const invalidStep = consultationSteps.findIndex((item) => item.fields[0] === stepField);
         if (invalidStep >= 0) {
           changeStep(invalidStep);
-          setErrorField(result.field === "name" ? "firstName" : result.field);
+          setErrorField(result.field);
           setError(result.error);
           return;
         }
@@ -186,10 +185,10 @@ export default function ConsultationForm() {
               </div>
               <div className={`flex min-w-0 flex-1 flex-col gap-6 bg-white px-4 lg:px-8 xl:px-10 ${isEnglishStep ? "pt-5.25 pb-6 lg:pb-8 xl:pb-10" : "py-6 lg:py-8 xl:py-10"}`}>
                 <div>
-                  {consultationSteps[step].fields[0] === "name"
-                    ? <NameFields value={teacherName} error={error} errorField={errorField} errorRef={errorMessage} onChange={(value) => { setError(""); setTeacherName(value); }} />
+                  {consultationSteps[step].fields[0] === "firstName"
+                    ? <NameFields value={answers} error={error} errorField={errorField} errorRef={errorMessage} onChange={(value) => { setError(""); setAnswers((previous) => ({ ...previous, ...value })); }} />
                     : <FormFields step={step} answers={answers} onChange={(name, value) => { setError(""); setAnswers((previous) => ({ ...previous, [name]: value })); if (name === "english" && isBeginnerEnglish(value)) setEnglishNoticeOpen(true); if (name === "education" && value === "Среднее специальное") setEducationNoticeOpen(true); }} />}
-                  {error && consultationSteps[step].fields[0] !== "name" && <p ref={errorMessage} id="step-error" role="alert" className={`mt-2 text-sm text-red-700 ${["country", "email", "subject", "goals"].includes(consultationSteps[step].fields[0]) ? "px-4" : ""}`}>{error}</p>}
+                  {error && consultationSteps[step].fields[0] !== "firstName" && <p ref={errorMessage} id="step-error" role="alert" className={`mt-2 text-sm text-red-700 ${["country", "email", "subject", "goals"].includes(consultationSteps[step].fields[0]) ? "px-4" : ""}`}>{error}</p>}
                 </div>
               </div>
             </div>
@@ -202,7 +201,6 @@ export default function ConsultationForm() {
       {sent && <SubmissionSuccess email={answers.email.trim()} onClose={() => router.push(confirmationDestination)} onNew={() => {
         draft.startNew();
         setAnswers(emptyAnswers);
-        setTeacherName({ firstName: "", lastName: "" });
         setSent(false);
         setConfirmationDestination("/");
         setOutcome(null);

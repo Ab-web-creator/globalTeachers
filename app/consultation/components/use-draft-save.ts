@@ -22,7 +22,7 @@ export default function useDraftSave(answers: Answers, step: number, paused: boo
 
   function save() {
     const current = latest.current;
-    if (current.paused || !current.answers.name.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(current.answers.email.trim())) return;
+    if (current.paused || !current.answers.firstName.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(current.answers.email.trim())) return;
     const snapshot = JSON.stringify({ answers: { ...current.answers, english: furthestStep.current < consultationSteps.findIndex((step) => step.fields[0] === "english") ? "" : current.answers.english }, step: consultationSteps[current.step].fields[0] });
     if (snapshot === lastSaved.current) return;
     if (!identity.current) identity.current = { id: crypto.randomUUID(), token: crypto.randomUUID() };

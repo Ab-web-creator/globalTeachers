@@ -38,25 +38,24 @@ export default function ApplicationCard({ application }: { application: Applicat
       >
         <header className={`relative isolate flex flex-col gap-2 overflow-hidden px-4 py-3 ${headerColor}`}>
           <span aria-hidden="true" className={`${styles.ornament} ${paid ? styles.paidOrnament : ""}`} />
-          <h2 className="flex min-w-0 items-center gap-2 text-base font-semibold leading-tight">
+          {/* The name wraps under itself; the tier badge keeps its place on the first line. */}
+          <div className="flex items-start gap-2">
             <NameIcon className="size-6 shrink-0" />
-            <span className="min-w-0 break-words">{application.answers.name || "Без имени"}</span>
-          </h2>
-          <div className="flex flex-wrap gap-2">
+            <h2 className="mt-0.5 min-w-0 flex-1 break-words text-base font-semibold leading-tight">{application.answers.name || "Без имени"}</h2>
             {displayTier && (
-              <span className={`inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-semibold shadow-sm ${paid && application.paid_tier === "VIP" ? "text-amber-700" : "text-brand-700"}`}>
+              <span className={`inline-flex h-6 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-2 text-xs font-semibold shadow-sm ${paid && application.paid_tier === "VIP" ? "text-amber-700" : "text-brand-700"}`}>
                 {paid && <ApplicationStarIcon className="size-4 shrink-0" />}
-                {paid ? "Клиент" : "Кандидат"} {displayTier}
-              </span>
-            )}
-            {!paid && application.status !== "payment" && (
-              <span className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${confirmed ? "bg-white text-brand-700" : expired ? "bg-neutral-100 text-neutral-600" : "bg-amber-50 text-amber-800"}`}>
-                {statusLabel}
+                {paid ? "Клиент" : `Кандидат ${displayTier}`}
               </span>
             )}
           </div>
+          {!paid && application.status !== "payment" && (
+            <span className={`inline-flex w-fit rounded-full px-2 py-1 text-xs font-medium ${confirmed ? "bg-white text-brand-700" : expired ? "bg-neutral-100 text-neutral-600" : "bg-amber-50 text-amber-800"}`}>
+              {statusLabel}
+            </span>
+          )}
         </header>
-        <div className="px-4">
+        <div className="px-4 pt-2">
           <dl className="divide-y divide-neutral-200 text-sm">
             <div className="flex items-start gap-3 py-2">
               <EnvelopeIcon className="mt-0.5 size-4 shrink-0 text-neutral-600" />

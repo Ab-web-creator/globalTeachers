@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import type { PaymentProfile } from "../../../lib/payment/profile";
 
 const emptyProfile: PaymentProfile = {
-  name: "",
+  firstName: "",
+  lastName: "",
   subject: "",
   education: "",
   english: "",

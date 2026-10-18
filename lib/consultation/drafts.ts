@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import type { Answers } from "../../app/consultation/components/form-fields";
-import { answerLabels } from "./answers";
+import { answerLabels, withFullName } from "./answers";
 import { consultationSteps } from "../../app/consultation/components/consultation-steps";
 import { isBeginnerEnglish } from "../../app/consultation/components/english-notice";
 import { database } from "./database";
@@ -36,7 +36,7 @@ export async function saveDraft(input: unknown) {
     if (typeof value !== "string" || value.length > limit) throw new Error("Invalid draft");
     answers[key] = value.trim();
   }
-  if (!answers.name || !answers.email) throw new Error("Empty draft");
+  if (!answers.firstName || !answers.email) throw new Error("Empty draft");
   if (answers.email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(answers.email)) throw new Error("Invalid draft");
   const terminal = data.outcome === "unsupported_subjects" || data.outcome === "not-enough-education" || data.outcome === "not-enough-english";
   if (data.outcome !== undefined && !terminal) throw new Error("Invalid draft");
@@ -56,7 +56,7 @@ export async function saveDraft(input: unknown) {
     WHERE (consultation_attempts.status = 'draft' OR (consultation_attempts.status IN ('unsupported_subjects', 'not-enough-education', 'not-enough-english') AND EXCLUDED.status = consultation_attempts.status))
       AND consultation_attempts.draft_token_hash = EXCLUDED.draft_token_hash
       AND consultation_attempts.draft_revision < EXCLUDED.draft_revision
-    RETURNING id`, [identity.id, answers.email.toLowerCase(), JSON.stringify(answers), draftTokenHash(identity.token), data.revision, data.step, terminal ? data.outcome : "draft"]);
+    RETURNING id`, [identity.id, answers.email.toLowerCase(), JSON.stringify(withFullName(answers)), draftTokenHash(identity.token), data.revision, data.step, terminal ? data.outcome : "draft"]);
   if (terminal && !result.rowCount) throw new Error("Invalid draft");
   return result;
 }

@@ -64,11 +64,12 @@ export default function ConsultationProfileSection({ initial, admin, onSaved }: 
       ) : (
         <form onSubmit={save} noValidate className="mt-7">
           <fieldset disabled={busy} className="grid min-w-0 gap-6 sm:grid-cols-2">
-            <label className={`block text-sm font-medium ${!answers.name.trim() ? styles.missing : ""}`}>Имя и фамилия<input aria-invalid={!answers.name.trim()} value={answers.name} onChange={event => change("name", event.target.value)} autoComplete="name" maxLength={300} className={fieldClass} /></label>
+            <label className={`block text-sm font-medium ${!answers.firstName.trim() ? styles.missing : ""}`}>Имя<input aria-invalid={!answers.firstName.trim()} value={answers.firstName} onChange={event => change("firstName", event.target.value)} autoComplete="given-name" maxLength={100} className={fieldClass} /></label>
+            <label className={`block text-sm font-medium ${!answers.lastName.trim() ? styles.missing : ""}`}>Фамилия<input aria-invalid={!answers.lastName.trim()} value={answers.lastName} onChange={event => change("lastName", event.target.value)} autoComplete="family-name" maxLength={100} className={fieldClass} /></label>
             <label className="block text-sm font-medium">Email<input value={answers.email} readOnly type="email" autoComplete="email" aria-describedby="profile-email-note" className={`${fieldClass} text-neutral-500`} /><span id="profile-email-note" className="mt-2 block text-sm font-normal text-neutral-500">Email связан с вашим персональным ключом.</span></label>
             {consultationSteps.map((step, index) => {
               const field = step.fields[0];
-              if (field === "name" || field === "email" || field === "packagePreference") return null;
+              if (field === "firstName" || field === "email" || field === "packagePreference") return null;
               const incomplete = !answers[field].trim();
               return <div key={field} className={`min-w-0 ${incomplete ? styles.missing : ""}`}><FormFields step={index} answers={answers} onChange={change} /></div>;
             })}
