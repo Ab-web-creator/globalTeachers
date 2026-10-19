@@ -31,8 +31,15 @@ export default function MentorNote() {
                 {t("home.mentorNote.message0428")}</h2>
             </header>
             <div className="mt-7 space-y-4 text-base leading-normal text-neutral-700 sm:text-lg lg:space-y-6 lg:leading-relaxed">
-              <p data-reveal>
-                {t("home.mentorNote.message0429")}</p>
+              {t("home.mentorNote.message0429").split(/\n\s*\n/).map((paragraph, index) => (
+                <p key={index} data-reveal>
+                  {paragraph.split(/(\*\*[^*]+\*\*)/g).map((part, partIndex) => (
+                    part.startsWith("**") && part.endsWith("**")
+                      ? <strong key={partIndex}>{part.slice(2, -2)}</strong>
+                      : part
+                  ))}
+                </p>
+              ))}
               <p data-reveal>
           
 
