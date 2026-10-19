@@ -1,3 +1,4 @@
+import { deliveryLabel } from "../../../../lib/mailbox/delivery";
 import MailMessageLink from "./mail-message-link";
 import LocalTime from "../../components/local-time";
 import Link from "next/link";
@@ -35,6 +36,7 @@ export default function MailList({ folder, data, selectedId }: Props) {
                     <span className="min-w-0 truncate text-sm">
                       <span className="font-semibold">{message.subject || "(без темы)"}</span>
                       {message.snippet && <span className="text-neutral-500 xl:mt-1 xl:block xl:truncate"><span className="xl:hidden"> — </span>{message.snippet}</span>}
+                      {message.delivery_status && <span className={`mt-1 block text-xs ${["email.bounced", "email.failed", "email.suppressed"].includes(message.delivery_status) ? "text-red-700" : "text-neutral-500"}`}>{deliveryLabel(message.delivery_status)}</span>}
                     </span>
                     <span className="flex items-center gap-2 text-sm whitespace-nowrap text-neutral-500">
                       {message.has_attachments && <span aria-label="Есть вложения">📎</span>}

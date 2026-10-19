@@ -27,7 +27,8 @@ export async function savePendingApplication(answers: Answers, draftInput?: unkn
        VALUES ($1, $2, $3, $4)
        ON CONFLICT (email) DO UPDATE SET
          id = EXCLUDED.id, answers = EXCLUDED.answers, token_hash = EXCLUDED.token_hash,
-         created_at = now(), expires_at = now() + interval '24 hours'
+         created_at = now(), expires_at = now() + interval '24 hours',
+         reminder_sent_at = NULL, reminder_token_hash = NULL
        WHERE consultation_pending.created_at <= now() - interval '60 seconds'
        RETURNING id`,
       [id, answers.email.toLowerCase(), JSON.stringify(withFullName(answers)), hashToken(token)],
@@ -45,14 +46,14 @@ export async function confirmApplication(tokenHash: string): Promise<string | nu
   try {
     await client.query("BEGIN");
     const pending = await client.query(
-      "SELECT * FROM consultation_pending WHERE token_hash = $1 AND expires_at > clock_timestamp() FOR UPDATE",
+      "SELECT * FROM consultation_pending WHERE (token_hash = $1 OR reminder_token_hash = $1) AND expires_at > clock_timestamp() FOR UPDATE",
       [tokenHash],
     );
     if (pending.rowCount) {
       const application = pending.rows[0];
       const saved = await client.query(
-        `INSERT INTO consultation_applications (id, email, answers, token_hash, submitted_at)
-         SELECT id, email, answers, token_hash, created_at FROM consultation_pending
+        `INSERT INTO consultation_applications (id, email, answers, token_hash, submitted_at, reminder_token_hash)
+         SELECT id, email, answers, token_hash, created_at, reminder_token_hash FROM consultation_pending
          WHERE id = $1 AND expires_at > clock_timestamp() RETURNING id`,
         [application.id],
       );
@@ -61,7 +62,7 @@ export async function confirmApplication(tokenHash: string): Promise<string | nu
       return saved.rows[0]?.id ?? null;
     }
     // A repeated or concurrent confirmation returns the existing permanent record.
-    const confirmed = await client.query("SELECT id FROM consultation_applications WHERE token_hash = $1", [tokenHash]);
+    const confirmed = await client.query("SELECT id FROM consultation_applications WHERE token_hash = $1 OR reminder_token_hash = $1", [tokenHash]);
     await client.query("COMMIT");
     return confirmed.rows[0]?.id ?? null;
   } catch (error) {

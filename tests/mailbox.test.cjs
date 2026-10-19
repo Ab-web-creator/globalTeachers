@@ -150,6 +150,30 @@ test('admin delete route authorizes, validates and moves only the chosen email t
   assert.equal((await remove(request({ id }))).status, 404);
 }));
 
+test('permanent deletion requires authorization and targets only the chosen trashed email', async () => withEnvironment(async () => {
+  const { POST: remove } = require('../app/admin/mail/permanently-delete/route.ts');
+  const calls = [];
+  let rowCount = 1;
+  global.consultationPool = { query: async (sql, values) => { calls.push({ sql, values }); return { rowCount }; } };
+  const token = createSession();
+  const id = '44444444-4444-4444-8444-444444444444';
+  const request = (body, cookie = token, origin = 'https://example.com') => new NextRequest('https://example.com/admin/mail/permanently-delete', {
+    method: 'POST', headers: { origin, cookie: cookie ? `gth_admin=${cookie}` : '' }, body: JSON.stringify(body),
+  });
+  assert.equal((await remove(request({ id }, ''))).status, 401);
+  assert.equal((await remove(request({ id }, token, 'https://attacker.example'))).status, 403);
+  assert.equal((await remove(request({ id: 'invalid' }))).status, 400);
+  assert.equal(calls.length, 0);
+  assert.equal((await remove(request({ id }))).status, 204);
+  assert.match(calls.at(-1).sql, /DELETE FROM mailbox_messages WHERE id = \$1 AND deleted_at IS NOT NULL/);
+  assert.deepEqual(calls.at(-1).values, [id]);
+  // A live-folder message or an already removed message cannot be deleted.
+  rowCount = 0;
+  assert.equal((await remove(request({ id }))).status, 404);
+  global.consultationPool.query = async () => { throw new Error('unavailable'); };
+  assert.equal((await remove(request({ id }))).status, 503);
+}));
+
 test('admin unread route marks only inbound emails as unread', async () => withEnvironment(async () => {
   const { POST: unread } = require('../app/admin/mail/unread/route.ts');
   const calls = [];
@@ -187,3 +211,31 @@ test('read-only email links open one email only and expire', () => {
   process.env.ADMIN_PASSWORD = 'changed-password-with-sufficient-length';
   assert.equal(validMailViewKey(id, key), false);
 });
+
+test('signed delivery events record failures once by webhook ID without creating mailbox copies', async () => withEnvironment(async () => {
+  const queries = [];
+  global.consultationPool = { query: async (sql, values) => { queries.push({ sql, values }); return { rowCount: 1 }; } };
+  const payload = { type: 'email.bounced', created_at: '2026-10-19T10:00:00Z', data: {
+    email_id: 'provider-email', bounce: { message: '550 Mailbox does not exist' },
+  } };
+  const request = (event, authenticated = true) => {
+    const body = JSON.stringify(event);
+    return new Request('https://example.com/api/mail/inbound', { method: 'POST', headers: authenticated ? signed(body) : {}, body });
+  };
+  assert.equal((await inbound(request(payload, false))).status, 401);
+  assert.equal(queries.length, 0);
+  assert.equal((await inbound(request(payload))).status, 204);
+  assert.match(queries[0].sql, /INSERT INTO mail_delivery_events/);
+  assert.match(queries[0].sql, /ON CONFLICT \(id\) DO NOTHING/);
+  assert.deepEqual(queries[0].values, ['msg_1', 'provider-email', 'email.bounced', payload.created_at, '550 Mailbox does not exist']);
+  for (const [type, detail] of [['email.failed', { failed: { reason: 'Invalid recipient' } }], ['email.suppressed', { suppressed: { message: 'Suppressed address' } }], ['email.delivered', {}], ['email.delivery_delayed', {}]]) {
+    assert.equal((await inbound(request({ ...payload, type, data: { email_id: 'provider-email', ...detail } }))).status, 204);
+    assert.equal(queries.at(-1).values[2], type);
+  }
+  const count = queries.length;
+  assert.equal((await inbound(request({ ...payload, created_at: 'invalid' }))).status, 400);
+  assert.equal((await inbound(request({ ...payload, data: {} }))).status, 400);
+  assert.equal(queries.length, count);
+  global.consultationPool.query = async () => { throw new Error('database unavailable'); };
+  assert.equal((await inbound(request(payload))).status, 500);
+}));

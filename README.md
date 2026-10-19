@@ -1,5 +1,7 @@
 ## Collaborator setup after git pull
 
+For automatic email triggers, confirmation reminders, retries, and Sent-folder storage, see [Automatic emails](docs/automatic-emails.md).
+
 Install Node.js and [Docker Desktop](https://docs.docker.com/get-started/get-docker/),
 and start Docker Desktop. In the project directory run:
 

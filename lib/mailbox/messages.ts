@@ -3,6 +3,12 @@ import { emailConfig, sendEmail } from "../consultation/email";
 
 export type MailFolder = "inbox" | "sent" | "candidates" | "frozen" | "start-clients" | "pro-clients" | "vip-clients" | "spam" | "trash";
 
+// Correlated lookup also handles delivery webhooks arriving before the Sent copy.
+// A permanent failure stays visible even if an older delivered event arrives later.
+const deliveryOrder = `ORDER BY (event_type IN ('email.bounced', 'email.failed', 'email.suppressed')) DESC, occurred_at DESC, id DESC LIMIT 1`;
+const deliveryFields = `(SELECT event_type FROM mail_delivery_events WHERE resend_id = mailbox_messages.resend_id ${deliveryOrder}) AS delivery_status,
+  (SELECT reason FROM mail_delivery_events WHERE resend_id = mailbox_messages.resend_id ${deliveryOrder}) AS delivery_reason`;
+
 // Paid status routes all incoming correspondence; unpaid payment requests share the Candidates folder.
 const senderEmail = `lower(btrim(regexp_replace(COALESCE(mailbox_messages.reply_to[1], mailbox_messages.from_address), '^.*<([^>]+)>.*$', '\\1')))`;
 const paidSender = `SELECT 1 FROM private_clients client WHERE client.email = ${senderEmail} AND client.paid_at IS NOT NULL`;
@@ -32,11 +38,12 @@ export function messageFolder(message: Pick<MailMessage, "direction" | "folder">
 }
 export type MailAttachment = { id: string; filename: string; content_type: string; size?: number };
 export type MailMessage = {
+  delivery_status?: string | null; delivery_reason?: string | null;
   id: string; folder?: MailFolder; direction: "inbound" | "outbound"; from_address: string; to_addresses: string[]; cc_addresses: string[];
   reply_to: string[]; subject: string; text_body: string | null; html_body: string | null; attachments: MailAttachment[];
   message_id: string | null; reply_to_message: string | null; created_at: Date; read_at: Date | null;
 };
-export type MailSummary = Pick<MailMessage, "id" | "from_address" | "to_addresses" | "subject" | "created_at" | "read_at"> & { snippet: string; has_attachments: boolean };
+export type MailSummary = Pick<MailMessage, "id" | "from_address" | "to_addresses" | "subject" | "created_at" | "read_at"> & { delivery_status?: string | null; snippet: string; has_attachments: boolean };
 
 export const mailPageSize = 30;
 
@@ -65,7 +72,7 @@ export async function listMessages(folder: MailFolder, page: number) {
   const pages = Math.max(1, Math.ceil(total / mailPageSize));
   const current = Math.min(Math.max(1, Number.isInteger(page) ? page : 1), pages);
   const result = await database().query(
-    `SELECT id, from_address, to_addresses, subject, created_at, read_at,
+    `SELECT id, from_address, to_addresses, subject, created_at, read_at, ${deliveryFields},
        left(regexp_replace(COALESCE(text_body, ''), '\\s+', ' ', 'g'), 160) AS snippet,
        jsonb_array_length(attachments) > 0 AS has_attachments
      FROM mailbox_messages WHERE ${condition}
@@ -98,7 +105,7 @@ export async function unreadCount() {
 export async function getMessage(id: string) {
   await purgeExpiredTrash();
   if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
-  const result = await database().query(`SELECT *, ${paymentContactFolder} AS folder FROM mailbox_messages WHERE id = $1 AND (direction = 'inbound' OR sent_at IS NOT NULL)`, [id]);
+  const result = await database().query(`SELECT *, ${deliveryFields}, ${paymentContactFolder} AS folder FROM mailbox_messages WHERE id = $1 AND (direction = 'inbound' OR sent_at IS NOT NULL)`, [id]);
   return (result.rows[0] as MailMessage | undefined) ?? null;
 }
 
@@ -108,7 +115,7 @@ export async function openMessage(id: string) {
   if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
   const result = await database().query(
     `UPDATE mailbox_messages SET read_at = COALESCE(read_at, now())
-     WHERE id = $1 AND (direction = 'inbound' OR sent_at IS NOT NULL) RETURNING *, ${paymentContactFolder} AS folder`,
+     WHERE id = $1 AND (direction = 'inbound' OR sent_at IS NOT NULL) RETURNING *, ${deliveryFields}, ${paymentContactFolder} AS folder`,
     [id],
   );
   return (result.rows[0] as MailMessage | undefined) ?? null;
@@ -165,5 +172,11 @@ export async function deleteMessage(id: string) {
 
 export async function markUnread(id: string) {
   const result = await database().query("UPDATE mailbox_messages SET read_at = NULL WHERE id = $1 AND direction = 'inbound'", [id]);
+  return result.rowCount === 1;
+}
+
+/** Permanently remove only a message already in Trash. */
+export async function permanentlyDeleteMessage(id: string) {
+  const result = await database().query("DELETE FROM mailbox_messages WHERE id = $1 AND deleted_at IS NOT NULL", [id]);
   return result.rowCount === 1;
 }

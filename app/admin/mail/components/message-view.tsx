@@ -1,3 +1,4 @@
+import { deliveryLabel } from "../../../../lib/mailbox/delivery";
 import ApplicationPaymentControl from "../../components/application-payment-control";
 import { messagePaymentDetails } from "../../../../lib/admin/client-payment";
 import Link from "next/link";
@@ -53,6 +54,10 @@ export default async function MessageView({ message, readOnly = false, readingPa
             ))}
           </dl>
         </div>
+        {!inbound && <div className={`mt-3 text-sm ${["email.bounced", "email.failed", "email.suppressed"].includes(message.delivery_status ?? "") ? "text-red-700" : "text-neutral-500"}`}>
+          <p>{deliveryLabel(message.delivery_status)}</p>
+          {message.delivery_reason && <p className="mt-1 wrap-break-word">{message.delivery_reason}</p>}
+        </div>}
         {message.attachments.length > 0 && (
           <ul aria-label="Вложения" className="mt-3 flex flex-wrap gap-2">
             {message.attachments.map((file) => (
@@ -66,6 +71,10 @@ export default async function MessageView({ message, readOnly = false, readingPa
         )}
         {!readOnly && (
           <div role="toolbar" aria-label="Действия с письмом" className="absolute bottom-0 left-1/2 z-10 flex -translate-x-1/2 translate-y-1/2 items-center gap-0 rounded-full border border-neutral-200 bg-white px-0.5 py-0 shadow-[0_0_2px_rgb(0_0_0/0.06)] transition-opacity [@media(hover:hover)]:pointer-events-none [@media(hover:hover)]:opacity-0 group-hover/email:pointer-events-auto group-hover/email:opacity-100 group-focus-within/email:pointer-events-auto group-focus-within/email:opacity-100">
+            {message.folder === "trash" && <>
+              <MessageActionButton id={message.id} endpoint="/admin/mail/permanently-delete" returnTo={folder} icon={<DeleteApplicationIcon className="size-4" />} label="Удалить навсегда" busyLabel="Удаляем…" confirmation="Удалить письмо навсегда? Восстановить его будет невозможно." danger />
+              <span aria-hidden="true" className="mx-0.5 h-4 border-l border-neutral-200" />
+            </>}
             {message.folder !== "trash" && <>
               <MessageActionButton id={message.id} endpoint="/admin/mail/delete" returnTo={folder} icon={<DeleteApplicationIcon className="size-4" />} label="Удалить" busyLabel="Удаляем…" confirmation="Переместить письмо в корзину? Оно будет храниться там 14 дней." danger />
               <span aria-hidden="true" className="mx-0.5 h-4 border-l border-neutral-200" />
