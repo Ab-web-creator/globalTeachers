@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "@/lib/i18n/use-translations";
+import { useLanguage } from "@/lib/i18n/use-language";
 import { Great_Vibes } from "next/font/google";
 import QueuedImage from "@/app/components/queued-image";
 import { MentorSignatureUnderline } from "@/app/components/svg";
@@ -9,6 +10,8 @@ const signatureFont = Great_Vibes({ weight: "400", subsets: ["cyrillic", "latin"
 
 export default function MentorNote() {
   const t = useTranslations();
+  // The Uzbek text names TeacherNavigator inside the sentence itself.
+  const isUzbek = useLanguage().language !== "ru";
   return (
     <section aria-labelledby="mentor-note-title" className="bg-linear-to-br from-orange-50 to-amber-50 sm:from-sky-100 sm:via-blue-50 sm:to-violet-100 px-6 sm:px-10 lg:px-16 py-12 sm:py-16 lg:py-20">
       <div className="mx-auto grid max-w-400 items-center gap-8 lg:grid-cols-5 lg:gap-12 xl:gap-16">
@@ -43,7 +46,7 @@ export default function MentorNote() {
               <p data-reveal>
           
 
-                <span className="font-semibold text-purple-600 sm:font-normal sm:text-inherit lg:font-semibold lg:text-brand-600">{t("home.mentorNote.message0430")}</span> {t.content(' ')} {" "}{t("home.mentorNote.message0431")}{" "}{t.content(' ')} <span className="font-semibold text-purple-600 sm:font-normal sm:text-inherit lg:font-semibold lg:text-brand-600">TeacherNavigator </span> {t.content(' ')}  {" "}{t("home.mentorNote.message0432")}</p>
+                <span className="font-semibold text-purple-600 sm:font-normal sm:text-inherit lg:font-semibold lg:text-brand-600">{t("home.mentorNote.message0430")}</span> {t.content(' ')} {" "}{t("home.mentorNote.message0431")}{" "}{t.content(' ')} {!isUzbek && <span className="font-semibold text-purple-600 sm:font-normal sm:text-inherit lg:font-semibold lg:text-brand-600">TeacherNavigator </span>} {t.content(' ')}  {" "}{t("home.mentorNote.message0432")}</p>
               <p data-reveal className="font-semibold text-brand-600 lg:rounded-2xl lg:border-l-4 lg:border-brand-300 lg:bg-white/60 lg:px-6 lg:py-5">
                  {t.content(' ')} <span className="font-semibold text-purple-600 sm:font-normal sm:text-inherit lg:font-semibold lg:text-brand-600"> {" "}{t("home.mentorNote.message0433")}{" "}</span> {" "}{t("home.mentorNote.message0434")}</p>
             </div>
