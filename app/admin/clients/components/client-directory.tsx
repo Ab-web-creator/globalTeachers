@@ -6,6 +6,7 @@ import cardStyles from "../../components/application-card.module.css";
 import { ApplicationCalendarIcon, ApplicationStarIcon, AppointmentClockIcon, BriefcaseIcon, StartClientIcon, EnvelopeIcon, SupportCrownIcon, UserProfileIcon } from "@/app/components/svg";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import DeleteClientButton from "./delete-client-button";
 import type { PrivateClient } from "../../../../lib/client-area/types";
 
 const tierHeaderColors = {
@@ -97,7 +98,7 @@ export default function ClientDirectory({
           </p>
         )}
         {shown.map((client) => (
-          <ClientSummaryCard key={client.id} client={client} href={`/admin/clients/${client.id}`} />
+          <ClientSummaryCard key={client.id} client={client} href={`/admin/clients/${client.id}`} onDeleted={() => setClients((current) => current.filter((item) => item.id !== client.id))} />
         ))}
       </div>
       <nav
@@ -140,10 +141,12 @@ export default function ClientDirectory({
   );
 }
 
-function ClientSummaryCard({ client, href }: { client: PrivateClient; href: string }) {
+function ClientSummaryCard({ client, href, onDeleted }: { client: PrivateClient; href: string; onDeleted: () => void }) {
   const paid = Boolean(client.paid_at);
   const Icon = !paid ? UserProfileIcon : client.tier === "VIP" ? SupportCrownIcon : client.tier === "PRO" ? BriefcaseIcon : StartClientIcon;
   return (
+    // The delete button sits beside the link, since buttons cannot be nested in links.
+    <div className="relative w-full sm:w-80">
     <Link href={href} target="_blank" rel="noopener noreferrer" aria-label={`Открыть карточку ${client.name} в новой вкладке`} className="block w-full overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-md transition-shadow hover:shadow-lg focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500 sm:w-80">
       <header className={`relative isolate flex items-start gap-2 overflow-hidden px-4 py-3 ${paid ? tierHeaderColors[client.tier] : "bg-linear-to-r from-neutral-300 to-neutral-200 text-neutral-800"}`}>
         <span aria-hidden="true" className={`${cardStyles.ornament} ${paid ? cardStyles.paidOrnament : ""}`} />
@@ -165,12 +168,16 @@ function ClientSummaryCard({ client, href }: { client: PrivateClient; href: stri
           <ApplicationCalendarIcon className="mt-0.5 size-4 shrink-0 text-neutral-600" />
           <div className="min-w-0"><dt className="text-xs text-neutral-500">Последний визит</dt><dd className="mt-0.5 text-neutral-800">{client.last_seen_at ? <LocalTime value={client.last_seen_at} /> : "Ещё не заходил на личную страницу"}</dd></div>
         </div>
-        <div className="flex items-start gap-3 py-2">
+        <div className="flex items-start gap-3 py-2 pr-10">
           <AppointmentClockIcon className="mt-0.5 size-4 shrink-0 text-neutral-600" />
           <div className="min-w-0"><dt className="text-xs text-neutral-500">Консультации</dt><dd className="mt-0.5 text-neutral-800">{client.active ? `Забронировано ${client.booked_hours} из ${client.allowance_hours} ч` : "Ключ не отправлен"}</dd></div>
         </div>
       </dl>
-      {client.awaiting_reply && <p className="mx-4 mb-3 rounded-lg bg-amber-50 px-3 py-2 text-xs font-medium text-amber-700">Ожидает ответа</p>}
+      {client.awaiting_reply && <p className="mb-3 ml-4 mr-14 rounded-lg bg-amber-50 px-3 py-2 text-xs font-medium text-amber-700">Ожидает ответа</p>}
     </Link>
+    <div className="absolute bottom-2 right-2 flex flex-wrap justify-end">
+      <DeleteClientButton clientId={client.id} name={client.name} onDeleted={onDeleted} className="size-9" />
+    </div>
+    </div>
   );
 }

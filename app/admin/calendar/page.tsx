@@ -9,7 +9,7 @@ import CalendarManager from "./components/calendar-manager";
 export const metadata: Metadata = {
   title: "Календарь — TeacherNavigator",
   robots: { index: false, follow: false },
-  referrer: "no-referrer",
+  referrer: "same-origin",
 };
 export const dynamic = "force-dynamic";
 

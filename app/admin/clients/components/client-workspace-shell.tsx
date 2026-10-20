@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useEffect, useState, type ReactNode } from "react";
 import { EnvelopeIcon } from "@/app/components/svg";
@@ -8,10 +9,12 @@ import LocalTime from "../../components/local-time";
 import CopyClientKeyButton from "./copy-client-key-button";
 import ApplicationPaymentControl from "../../components/application-payment-control";
 import CallClientButton from "./call-client-button";
+import DeleteClientButton from "./delete-client-button";
 import cardStyles from "../../components/application-card.module.css";
 import type { PrivateClient } from "../../../../lib/client-area/types";
 
 export default function ClientWorkspaceShell({ initial, children }: { initial: PrivateClient; children: ReactNode }) {
+  const router = useRouter();
   const [selected, setSelected] = useState(initial);
   useEffect(() => {
     const controller = new AbortController();
@@ -61,6 +64,7 @@ export default function ClientWorkspaceShell({ initial, children }: { initial: P
               {selected.paid_at && <CopyClientKeyButton key={`key-${selected.id}`} clientId={selected.id} />}
               <CallClientButton key={selected.id} clientId={selected.id} />
               <Link href={`/admin/mail/new?${new URLSearchParams({ to: selected.email })}`} aria-label={`Написать сообщение: ${selected.name}`} title="Сообщение" className="flex size-9 shrink-0 items-center justify-center rounded-full border border-brand-200 bg-white text-neutral-700 sm:size-10 hover:bg-brand-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-500"><EnvelopeIcon className="size-5" strokeWidth={1.3} /></Link>
+              <DeleteClientButton clientId={selected.id} name={selected.name} onDeleted={() => router.replace("/admin/clients")} className="size-9 border border-brand-200 bg-white sm:size-10" />
             </div>
           </div>
           {children}

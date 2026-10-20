@@ -30,6 +30,7 @@ import { clientTiers, uuidPattern } from "../../../../lib/client-area/types";
 import { startAdminAppointmentCall } from "../../../../lib/client-area/appointment-call";
 
 import { markMessagePaid, setClientPayment } from "../../../../lib/admin/client-payment";
+import { deletePrivateClient } from "../../../../lib/admin/delete-client";
 
 export const runtime = "nodejs";
 
@@ -86,6 +87,10 @@ export async function POST(request: NextRequest) {
         : await database().query("DELETE FROM private_chat_messages WHERE id = $1 AND client_id = $2 AND author = 'admin' RETURNING id", [input.id, input.clientId]);
       return result.rowCount ? privateJson({ ok: true }) : privateJson({ error: "Сообщение не найдено или недоступно для изменения." }, 404);
     }
+    if (input?.action === "delete-client" && uuidPattern.test(input.clientId ?? ""))
+      return (await deletePrivateClient(input.clientId))
+        ? privateJson({ ok: true })
+        : privateJson({ error: "Клиент уже удалён. Обновите страницу." }, 404);
     if (input?.action === "set-client-payment" && uuidPattern.test(input.clientId ?? "") && (input.tier === null || clientTiers.includes(input.tier)))
       return privateJson(await setClientPayment(input.clientId, input.tier));
     if (input?.action === "copy-key" && uuidPattern.test(input.clientId ?? "")) {

@@ -13,7 +13,7 @@ import AdminNav from "../components/admin-nav";
 export const metadata: Metadata = {
   title: "Клиенты — TeacherNavigator",
   robots: { index: false, follow: false },
-  referrer: "no-referrer",
+  referrer: "same-origin",
 };
 export const dynamic = "force-dynamic";
 

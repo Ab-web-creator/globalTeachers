@@ -11,7 +11,7 @@ import ClientWorkspaceShell from "../components/client-workspace-shell";
 export const metadata: Metadata = {
   title: "Клиент — TeacherNavigator",
   robots: { index: false, follow: false },
-  referrer: "no-referrer",
+  referrer: "same-origin",
 };
 export const dynamic = "force-dynamic";
 
