@@ -2,7 +2,7 @@
 
 import { useTranslations } from "@/lib/i18n/use-translations";
 import { StrokeIcon } from "@/app/components/svg";
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { Fragment, useEffect, useRef, useState, type KeyboardEvent } from "react";
 import useStagePreview from "./use-stage-preview";
 import styles from "./vertical-stage-tabs.module.css";
 
@@ -68,7 +68,16 @@ export default function VerticalStageTabs({ id, label, labels, paths, stages, au
             </div>
             <div className="mt-4">
               <div className="space-y-3 text-lg leading-relaxed text-neutral-600">
-                {stage.paragraphs.map((text) => <p key={text}>{t.content(text)}</p>)}
+                {stage.paragraphs.map((text) => (
+                  <p key={text}>
+                    {t.content(text).split("\n").map((line, lineIndex) => (
+                      <Fragment key={lineIndex}>
+                        {lineIndex > 0 && <br />}
+                        {line}
+                      </Fragment>
+                    ))}
+                  </p>
+                ))}
               </div>
               {t.content(stage.closing && <p className="mt-5 border-l-2 border-brand-300 pl-4 text-lg font-semibold leading-relaxed text-brand-600">{t.content(stage.closing)}</p>)}
             </div>

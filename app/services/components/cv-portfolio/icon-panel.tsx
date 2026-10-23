@@ -16,22 +16,24 @@ type IconPanelProps = {
   id: string;
   title: ReactNode;
   headingClassName?: string;
+  className?: string;
+  bottomAlignedContent?: boolean;
   icon: keyof typeof panelIconPaths;
   children: ReactNode;
   tone?: keyof typeof tones;
   as?: "section" | "div";
 };
 
-export default function IconPanel({ id, title, headingClassName = "", icon, children, tone = "default", as: Container = "section" }: IconPanelProps) {
+export default function IconPanel({ id, title, headingClassName = "", className = "", bottomAlignedContent = false, icon, children, tone = "default", as: Container = "section" }: IconPanelProps) {
   const t = useTranslations();
   const colors = tones[tone];
 
   return (
-    <Container aria-labelledby={Container === "section" ? id : undefined} className={`grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 rounded-3xl border p-5 sm:flex sm:flex-row sm:gap-6 sm:p-6 ${colors.panel}`}>
+    <Container aria-labelledby={Container === "section" ? id : undefined} className={`grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 rounded-3xl border p-5 sm:flex sm:flex-row sm:gap-6 sm:p-6 ${colors.panel} ${className}`}>
       <span aria-hidden="true" className={`flex size-14 shrink-0 items-center justify-center rounded-full ${colors.icon}`}>
         <PanelTopicIcon path={panelIconPaths[icon]} />
       </span>
-      <div className="contents sm:block sm:min-w-0">
+      <div className={`contents sm:min-w-0 ${bottomAlignedContent ? "sm:flex sm:flex-1 sm:flex-col" : "sm:block"}`}>
         <div className="flex min-w-0 items-center sm:block">
           {tone === "default" || tone === "white" ? (
             <SectionHeading id={id} size="small" className={headingClassName}>{t.content(title)}</SectionHeading>
@@ -39,7 +41,7 @@ export default function IconPanel({ id, title, headingClassName = "", icon, chil
             <h2 id={id} className={`text-xl font-semibold leading-tight tracking-tight text-brand-950 ${headingClassName}`}>{t.content(title)}</h2>
           )}
         </div>
-        <div className="col-span-2 min-w-0 pl-4 sm:pl-0">{t.content(children)}</div>
+        <div className={`col-span-2 min-w-0 pl-4 sm:pl-0 ${bottomAlignedContent ? "flex flex-1 flex-col" : ""}`}>{t.content(children)}</div>
       </div>
     </Container>
   );
