@@ -23,10 +23,19 @@ export default function SpeakWithExamples() {
         <div className="mt-6">
           <AnswerExample label={t("services.interviewPreparation.speakWithExamples.message1638")} className="w-full">
             <span className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-              {speakWithExamples.weakPhrases.map((phrase, index) => (<span key={phrase} className="contents">
-                {index > 0 && <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400">{t("services.interviewPreparation.speakWithExamples.message1639")}</span>}
-                <span>{t.content(phrase)}</span>
-              </span>))}
+              {speakWithExamples.weakPhrases.map((phrase, index) => {
+                const text = t.content(phrase);
+                const suffix = t.language === "uz" ? "deyişdan köra" : "дейишдан кўра";
+                const hasUzbekSuffix = t.language !== "ru" && text.endsWith(suffix);
+
+                return (
+                  <span key={phrase} className="contents">
+                    {index > 0 && <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400">{t("services.interviewPreparation.speakWithExamples.message1639")}</span>}
+                    <span>{hasUzbekSuffix ? text.slice(0, -suffix.length).trimEnd() : text}</span>
+                    {hasUzbekSuffix && <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400">{suffix}</span>}
+                  </span>
+                );
+              })}
             </span>
           </AnswerExample>
         </div>

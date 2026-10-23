@@ -24,7 +24,7 @@ export default function PortfolioSpread({ active }: { active: number }) {
         <h3 className="mt-3 text-2xl font-semibold leading-snug tracking-tight text-brand-950 sm:text-3xl">{t.content(item.title)}</h3>
         <p className="mt-7 text-base leading-relaxed text-neutral-600">{t.content(item.text)}</p>
         <dl className="mt-8 space-y-5">
-          {[["Цель", example.goal], [example.roleLabel ?? "Моя роль", example.role], ["Что приложить", example.evidence]].map(([label, text]) => (
+          {[["Цель", example.goal], [example.roleLabel ?? "Ваша роль", example.role], ["Что приложить", example.evidence]].map(([label, text]) => (
             <div key={label}>
               <dt className="text-base font-semibold text-brand-950">{t.content(label)}</dt>
               <dd className="mt-2 text-base leading-relaxed text-neutral-600">{t.content(text)}</dd>
@@ -48,7 +48,6 @@ export default function PortfolioSpread({ active }: { active: number }) {
         <div className="mt-4 border-t border-dashed border-brand-200 pt-3">
           <p className="text-base font-semibold text-brand-950">{t("services.cvPortfolio.portfolioSpread.message1545")}</p>
           <p className="mt-2 text-base leading-relaxed text-neutral-600">{t.content(sample.reflection)}</p>
-          <p className="mt-3 text-xs text-neutral-400">{t("services.cvPortfolio.portfolioSpread.message1546")}</p>
         </div>
       </div>
     </div>
