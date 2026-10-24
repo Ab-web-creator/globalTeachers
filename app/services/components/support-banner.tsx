@@ -6,9 +6,9 @@ import type { ReactNode } from "react";
 import SectionLabel from "./job-search/section-label";
 import styles from "./support-banner.module.css";
 
-type Props = { id: string; label: string; title: string; text: string; image: string; imageClassName?: string; imageContainerClassName?: string; children: ReactNode };
+type Props = { id: string; label: string; title: string; text: string; image: string; titleWidthClassName?: string; imageClassName?: string; imageContainerClassName?: string; children: ReactNode };
 
-export default function SupportBanner({ id, label, title, text, image, imageClassName = "", imageContainerClassName = "", children }: Props) {
+export default function SupportBanner({ id, label, title, text, image, titleWidthClassName = "max-w-[36ch]", imageClassName = "", imageContainerClassName = "", children }: Props) {
   const t = useTranslations();
   return (
     <aside aria-labelledby={id} className="-mx-6 grid overflow-hidden bg-linear-to-br from-brand-50 to-brand-300/20 sm:mx-0 sm:rounded-3xl md:grid-cols-5">
@@ -18,7 +18,7 @@ export default function SupportBanner({ id, label, title, text, image, imageClas
       <div className="relative isolate p-5 pb-10 sm:p-6 md:col-span-3">
         <div aria-hidden="true" className={styles.ornament} />
         <SectionLabel>{t.content(label)}</SectionLabel>
-        <h2 id={id} className="max-w-[36ch] text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">{t.content(title)}</h2>
+        <h2 id={id} className={`${titleWidthClassName} text-2xl font-semibold leading-tight tracking-tight sm:text-3xl`}>{t.content(title)}</h2>
         <p className="mt-3 max-w-[68ch] text-base leading-relaxed text-neutral-600">{t.content(text)}</p>
         <div className="mt-4 flex flex-wrap items-center gap-3 [&>a]:w-full [&>a]:justify-center [&>a]:text-center sm:[&>a]:w-auto">{t.content(children)}</div>
       </div>

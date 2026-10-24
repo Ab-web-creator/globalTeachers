@@ -12,7 +12,7 @@ export default function ProgramHero({ tier, image, title, intro, introClassName 
   const t = useTranslations();
   return (
     <ServiceHero image={image} backHref="/#plans" imageAspectRatio={imageAspectRatio} stretchImage={!imageAspectRatio} imageHeightScale={imageHeightScale} imageTopCrop={imageTopCrop} matchTextHeight={matchTextHeight}>
-      <SectionLabel>{tier === "START" ? t("programs.programHero.startLabel") : <>{t("programs.programHero.message1113")}{" "}{t.content(tier)}</>}</SectionLabel>
+      <SectionLabel>{tier === "START" ? t("programs.programHero.startLabel") : tier === "PRO" ? t("programs.programHero.proLabel") : <>{t("programs.programHero.message1113")}{" "}{t.content(tier)}</>}</SectionLabel>
       <PageTitle>{t.content(title)}</PageTitle>
       <div className="mt-6 space-y-5">
         {intro.map((text) => <p key={text} className={`${introClassName} leading-relaxed text-neutral-600`}>{t.content(text)}</p>)}

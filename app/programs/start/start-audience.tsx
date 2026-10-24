@@ -12,9 +12,9 @@ export default function StartAudience() {
         <IconPanel as="div" id="start-approach" headingClassName="max-sm:text-lg!" title={t("programs.start.startAudience.message1216")} icon="checklist" tone="white">
           {approach.paragraphs.map((text) => <p key={text} className="mt-4 text-lg leading-relaxed text-neutral-600">{t.content(text)}</p>)}
         </IconPanel>
-        <IconPanel as="div" id="start-audience" headingClassName="max-sm:text-lg!" title={t("programs.start.startAudience.message1217")} icon="handshake" tone="white">
+        <IconPanel as="div" id="start-audience" bottomAlignedContent={t.language === "ru"} headingClassName="max-sm:text-lg!" title={t("programs.start.startAudience.message1217")} icon="handshake" tone="white">
           {audience.paragraphs.map((text) => <p key={text} className="mt-4 max-w-lg text-lg leading-relaxed text-neutral-600">{t.content(text)}</p>)}
-          <p className="mt-6 text-lg font-medium leading-relaxed text-brand-600">{t.content(audience.note)}</p>
+          <p className={`${t.language === "ru" ? "mt-auto pt-6" : "mt-6"} text-lg font-medium leading-relaxed text-brand-600`}>{t.content(audience.note)}</p>
         </IconPanel>
       </div>
     </section>

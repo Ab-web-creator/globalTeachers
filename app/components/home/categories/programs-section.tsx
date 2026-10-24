@@ -47,7 +47,7 @@ export default function ProgramsSection() {
 function ProgramCardFooter({ program }: ProgramCardFooterProps) {
   const t = useTranslations();
   return (
-    <div className="@container border-t border-brand-100 pt-3 pb-2 sm:mx-3">
+    <div className="group/footer relative @container border-t border-brand-100 pt-3 pb-2 sm:mx-3">
       <div className="flex flex-col items-start gap-4 @min-[17rem]:flex-row @min-[17rem]:items-center @min-[17rem]:justify-between">
         <p className="flex min-h-14 min-w-0 items-center text-brand-500 @min-[17rem]:flex-1">
           {program.price === null ? (<span className="flex flex-col items-start gap-1">
@@ -62,7 +62,7 @@ function ProgramCardFooter({ program }: ProgramCardFooterProps) {
           {t("home.categories.programsSection.message0352")}</Link>
       </div>
       {program.tier === "VIP" && (
-        <div id="vip-consultation-note" className="pointer-events-none mt-5 lg:invisible lg:absolute lg:right-32 lg:bottom-4 lg:z-20 lg:mt-0 lg:w-96 lg:rounded-2xl lg:border lg:border-brand-100 lg:bg-white lg:p-5 lg:opacity-0 lg:shadow-xl lg:transition-opacity lg:group-hover:visible lg:group-hover:opacity-100 lg:group-focus-within:visible lg:group-focus-within:opacity-100 motion-reduce:transition-none">
+        <div id="vip-consultation-note" className="pointer-events-none mt-5 lg:invisible lg:absolute lg:right-32 lg:bottom-4 lg:z-20 lg:mt-0 lg:w-96 lg:rounded-2xl lg:border lg:border-brand-100 lg:bg-white lg:p-5 lg:opacity-0 lg:shadow-xl lg:transition-opacity lg:group-hover/footer:visible lg:group-hover/footer:opacity-100 lg:group-focus-within/footer:visible lg:group-focus-within/footer:opacity-100 motion-reduce:transition-none">
           <p className="flex items-center gap-2 text-base font-semibold text-neutral-900">
             <CameraIcon className="size-5 shrink-0 text-neutral-500" />
             {t("home.categories.programsSection.message0353")}</p>
@@ -93,7 +93,7 @@ function ProgramInclusions({ program, detailed = false }: {
   return (
     <div className="mt-3">
       <p className="text-base font-semibold text-blue-700">{t.content(program.inclusionLabel)}</p>
-      <p className="mt-1 text-base leading-normal text-neutral-600">{t.content(program.supportSummary)}</p>
+      {program.tier !== "START" && <p className="mt-1 text-base leading-normal text-neutral-600">{t.content(program.supportSummary)}</p>}
       {detailed && program.inheritedServices.length > 0 && (<div className="mt-3">
         <p className="text-base lg:text-sm font-medium text-neutral-900">{t("home.categories.programsSection.message0355")}</p>
         <ul className="mt-2 list-disc space-y-1 pl-5 text-base lg:text-sm text-neutral-600">
@@ -120,9 +120,10 @@ function CategoryCard({ program }: CategoryCardProps) {
         </div>
         <p className="mt-2 text-base leading-normal text-neutral-600">{t.content(program.description)}</p>
       </div>
-      <div className="sm:px-3">
+      <div className="flex flex-1 flex-col sm:px-3">
         <ProgramInclusions program={program} />
-        <ProgramFeatures features={program.features} />
+        <ProgramFeatures features={t.language !== "ru" && program.tier === "START" ? program.features.filter(feature => feature !== "home.categories.featureText.message0325") : program.features} />
+        {program.tier === "START" && <p className="mt-auto pb-4 text-base leading-normal text-neutral-600">{t.content(program.supportSummary)}</p>}
       </div>
       <ProgramCardFooter program={program} />
     </li>

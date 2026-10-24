@@ -27,6 +27,7 @@ export { CareerBenefitIcon } from "./icons/career-benefit-icon";
 export { ProgramCardIllustration } from "./illustrations/program-card-illustration";
 export { ServiceCategoryHoverArt } from "./illustrations/service-category-hover-art";
 export { programIconPaths } from "./data/program-icon-paths";
+export { LinkedInIcon } from "./icons/linkedin-icon";
 export type { ProgramIconName } from "./data/program-icon-paths";
 export { programCardArtwork } from "./illustrations/program-card-artwork";
 export type { ProgramCardArtworkName } from "./illustrations/program-card-artwork";

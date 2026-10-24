@@ -9,12 +9,12 @@ type Props = { tier: string; price: number | null; title: string; text: string; 
 export default function ProgramCta({ tier, price, title, text, image, imageClassName, imageContainerClassName }: Props) {
   const t = useTranslations();
   return (
-    <SupportBanner id={`${tier.toLowerCase()}-price`} label={t.content(`Стоимость ${tier}`)} title={t.content(title)} text={text} image={image} imageClassName={imageClassName} imageContainerClassName={imageContainerClassName}>
+    <SupportBanner id={`${tier.toLowerCase()}-price`} label={tier === "START" ? t("programs.programCta.startPriceLabel") : t.content(`Стоимость ${tier}`)} title={t.content(title)} titleWidthClassName={tier === "START" ? "max-w-[34ch]" : undefined} text={text} image={image} imageClassName={imageClassName} imageContainerClassName={imageContainerClassName}>
       <p className="w-full">
         <span className="text-2xl font-semibold text-brand-500">{t.content(price === null ? "Индивидуально" : `$${price}`)}</span>
         <span className="ml-3 text-sm text-neutral-500">{t.content(price === null ? "стоимость по запросу" : "единоразовая оплата")}</span>
       </p>
-      <Link href={`/payment/${tier.toLowerCase()}`} className="action-gradient inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white">{t("programs.programCta.message1111")}{" "}{t.content(tier)} <span aria-hidden="true">→</span></Link>
+      <Link href={`/payment/${tier.toLowerCase()}`} className="action-gradient inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white">{t("programs.programCta.message1111", { tier: t.content(tier) })} <span aria-hidden="true">→</span></Link>
       <Link href="/#plans" className="action-gradient-outline rounded-full px-6 py-3 text-sm font-medium">{t("programs.programCta.message1112")}</Link>
     </SupportBanner>
   );

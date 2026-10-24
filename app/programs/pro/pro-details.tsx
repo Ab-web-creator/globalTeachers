@@ -14,7 +14,7 @@ import ProProblem from "./pro-problem";
 
 export default function ProDetails({ program }: { program: Program; }) {
   const t = useTranslations();
-  const title = <>{t("programs.pro.proDetails.message1172")}{" "}<span className="text-brand-500">{t("programs.pro.proDetails.message1173")}</span></>;
+  const title = <>{t("programs.pro.proDetails.message1172")}{" "}<span className="text-brand-500">{t("programs.pro.proDetails.message1173")}</span>{t("programs.pro.proDetails.titleEnding") && <> {t("programs.pro.proDetails.titleEnding")}</>}</>;
 
   return (
     <ProgramPageLayout bottomPadding="60px" hero={<ProgramHero tier="PRO" image="/images/pro-application-hero.webp" title={title} intro={hero.intro} introClassName="text-lg" highlight={hero.highlight} imageAspectRatio="250 / 207" />}>
